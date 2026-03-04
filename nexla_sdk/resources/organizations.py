@@ -212,29 +212,83 @@ class OrganizationsResource(BaseResource):
         return AccountSummary.model_validate(response)
 
     def get_org_flow_account_metrics(
-        self, org_id: int, from_date: str, to_date: str = None
+        self, org_id: int, from_date: str, to_date: str = None, aggregate: str = None
     ) -> Dict[str, Any]:
         """Get total account metrics for an organization (flows)."""
         path = f"{self._path}/{org_id}/flows/account_metrics"
         params = {"from": from_date}
         if to_date:
             params["to"] = to_date
+        if aggregate:
+            params["aggregate"] = aggregate
         return self._make_request("GET", path, params=params)
 
-    def get_audit_log(self, org_id: int, **params) -> List[LogEntry]:
+    def get_audit_log(
+        self,
+        org_id: int,
+        from_date: str = None,
+        to_date: str = None,
+        event_filter: str = None,
+        change_filter: str = None,
+        page: int = None,
+        per_page: int = None,
+    ) -> List[LogEntry]:
         """
         Get audit log for an organization.
 
         Args:
             org_id: Organization ID
-            **params: Additional query parameters (e.g., page, per_page)
+            from_date: Start date filter (YYYY-MM-DD)
+            to_date: End date filter (YYYY-MM-DD)
+            event_filter: Filter by event type
+            change_filter: Filter by change type
+            page: Page number for pagination
+            per_page: Items per page
 
         Returns:
             List of audit log entries
         """
         path = f"{self._path}/{org_id}/audit_log"
+        params = {}
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if event_filter is not None:
+            params["event_filter"] = event_filter
+        if change_filter is not None:
+            params["change_filter"] = change_filter
+        if page is not None:
+            params["page"] = page
+        if per_page is not None:
+            params["per_page"] = per_page
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in response]
+
+    def get_flow_status_metrics(
+        self, org_id: int, from_date: str = None, page: int = None, per_page: int = None
+    ) -> Dict[str, Any]:
+        """
+        Get flow status metrics for an organization.
+
+        Args:
+            org_id: Organization ID
+            from_date: Start date filter (YYYY-MM-DD)
+            page: Page number for pagination
+            per_page: Items per page
+
+        Returns:
+            Flow status metrics
+        """
+        path = f"{self._path}/{org_id}/flows/status_metrics"
+        params = {}
+        if from_date is not None:
+            params["from"] = from_date
+        if page is not None:
+            params["page"] = page
+        if per_page is not None:
+            params["per_page"] = per_page
+        return self._make_request("GET", path, params=params)
 
     def get_resource_audit_log(
         self, org_id: int, resource_type: str, **params

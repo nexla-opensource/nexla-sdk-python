@@ -271,6 +271,125 @@ class FlowsResource(BaseResource):
         except Exception:
             return response
 
+    def get_flow_logs(
+        self,
+        flow_id: int,
+        from_date: str = None,
+        to_date: str = None,
+        severity: str = None,
+        run_id: int = None,
+        page: int = None,
+        per_page: int = None,
+    ) -> Dict[str, Any]:
+        """
+        Get execution logs for a specific flow.
+
+        Args:
+            flow_id: Flow ID
+            from_date: Start date filter (YYYY-MM-DD)
+            to_date: End date filter (YYYY-MM-DD)
+            severity: Filter by log severity
+            run_id: Filter by specific run ID
+            page: Page number for pagination
+            per_page: Items per page
+
+        Returns:
+            Flow execution logs
+        """
+        path = f"{self._path}/{flow_id}/flow/logs"
+        params = {}
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if severity is not None:
+            params["severity"] = severity
+        if run_id is not None:
+            params["run_id"] = run_id
+        if page is not None:
+            params["page"] = page
+        if per_page is not None:
+            params["per_page"] = per_page
+        return self._make_request("GET", path, params=params)
+
+    def search_flow_logs(
+        self,
+        flow_id: int,
+        run_ids: str = None,
+        severity: str = None,
+        search_string: str = None,
+        from_date: str = None,
+        to_date: str = None,
+    ) -> Dict[str, Any]:
+        """
+        Advanced search for flow execution logs.
+
+        Args:
+            flow_id: Flow ID
+            run_ids: Comma-separated list of run IDs to filter
+            severity: Filter by log severity
+            search_string: Free-text search string
+            from_date: Start date filter (YYYY-MM-DD)
+            to_date: End date filter (YYYY-MM-DD)
+
+        Returns:
+            Matching flow logs
+        """
+        path = f"{self._path}/{flow_id}/logs_v2"
+        params = {}
+        if run_ids is not None:
+            params["run_ids"] = run_ids
+        if severity is not None:
+            params["severity"] = severity
+        if search_string is not None:
+            params["search_string"] = search_string
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        return self._make_request("GET", path, params=params)
+
+    def get_active_flows_metrics(
+        self, from_date: str = None, to_date: str = None, org_id: int = None
+    ) -> Dict[str, Any]:
+        """
+        Get metrics for currently active flows.
+
+        Args:
+            from_date: Start date filter (YYYY-MM-DD)
+            to_date: End date filter (YYYY-MM-DD)
+            org_id: Organization ID filter
+
+        Returns:
+            Active flows metrics
+        """
+        path = f"{self._path}/active_flows_metrics"
+        params = {}
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if org_id is not None:
+            params["org_id"] = org_id
+        return self._make_request("GET", path, params=params)
+
+    def get_run_status(
+        self, resource_type: str, resource_id: int, run_id: int
+    ) -> Dict[str, Any]:
+        """
+        Get status of a specific flow run.
+
+        Args:
+            resource_type: Type of resource (e.g., data_source, data_set, data_sink)
+            resource_id: Resource ID
+            run_id: Run ID
+
+        Returns:
+            Run status information
+        """
+        path = f"/{resource_type}s/{resource_id}/run_status/{run_id}"
+        return self._make_request("GET", path)
+
     def get_logs(
         self,
         resource_type: str,

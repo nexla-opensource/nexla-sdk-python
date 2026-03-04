@@ -324,18 +324,46 @@ class BaseResource:
         response = self._make_request("POST", path, json=serialized_options)
         return self._parse_response(response)
 
-    def get_audit_log(self, resource_id: int) -> List[Dict[str, Any]]:
+    def get_audit_log(
+        self,
+        resource_id: int,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        event_filter: Optional[str] = None,
+        change_filter: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get audit log for resource.
 
         Args:
             resource_id: Resource ID
+            from_date: Start date filter (YYYY-MM-DD)
+            to_date: End date filter (YYYY-MM-DD)
+            event_filter: Filter by event type
+            change_filter: Filter by change type
+            page: Page number for pagination
+            per_page: Items per page
 
         Returns:
             List of audit log entries
         """
         path = f"{self._path}/{resource_id}/audit_log"
-        return self._make_request("GET", path)
+        params = {}
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if event_filter is not None:
+            params["event_filter"] = event_filter
+        if change_filter is not None:
+            params["change_filter"] = change_filter
+        if page is not None:
+            params["page"] = page
+        if per_page is not None:
+            params["per_page"] = per_page
+        return self._make_request("GET", path, params=params)
 
     def get_accessors(self, resource_id: int) -> AccessorResponseList:
         """
