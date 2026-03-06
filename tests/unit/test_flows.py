@@ -681,3 +681,299 @@ class TestFlowsUnit:
         assert last_request["params"]["orderby"] == "created_at"
         assert last_request["params"]["page"] == 2
         assert last_request["params"]["per_page"] == 100
+
+    def test_copy_and_replace_credentials_source_and_sink(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test copy_and_replace_credentials updates source and sink credentials."""
+        # Arrange
+        original_source_id = 500
+        original_sink_id = 600
+        copied_source_id = 501
+        copied_sink_id = 601
+        new_source_cred = 20
+        new_sink_cred = 30
+        origin_node_id = 9999
+
+        # Build a copy response with copied_from_id set
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(
+                    origin_node_id=origin_node_id,
+                )
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=10,
+                )
+            ],
+            "data_sinks": [
+                mock_factory.create_mock_destination(
+                    id=copied_sink_id,
+                    copied_from_id=original_sink_id,
+                    data_credentials_id=10,
+                )
+            ],
+        }
+
+        # Build a re-fetch response (after credential updates)
+        refetch_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(
+                    origin_node_id=origin_node_id,
+                )
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=new_source_cred,
+                )
+            ],
+            "data_sinks": [
+                mock_factory.create_mock_destination(
+                    id=copied_sink_id,
+                    copied_from_id=original_sink_id,
+                    data_credentials_id=new_sink_cred,
+                )
+            ],
+        }
+
+        # Updated source response
+        updated_source = mock_factory.create_mock_source(
+            id=copied_source_id,
+            data_credentials_id=new_source_cred,
+        )
+
+        # Updated sink response
+        updated_sink = mock_factory.create_mock_destination(
+            id=copied_sink_id,
+            data_credentials_id=new_sink_cred,
+        )
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/data_sources/{copied_source_id}", updated_source
+        )
+        mock_http_client.add_response(f"/data_sinks/{copied_sink_id}", updated_sink)
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={
+                original_source_id: new_source_cred,
+                original_sink_id: new_sink_cred,
+            },
+        )
+
+        # Assert
+        assert isinstance(result, FlowResponse)
+
+        # Verify copy request used reuse_data_credentials=True
+        copy_requests = mock_http_client.get_requests_by_url_pattern("/flows/100/copy")
+        assert len(copy_requests) == 1
+        assert copy_requests[0]["json"]["reuse_data_credentials"] is True
+
+        # Verify source update request
+        source_updates = mock_http_client.get_requests_by_url_pattern(
+            f"/data_sources/{copied_source_id}"
+        )
+        put_source = [r for r in source_updates if r["method"] == "PUT"]
+        assert len(put_source) == 1
+        assert put_source[0]["json"]["data_credentials_id"] == new_source_cred
+
+        # Verify sink update request
+        sink_updates = mock_http_client.get_requests_by_url_pattern(
+            f"/data_sinks/{copied_sink_id}"
+        )
+        put_sink = [r for r in sink_updates if r["method"] == "PUT"]
+        assert len(put_sink) == 1
+        assert put_sink[0]["json"]["data_credentials_id"] == new_sink_cred
+
+    def test_copy_and_replace_credentials_partial_mapping(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test that resources not in the mapping are left untouched."""
+        # Arrange
+        original_source_id = 500
+        original_sink_a_id = 600
+        original_sink_b_id = 700
+        copied_source_id = 501
+        copied_sink_a_id = 601
+        copied_sink_b_id = 701
+        new_cred = 20
+        origin_node_id = 9999
+
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=10,
+                )
+            ],
+            "data_sinks": [
+                mock_factory.create_mock_destination(
+                    id=copied_sink_a_id,
+                    copied_from_id=original_sink_a_id,
+                    data_credentials_id=10,
+                ),
+                mock_factory.create_mock_destination(
+                    id=copied_sink_b_id,
+                    copied_from_id=original_sink_b_id,
+                    data_credentials_id=50,
+                ),
+            ],
+        }
+
+        refetch_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=new_cred,
+                )
+            ],
+            "data_sinks": [
+                mock_factory.create_mock_destination(
+                    id=copied_sink_a_id,
+                    copied_from_id=original_sink_a_id,
+                    data_credentials_id=new_cred,
+                ),
+                mock_factory.create_mock_destination(
+                    id=copied_sink_b_id,
+                    copied_from_id=original_sink_b_id,
+                    data_credentials_id=50,
+                ),
+            ],
+        }
+
+        updated_source = mock_factory.create_mock_source(
+            id=copied_source_id, data_credentials_id=new_cred
+        )
+        updated_sink_a = mock_factory.create_mock_destination(
+            id=copied_sink_a_id, data_credentials_id=new_cred
+        )
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/data_sources/{copied_source_id}", updated_source
+        )
+        mock_http_client.add_response(
+            f"/data_sinks/{copied_sink_a_id}", updated_sink_a
+        )
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act — only map source and sink A, leave sink B untouched
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={
+                original_source_id: new_cred,
+                original_sink_a_id: new_cred,
+                # original_sink_b_id intentionally NOT mapped
+            },
+        )
+
+        # Assert
+        assert isinstance(result, FlowResponse)
+
+        # Sink B should NOT have been updated (no PUT to its endpoint)
+        sink_b_requests = mock_http_client.get_requests_by_url_pattern(
+            f"/data_sinks/{copied_sink_b_id}"
+        )
+        put_sink_b = [r for r in sink_b_requests if r["method"] == "PUT"]
+        assert len(put_sink_b) == 0
+
+    def test_copy_and_replace_credentials_preserves_copy_options(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test that extra copy options are preserved and reuse_data_credentials is forced True."""
+        # Arrange
+        origin_node_id = 9999
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [],
+            "data_sinks": [],
+        }
+        refetch_response = copy_response.copy()
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act — pass copy_options with reuse_data_credentials=False (should be overridden)
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={},
+            copy_options=FlowCopyOptions(
+                reuse_data_credentials=False,
+                copy_access_controls=True,
+                owner_id=42,
+            ),
+        )
+
+        # Assert
+        assert isinstance(result, FlowResponse)
+
+        copy_requests = mock_http_client.get_requests_by_url_pattern("/flows/100/copy")
+        assert len(copy_requests) == 1
+        # reuse_data_credentials should be forced True
+        assert copy_requests[0]["json"]["reuse_data_credentials"] is True
+        # Other options should be preserved
+        assert copy_requests[0]["json"]["copy_access_controls"] is True
+        assert copy_requests[0]["json"]["owner_id"] == 42
+
+    def test_copy_and_replace_credentials_empty_mapping(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test with empty mapping — just copies the flow with no credential changes."""
+        # Arrange
+        origin_node_id = 9999
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=501, copied_from_id=500, data_credentials_id=10
+                )
+            ],
+            "data_sinks": [
+                mock_factory.create_mock_destination(
+                    id=601, copied_from_id=600, data_credentials_id=10
+                )
+            ],
+        }
+        refetch_response = copy_response.copy()
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={},
+        )
+
+        # Assert — no PUT requests should have been made
+        assert isinstance(result, FlowResponse)
+        put_requests = mock_http_client.get_requests_by_method("PUT")
+        assert len(put_requests) == 0
