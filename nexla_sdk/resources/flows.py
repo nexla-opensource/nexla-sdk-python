@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
 from nexla_sdk.models.flows.requests import FlowCopyOptions
+from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.flows.responses import (
     DocsRecommendation,
     FlowLogsResponse,
@@ -175,6 +176,7 @@ class FlowsResource(BaseResource):
         flow_id: int,
         resource_credential_mapping: Dict[int, int],
         copy_options: Optional[FlowCopyOptions] = None,
+        target_project_id: Optional[int] = None,
     ) -> FlowResponse:
         """Copy a flow and replace credentials on specified resources.
 
@@ -200,6 +202,9 @@ class FlowsResource(BaseResource):
             copy_options: Optional additional copy options.  The
                 ``reuse_data_credentials`` flag will always be forced to
                 ``True`` regardless of the value passed here.
+            target_project_id: Optional project ID to move the copied flow
+                into.  When set, the copied flow is added to the specified
+                project after credential replacement.
 
         Returns:
             The copied ``FlowResponse`` with credentials updated.
@@ -251,8 +256,16 @@ class FlowsResource(BaseResource):
                         DestinationUpdate(data_credentials_id=new_cred_id),
                     )
 
-        # Step 3: Re-fetch the flow to return an up-to-date response
-        return self.get(copied_flow.flows[0].origin_node_id)
+        # Step 3: Optionally move the copied flow into a target project
+        origin_node_id = copied_flow.flows[0].origin_node_id
+        if target_project_id is not None:
+            self.client.projects.add_flows(
+                target_project_id,
+                ProjectFlowList(flows=[origin_node_id]),
+            )
+
+        # Step 4: Re-fetch the flow to return an up-to-date response
+        return self.get(origin_node_id)
 
     def delete(self, flow_id: int) -> Dict[str, Any]:
         """

@@ -977,3 +977,111 @@ class TestFlowsUnit:
         assert isinstance(result, FlowResponse)
         put_requests = mock_http_client.get_requests_by_method("PUT")
         assert len(put_requests) == 0
+
+    def test_copy_and_replace_credentials_with_target_project(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test that target_project_id moves the copied flow into the project."""
+        # Arrange
+        original_source_id = 500
+        copied_source_id = 501
+        new_cred = 20
+        origin_node_id = 9999
+        target_project_id = 42
+
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=10,
+                )
+            ],
+            "data_sinks": [],
+        }
+
+        updated_source = mock_factory.create_mock_source(
+            id=copied_source_id, data_credentials_id=new_cred
+        )
+
+        # add_flows response (list of project data flows)
+        add_flows_response = [
+            {"id": 1, "project_id": target_project_id, "flow_node_id": origin_node_id}
+        ]
+
+        refetch_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [
+                mock_factory.create_mock_source(
+                    id=copied_source_id,
+                    copied_from_id=original_source_id,
+                    data_credentials_id=new_cred,
+                )
+            ],
+            "data_sinks": [],
+        }
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/data_sources/{copied_source_id}", updated_source
+        )
+        mock_http_client.add_response(
+            f"/projects/{target_project_id}/flows", add_flows_response
+        )
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={original_source_id: new_cred},
+            target_project_id=target_project_id,
+        )
+
+        # Assert
+        assert isinstance(result, FlowResponse)
+
+        # Verify add_flows was called with the correct project and flow
+        project_requests = mock_http_client.get_requests_by_url_pattern(
+            f"/projects/{target_project_id}/flows"
+        )
+        put_project = [r for r in project_requests if r["method"] == "PUT"]
+        assert len(put_project) == 1
+        assert put_project[0]["json"]["flows"] == [origin_node_id]
+
+    def test_copy_and_replace_credentials_no_target_project(
+        self, mock_client, mock_http_client, mock_factory
+    ):
+        """Test that no project request is made when target_project_id is None."""
+        # Arrange
+        origin_node_id = 9999
+        copy_response = {
+            "flows": [
+                mock_factory.create_mock_flow_node(origin_node_id=origin_node_id)
+            ],
+            "data_sources": [],
+            "data_sinks": [],
+        }
+        refetch_response = copy_response.copy()
+
+        mock_http_client.add_response("/flows/100/copy", copy_response)
+        mock_http_client.add_response(
+            f"/flows/{origin_node_id}", refetch_response
+        )
+
+        # Act — no target_project_id
+        result = mock_client.flows.copy_and_replace_credentials(
+            flow_id=100,
+            resource_credential_mapping={},
+        )
+
+        # Assert — no project requests should have been made
+        assert isinstance(result, FlowResponse)
+        project_requests = mock_http_client.get_requests_by_url_pattern("/projects/")
+        assert len(project_requests) == 0
