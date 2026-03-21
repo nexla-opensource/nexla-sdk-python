@@ -280,3 +280,51 @@ class TestNotificationsResource:
             "SOURCE", 1, expand=True, filter_overridden=True, notification_type_id=1
         )
         assert isinstance(lst3[0], NotificationSetting)
+
+    def test_notification_setting_with_null_resource_id(self, client, mock_http_client):
+        mock_http_client.add_response(
+            "/notification_settings",
+            [
+                {
+                    "id": 10,
+                    "org_id": 1,
+                    "owner_id": 1,
+                    "channel": "APP",
+                    "notification_resource_type": "USER",
+                    "resource_id": None,
+                    "status": "ACTIVE",
+                    "notification_type_id": 1,
+                    "name": "n",
+                    "description": "d",
+                    "code": 0,
+                    "category": "SYSTEM",
+                    "event_type": "X",
+                    "resource_type": "SOURCE",
+                    "config": {},
+                }
+            ],
+        )
+        lst = client.notifications.list_settings()
+        assert isinstance(lst[0], NotificationSetting)
+        assert lst[0].resource_id is None
+
+    def test_notification_setting_model_with_null_resource_id(self):
+        data = {
+            "id": 10,
+            "org_id": 1,
+            "owner_id": 1,
+            "channel": "APP",
+            "notification_resource_type": "USER",
+            "resource_id": None,
+            "status": "ACTIVE",
+            "notification_type_id": 1,
+            "name": "n",
+            "description": "d",
+            "code": 0,
+            "category": "SYSTEM",
+            "event_type": "X",
+            "resource_type": "SOURCE",
+            "config": {},
+        }
+        model = NotificationSetting.model_validate(data)
+        assert model.resource_id is None

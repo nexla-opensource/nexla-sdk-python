@@ -56,7 +56,7 @@ class NotificationSetting(BaseModel):
     owner_id: int
     channel: str
     notification_resource_type: str
-    resource_id: int
+    resource_id: Optional[int] = None
     status: str  # PAUSED, ACTIVE
     notification_type_id: int
     name: str

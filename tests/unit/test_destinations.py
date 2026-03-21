@@ -9,7 +9,7 @@ from nexla_sdk.models.destinations.requests import (
     DestinationCreate,
     DestinationUpdate,
 )
-from nexla_sdk.models.destinations.responses import Destination
+from nexla_sdk.models.destinations.responses import DataMapInfo, Destination
 from tests.utils.assertions import assert_model_list_valid
 from tests.utils.mock_builders import MockResponseBuilder
 
@@ -298,3 +298,45 @@ class TestDestinationsResource:
         # Assert
         assert destinations == []
         assert len(destinations) == 0
+
+    def test_destination_with_null_data_map_description(self, mock_client):
+        """Test that destinations with None data_map.description validate correctly."""
+        mock_response = MockResponseBuilder.destination(
+            {
+                "id": 100,
+                "name": "Dest with null map desc",
+                "data_map": {
+                    "id": 1,
+                    "owner_id": 10,
+                    "org_id": 5,
+                    "name": "Test Map",
+                    "description": None,
+                    "public": False,
+                    "created_at": "2025-01-01T00:00:00Z",
+                    "updated_at": "2025-01-01T00:00:00Z",
+                },
+            }
+        )
+        mock_client.http_client.add_response("/data_sinks/100", mock_response)
+
+        destination = mock_client.destinations.get(100)
+
+        assert isinstance(destination, Destination)
+        assert destination.data_map is not None
+        assert isinstance(destination.data_map, DataMapInfo)
+        assert destination.data_map.description is None
+
+    def test_data_map_info_with_null_description(self):
+        """Test DataMapInfo model validates with description=None."""
+        data = {
+            "id": 1,
+            "owner_id": 10,
+            "org_id": 5,
+            "name": "Map",
+            "description": None,
+            "public": False,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z",
+        }
+        model = DataMapInfo.model_validate(data)
+        assert model.description is None

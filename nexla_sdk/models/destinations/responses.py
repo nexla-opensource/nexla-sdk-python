@@ -32,7 +32,7 @@ class DataMapInfo(BaseModel):
     owner_id: int
     org_id: int
     name: str
-    description: str
+    description: Optional[str] = None
     public: bool
     created_at: datetime
     updated_at: datetime

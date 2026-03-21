@@ -96,6 +96,42 @@ class MetricsResource(BaseResource):
         """Publish raw metrics (super user only)."""
         return self._make_request("POST", "/metrics/raw", json=payload)
 
+    def get_resource_flow_metrics(
+        self,
+        resource_type: str,
+        resource_id: int,
+        metric_type: str = None,
+    ) -> Dict[str, Any]:
+        """
+        Get flow metrics for a specific resource.
+
+        Args:
+            resource_type: Type of resource (e.g., data_source, data_set, data_sink)
+            resource_id: Resource ID
+            metric_type: Specific metric type to retrieve (optional)
+
+        Returns:
+            Flow metrics for the resource
+        """
+        if metric_type:
+            path = f"/{resource_type}s/{resource_id}/flow/{metric_type}"
+        else:
+            path = f"/{resource_type}s/{resource_id}/flow"
+        return self._make_request("GET", path)
+
+    def get_flow_metrics_summary(self, period: str) -> Dict[str, Any]:
+        """
+        Get flow metrics summary for a given period.
+
+        Args:
+            period: Time period for the summary (e.g., 'daily', 'total')
+
+        Returns:
+            Flow metrics summary
+        """
+        path = f"/data_flows/metrics/{period}"
+        return self._make_request("GET", path)
+
     # Convenience wrappers for flow-level logs/metrics
     def get_flow_metrics(
         self,
