@@ -65,7 +65,7 @@ class ApprovalRequestsResource(BaseResource):
     def reject(self, request_id: int, reason: str = "") -> ApprovalRequest:
         path = f"{self._path}/{request_id}/reject"
         body = {"reason": reason} if reason else {}
-        response = self._make_request("PUT", path, json=body)
+        response = self._make_request("DELETE", path, json=body)
         return self._parse_response(response)
 
     def cancel(self, request_id: int) -> ApprovalRequest:
