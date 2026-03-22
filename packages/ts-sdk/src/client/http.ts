@@ -18,7 +18,7 @@ export const createFetchWithRetry = (baseFetch: typeof fetch, options: RetryOpti
 
     let attempt = 0;
     while (true) {
-      const request = attempt === 0 ? original : original.clone();
+      const request = original.clone();
       try {
         const response = await baseFetch(request);
         if (shouldRetryResponse(response.status, retryOn) && attempt < maxRetries) {
