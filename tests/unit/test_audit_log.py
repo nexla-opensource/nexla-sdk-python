@@ -72,6 +72,133 @@ class TestGetAuditLog:
         assert result[0]["event"] == "create"
         assert result[0]["item_type"] == "DataSource"
 
+    def test_get_audit_log_with_date_filters(self, mock_client, mock_http_client):
+        """Test get_audit_log passes from_date and to_date as query params."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="create"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(
+            resource_id, from_date="2024-01-01", to_date="2024-01-31"
+        )
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {"from": "2024-01-01", "to": "2024-01-31"}
+
+    def test_get_audit_log_with_event_filter(self, mock_client, mock_http_client):
+        """Test get_audit_log passes event_filter as query param."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="create"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(resource_id, event_filter="create")
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {"event_filter": "create"}
+
+    def test_get_audit_log_with_change_filter(self, mock_client, mock_http_client):
+        """Test get_audit_log passes change_filter as query param."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="update"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(resource_id, change_filter="attribute")
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {"change_filter": "attribute"}
+
+    def test_get_audit_log_with_pagination(self, mock_client, mock_http_client):
+        """Test get_audit_log passes page and per_page as query params."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="create"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(resource_id, page=2, per_page=25)
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {"page": 2, "per_page": 25}
+
+    def test_get_audit_log_with_all_params(self, mock_client, mock_http_client):
+        """Test get_audit_log passes all optional params as query params."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="update"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(
+            resource_id,
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            event_filter="create",
+            change_filter="attribute",
+            page=2,
+            per_page=25,
+        )
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+            "event_filter": "create",
+            "change_filter": "attribute",
+            "page": 2,
+            "per_page": 25,
+        }
+
+    def test_get_audit_log_with_no_optional_params(
+        self, mock_client, mock_http_client
+    ):
+        """Test get_audit_log sends no query params when none are provided."""
+        # Arrange
+        resource_id = 123
+        audit_entries = [
+            MockResponseBuilder.audit_log_entry(event="create"),
+        ]
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/audit_log", audit_entries
+        )
+
+        # Act
+        mock_client.sources.get_audit_log(resource_id)
+
+        # Assert
+        params = mock_http_client.get_last_request()["params"]
+        assert params == {}
+
 
 @pytest.mark.unit
 class TestAuditLogEntryFields:

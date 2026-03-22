@@ -1,5 +1,6 @@
 """Unit tests for the Organizations resource."""
 
+from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.organizations.requests import (
     OrganizationCreate,
     OrgMemberActivateDeactivateRequest,
@@ -272,3 +273,117 @@ class TestOrganizationsResource:
         assert last_request["method"] == "GET"
         assert f"/orgs/{org_id}/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
+
+    def test_get_org_flow_account_metrics_basic(self, mock_client):
+        """Test getting org flow account metrics with basic params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/account_metrics", {"data": []}
+        )
+
+        # Act
+        result = mock_client.organizations.get_org_flow_account_metrics(
+            org_id=org_id, from_date="2024-01-01"
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/flows/account_metrics" in last_request["url"]
+        assert last_request["params"] == {"from": "2024-01-01"}
+
+    def test_get_org_flow_account_metrics_with_aggregate(self, mock_client):
+        """Test getting org flow account metrics with all params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/account_metrics", {"data": []}
+        )
+
+        # Act
+        result = mock_client.organizations.get_org_flow_account_metrics(
+            org_id=org_id,
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            aggregate="daily",
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+            "aggregate": "daily",
+        }
+
+    def test_get_audit_log_with_explicit_params(self, mock_client):
+        """Test getting audit log with all explicit parameters."""
+        # Arrange
+        org_id = 123
+        mock_log = [
+            MockResponseBuilder.audit_log_entry(),
+            MockResponseBuilder.audit_log_entry(),
+        ]
+        mock_client.http_client.add_response(f"/orgs/{org_id}/audit_log", mock_log)
+
+        # Act
+        audit_log = mock_client.organizations.get_audit_log(
+            org_id=org_id,
+            from_date="2024-01-01",
+            to_date="2024-12-31",
+            event_filter="create",
+            change_filter="attribute",
+            page=1,
+            per_page=50,
+        )
+
+        # Assert
+        assert len(audit_log) == 2
+        assert all(isinstance(entry, LogEntry) for entry in audit_log)
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-12-31",
+            "event_filter": "create",
+            "change_filter": "attribute",
+            "page": 1,
+            "per_page": 50,
+        }
+
+    def test_get_flow_status_metrics_basic(self, mock_client):
+        """Test getting flow status metrics with basic params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"data": []}
+        )
+
+        # Act
+        result = mock_client.organizations.get_flow_status_metrics(org_id=org_id)
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/flows/status_metrics" in last_request["url"]
+
+    def test_get_flow_status_metrics_with_params(self, mock_client):
+        """Test getting flow status metrics with all params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"data": []}
+        )
+
+        # Act
+        result = mock_client.organizations.get_flow_status_metrics(
+            org_id=org_id, from_date="2024-01-01", page=2, per_page=25
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "page": 2,
+            "per_page": 25,
+        }

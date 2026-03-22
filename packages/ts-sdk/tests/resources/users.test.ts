@@ -200,4 +200,73 @@ describe("UsersResource", () => {
       expect(calls[1]?.url).toContain("/users/123");
     });
   });
+
+  describe("audit log operations", () => {
+    it("fetches audit log for a user", async () => {
+      const auditLog = [
+        { id: 1, event: "LOGIN", created_at: "2026-01-01T00:00:00Z" },
+        { id: 2, event: "UPDATE", created_at: "2026-01-02T00:00:00Z" },
+      ];
+      const { fetchFn, calls } = createMockFetch([
+        { status: 200, body: { access_token: "token", expires_in: 7200 } },
+        { status: 200, body: auditLog },
+      ]);
+
+      const client = new NexlaClient({
+        serviceKey: "test-key",
+        baseUrl: "https://test.nexla.io/nexla-api",
+        fetch: fetchFn,
+      });
+
+      const result = await client.users.get_audit_log({
+        params: { path: { user_id: 123 } },
+      });
+
+      expect(result).toEqual(auditLog);
+      expect(calls[1]?.url).toContain("/users/123/audit_log");
+      expect(calls[1]?.method).toBe("GET");
+    });
+
+    it("passes query parameters for audit log", async () => {
+      const auditLog = [{ id: 1, event: "LOGIN" }];
+      const { fetchFn, calls } = createMockFetch([
+        { status: 200, body: { access_token: "token", expires_in: 7200 } },
+        { status: 200, body: auditLog },
+      ]);
+
+      const client = new NexlaClient({
+        serviceKey: "test-key",
+        baseUrl: "https://test.nexla.io/nexla-api",
+        fetch: fetchFn,
+      });
+
+      await client.users.get_audit_log({
+        params: { path: { user_id: 123 }, query: { page: 3, per_page: 25 } },
+      });
+
+      const requestUrl = calls[1]?.url ?? "";
+      expect(requestUrl).toContain("/users/123/audit_log");
+      expect(requestUrl).toContain("page=3");
+      expect(requestUrl).toContain("per_page=25");
+    });
+
+    it("handles empty audit log", async () => {
+      const { fetchFn } = createMockFetch([
+        { status: 200, body: { access_token: "token", expires_in: 7200 } },
+        { status: 200, body: [] },
+      ]);
+
+      const client = new NexlaClient({
+        serviceKey: "test-key",
+        baseUrl: "https://test.nexla.io/nexla-api",
+        fetch: fetchFn,
+      });
+
+      const result = await client.users.get_audit_log({
+        params: { path: { user_id: 123 } },
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
 });

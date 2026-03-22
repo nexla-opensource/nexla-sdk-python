@@ -234,3 +234,112 @@ class TestUsersUnitTests:
 
         assert len(user.org_memberships) == 2
         assert user.org_memberships[0].api_key is not None
+
+    def test_get_audit_log_basic(self, mock_client):
+        """Test getting audit log with basic params."""
+        client = mock_client
+        client.http_client.add_response(
+            "/users/123/audit_log", [{"id": 1, "event": "login"}]
+        )
+
+        result = client.users.get_audit_log(user_id=123)
+
+        assert isinstance(result, list)
+        assert len(result) == 1
+        client.http_client.assert_request_made("GET", "/users/123/audit_log")
+
+    def test_get_audit_log_with_all_params(self, mock_client):
+        """Test getting audit log with all parameters."""
+        client = mock_client
+        client.http_client.add_response(
+            "/users/123/audit_log", [{"id": 1, "event": "update"}]
+        )
+
+        result = client.users.get_audit_log(
+            user_id=123,
+            from_date="2024-01-01",
+            to_date="2024-12-31",
+            event_filter="update",
+            change_filter="attribute",
+            page=1,
+            per_page=50,
+        )
+
+        assert isinstance(result, list)
+        client.http_client.assert_request_made(
+            "GET",
+            "/users/123/audit_log",
+            params={
+                "from": "2024-01-01",
+                "to": "2024-12-31",
+                "event_filter": "update",
+                "change_filter": "attribute",
+                "page": 1,
+                "per_page": 50,
+            },
+        )
+
+    def test_get_audit_log_non_list_response(self, mock_client):
+        """Test audit log returns empty list when response is not a list."""
+        client = mock_client
+        client.http_client.add_response("/users/123/audit_log", {})
+
+        result = client.users.get_audit_log(user_id=123)
+
+        assert result == []
+
+    def test_get_account_metrics_with_aggregate(self, mock_client):
+        """Test getting account metrics with all params."""
+        client = mock_client
+        client.http_client.add_response(
+            "/users/123/flows/account_metrics", {"data": []}
+        )
+
+        result = client.users.get_account_metrics(
+            user_id=123,
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            org_id=5,
+            aggregate="daily",
+        )
+
+        client.http_client.assert_request_made(
+            "GET",
+            "/users/123/flows/account_metrics",
+            params={
+                "from": "2024-01-01",
+                "to": "2024-01-31",
+                "org_id": 5,
+                "aggregate": "daily",
+            },
+        )
+
+    def test_get_flow_status_metrics_basic(self, mock_client):
+        """Test getting flow status metrics with basic params."""
+        client = mock_client
+        client.http_client.add_response(
+            "/users/123/flows/status_metrics", {"data": []}
+        )
+
+        result = client.users.get_flow_status_metrics(user_id=123)
+
+        client.http_client.assert_request_made(
+            "GET", "/users/123/flows/status_metrics"
+        )
+
+    def test_get_flow_status_metrics_with_params(self, mock_client):
+        """Test getting flow status metrics with all params."""
+        client = mock_client
+        client.http_client.add_response(
+            "/users/123/flows/status_metrics", {"data": []}
+        )
+
+        result = client.users.get_flow_status_metrics(
+            user_id=123, from_date="2024-01-01", page=2, per_page=25
+        )
+
+        client.http_client.assert_request_made(
+            "GET",
+            "/users/123/flows/status_metrics",
+            params={"from": "2024-01-01", "page": 2, "per_page": 25},
+        )
