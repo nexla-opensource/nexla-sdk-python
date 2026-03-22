@@ -70,4 +70,9 @@ export class OrganizationsResource {
   async update_org_members(init?: OperationInit<"update_org_members">): Promise<OperationData<"update_org_members">> {
     return this.client.requestOperation("update_org_members", "put", "/orgs/{org_id}/members", init);
   }
+
+  /** Get Audit Log for an Organization */
+  async get_audit_log(init?: OperationInit<"get_org_audit_log">): Promise<OperationData<"get_org_audit_log">> {
+    return this.client.requestOperation("get_org_audit_log", "get", "/orgs/{org_id}/audit_log", init);
+  }
 }

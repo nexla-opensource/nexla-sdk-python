@@ -54,4 +54,9 @@ export class UsersResource {
   async update_user(init?: OperationInit<"update_user">): Promise<OperationData<"update_user">> {
     return this.client.requestOperation("update_user", "put", "/users/{user_id}", init);
   }
+
+  /** Get Audit Log for a User */
+  async get_audit_log(init?: OperationInit<"get_user_audit_log">): Promise<OperationData<"get_user_audit_log">> {
+    return this.client.requestOperation("get_user_audit_log", "get", "/users/{user_id}/audit_log", init);
+  }
 }
