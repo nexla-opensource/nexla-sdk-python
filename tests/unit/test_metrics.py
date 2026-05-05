@@ -98,7 +98,7 @@ class TestMetricsResource:
     def test_resource_flow_metrics_rejects_singular_resource_type(
         self, client, mock_http_client
     ):
-        with pytest.raises(ValueError, match="'data_set' is not a valid ResourceType"):
+        with pytest.raises(ValueError, match="Invalid resource_type 'data_set'"):
             client.metrics.get_resource_flow_metrics("data_set", 43)
 
         assert mock_http_client.requests == []

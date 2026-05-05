@@ -1,5 +1,6 @@
 """Unit tests for flows resource."""
 
+from datetime import datetime, timezone
 from unittest.mock import patch
 
 import pytest
@@ -51,9 +52,15 @@ class TestFlowsModels:
         assert len(response.logs) == 3
         assert response.meta.total_count == 3
         assert response.meta.page_count == 1
+        assert response.meta.org_id == response_data["logs"]["meta"]["org_id"]
+        assert response.meta.run_id == response_data["logs"]["meta"]["run_id"]
         assert response.logs[0].log == response_data["logs"]["data"][0]["log"]
         assert response.logs[0].message == response.logs[0].log
         assert response.logs[0].level == response.logs[0].severity
+        raw_timestamp = response_data["logs"]["data"][0]["timestamp"]
+        assert response.logs[0].timestamp == datetime.fromtimestamp(
+            raw_timestamp / 1000, tz=timezone.utc
+        )
 
     def test_flow_metrics_api_response_model(self):
         """Test FlowMetricsApiResponse model."""
@@ -410,6 +417,15 @@ class TestFlowsUnit:
         last_request = mock_http_client.get_last_request()
         assert "/flows/599305/run_status/123" in last_request["url"]
 
+    def test_get_run_status_rejects_deprecated_resource_signature(
+        self, mock_client, mock_http_client
+    ):
+        """Test run status fails clearly for the old resource-based signature."""
+        with pytest.raises(DeprecationWarning, match="get_run_status\\(resource_type"):
+            mock_client.flows.get_run_status("data_sources", 5023, 123)
+
+        assert mock_http_client.requests == []
+
     def test_flow_logs_and_metrics_accept_resource_type_enum(
         self, mock_client, mock_http_client
     ):
@@ -446,6 +462,42 @@ class TestFlowsUnit:
         assert isinstance(metrics, FlowMetricsApiResponse)
         last_request = mock_http_client.get_last_request()
         assert "/data_sinks/5029/flow/metrics" in last_request["url"]
+
+    @pytest.mark.parametrize(
+        "call",
+        [
+            pytest.param(
+                lambda flows: flows.get_by_resource("data_source", 1),
+                id="get_by_resource",
+            ),
+            pytest.param(
+                lambda flows: flows.activate_by_resource("data_source", 1),
+                id="activate_by_resource",
+            ),
+            pytest.param(
+                lambda flows: flows.pause_by_resource("data_source", 1),
+                id="pause_by_resource",
+            ),
+            pytest.param(
+                lambda flows: flows.get_logs("data_source", 1, run_id=1, from_ts=0),
+                id="get_logs",
+            ),
+            pytest.param(
+                lambda flows: flows.get_metrics(
+                    "data_source", 1, from_date="2024-01-01"
+                ),
+                id="get_metrics",
+            ),
+        ],
+    )
+    def test_flow_resource_helpers_reject_invalid_resource_type(
+        self, mock_client, mock_http_client, call
+    ):
+        """Test flow resource helpers reject singular resource type strings."""
+        with pytest.raises(ValueError, match="Invalid resource_type 'data_source'"):
+            call(mock_client.flows)
+
+        assert mock_http_client.requests == []
 
     def test_flow_with_metrics(self, mock_client, mock_http_client, mock_factory):
         """Test flow response with metrics."""

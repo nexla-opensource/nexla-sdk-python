@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
 from nexla_sdk.exceptions import NexlaError
@@ -6,6 +7,7 @@ from nexla_sdk.models.access import (
     AccessorResponse,
     AccessorResponseList,
 )
+from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.utils.pagination import Paginator
 
 T = TypeVar("T")
@@ -24,6 +26,21 @@ class BaseResource:
         self.client = client
         self._path = ""  # Override in subclasses
         self._model_class = None  # Override in subclasses
+
+    @staticmethod
+    def _resolve_enum_value(enum_cls: Type[Enum], value: Any, param_name: str) -> str:
+        """Resolve an enum member or exact enum value string to the API value."""
+        try:
+            return enum_cls(value).value
+        except ValueError:
+            valid = ", ".join(repr(member.value) for member in enum_cls)
+            raise ValueError(
+                f"Invalid {param_name} {value!r}. Must be one of: {valid}"
+            ) from None
+
+    def _resolve_resource_type(self, resource_type: Union[ResourceType, str]) -> str:
+        """Resolve a ResourceType or exact resource type string to the API path value."""
+        return self._resolve_enum_value(ResourceType, resource_type, "resource_type")
 
     def _make_request(
         self,

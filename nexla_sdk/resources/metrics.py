@@ -38,7 +38,7 @@ class MetricsResource(BaseResource):
         Returns:
             Daily metrics
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/metrics"
         params = {"from": from_date, "aggregate": 1}
         if to_date:
@@ -71,7 +71,7 @@ class MetricsResource(BaseResource):
         Returns:
             Metrics by run
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/metrics/run_summary"
         params = {}
         if groupby:
@@ -114,7 +114,7 @@ class MetricsResource(BaseResource):
         Returns:
             Flow metrics for the resource
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         if metric_type:
             path = f"/{resource_type_value}/{resource_id}/flow/{metric_type}"
         else:
@@ -163,7 +163,7 @@ class MetricsResource(BaseResource):
         Returns:
             Flow metrics for the resource
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:
@@ -204,7 +204,7 @@ class MetricsResource(BaseResource):
         Returns:
             Flow logs for the resource run
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {"run_id": run_id, "from": from_ts}
         if to_ts is not None:

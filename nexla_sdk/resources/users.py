@@ -358,7 +358,9 @@ class UsersResource(BaseResource):
         Returns:
             Daily metrics data
         """
-        resource_type_value = UserMetricResourceType(resource_type).value
+        resource_type_value = self._resolve_enum_value(
+            UserMetricResourceType, resource_type, "resource_type"
+        )
         path = f"{self._path}/{user_id}/metrics"
         params = {
             "resource_type": resource_type_value,

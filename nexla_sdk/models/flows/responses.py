@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from pydantic import AliasChoices, Field, model_validator
+from pydantic import AliasChoices, Field, field_validator, model_validator
 
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import FlowNode
@@ -36,6 +36,14 @@ class FlowLogEntry(BaseModel):
     run_id: Optional[int] = None
     details: Optional[Dict[str, Any]] = None
 
+    @field_validator("timestamp", mode="before")
+    @classmethod
+    def coerce_ms_timestamp(cls, value):
+        """Convert live API millisecond timestamps to datetimes explicitly."""
+        if isinstance(value, (int, float)) and abs(value) > 1e10:
+            return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
+        return value
+
     @model_validator(mode="before")
     @classmethod
     def normalize_live_log_fields(cls, data):
@@ -52,7 +60,7 @@ class FlowLogEntry(BaseModel):
 
 
 class FlowLogsMeta(BaseModel):
-    """Metadata for flow logs pagination."""
+    """Metadata for flow logs pagination and live run context."""
 
     current_page: Optional[int] = Field(
         default=None,
@@ -61,7 +69,11 @@ class FlowLogsMeta(BaseModel):
     )
     page_count: Optional[int] = Field(
         default=None,
-        validation_alias=AliasChoices("pageCount", "page_count", "pages_count"),
+        validation_alias=AliasChoices(
+            "pageCount",
+            "page_count",
+            "pages_count",  # live API uses this spelling in logs.meta
+        ),
         serialization_alias="pageCount",
     )
     total_count: Optional[int] = Field(
@@ -69,8 +81,8 @@ class FlowLogsMeta(BaseModel):
         validation_alias=AliasChoices("totalCount", "total_count"),
         serialization_alias="totalCount",
     )
-    org_id: Optional[int] = None
-    run_id: Optional[int] = None
+    org_id: Optional[int] = None  # present in live API logs.meta
+    run_id: Optional[int] = None  # present in live API logs.meta
 
 
 class FlowLogsResponse(BaseModel):
@@ -98,7 +110,7 @@ class FlowLogsResponse(BaseModel):
         logs = data["logs"]
         normalized = data.copy()
         normalized["logs"] = logs.get("data") or []
-        if normalized.get("meta") is None:
+        if normalized.get("meta") is None:  # outer meta wins if already set
             normalized["meta"] = logs.get("meta")
         return normalized
 

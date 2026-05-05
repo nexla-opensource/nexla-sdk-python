@@ -101,7 +101,7 @@ class FlowsResource(BaseResource):
         Returns:
             Flow response
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow"
         params = {"flows_only": 1} if flows_only else {}
 
@@ -299,7 +299,7 @@ class FlowsResource(BaseResource):
         Returns:
             Response status
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow"
         return self._make_request("DELETE", path)
 
@@ -322,7 +322,7 @@ class FlowsResource(BaseResource):
         Returns:
             Activated flow
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/activate"
         params = {}
         if all:
@@ -352,7 +352,7 @@ class FlowsResource(BaseResource):
         Returns:
             Paused flow
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/pause"
         params = {}
         if all:
@@ -484,7 +484,13 @@ class FlowsResource(BaseResource):
             params["org_id"] = org_id
         return self._make_request("GET", path, params=params)
 
-    def get_run_status(self, flow_id: int, run_id: int) -> Dict[str, Any]:
+    def get_run_status(
+        self,
+        flow_id: Optional[int] = None,
+        run_id: Optional[int] = None,
+        *deprecated_args: Any,
+        **deprecated_kwargs: Any,
+    ) -> Dict[str, Any]:
         """
         Get status of a specific flow run.
 
@@ -495,6 +501,19 @@ class FlowsResource(BaseResource):
         Returns:
             Run status information
         """
+        if (
+            deprecated_args
+            or deprecated_kwargs
+            or isinstance(flow_id, (ResourceType, str))
+        ):
+            raise DeprecationWarning(
+                "get_run_status(resource_type, resource_id, run_id) is no longer "
+                "supported. Use get_run_status(flow_id, run_id), which calls "
+                "/flows/{flow_id}/run_status/{run_id}."
+            )
+        if flow_id is None or run_id is None:
+            raise TypeError("get_run_status() requires flow_id and run_id")
+
         path = f"{self._path}/{flow_id}/run_status/{run_id}"
         return self._make_request("GET", path)
 
@@ -524,7 +543,7 @@ class FlowsResource(BaseResource):
             FlowLogsResponse with log entries and pagination metadata,
             or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {
             "run_id": run_id,
@@ -570,7 +589,7 @@ class FlowsResource(BaseResource):
             FlowMetricsApiResponse with metrics data and pagination,
             or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = ResourceType(resource_type).value
+        resource_type_value = self._resolve_resource_type(resource_type)
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:

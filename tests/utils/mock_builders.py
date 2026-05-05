@@ -521,6 +521,8 @@ class MockResponseBuilder:
             "logs": {
                 "data": logs,
                 "meta": {
+                    "org_id": fake.random_int(1, 10000),
+                    "run_id": fake.random_int(1, 10000),
                     "current_page": 1,
                     "pages_count": 1,
                     "total_count": log_count,
