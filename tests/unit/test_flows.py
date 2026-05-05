@@ -54,12 +54,29 @@ class TestFlowsModels:
         assert response.meta.page_count == 1
         assert response.meta.org_id == response_data["logs"]["meta"]["org_id"]
         assert response.meta.run_id == response_data["logs"]["meta"]["run_id"]
-        assert response.logs[0].log == response_data["logs"]["data"][0]["log"]
-        assert response.logs[0].message == response.logs[0].log
-        assert response.logs[0].level == response.logs[0].severity
+        assert response.logs[0].message == response_data["logs"]["data"][0]["log"]
+        assert response.logs[0].level == response_data["logs"]["data"][0]["severity"]
+        assert response.logs[0].run_id == response_data["logs"]["data"][0]["run_id"]
+        assert response.logs[0].details == response_data["logs"]["data"][0]["details"]
         raw_timestamp = response_data["logs"]["data"][0]["timestamp"]
         assert response.logs[0].timestamp == datetime.fromtimestamp(
             raw_timestamp / 1000, tz=timezone.utc
+        )
+
+    def test_flow_logs_response_model_accepts_seconds_timestamp(self):
+        """Test normal Unix-second timestamps are parsed as seconds."""
+        response_data = MockResponseBuilder.flow_logs_response(
+            log_count=1,
+            logs={
+                "data": [MockResponseBuilder.live_flow_log_entry(timestamp=1700000000)],
+                "meta": {"current_page": 1, "pages_count": 1, "total_count": 1},
+            },
+        )
+
+        response = FlowLogsResponse.model_validate(response_data)
+
+        assert response.logs[0].timestamp == datetime.fromtimestamp(
+            1700000000, tz=timezone.utc
         )
 
     def test_flow_metrics_api_response_model(self):
@@ -421,8 +438,15 @@ class TestFlowsUnit:
         self, mock_client, mock_http_client
     ):
         """Test run status fails clearly for the old resource-based signature."""
-        with pytest.raises(DeprecationWarning, match="get_run_status\\(resource_type"):
+        with pytest.raises(TypeError, match="positional argument"):
             mock_client.flows.get_run_status("data_sources", 5023, 123)
+
+        assert mock_http_client.requests == []
+
+    def test_get_run_status_rejects_string_flow_id(self, mock_client, mock_http_client):
+        """Test string flow IDs fail with a type-specific error."""
+        with pytest.raises(TypeError, match="requires integer flow_id and run_id"):
+            mock_client.flows.get_run_status("599305", 123)
 
         assert mock_http_client.requests == []
 
@@ -439,7 +463,7 @@ class TestFlowsUnit:
             ResourceType.DATA_SETS,
             5061,
             run_id=100,
-            from_ts=1704067200,
+            from_ts=1704067200000,
         )
 
         assert isinstance(logs, FlowLogsResponse)
@@ -615,7 +639,7 @@ class TestFlowsUnit:
         resource_type = "data_sources"
         resource_id = 5023
         run_id = 12345
-        from_ts = 1704067200
+        from_ts = 1704067200000
         mock_response = MockResponseBuilder.flow_logs_response(log_count=3)
         mock_http_client.add_response(
             f"/{resource_type}/{resource_id}/flow/logs", mock_response
@@ -654,7 +678,7 @@ class TestFlowsUnit:
             resource_type="data_sets",
             resource_id=5061,
             run_id=100,
-            from_ts=1704067200,
+            from_ts=1704067200000,
             page=2,
             per_page=25,
         )
@@ -663,6 +687,35 @@ class TestFlowsUnit:
         last_request = mock_http_client.get_last_request()
         assert last_request["params"]["page"] == 2
         assert last_request["params"]["per_page"] == 25
+
+    def test_get_logs_warns_for_seconds_timestamp(self, mock_client, mock_http_client):
+        """Test get_logs warns when timestamps look like seconds."""
+        mock_response = MockResponseBuilder.flow_logs_response()
+        mock_http_client.add_response("/data_sources/5023/flow/logs", mock_response)
+
+        with pytest.warns(RuntimeWarning, match="from_ts looks like seconds"):
+            mock_client.flows.get_logs(
+                resource_type="data_sources",
+                resource_id=5023,
+                run_id=12345,
+                from_ts=1700000000,
+            )
+
+    def test_get_logs_warns_for_seconds_to_timestamp(
+        self, mock_client, mock_http_client
+    ):
+        """Test get_logs warns when to_ts looks like seconds."""
+        mock_response = MockResponseBuilder.flow_logs_response()
+        mock_http_client.add_response("/data_sources/5023/flow/logs", mock_response)
+
+        with pytest.warns(RuntimeWarning, match="to_ts looks like seconds"):
+            mock_client.flows.get_logs(
+                resource_type="data_sources",
+                resource_id=5023,
+                run_id=12345,
+                from_ts=1700000000000,
+                to_ts=1700003600,
+            )
 
     def test_get_logs_all_parameters(self, mock_client, mock_http_client):
         """Test get_logs with all parameters."""
@@ -675,8 +728,8 @@ class TestFlowsUnit:
             resource_type="data_sinks",
             resource_id=5029,
             run_id=456,
-            from_ts=1704067200,
-            to_ts=1704153600,
+            from_ts=1704067200000,
+            to_ts=1704153600000,
             page=1,
             per_page=50,
         )
@@ -684,8 +737,8 @@ class TestFlowsUnit:
         # Assert
         last_request = mock_http_client.get_last_request()
         assert last_request["params"]["run_id"] == 456
-        assert last_request["params"]["from"] == 1704067200
-        assert last_request["params"]["to"] == 1704153600
+        assert last_request["params"]["from"] == 1704067200000
+        assert last_request["params"]["to"] == 1704153600000
         assert last_request["params"]["page"] == 1
         assert last_request["params"]["per_page"] == 50
 

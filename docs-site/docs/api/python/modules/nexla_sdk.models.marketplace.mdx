@@ -16,12 +16,12 @@ Reference to a user for custodians payload (by id or email).
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 
 ### CustodiansPayload
 
-Defined in `nexla_sdk/models/marketplace/requests.py:12`
+Defined in `nexla_sdk/models/marketplace/requests.py:13`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -35,11 +35,11 @@ Features:
 
 Fields:
 
-- `custodians`: `typing.List[nexla_sdk.models.marketplace.requests.CustodianRef]`
+- `custodians`: `List`
 
 ### MarketplaceDomain
 
-Defined in `nexla_sdk/models/marketplace/responses.py:8`
+Defined in `nexla_sdk/models/marketplace/responses.py:7`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -55,15 +55,15 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `slug`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `org_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `slug`: `Optional`
+- `description`: `Optional`
+- `org_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### MarketplaceDomainCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:16`
+Defined in `nexla_sdk/models/marketplace/requests.py:17`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -77,16 +77,16 @@ Features:
 
 Fields:
 
-- `org_id`: `typing.Optional[int]`
-- `owner_id`: `typing.Optional[int]`
+- `org_id`: `Optional`
+- `owner_id`: `Optional`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `parent_id`: `typing.Optional[int]`
-- `custodians`: `typing.Optional[nexla_sdk.models.marketplace.requests.CustodiansPayload]`
+- `description`: `Optional`
+- `parent_id`: `Optional`
+- `custodians`: `Optional`
 
 ### MarketplaceDomainsItem
 
-Defined in `nexla_sdk/models/marketplace/responses.py:18`
+Defined in `nexla_sdk/models/marketplace/responses.py:17`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -101,15 +101,15 @@ Features:
 Fields:
 
 - `id`: `int`
-- `domain_id`: `typing.Optional[int]`
-- `resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `domain_id`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### MarketplaceDomainsItemCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:25`
+Defined in `nexla_sdk/models/marketplace/requests.py:26`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -124,6 +124,6 @@ Features:
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
+- `description`: `Optional`
 - `data_set_id`: `int`
 

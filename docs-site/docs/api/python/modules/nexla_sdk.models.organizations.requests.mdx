@@ -10,17 +10,17 @@ keywords: [Nexla, SDK, Python, API]
 
 ### OrgMemberActivateDeactivateRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:70`
+Defined in `nexla_sdk/models/organizations/requests.py:79`
 
 Request model for activating/deactivating org members.
 
 Fields:
 
-- `members`: `typing.List[typing.Dict[str, typing.Any]]`
+- `members`: `List`
 
 ### OrgMemberCreateRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:11`
+Defined in `nexla_sdk/models/organizations/requests.py:13`
 
 Request model for creating an org member.
 
@@ -32,53 +32,53 @@ Fields:
 
 ### OrgMemberDelete
 
-Defined in `nexla_sdk/models/organizations/requests.py:65`
+Defined in `nexla_sdk/models/organizations/requests.py:73`
 
 Request model for deleting org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberDeleteRequest]`
+- `members`: `List`
 
 ### OrgMemberDeleteRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:58`
+Defined in `nexla_sdk/models/organizations/requests.py:65`
 
 Request model for deleting a single org member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `delegate_owner_id`: `typing.Optional[int]`
+- `id`: `Optional`
+- `email`: `Optional`
+- `delegate_owner_id`: `Optional`
 
 ### OrgMemberList
 
-Defined in `nexla_sdk/models/organizations/requests.py:53`
+Defined in `nexla_sdk/models/organizations/requests.py:59`
 
 Request model for updating org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberUpdate]`
+- `members`: `List`
 
 ### OrgMemberUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:44`
+Defined in `nexla_sdk/models/organizations/requests.py:49`
 
 Request model for updating org member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
-- `admin`: `typing.Optional[bool]`
-- `access_role`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
+- `full_name`: `Optional`
+- `admin`: `Optional`
+- `access_role`: `Optional`
 
 ### OrgOwnerRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:5`
+Defined in `nexla_sdk/models/organizations/requests.py:6`
 
 Request model for specifying an org owner.
 
@@ -89,7 +89,7 @@ Fields:
 
 ### OrganizationCreate
 
-Defined in `nexla_sdk/models/organizations/requests.py:18`
+Defined in `nexla_sdk/models/organizations/requests.py:21`
 
 Request model for creating an organization.
 
@@ -97,29 +97,29 @@ Fields:
 
 - `name`: `str`
 - `email_domain`: `str`
-- `owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `owner_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `billing_owner_id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `account_tier_id`: `typing.Optional[int]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.organizations.requests.OrgMemberCreateRequest]]`
+- `owner`: `Optional`
+- `owner_id`: `Optional`
+- `description`: `Optional`
+- `billing_owner`: `Optional`
+- `billing_owner_id`: `Optional`
+- `email`: `Optional`
+- `account_tier_id`: `Optional`
+- `members`: `Optional`
 
 ### OrganizationUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:32`
+Defined in `nexla_sdk/models/organizations/requests.py:36`
 
 Request model for updating an organization.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `owner_id`: `typing.Optional[int]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `billing_owner_id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.organizations.requests.OrgMemberCreateRequest]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `owner`: `Optional`
+- `owner_id`: `Optional`
+- `billing_owner`: `Optional`
+- `billing_owner_id`: `Optional`
+- `email`: `Optional`
+- `members`: `Optional`
 

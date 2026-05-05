@@ -18,15 +18,15 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### RuntimeCreate
 
@@ -37,24 +37,24 @@ Create payload for Custom Runtime matching OpenAPI RuntimePayload.
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
 
 ### RuntimeUpdate
 
-Defined in `nexla_sdk/models/runtimes/requests.py:16`
+Defined in `nexla_sdk/models/runtimes/requests.py:17`
 
 Update payload for Custom Runtime matching OpenAPI RuntimePayload.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
 

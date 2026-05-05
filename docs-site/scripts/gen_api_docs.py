@@ -117,8 +117,30 @@ def format_signature(obj) -> str:
 
 
 def mdx_text(text: str) -> str:
-    """Escape generated prose so Python examples are treated as MDX text."""
-    return text.replace("{", "\\{").replace("}", "\\}")
+    """Escape generated prose so Python examples are treated as MDX text.
+
+    This intentionally includes indented docstring examples: Docusaurus MDX parses
+    braces in generated indented Python examples before Markdown code-block
+    handling, so raw dict literals like {"id": 1} can break the docs build.
+    """
+    lines: List[str] = []
+    in_fence = False
+
+    for line in text.splitlines():
+        if line.strip().startswith("```"):
+            in_fence = not in_fence
+            lines.append(line)
+            continue
+        if in_fence:
+            lines.append(line)
+            continue
+
+        parts = line.split("`")
+        for index in range(0, len(parts), 2):
+            parts[index] = parts[index].replace("{", "\\{").replace("}", "\\}")
+        lines.append("`".join(parts))
+
+    return "\n".join(lines)
 
 
 def write_module_page(

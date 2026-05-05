@@ -10,54 +10,54 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataSinkSimplified
 
-Defined in `nexla_sdk/models/nexsets/responses.py:10`
+Defined in `nexla_sdk/models/nexsets/responses.py:12`
 
 Simplified data sink information.
 
 Fields:
 
 - `id`: `int`
-- `owner_id`: `int`
-- `org_id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 - `name`: `str`
-- `status`: `typing.Optional[str]`
-- `sink_type`: `typing.Optional[nexla_sdk.models.destinations.enums.DestinationType]`
+- `status`: `Optional`
+- `sink_type`: `Optional`
 
 ### Nexset
 
-Defined in `nexla_sdk/models/nexsets/responses.py:20`
+Defined in `nexla_sdk/models/nexsets/responses.py:23`
 
 Nexset (data set) response model.
 
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `flow_type`: `typing.Optional[str]`
-- `data_source_id`: `typing.Optional[int]`
-- `data_source`: `typing.Optional[nexla_sdk.models.sources.responses.Source]`
-- `parent_data_sets`: `typing.List[nexla_sdk.models.sources.responses.DataSetBrief]`
-- `data_sinks`: `typing.List[nexla_sdk.models.nexsets.responses.DataSinkSimplified]`
-- `transform_id`: `typing.Optional[int]`
-- `output_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `flow_type`: `Optional`
+- `data_source_id`: `Optional`
+- `data_source`: `Optional`
+- `parent_data_sets`: `List`
+- `data_sinks`: `List`
+- `transform_id`: `Optional`
+- `output_schema`: `Optional`
+- `copied_from_id`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### NexsetSample
 
-Defined in `nexla_sdk/models/nexsets/responses.py:43`
+Defined in `nexla_sdk/models/nexsets/responses.py:47`
 
 Nexset sample record.
 
 Fields:
 
-- `raw_message`: `typing.Dict[str, typing.Any]`
-- `nexla_metadata`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `raw_message`: `Dict`
+- `nexla_metadata`: `Optional`
 

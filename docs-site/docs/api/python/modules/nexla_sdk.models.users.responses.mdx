@@ -10,20 +10,20 @@ keywords: [Nexla, SDK, Python, API]
 
 ### AccountSummary
 
-Defined in `nexla_sdk/models/users/responses.py:42`
+Defined in `nexla_sdk/models/users/responses.py:47`
 
 User account summary.
 
 Fields:
 
-- `data_sources`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_sets`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_sinks`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_maps`: `typing.Dict[str, typing.Dict[str, int]]`
+- `data_sources`: `Dict`
+- `data_sets`: `Dict`
+- `data_sinks`: `Dict`
+- `data_maps`: `Dict`
 
 ### DefaultOrg
 
-Defined in `nexla_sdk/models/users/responses.py:7`
+Defined in `nexla_sdk/models/users/responses.py:9`
 
 User's default organization.
 
@@ -34,7 +34,7 @@ Fields:
 
 ### OrgMembership
 
-Defined in `nexla_sdk/models/users/responses.py:13`
+Defined in `nexla_sdk/models/users/responses.py:16`
 
 Organization membership details.
 
@@ -42,13 +42,13 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `is_admin`: `typing.Optional[bool]`
+- `is_admin`: `Optional`
 - `org_membership_status`: `str`
-- `api_key`: `typing.Optional[str]`
+- `api_key`: `Optional`
 
 ### User
 
-Defined in `nexla_sdk/models/users/responses.py:22`
+Defined in `nexla_sdk/models/users/responses.py:26`
 
 User response model.
 
@@ -57,22 +57,22 @@ Fields:
 - `id`: `int`
 - `email`: `str`
 - `full_name`: `str`
-- `super_user`: `typing.Optional[bool]`
+- `super_user`: `Optional`
 - `impersonated`: `bool`
 - `default_org`: `DefaultOrg`
-- `user_tier`: `typing.Optional[str]`
+- `user_tier`: `Optional`
 - `status`: `str`
 - `account_locked`: `bool`
-- `org_memberships`: `typing.List[nexla_sdk.models.users.responses.OrgMembership]`
-- `api_key`: `typing.Optional[str]`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `org_memberships`: `List`
+- `api_key`: `Optional`
+- `email_verified_at`: `Optional`
+- `tos_signed_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### UserExpanded
 
-Defined in `nexla_sdk/models/users/responses.py:50`
+Defined in `nexla_sdk/models/users/responses.py:56`
 
 User with expanded account summary.
 
@@ -81,31 +81,31 @@ Fields:
 - `id`: `int`
 - `email`: `str`
 - `full_name`: `str`
-- `super_user`: `typing.Optional[bool]`
+- `super_user`: `Optional`
 - `impersonated`: `bool`
 - `default_org`: `DefaultOrg`
-- `user_tier`: `typing.Optional[str]`
+- `user_tier`: `Optional`
 - `status`: `str`
 - `account_locked`: `bool`
-- `org_memberships`: `typing.List[nexla_sdk.models.users.responses.OrgMembership]`
-- `api_key`: `typing.Optional[str]`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `account_summary`: `typing.Optional[nexla_sdk.models.users.responses.AccountSummary]`
+- `org_memberships`: `List`
+- `api_key`: `Optional`
+- `email_verified_at`: `Optional`
+- `tos_signed_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+- `account_summary`: `Optional`
 
 ### UserSettings
 
-Defined in `nexla_sdk/models/users/responses.py:55`
+Defined in `nexla_sdk/models/users/responses.py:62`
 
 User settings.
 
 Fields:
 
 - `id`: `str`
-- `owner`: `typing.Dict[str, typing.Any]`
-- `org`: `typing.Dict[str, typing.Any]`
+- `owner`: `Dict`
+- `org`: `Dict`
 - `user_settings_type`: `str`
-- `settings`: `typing.Dict[str, typing.Any]`
+- `settings`: `Dict`
 

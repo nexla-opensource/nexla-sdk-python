@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### UserCreate
 
-Defined in `nexla_sdk/models/users/requests.py:6`
+Defined in `nexla_sdk/models/users/requests.py:7`
 
 Request model for creating a user.
 
@@ -18,30 +18,30 @@ Fields:
 
 - `full_name`: `str`
 - `email`: `str`
-- `default_org_id`: `typing.Optional[int]`
-- `status`: `typing.Optional[str]`
-- `user_tier_id`: `typing.Optional[int]`
-- `user_tier`: `typing.Optional[str]`
-- `password`: `typing.Optional[str]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `admin`: `typing.Union[str, bool, typing.List[typing.Dict[str, typing.Any]], NoneType]`
+- `default_org_id`: `Optional`
+- `status`: `Optional`
+- `user_tier_id`: `Optional`
+- `user_tier`: `Optional`
+- `password`: `Optional`
+- `tos_signed_at`: `Optional`
+- `admin`: `Union`
 
 ### UserUpdate
 
-Defined in `nexla_sdk/models/users/requests.py:19`
+Defined in `nexla_sdk/models/users/requests.py:21`
 
 Request model for updating a user.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `user_tier_id`: `typing.Optional[int]`
-- `user_tier`: `typing.Optional[str]`
-- `password`: `typing.Optional[str]`
-- `password_confirmation`: `typing.Optional[str]`
-- `password_current`: `typing.Optional[str]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `admin`: `typing.Union[str, bool, typing.List[typing.Dict[str, typing.Any]], NoneType]`
+- `name`: `Optional`
+- `email`: `Optional`
+- `status`: `Optional`
+- `user_tier_id`: `Optional`
+- `user_tier`: `Optional`
+- `password`: `Optional`
+- `password_confirmation`: `Optional`
+- `password_current`: `Optional`
+- `tos_signed_at`: `Optional`
+- `admin`: `Union`
 

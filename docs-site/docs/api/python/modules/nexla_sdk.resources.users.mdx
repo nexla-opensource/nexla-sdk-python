@@ -10,61 +10,64 @@ keywords: [Nexla, SDK, Python, API]
 
 ### UsersResource
 
-Defined in `nexla_sdk/resources/users.py:8`
+Defined in `nexla_sdk/resources/users.py:9`
 
 Resource for managing users.
 
 Methods:
 
 - `create(self, data: nexla_sdk.models.users.requests.UserCreate) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:62`
+  - Source: `nexla_sdk/resources/users.py:65`
   - Create new user.
 - `create_quarantine_settings(self, user_id: int, data_credentials_id: int, config: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:131`
+  - Source: `nexla_sdk/resources/users.py:134`
   - Create quarantine data export settings.
 - `delete(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:90`
+  - Source: `nexla_sdk/resources/users.py:93`
   - Delete user.
 - `delete_quarantine_settings(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:169`
+  - Source: `nexla_sdk/resources/users.py:168`
   - Delete quarantine data export settings.
 - `get(self, user_id: int, expand: bool = False) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:40`
+  - Source: `nexla_sdk/resources/users.py:43`
   - Get user by ID.
-- `get_account_metrics(self, user_id: int, from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:224`
+- `get_account_metrics(self, user_id: int, from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None, aggregate: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:258`
   - Get total account metrics for user.
-- `get_audit_log(self, user_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:182`
+- `get_audit_log(self, user_id: int, from_date: str = None, to_date: str = None, event_filter: str = None, change_filter: str = None, page: int = None, per_page: int = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:181`
   - Get audit log for a user.
 - `get_current(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:113`
+  - Source: `nexla_sdk/resources/users.py:116`
   - Get info on current user (includes org memberships and current org info).
-- `get_daily_metrics(self, user_id: int, resource_type: nexla_sdk.models.metrics.enums.UserMetricResourceType, from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:270`
+- `get_daily_metrics(self, user_id: int, resource_type: Union[nexla_sdk.models.metrics.enums.UserMetricResourceType, str], from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:339`
   - Get daily data processing metrics for a user.
 - `get_dashboard_metrics(self, user_id: int, access_role: Optional[str] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:250`
+  - Source: `nexla_sdk/resources/users.py:319`
   - Get 24 hour flow stats for user.
+- `get_flow_status_metrics(self, user_id: int, from_date: str = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:290`
+  - Get flow status metrics for a user.
 - `get_quarantine_settings(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:118`
+  - Source: `nexla_sdk/resources/users.py:121`
   - Get quarantine data export settings for user.
 - `get_settings(self) -> List[nexla_sdk.models.users.responses.UserSettings]`
-  - Source: `nexla_sdk/resources/users.py:102`
+  - Source: `nexla_sdk/resources/users.py:105`
   - Get current user's settings.
 - `get_transferable_resources(self, user_id: int, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:190`
+  - Source: `nexla_sdk/resources/users.py:225`
   - Get a list of resources owned by a user that can be transferred.
 - `list(self, expand: bool = False, **kwargs) -> List[nexla_sdk.models.users.responses.User]`
-  - Source: `nexla_sdk/resources/users.py:16`
+  - Source: `nexla_sdk/resources/users.py:17`
   - List users with optional filters.
 - `transfer_resources(self, user_id: int, org_id: int, delegate_owner_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:205`
+  - Source: `nexla_sdk/resources/users.py:240`
   - Transfer a user's resources to another user within an organization.
 - `update(self, user_id: int, data: nexla_sdk.models.users.requests.UserUpdate) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:77`
+  - Source: `nexla_sdk/resources/users.py:80`
   - Update user.
 - `update_quarantine_settings(self, user_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:153`
+  - Source: `nexla_sdk/resources/users.py:152`
   - Update quarantine data export settings.
 

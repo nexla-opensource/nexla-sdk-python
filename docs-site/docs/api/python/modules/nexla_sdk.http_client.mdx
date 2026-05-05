@@ -12,13 +12,13 @@ HTTP client interface and implementations for Nexla SDK
 
 ### HttpClientError
 
-Defined in `nexla_sdk/http_client.py:60`
+Defined in `nexla_sdk/http_client.py:66`
 
 Base exception for HTTP client errors
 
 ### HttpClientInterface
 
-Defined in `nexla_sdk/http_client.py:34`
+Defined in `nexla_sdk/http_client.py:38`
 
 Abstract interface for HTTP clients used by the Nexla SDK.
 This allows for different HTTP client implementations or mocks for testing.
@@ -26,24 +26,18 @@ This allows for different HTTP client implementations or mocks for testing.
 Methods:
 
 - `request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/http_client.py:40`
+  - Source: `nexla_sdk/http_client.py:44`
   - Send an HTTP request
 
 ### RequestsHttpClient
 
-Defined in `nexla_sdk/http_client.py:69`
+Defined in `nexla_sdk/http_client.py:82`
 
 HTTP client implementation using the requests library with retries and timeouts.
 
 Methods:
 
 - `request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/http_client.py:98`
+  - Source: `nexla_sdk/http_client.py:119`
   - Send an HTTP request using a session with sane defaults.
-
-## Functions
-
-### `inject(carrier: Dict[str, str]) -> None`
-
-Source: `nexla_sdk/http_client.py:30`
 

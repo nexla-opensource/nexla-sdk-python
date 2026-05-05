@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### MetricsResource
 
-Defined in `nexla_sdk/resources/metrics.py:10`
+Defined in `nexla_sdk/resources/metrics.py:26`
 
 Resource for retrieving metrics.
 
@@ -20,17 +20,25 @@ so no additional typed overrides are needed.
 
 Methods:
 
-- `get_flow_logs(self, resource_type: str, resource_id: int, run_id: int, from_ts: int, to_ts: int = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/metrics.py:120`
-- `get_flow_metrics(self, resource_type: str, resource_id: int, from_date: str, to_date: str = None, groupby: str = None, orderby: str = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/metrics.py:97`
+- `get_flow_logs(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, run_id: int, from_ts: int, to_ts: int = None, page: int = None, per_page: int = None) -> Union[nexla_sdk.models.metrics.responses.ResourceFlowLogsResponse, Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/metrics.py:216`
+  - Get flow logs for a flow run keyed by resource ID.
+- `get_flow_metrics(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, from_date: str, to_date: str = None, groupby: str = None, orderby: str = None, page: int = None, per_page: int = None) -> Union[nexla_sdk.models.metrics.responses.ResourceFlowMetricsResponse, Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/metrics.py:162`
+  - Get flow metrics for a flow node keyed by resource ID.
+- `get_flow_metrics_summary(self, period: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/metrics.py:148`
+  - Get flow metrics summary for a given period.
 - `get_rate_limits(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/metrics.py:86`
+  - Source: `nexla_sdk/resources/metrics.py:111`
   - Get current rate limit and usage.
-- `get_resource_daily_metrics(self, resource_type: nexla_sdk.models.metrics.enums.ResourceType, resource_id: int, from_date: str, to_date: Optional[str] = None) -> nexla_sdk.models.metrics.responses.MetricsResponse`
-  - Source: `nexla_sdk/resources/metrics.py:23`
+- `get_resource_daily_metrics(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, from_date: str, to_date: Optional[str] = None) -> nexla_sdk.models.metrics.responses.MetricsResponse`
+  - Source: `nexla_sdk/resources/metrics.py:39`
   - Get daily metrics for a resource.
-- `get_resource_metrics_by_run(self, resource_type: nexla_sdk.models.metrics.enums.ResourceType, resource_id: int, groupby: Optional[str] = None, orderby: Optional[str] = None, page: Optional[int] = None, size: Optional[int] = None) -> nexla_sdk.models.metrics.responses.MetricsByRunResponse`
-  - Source: `nexla_sdk/resources/metrics.py:51`
+- `get_resource_flow_metrics(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, metric_type: str = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/metrics.py:121`
+  - Get flow metrics for a specific resource.
+- `get_resource_metrics_by_run(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, groupby: Optional[str] = None, orderby: Optional[str] = None, page: Optional[int] = None, size: Optional[int] = None) -> nexla_sdk.models.metrics.responses.MetricsByRunResponse`
+  - Source: `nexla_sdk/resources/metrics.py:70`
   - Get metrics by run for a resource.
 

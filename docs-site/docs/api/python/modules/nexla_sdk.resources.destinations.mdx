@@ -10,34 +10,34 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DestinationsResource
 
-Defined in `nexla_sdk/resources/destinations.py:7`
+Defined in `nexla_sdk/resources/destinations.py:12`
 
 Resource for managing destinations (data sinks).
 
 Methods:
 
 - `activate(self, sink_id: int) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:89`
+  - Source: `nexla_sdk/resources/destinations.py:94`
   - Activate destination.
 - `copy(self, sink_id: int, options: Optional[nexla_sdk.models.destinations.requests.DestinationCopyOptions] = None) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:113`
+  - Source: `nexla_sdk/resources/destinations.py:118`
   - Copy a destination.
 - `create(self, data: nexla_sdk.models.destinations.requests.DestinationCreate) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:49`
+  - Source: `nexla_sdk/resources/destinations.py:54`
   - Create new destination.
 - `delete(self, sink_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/destinations.py:77`
+  - Source: `nexla_sdk/resources/destinations.py:82`
   - Delete destination.
 - `get(self, sink_id: int, expand: bool = False) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:33`
+  - Source: `nexla_sdk/resources/destinations.py:38`
   - Get single destination by ID.
 - `list(self, **kwargs) -> List[nexla_sdk.models.destinations.responses.Destination]`
-  - Source: `nexla_sdk/resources/destinations.py:15`
+  - Source: `nexla_sdk/resources/destinations.py:20`
   - List destinations with optional filters.
 - `pause(self, sink_id: int) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:101`
+  - Source: `nexla_sdk/resources/destinations.py:106`
   - Pause destination.
 - `update(self, sink_id: int, data: nexla_sdk.models.destinations.requests.DestinationUpdate) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:64`
+  - Source: `nexla_sdk/resources/destinations.py:69`
   - Update destination.
 

@@ -4,6 +4,8 @@ from .responses import (
     DashboardMetrics,
     MetricsByRunResponse,
     MetricsResponse,
+    ResourceFlowLogsResponse,
+    ResourceFlowMetricsResponse,
     ResourceMetricDaily,
     ResourceMetricsByRun,
 )
@@ -17,6 +19,8 @@ __all__ = [
     "DashboardMetrics",
     "MetricsResponse",
     "MetricsByRunResponse",
+    "ResourceFlowMetricsResponse",
+    "ResourceFlowLogsResponse",
     "ResourceMetricDaily",
     "ResourceMetricsByRun",
 ]

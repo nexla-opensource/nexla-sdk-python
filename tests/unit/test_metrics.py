@@ -2,7 +2,13 @@ import pytest
 
 from nexla_sdk import NexlaClient
 from nexla_sdk.models.metrics.enums import ResourceType, UserMetricResourceType
-from nexla_sdk.models.metrics.responses import MetricsByRunResponse, MetricsResponse
+from nexla_sdk.models.metrics.responses import (
+    MetricsByRunResponse,
+    MetricsResponse,
+    ResourceFlowLogsResponse,
+    ResourceFlowMetricsResponse,
+)
+from tests.utils.mock_builders import MockResponseBuilder
 
 pytestmark = pytest.mark.unit
 
@@ -67,8 +73,8 @@ class TestMetricsResource:
             "data_sources",
             1,
             run_id=123,
-            from_ts=1000,
-            to_ts=2000,
+            from_ts=1000000000000,
+            to_ts=2000000000000,
             page=1,
             per_page=100,
         )
@@ -104,6 +110,43 @@ class TestMetricsResource:
         assert mock_http_client.requests == []
 
     def test_flow_helpers_accept_resource_type_enum(self, client, mock_http_client):
+        mock_http_client.add_response(
+            "/data_sinks/44/flow/metrics",
+            MockResponseBuilder.flow_metrics_api_response(),
+        )
+
+        metrics = client.metrics.get_flow_metrics(
+            ResourceType.DATA_SINKS,
+            44,
+            from_date="2024-01-01",
+        )
+
+        assert isinstance(metrics, ResourceFlowMetricsResponse)
+        assert metrics.status == 200
+        mock_http_client.assert_request_made("GET", "/data_sinks/44/flow/metrics")
+
+        mock_http_client.clear_requests()
+        mock_http_client.clear_responses()
+        mock_http_client.add_response(
+            "/data_sources/45/flow/logs",
+            MockResponseBuilder.flow_logs_response(log_count=1),
+        )
+
+        logs = client.metrics.get_flow_logs(
+            ResourceType.DATA_SOURCES,
+            45,
+            run_id=123,
+            from_ts=1000000000000,
+        )
+
+        assert isinstance(logs, ResourceFlowLogsResponse)
+        assert logs.status == 200
+        assert len(logs.logs) == 1
+        mock_http_client.assert_request_made("GET", "/data_sources/45/flow/logs")
+
+    def test_flow_helpers_return_raw_dict_for_unmodeled_response(
+        self, client, mock_http_client
+    ):
         mock_http_client.add_response("/data_sinks/44/flow/metrics", {"status": "ok"})
 
         metrics = client.metrics.get_flow_metrics(
@@ -112,22 +155,18 @@ class TestMetricsResource:
             from_date="2024-01-01",
         )
 
-        assert metrics["status"] == "ok"
-        mock_http_client.assert_request_made("GET", "/data_sinks/44/flow/metrics")
+        assert metrics == {"status": "ok"}
 
-        mock_http_client.clear_requests()
-        mock_http_client.clear_responses()
+    def test_flow_logs_warn_for_seconds_timestamp(self, client, mock_http_client):
         mock_http_client.add_response("/data_sources/45/flow/logs", {"status": "ok"})
 
-        logs = client.metrics.get_flow_logs(
-            ResourceType.DATA_SOURCES,
-            45,
-            run_id=123,
-            from_ts=1000,
-        )
-
-        assert logs["status"] == "ok"
-        mock_http_client.assert_request_made("GET", "/data_sources/45/flow/logs")
+        with pytest.warns(RuntimeWarning, match="from_ts looks like seconds"):
+            client.metrics.get_flow_logs(
+                ResourceType.DATA_SOURCES,
+                45,
+                run_id=123,
+                from_ts=1700000000,
+            )
 
     def test_user_daily_metrics_serializes_resource_type_enum(
         self, client, mock_http_client

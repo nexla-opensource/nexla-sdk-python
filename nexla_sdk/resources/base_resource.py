@@ -7,7 +7,6 @@ from nexla_sdk.models.access import (
     AccessorResponse,
     AccessorResponseList,
 )
-from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.utils.pagination import Paginator
 
 T = TypeVar("T")
@@ -37,10 +36,6 @@ class BaseResource:
             raise ValueError(
                 f"Invalid {param_name} {value!r}. Must be one of: {valid}"
             ) from None
-
-    def _resolve_resource_type(self, resource_type: Union[ResourceType, str]) -> str:
-        """Resolve a ResourceType or exact resource type string to the API path value."""
-        return self._resolve_enum_value(ResourceType, resource_type, "resource_type")
 
     def _make_request(
         self,

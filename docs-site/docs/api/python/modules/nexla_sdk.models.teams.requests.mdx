@@ -10,47 +10,47 @@ keywords: [Nexla, SDK, Python, API]
 
 ### TeamCreate
 
-Defined in `nexla_sdk/models/teams/requests.py:14`
+Defined in `nexla_sdk/models/teams/requests.py:17`
 
 Request model for creating a team.
 
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `members`: `typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]`
+- `description`: `Optional`
+- `members`: `List`
 
 ### TeamMemberList
 
-Defined in `nexla_sdk/models/teams/requests.py:28`
+Defined in `nexla_sdk/models/teams/requests.py:33`
 
 Request model for team member operations.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]`
+- `members`: `List`
 
 ### TeamMemberRequest
 
-Defined in `nexla_sdk/models/teams/requests.py:6`
+Defined in `nexla_sdk/models/teams/requests.py:8`
 
 Request model for team member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 - `admin`: `bool`
 
 ### TeamUpdate
 
-Defined in `nexla_sdk/models/teams/requests.py:21`
+Defined in `nexla_sdk/models/teams/requests.py:25`
 
 Request model for updating a team.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `members`: `Optional`
 

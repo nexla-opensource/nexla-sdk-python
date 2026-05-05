@@ -10,48 +10,48 @@ keywords: [Nexla, SDK, Python, API]
 
 ### OrgAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:30`
+Defined in `nexla_sdk/models/access/responses.py:36`
 
 Response model for ORG type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.ORG: 'ORG'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the organization
-- `client_identifier`: `typing.Optional[str]` — Client identifier for the organization
-- `email_domain`: `typing.Optional[str]` — Email domain for the organization
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the organization
+- `client_identifier`: `Optional` — Client identifier for the organization
+- `email_domain`: `Optional` — Email domain for the organization
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 
 ### TeamAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:20`
+Defined in `nexla_sdk/models/access/responses.py:25`
 
 Response model for TEAM type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.TEAM: 'TEAM'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the team
-- `name`: `typing.Optional[str]` — Name of the team
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the team
+- `name`: `Optional` — Name of the team
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 
 ### UserAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:9`
+Defined in `nexla_sdk/models/access/responses.py:11`
 
 Response model for USER type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.USER: 'USER'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the user
-- `email`: `typing.Optional[str]` — Email of the user
-- `org_id`: `typing.Optional[int]` — Organization ID for cross-org access
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the user
+- `email`: `Optional` — Email of the user
+- `org_id`: `Optional` — Organization ID for cross-org access
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 

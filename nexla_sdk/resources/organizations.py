@@ -306,7 +306,9 @@ class OrganizationsResource(BaseResource):
         Returns:
             List of audit log entries
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"{self._path}/{org_id}/{resource_type_value}/audit_log"
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in response]

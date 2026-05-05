@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DestinationCopyOptions
 
-Defined in `nexla_sdk/models/destinations/requests.py:30`
+Defined in `nexla_sdk/models/destinations/requests.py:33`
 
 Options for copying a destination.
 
@@ -18,12 +18,12 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 ### DestinationCreate
 
-Defined in `nexla_sdk/models/destinations/requests.py:5`
+Defined in `nexla_sdk/models/destinations/requests.py:6`
 
 Request model for creating a destination.
 
@@ -33,22 +33,22 @@ Fields:
 - `sink_type`: `str`
 - `data_credentials_id`: `int`
 - `data_set_id`: `int`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `template_config`: `Optional`
 
 ### DestinationUpdate
 
-Defined in `nexla_sdk/models/destinations/requests.py:21`
+Defined in `nexla_sdk/models/destinations/requests.py:23`
 
 Request model for updating a destination.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_set_id`: `Optional`
 

@@ -12,7 +12,7 @@ Nexla API client
 
 ### NexlaClient
 
-Defined in `nexla_sdk/client.py:44`
+Defined in `nexla_sdk/client.py:52`
 
 Client for the Nexla API
 
@@ -22,20 +22,20 @@ The Nexla API supports two authentication methods:
    Service keys are long-lived credentials created in the Nexla UI. The SDK
    obtains session tokens using the service key on demand and re-obtains a new
    token as needed. No refresh endpoint is used.
-   
+
 2. **Direct Access Token Authentication**:
    Use a pre-obtained access token directly. These tokens are not refreshed by the SDK.
 
 Examples:
     # Method 1: Using service key (recommended for automation)
     client = NexlaClient(service_key="your-service-key")
-    
+
     # Method 2: Using access token directly (manual/short-term use)
     client = NexlaClient(access_token="your-access-token")
-    
+
     # Using the client (same regardless of authentication method)
     flows = client.flows.list()
-    
+
 Note:
     - Service keys should be treated as highly sensitive credentials
     - Only provide either service_key OR access_token, not both
@@ -44,16 +44,19 @@ Note:
 
 Methods:
 
+- `create_webhook_client(self, api_key: str) -> nexla_sdk.resources.webhooks.WebhooksResource`
+  - Source: `nexla_sdk/client.py:243`
+  - Create a webhook client for sending data to Nexla webhooks.
 - `get_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:179`
+  - Source: `nexla_sdk/client.py:193`
   - Get a valid access token.
 - `logout(self) -> None`
-  - Source: `nexla_sdk/client.py:221`
+  - Source: `nexla_sdk/client.py:235`
   - Logout current session and invalidate token.
 - `refresh_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:201`
+  - Source: `nexla_sdk/client.py:215`
   - Obtain a fresh token and return it.
 - `request(self, method: str, path: str, **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/client.py:260`
+  - Source: `nexla_sdk/client.py:316`
   - Send a request to the Nexla API
 

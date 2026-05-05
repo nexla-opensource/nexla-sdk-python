@@ -1,8 +1,26 @@
+import logging
+import warnings
 from typing import Any, Dict, Optional, Union
 
 from nexla_sdk.models.metrics.enums import ResourceType
-from nexla_sdk.models.metrics.responses import MetricsByRunResponse, MetricsResponse
+from nexla_sdk.models.metrics.responses import (
+    MetricsByRunResponse,
+    MetricsResponse,
+    ResourceFlowLogsResponse,
+    ResourceFlowMetricsResponse,
+)
 from nexla_sdk.resources.base_resource import BaseResource
+
+logger = logging.getLogger(__name__)
+
+
+def _warn_if_seconds_timestamp(value: int, param_name: str) -> None:
+    if isinstance(value, (int, float)) and 0 < abs(value) < 1e10:
+        warnings.warn(
+            f"{param_name} looks like seconds; API expects milliseconds",
+            RuntimeWarning,
+            stacklevel=3,
+        )
 
 
 class MetricsResource(BaseResource):
@@ -38,7 +56,9 @@ class MetricsResource(BaseResource):
         Returns:
             Daily metrics
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/metrics"
         params = {"from": from_date, "aggregate": 1}
         if to_date:
@@ -71,7 +91,9 @@ class MetricsResource(BaseResource):
         Returns:
             Metrics by run
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/metrics/run_summary"
         params = {}
         if groupby:
@@ -114,7 +136,9 @@ class MetricsResource(BaseResource):
         Returns:
             Flow metrics for the resource
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         if metric_type:
             path = f"/{resource_type_value}/{resource_id}/flow/{metric_type}"
         else:
@@ -145,7 +169,7 @@ class MetricsResource(BaseResource):
         orderby: str = None,
         page: int = None,
         per_page: int = None,
-    ) -> Dict[str, Any]:
+    ) -> Union[ResourceFlowMetricsResponse, Dict[str, Any]]:
         """
         Get flow metrics for a flow node keyed by resource ID.
 
@@ -161,9 +185,12 @@ class MetricsResource(BaseResource):
             per_page: Items per page
 
         Returns:
-            Flow metrics for the resource
+            ResourceFlowMetricsResponse with metrics data and pagination,
+            or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:
@@ -176,7 +203,15 @@ class MetricsResource(BaseResource):
             params["page"] = page
         if per_page is not None:
             params["per_page"] = per_page
-        return self._make_request("GET", path, params=params)
+        response = self._make_request("GET", path, params=params)
+        try:
+            return ResourceFlowMetricsResponse.model_validate(response)
+        except Exception as exc:
+            logger.debug(
+                "ResourceFlowMetricsResponse validation failed, returning raw dict: %s",
+                exc,
+            )
+            return response
 
     def get_flow_logs(
         self,
@@ -187,7 +222,7 @@ class MetricsResource(BaseResource):
         to_ts: int = None,
         page: int = None,
         per_page: int = None,
-    ) -> Dict[str, Any]:
+    ) -> Union[ResourceFlowLogsResponse, Dict[str, Any]]:
         """
         Get flow logs for a flow run keyed by resource ID.
 
@@ -202,15 +237,28 @@ class MetricsResource(BaseResource):
             per_page: Items per page
 
         Returns:
-            Flow logs for the resource run
+            ResourceFlowLogsResponse with log entries and pagination metadata,
+            or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {"run_id": run_id, "from": from_ts}
+        _warn_if_seconds_timestamp(from_ts, "from_ts")
         if to_ts is not None:
+            _warn_if_seconds_timestamp(to_ts, "to_ts")
             params["to"] = to_ts
         if page is not None:
             params["page"] = page
         if per_page is not None:
             params["per_page"] = per_page
-        return self._make_request("GET", path, params=params)
+        response = self._make_request("GET", path, params=params)
+        try:
+            return ResourceFlowLogsResponse.model_validate(response)
+        except Exception as exc:
+            logger.debug(
+                "ResourceFlowLogsResponse validation failed, returning raw dict: %s",
+                exc,
+            )
+            return response

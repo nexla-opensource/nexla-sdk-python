@@ -1,3 +1,5 @@
+import logging
+import warnings
 from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
@@ -12,6 +14,8 @@ from nexla_sdk.models.flows.responses import (
 from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
+
+logger = logging.getLogger(__name__)
 
 
 class FlowsResource(BaseResource):
@@ -101,7 +105,9 @@ class FlowsResource(BaseResource):
         Returns:
             Flow response
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/flow"
         params = {"flows_only": 1} if flows_only else {}
 
@@ -299,7 +305,9 @@ class FlowsResource(BaseResource):
         Returns:
             Response status
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/flow"
         return self._make_request("DELETE", path)
 
@@ -322,7 +330,9 @@ class FlowsResource(BaseResource):
         Returns:
             Activated flow
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/activate"
         params = {}
         if all:
@@ -352,7 +362,9 @@ class FlowsResource(BaseResource):
         Returns:
             Paused flow
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/pause"
         params = {}
         if all:
@@ -486,10 +498,8 @@ class FlowsResource(BaseResource):
 
     def get_run_status(
         self,
-        flow_id: Optional[int] = None,
-        run_id: Optional[int] = None,
-        *deprecated_args: Any,
-        **deprecated_kwargs: Any,
+        flow_id: int,
+        run_id: int,
     ) -> Dict[str, Any]:
         """
         Get status of a specific flow run.
@@ -501,21 +511,20 @@ class FlowsResource(BaseResource):
         Returns:
             Run status information
         """
-        if (
-            deprecated_args
-            or deprecated_kwargs
-            or isinstance(flow_id, (ResourceType, str))
-        ):
-            raise DeprecationWarning(
-                "get_run_status(resource_type, resource_id, run_id) is no longer "
-                "supported. Use get_run_status(flow_id, run_id), which calls "
-                "/flows/{flow_id}/run_status/{run_id}."
-            )
-        if flow_id is None or run_id is None:
-            raise TypeError("get_run_status() requires flow_id and run_id")
+        if not isinstance(flow_id, int) or not isinstance(run_id, int):
+            raise TypeError("get_run_status() requires integer flow_id and run_id")
 
         path = f"{self._path}/{flow_id}/run_status/{run_id}"
         return self._make_request("GET", path)
+
+    @staticmethod
+    def _warn_if_seconds_timestamp(value: int, param_name: str) -> None:
+        if isinstance(value, (int, float)) and 0 < abs(value) < 1e10:
+            warnings.warn(
+                f"{param_name} looks like seconds; API expects milliseconds",
+                RuntimeWarning,
+                stacklevel=3,
+            )
 
     def get_logs(
         self,
@@ -543,7 +552,12 @@ class FlowsResource(BaseResource):
             FlowLogsResponse with log entries and pagination metadata,
             or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
+        self._warn_if_seconds_timestamp(from_ts, "from_ts")
+        if to_ts is not None:
+            self._warn_if_seconds_timestamp(to_ts, "to_ts")
         path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {
             "run_id": run_id,
@@ -558,7 +572,10 @@ class FlowsResource(BaseResource):
         response = self._make_request("GET", path, params=params)
         try:
             return FlowLogsResponse.model_validate(response)
-        except Exception:
+        except Exception as exc:
+            logger.debug(
+                "FlowLogsResponse validation failed, returning raw dict: %s", exc
+            )
             return response
 
     def get_metrics(
@@ -589,7 +606,9 @@ class FlowsResource(BaseResource):
             FlowMetricsApiResponse with metrics data and pagination,
             or raw dict if response doesn't match expected schema.
         """
-        resource_type_value = self._resolve_resource_type(resource_type)
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:
@@ -606,5 +625,8 @@ class FlowsResource(BaseResource):
         response = self._make_request("GET", path, params=params)
         try:
             return FlowMetricsApiResponse.model_validate(response)
-        except Exception:
+        except Exception as exc:
+            logger.debug(
+                "FlowMetricsApiResponse validation failed, returning raw dict: %s", exc
+            )
             return response

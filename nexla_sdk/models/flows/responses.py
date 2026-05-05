@@ -26,11 +26,15 @@ class FlowLogEntry(BaseModel):
     """A single flow execution log entry."""
 
     timestamp: Optional[datetime] = None
-    level: Optional[str] = None
-    message: Optional[str] = None
-    log: Optional[str] = None
+    level: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("level", "severity"),
+    )
+    message: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("message", "log"),
+    )
     log_type: Optional[str] = None
-    severity: Optional[str] = None
     resource_id: Optional[int] = None
     resource_type: Optional[str] = None
     run_id: Optional[int] = None
@@ -40,27 +44,17 @@ class FlowLogEntry(BaseModel):
     @classmethod
     def coerce_ms_timestamp(cls, value):
         """Convert live API millisecond timestamps to datetimes explicitly."""
+        # Unix epoch seconds will not reach 1e10 until year 2286; larger values are ms.
         if isinstance(value, (int, float)) and abs(value) > 1e10:
             return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
         return value
 
-    @model_validator(mode="before")
-    @classmethod
-    def normalize_live_log_fields(cls, data):
-        """Map live API log fields onto the SDK's existing convenience names."""
-        if not isinstance(data, dict):
-            return data
-
-        normalized = data.copy()
-        if "message" not in normalized and "log" in normalized:
-            normalized["message"] = normalized["log"]
-        if "level" not in normalized and "severity" in normalized:
-            normalized["level"] = normalized["severity"]
-        return normalized
-
 
 class FlowLogsMeta(BaseModel):
-    """Metadata for flow logs pagination and live run context."""
+    """Metadata for flow logs pagination.
+
+    The live API also returns run context fields (org_id, run_id) in logs.meta.
+    """
 
     current_page: Optional[int] = Field(
         default=None,
@@ -81,8 +75,8 @@ class FlowLogsMeta(BaseModel):
         validation_alias=AliasChoices("totalCount", "total_count"),
         serialization_alias="totalCount",
     )
-    org_id: Optional[int] = None  # present in live API logs.meta
-    run_id: Optional[int] = None  # present in live API logs.meta
+    org_id: Optional[int] = None
+    run_id: Optional[int] = None
 
 
 class FlowLogsResponse(BaseModel):
@@ -109,7 +103,8 @@ class FlowLogsResponse(BaseModel):
 
         logs = data["logs"]
         normalized = data.copy()
-        normalized["logs"] = logs.get("data") or []
+        logs_data = logs.get("data")
+        normalized["logs"] = logs_data if logs_data is not None else []
         if normalized.get("meta") is None:  # outer meta wins if already set
             normalized["meta"] = logs.get("meta")
         return normalized

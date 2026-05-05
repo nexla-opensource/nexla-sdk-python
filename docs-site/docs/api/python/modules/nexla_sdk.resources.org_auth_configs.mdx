@@ -10,28 +10,28 @@ keywords: [Nexla, SDK, Python, API]
 
 ### OrgAuthConfigsResource
 
-Defined in `nexla_sdk/resources/org_auth_configs.py:7`
+Defined in `nexla_sdk/resources/org_auth_configs.py:8`
 
 Resource for organization authentication configurations (/api_auth_configs).
 
 Methods:
 
 - `create(self, payload: nexla_sdk.models.org_auth_configs.requests.AuthConfigPayload) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:30`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:31`
   - Create a new authentication configuration.
 - `delete(self, auth_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:42`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:45`
   - Delete an authentication configuration by ID.
 - `get(self, auth_config_id: int) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:25`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:26`
   - Get a specific authentication configuration by ID.
 - `list(self) -> List[nexla_sdk.models.org_auth_configs.responses.AuthConfig]`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:15`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:16`
   - List authentication configurations for the current organization.
 - `list_all(self) -> List[nexla_sdk.models.org_auth_configs.responses.AuthConfig]`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:20`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:21`
   - List all authentication configurations (admin only).
 - `update(self, auth_config_id: int, payload: nexla_sdk.models.org_auth_configs.requests.AuthConfigPayload) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:36`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:37`
   - Update an existing authentication configuration.
 
