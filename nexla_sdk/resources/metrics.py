@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.metrics.responses import MetricsByRunResponse, MetricsResponse
@@ -20,7 +20,7 @@ class MetricsResource(BaseResource):
 
     def get_resource_daily_metrics(
         self,
-        resource_type: ResourceType,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         from_date: str,
         to_date: Optional[str] = None,
@@ -29,7 +29,8 @@ class MetricsResource(BaseResource):
         Get daily metrics for a resource.
 
         Args:
-            resource_type: Type of resource (data_sources, data_sets, data_sinks)
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             from_date: Start date (YYYY-MM-DD)
             to_date: End date (optional)
@@ -37,7 +38,8 @@ class MetricsResource(BaseResource):
         Returns:
             Daily metrics
         """
-        path = f"/{resource_type}/{resource_id}/metrics"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/metrics"
         params = {"from": from_date, "aggregate": 1}
         if to_date:
             params["to"] = to_date
@@ -47,7 +49,7 @@ class MetricsResource(BaseResource):
 
     def get_resource_metrics_by_run(
         self,
-        resource_type: ResourceType,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         groupby: Optional[str] = None,
         orderby: Optional[str] = None,
@@ -58,7 +60,8 @@ class MetricsResource(BaseResource):
         Get metrics by run for a resource.
 
         Args:
-            resource_type: Type of resource
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             groupby: Group by field (runId, lastWritten)
             orderby: Order by field (runId, lastWritten)
@@ -68,7 +71,8 @@ class MetricsResource(BaseResource):
         Returns:
             Metrics by run
         """
-        path = f"/{resource_type}/{resource_id}/metrics/run_summary"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/metrics/run_summary"
         params = {}
         if groupby:
             params["groupby"] = groupby
@@ -94,7 +98,7 @@ class MetricsResource(BaseResource):
 
     def get_resource_flow_metrics(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         metric_type: str = None,
     ) -> Dict[str, Any]:
@@ -102,17 +106,19 @@ class MetricsResource(BaseResource):
         Get flow metrics for a specific resource.
 
         Args:
-            resource_type: Type of resource (e.g., data_source, data_set, data_sink)
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             metric_type: Specific metric type to retrieve (optional)
 
         Returns:
             Flow metrics for the resource
         """
+        resource_type_value = ResourceType(resource_type).value
         if metric_type:
-            path = f"/{resource_type}s/{resource_id}/flow/{metric_type}"
+            path = f"/{resource_type_value}/{resource_id}/flow/{metric_type}"
         else:
-            path = f"/{resource_type}s/{resource_id}/flow"
+            path = f"/{resource_type_value}/{resource_id}/flow"
         return self._make_request("GET", path)
 
     def get_flow_metrics_summary(self, period: str) -> Dict[str, Any]:
@@ -131,7 +137,7 @@ class MetricsResource(BaseResource):
     # Convenience wrappers for flow-level logs/metrics
     def get_flow_metrics(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         from_date: str,
         to_date: str = None,
@@ -140,7 +146,25 @@ class MetricsResource(BaseResource):
         page: int = None,
         per_page: int = None,
     ) -> Dict[str, Any]:
-        path = f"/data_flows/{resource_type}/{resource_id}/metrics"
+        """
+        Get flow metrics for a flow node keyed by resource ID.
+
+        Args:
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
+            resource_id: Resource ID
+            from_date: Start date (YYYY-MM-DD)
+            to_date: End date (optional)
+            groupby: Group metrics by field
+            orderby: Order metrics by field
+            page: Page number
+            per_page: Items per page
+
+        Returns:
+            Flow metrics for the resource
+        """
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:
             params["to"] = to_date
@@ -156,7 +180,7 @@ class MetricsResource(BaseResource):
 
     def get_flow_logs(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         run_id: int,
         from_ts: int,
@@ -164,7 +188,24 @@ class MetricsResource(BaseResource):
         page: int = None,
         per_page: int = None,
     ) -> Dict[str, Any]:
-        path = f"/data_flows/{resource_type}/{resource_id}/logs"
+        """
+        Get flow logs for a flow run keyed by resource ID.
+
+        Args:
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
+            resource_id: Resource ID
+            run_id: Run ID
+            from_ts: Start timestamp (Unix timestamp in milliseconds)
+            to_ts: End timestamp in milliseconds (optional)
+            page: Page number
+            per_page: Items per page
+
+        Returns:
+            Flow logs for the resource run
+        """
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {"run_id": run_id, "from": from_ts}
         if to_ts is not None:
             params["to"] = to_ts

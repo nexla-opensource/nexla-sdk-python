@@ -1,7 +1,7 @@
 import pytest
 
 from nexla_sdk import NexlaClient
-from nexla_sdk.models.metrics.enums import ResourceType
+from nexla_sdk.models.metrics.enums import ResourceType, UserMetricResourceType
 from nexla_sdk.models.metrics.responses import MetricsByRunResponse, MetricsResponse
 
 pytestmark = pytest.mark.unit
@@ -18,7 +18,7 @@ class TestMetricsResource:
     ):
         mock_http_client.queue_response({"status": 200, "metrics": []})
         m = client.metrics.get_resource_daily_metrics(
-            ResourceType.DATA_SOURCES.value,
+            ResourceType.DATA_SOURCES,
             42,
             from_date="2024-01-01",
             to_date="2024-01-31",
@@ -30,7 +30,7 @@ class TestMetricsResource:
             {"status": 200, "metrics": {"data": [], "meta": {}}}
         )
         br = client.metrics.get_resource_metrics_by_run(
-            ResourceType.DATA_SOURCES.value,
+            ResourceType.DATA_SOURCES,
             42,
             groupby="runId",
             orderby="lastWritten",
@@ -48,9 +48,7 @@ class TestMetricsResource:
         assert "rate_limit" in rl
 
         mock_http_client.clear_responses()
-        mock_http_client.add_response(
-            "/data_flows/data_sources/1/metrics", {"status": "ok"}
-        )
+        mock_http_client.add_response("/data_sources/1/flow/metrics", {"status": "ok"})
         fm = client.metrics.get_flow_metrics(
             "data_sources",
             1,
@@ -64,9 +62,7 @@ class TestMetricsResource:
         assert fm.get("status") == "ok"
 
         mock_http_client.clear_responses()
-        mock_http_client.add_response(
-            "/data_flows/data_sources/1/logs", {"status": "ok"}
-        )
+        mock_http_client.add_response("/data_sources/1/flow/logs", {"status": "ok"})
         fl = client.metrics.get_flow_logs(
             "data_sources",
             1,
@@ -77,3 +73,76 @@ class TestMetricsResource:
             per_page=100,
         )
         assert fl.get("status") == "ok"
+
+    def test_resource_flow_metrics_accepts_canonical_resource_type(
+        self, client, mock_http_client
+    ):
+        mock_http_client.add_response("/data_sources/42/flow", {"status": "ok"})
+
+        metrics = client.metrics.get_resource_flow_metrics("data_sources", 42)
+
+        assert metrics["status"] == "ok"
+        mock_http_client.assert_request_made("GET", "/data_sources/42/flow")
+
+        mock_http_client.clear_requests()
+        mock_http_client.clear_responses()
+        mock_http_client.add_response("/data_sets/43/flow/records", {"status": "ok"})
+
+        metrics = client.metrics.get_resource_flow_metrics(
+            ResourceType.DATA_SETS, 43, metric_type="records"
+        )
+
+        assert metrics["status"] == "ok"
+        mock_http_client.assert_request_made("GET", "/data_sets/43/flow/records")
+
+    def test_resource_flow_metrics_rejects_singular_resource_type(
+        self, client, mock_http_client
+    ):
+        with pytest.raises(ValueError, match="'data_set' is not a valid ResourceType"):
+            client.metrics.get_resource_flow_metrics("data_set", 43)
+
+        assert mock_http_client.requests == []
+
+    def test_flow_helpers_accept_resource_type_enum(self, client, mock_http_client):
+        mock_http_client.add_response("/data_sinks/44/flow/metrics", {"status": "ok"})
+
+        metrics = client.metrics.get_flow_metrics(
+            ResourceType.DATA_SINKS,
+            44,
+            from_date="2024-01-01",
+        )
+
+        assert metrics["status"] == "ok"
+        mock_http_client.assert_request_made("GET", "/data_sinks/44/flow/metrics")
+
+        mock_http_client.clear_requests()
+        mock_http_client.clear_responses()
+        mock_http_client.add_response("/data_sources/45/flow/logs", {"status": "ok"})
+
+        logs = client.metrics.get_flow_logs(
+            ResourceType.DATA_SOURCES,
+            45,
+            run_id=123,
+            from_ts=1000,
+        )
+
+        assert logs["status"] == "ok"
+        mock_http_client.assert_request_made("GET", "/data_sources/45/flow/logs")
+
+    def test_user_daily_metrics_serializes_resource_type_enum(
+        self, client, mock_http_client
+    ):
+        mock_http_client.add_response("/users/7/metrics", {"status": "ok"})
+
+        metrics = client.users.get_daily_metrics(
+            7,
+            UserMetricResourceType.SOURCE,
+            from_date="2024-01-01",
+        )
+
+        assert metrics["status"] == "ok"
+        mock_http_client.assert_request_made(
+            "GET",
+            "/users/7/metrics",
+            params={"resource_type": "SOURCE", "from": "2024-01-01", "aggregate": 1},
+        )

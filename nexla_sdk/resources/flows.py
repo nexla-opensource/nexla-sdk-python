@@ -9,6 +9,7 @@ from nexla_sdk.models.flows.responses import (
     FlowMetricsApiResponse,
     FlowResponse,
 )
+from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -83,20 +84,25 @@ class FlowsResource(BaseResource):
         return self._parse_response(response)
 
     def get_by_resource(
-        self, resource_type: str, resource_id: int, flows_only: bool = False
+        self,
+        resource_type: Union[ResourceType, str],
+        resource_id: int,
+        flows_only: bool = False,
     ) -> FlowResponse:
         """
         Get flow by resource ID.
 
         Args:
-            resource_type: Type of resource (data_sources, data_sets, data_sinks)
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             flows_only: Only return flow structure
 
         Returns:
             Flow response
         """
-        path = f"/{resource_type}/{resource_id}/flow"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow"
         params = {"flows_only": 1} if flows_only else {}
 
         response = self._make_request("GET", path, params=params)
@@ -280,24 +286,26 @@ class FlowsResource(BaseResource):
         return super().delete(flow_id)
 
     def delete_by_resource(
-        self, resource_type: str, resource_id: int
+        self, resource_type: Union[ResourceType, str], resource_id: int
     ) -> Dict[str, Any]:
         """
         Delete flow by resource ID.
 
         Args:
-            resource_type: Type of resource
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
 
         Returns:
             Response status
         """
-        path = f"/{resource_type}/{resource_id}/flow"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow"
         return self._make_request("DELETE", path)
 
     def activate_by_resource(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         all: bool = False,
         full_tree: bool = False,
@@ -306,14 +314,16 @@ class FlowsResource(BaseResource):
         Activate flow by resource ID.
 
         Args:
-            resource_type: Type of resource
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             all: Activate entire flow tree
 
         Returns:
             Activated flow
         """
-        path = f"/{resource_type}/{resource_id}/activate"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/activate"
         params = {}
         if all:
             params["all"] = 1
@@ -325,7 +335,7 @@ class FlowsResource(BaseResource):
 
     def pause_by_resource(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         all: bool = False,
         full_tree: bool = False,
@@ -334,14 +344,16 @@ class FlowsResource(BaseResource):
         Pause flow by resource ID.
 
         Args:
-            resource_type: Type of resource
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             all: Pause entire flow tree
 
         Returns:
             Paused flow
         """
-        path = f"/{resource_type}/{resource_id}/pause"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/pause"
         params = {}
         if all:
             params["all"] = 1
@@ -472,26 +484,23 @@ class FlowsResource(BaseResource):
             params["org_id"] = org_id
         return self._make_request("GET", path, params=params)
 
-    def get_run_status(
-        self, resource_type: str, resource_id: int, run_id: int
-    ) -> Dict[str, Any]:
+    def get_run_status(self, flow_id: int, run_id: int) -> Dict[str, Any]:
         """
         Get status of a specific flow run.
 
         Args:
-            resource_type: Type of resource (e.g., data_source, data_set, data_sink)
-            resource_id: Resource ID
+            flow_id: Flow ID
             run_id: Run ID
 
         Returns:
             Run status information
         """
-        path = f"/{resource_type}s/{resource_id}/run_status/{run_id}"
+        path = f"{self._path}/{flow_id}/run_status/{run_id}"
         return self._make_request("GET", path)
 
     def get_logs(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         run_id: int,
         from_ts: int,
@@ -502,11 +511,12 @@ class FlowsResource(BaseResource):
         """Get flow execution logs for a specific run id of a flow.
 
         Args:
-            resource_type: Type of resource (data_sources, data_sets, data_sinks)
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             run_id: Run ID to get logs for
-            from_ts: Start timestamp (Unix timestamp)
-            to_ts: End timestamp (Unix timestamp)
+            from_ts: Start timestamp (Unix timestamp in milliseconds)
+            to_ts: End timestamp (Unix timestamp in milliseconds)
             page: Page number for pagination
             per_page: Items per page
 
@@ -514,7 +524,8 @@ class FlowsResource(BaseResource):
             FlowLogsResponse with log entries and pagination metadata,
             or raw dict if response doesn't match expected schema.
         """
-        path = f"/data_flows/{resource_type}/{resource_id}/logs"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow/logs"
         params = {
             "run_id": run_id,
             "from": from_ts,
@@ -533,7 +544,7 @@ class FlowsResource(BaseResource):
 
     def get_metrics(
         self,
-        resource_type: str,
+        resource_type: Union[ResourceType, str],
         resource_id: int,
         from_date: str,
         to_date: str = None,
@@ -545,7 +556,8 @@ class FlowsResource(BaseResource):
         """Get flow metrics for a flow node keyed by resource id.
 
         Args:
-            resource_type: Type of resource (data_sources, data_sets, data_sinks)
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             resource_id: Resource ID
             from_date: Start date (ISO format, e.g., '2023-01-17')
             to_date: End date (ISO format)
@@ -558,7 +570,8 @@ class FlowsResource(BaseResource):
             FlowMetricsApiResponse with metrics data and pagination,
             or raw dict if response doesn't match expected schema.
         """
-        path = f"/data_flows/{resource_type}/{resource_id}/metrics"
+        resource_type_value = ResourceType(resource_type).value
+        path = f"/{resource_type_value}/{resource_id}/flow/metrics"
         params = {"from": from_date}
         if to_date:
             params["to"] = to_date

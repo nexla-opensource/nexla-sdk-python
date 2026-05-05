@@ -1,5 +1,6 @@
 """Unit tests for the Organizations resource."""
 
+from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.organizations.requests import (
     OrganizationCreate,
     OrgMemberActivateDeactivateRequest,
@@ -271,4 +272,22 @@ class TestOrganizationsResource:
         last_request = mock_client.http_client.get_last_request()
         assert last_request["method"] == "GET"
         assert f"/orgs/{org_id}/audit_log" in last_request["url"]
+        assert last_request["params"] == {"per_page": 10}
+
+    def test_get_resource_audit_log(self, mock_client):
+        """Test getting audit logs for a canonical resource type."""
+        org_id = 123
+        mock_log = [MockResponseBuilder.audit_log_entry()]
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/data_sources/audit_log", mock_log
+        )
+
+        audit_log = mock_client.organizations.get_resource_audit_log(
+            org_id, ResourceType.DATA_SOURCES, per_page=10
+        )
+
+        assert len(audit_log) == 1
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/data_sources/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}

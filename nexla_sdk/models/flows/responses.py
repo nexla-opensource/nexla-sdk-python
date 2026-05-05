@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from pydantic import Field
+from pydantic import AliasChoices, Field, model_validator
 
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import FlowNode
@@ -28,18 +28,49 @@ class FlowLogEntry(BaseModel):
     timestamp: Optional[datetime] = None
     level: Optional[str] = None
     message: Optional[str] = None
+    log: Optional[str] = None
+    log_type: Optional[str] = None
+    severity: Optional[str] = None
     resource_id: Optional[int] = None
     resource_type: Optional[str] = None
     run_id: Optional[int] = None
     details: Optional[Dict[str, Any]] = None
 
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_live_log_fields(cls, data):
+        """Map live API log fields onto the SDK's existing convenience names."""
+        if not isinstance(data, dict):
+            return data
+
+        normalized = data.copy()
+        if "message" not in normalized and "log" in normalized:
+            normalized["message"] = normalized["log"]
+        if "level" not in normalized and "severity" in normalized:
+            normalized["level"] = normalized["severity"]
+        return normalized
+
 
 class FlowLogsMeta(BaseModel):
     """Metadata for flow logs pagination."""
 
-    current_page: Optional[int] = Field(default=None, alias="currentPage")
-    page_count: Optional[int] = Field(default=None, alias="pageCount")
-    total_count: Optional[int] = Field(default=None, alias="totalCount")
+    current_page: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("currentPage", "current_page"),
+        serialization_alias="currentPage",
+    )
+    page_count: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("pageCount", "page_count", "pages_count"),
+        serialization_alias="pageCount",
+    )
+    total_count: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("totalCount", "total_count"),
+        serialization_alias="totalCount",
+    )
+    org_id: Optional[int] = None
+    run_id: Optional[int] = None
 
 
 class FlowLogsResponse(BaseModel):
@@ -56,6 +87,20 @@ class FlowLogsResponse(BaseModel):
     message: Optional[str] = None
     logs: List[FlowLogEntry] = Field(default_factory=list)
     meta: Optional[FlowLogsMeta] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_live_logs_shape(cls, data):
+        """Flatten live API logs.data/logs.meta into the SDK response model."""
+        if not isinstance(data, dict) or not isinstance(data.get("logs"), dict):
+            return data
+
+        logs = data["logs"]
+        normalized = data.copy()
+        normalized["logs"] = logs.get("data") or []
+        if normalized.get("meta") is None:
+            normalized["meta"] = logs.get("meta")
+        return normalized
 
 
 class FlowMetricData(BaseModel):

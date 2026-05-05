@@ -501,15 +501,12 @@ class MockResponseBuilder:
     def flow_log_entry(**overrides) -> Dict[str, Any]:
         """Build a mock flow log entry."""
         base = {
-            "timestamp": fake.date_time(tzinfo=timezone.utc).isoformat(),
-            "level": fake.random_element(["DEBUG", "INFO", "WARN", "ERROR"]),
-            "message": fake.sentence(),
+            "log": fake.sentence(),
+            "log_type": fake.random_element(["LOG", "EVENT"]),
+            "severity": fake.random_element(["DEBUG", "INFO", "WARN", "ERROR"]),
             "resource_id": fake.random_int(1, 10000),
-            "resource_type": fake.random_element(
-                ["data_sources", "data_sets", "data_sinks"]
-            ),
-            "run_id": fake.random_int(1, 10000),
-            "details": {"records": fake.random_int(0, 1000)},
+            "resource_type": fake.random_element(["SOURCE", "DATASET", "SINK"]),
+            "timestamp": fake.random_int(1700000000000, 1800000000000),
         }
         base.update(overrides)
         return base
@@ -517,11 +514,18 @@ class MockResponseBuilder:
     @staticmethod
     def flow_logs_response(log_count: int = 3, **overrides) -> Dict[str, Any]:
         """Build a mock flow logs response."""
+        logs = [MockResponseBuilder.flow_log_entry() for _ in range(log_count)]
         base = {
             "status": 200,
             "message": "Ok",
-            "logs": [MockResponseBuilder.flow_log_entry() for _ in range(log_count)],
-            "meta": {"currentPage": 1, "pageCount": 1, "totalCount": log_count},
+            "logs": {
+                "data": logs,
+                "meta": {
+                    "current_page": 1,
+                    "pages_count": 1,
+                    "total_count": log_count,
+                },
+            },
         }
         base.update(overrides)
         return base

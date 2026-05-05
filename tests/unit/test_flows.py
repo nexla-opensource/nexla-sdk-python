@@ -16,6 +16,7 @@ from nexla_sdk.models.flows.responses import (
     FlowMetricsApiResponse,
     FlowResponse,
 )
+from nexla_sdk.models.metrics.enums import ResourceType
 from tests.utils.assertions import NexlaAssertions
 from tests.utils.fixtures import MockHTTPClient
 from tests.utils.mock_builders import MockDataFactory, MockResponseBuilder
@@ -48,6 +49,11 @@ class TestFlowsModels:
         assert response.status == 200
         assert response.message == "Ok"
         assert len(response.logs) == 3
+        assert response.meta.total_count == 3
+        assert response.meta.page_count == 1
+        assert response.logs[0].log == response_data["logs"]["data"][0]["log"]
+        assert response.logs[0].message == response.logs[0].log
+        assert response.logs[0].level == response.logs[0].severity
 
     def test_flow_metrics_api_response_model(self):
         """Test FlowMetricsApiResponse model."""
@@ -394,6 +400,53 @@ class TestFlowsUnit:
         assert last_request["method"] == "PUT"
         assert f"/{resource_type}/{resource_id}/pause" in last_request["url"]
 
+    def test_get_run_status_uses_flow_id_path(self, mock_client, mock_http_client):
+        """Test run status is keyed by flow ID."""
+        mock_http_client.add_response("/flows/599305/run_status/123", {"status": "ok"})
+
+        result = mock_client.flows.get_run_status(599305, 123)
+
+        assert result["status"] == "ok"
+        last_request = mock_http_client.get_last_request()
+        assert "/flows/599305/run_status/123" in last_request["url"]
+
+    def test_flow_logs_and_metrics_accept_resource_type_enum(
+        self, mock_client, mock_http_client
+    ):
+        """Test flow log and metric helpers accept ResourceType enum members."""
+        mock_http_client.add_response(
+            "/data_sets/5061/flow/logs",
+            MockResponseBuilder.flow_logs_response(log_count=1),
+        )
+
+        logs = mock_client.flows.get_logs(
+            ResourceType.DATA_SETS,
+            5061,
+            run_id=100,
+            from_ts=1704067200,
+        )
+
+        assert isinstance(logs, FlowLogsResponse)
+        last_request = mock_http_client.get_last_request()
+        assert "/data_sets/5061/flow/logs" in last_request["url"]
+
+        mock_http_client.clear_requests()
+        mock_http_client.clear_responses()
+        mock_http_client.add_response(
+            "/data_sinks/5029/flow/metrics",
+            MockResponseBuilder.flow_metrics_api_response(),
+        )
+
+        metrics = mock_client.flows.get_metrics(
+            ResourceType.DATA_SINKS,
+            5029,
+            from_date="2024-01-01",
+        )
+
+        assert isinstance(metrics, FlowMetricsApiResponse)
+        last_request = mock_http_client.get_last_request()
+        assert "/data_sinks/5029/flow/metrics" in last_request["url"]
+
     def test_flow_with_metrics(self, mock_client, mock_http_client, mock_factory):
         """Test flow response with metrics."""
         # Arrange
@@ -513,7 +566,7 @@ class TestFlowsUnit:
         from_ts = 1704067200
         mock_response = MockResponseBuilder.flow_logs_response(log_count=3)
         mock_http_client.add_response(
-            f"/data_flows/{resource_type}/{resource_id}/logs", mock_response
+            f"/{resource_type}/{resource_id}/flow/logs", mock_response
         )
 
         # Act
@@ -529,11 +582,12 @@ class TestFlowsUnit:
         assert result.status == 200
         assert result.message == "Ok"
         assert len(result.logs) == 3
+        assert result.meta.total_count == 3
 
         # Verify request
         last_request = mock_http_client.get_last_request()
         assert last_request["method"] == "GET"
-        assert f"/data_flows/{resource_type}/{resource_id}/logs" in last_request["url"]
+        assert f"/{resource_type}/{resource_id}/flow/logs" in last_request["url"]
         assert last_request["params"]["run_id"] == run_id
         assert last_request["params"]["from"] == from_ts
 
@@ -541,7 +595,7 @@ class TestFlowsUnit:
         """Test get_logs with pagination parameters."""
         # Arrange
         mock_response = MockResponseBuilder.flow_logs_response()
-        mock_http_client.add_response("/data_flows/data_sets/5061/logs", mock_response)
+        mock_http_client.add_response("/data_sets/5061/flow/logs", mock_response)
 
         # Act
         mock_client.flows.get_logs(
@@ -562,7 +616,7 @@ class TestFlowsUnit:
         """Test get_logs with all parameters."""
         # Arrange
         mock_response = MockResponseBuilder.flow_logs_response()
-        mock_http_client.add_response("/data_flows/data_sinks/5029/logs", mock_response)
+        mock_http_client.add_response("/data_sinks/5029/flow/logs", mock_response)
 
         # Act
         mock_client.flows.get_logs(
@@ -591,7 +645,7 @@ class TestFlowsUnit:
         from_date = "2024-01-01"
         mock_response = MockResponseBuilder.flow_metrics_api_response()
         mock_http_client.add_response(
-            f"/data_flows/{resource_type}/{resource_id}/metrics", mock_response
+            f"/{resource_type}/{resource_id}/flow/metrics", mock_response
         )
 
         # Act
@@ -608,18 +662,14 @@ class TestFlowsUnit:
         # Verify request
         last_request = mock_http_client.get_last_request()
         assert last_request["method"] == "GET"
-        assert (
-            f"/data_flows/{resource_type}/{resource_id}/metrics" in last_request["url"]
-        )
+        assert f"/{resource_type}/{resource_id}/flow/metrics" in last_request["url"]
         assert last_request["params"]["from"] == from_date
 
     def test_get_metrics_with_groupby(self, mock_client, mock_http_client):
         """Test get_metrics with groupby parameter."""
         # Arrange
         mock_response = MockResponseBuilder.flow_metrics_api_response()
-        mock_http_client.add_response(
-            "/data_flows/data_sets/5061/metrics", mock_response
-        )
+        mock_http_client.add_response("/data_sets/5061/flow/metrics", mock_response)
 
         # Act
         mock_client.flows.get_metrics(
@@ -637,9 +687,7 @@ class TestFlowsUnit:
         """Test get_metrics with orderby parameter."""
         # Arrange
         mock_response = MockResponseBuilder.flow_metrics_api_response()
-        mock_http_client.add_response(
-            "/data_flows/data_sets/5061/metrics", mock_response
-        )
+        mock_http_client.add_response("/data_sets/5061/flow/metrics", mock_response)
 
         # Act
         mock_client.flows.get_metrics(
@@ -657,9 +705,7 @@ class TestFlowsUnit:
         """Test get_metrics with all parameters."""
         # Arrange
         mock_response = MockResponseBuilder.flow_metrics_api_response()
-        mock_http_client.add_response(
-            "/data_flows/data_sinks/5029/metrics", mock_response
-        )
+        mock_http_client.add_response("/data_sinks/5029/flow/metrics", mock_response)
 
         # Act
         mock_client.flows.get_metrics(
@@ -758,9 +804,7 @@ class TestFlowsUnit:
             f"/data_sources/{copied_source_id}", updated_source
         )
         mock_http_client.add_response(f"/data_sinks/{copied_sink_id}", updated_sink)
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act
         result = mock_client.flows.copy_and_replace_credentials(
@@ -870,12 +914,8 @@ class TestFlowsUnit:
         mock_http_client.add_response(
             f"/data_sources/{copied_source_id}", updated_source
         )
-        mock_http_client.add_response(
-            f"/data_sinks/{copied_sink_a_id}", updated_sink_a
-        )
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/data_sinks/{copied_sink_a_id}", updated_sink_a)
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act — only map source and sink A, leave sink B untouched
         result = mock_client.flows.copy_and_replace_credentials(
@@ -913,9 +953,7 @@ class TestFlowsUnit:
         refetch_response = copy_response.copy()
 
         mock_http_client.add_response("/flows/100/copy", copy_response)
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act — pass copy_options with reuse_data_credentials=False (should be overridden)
         result = mock_client.flows.copy_and_replace_credentials(
@@ -963,9 +1001,7 @@ class TestFlowsUnit:
         refetch_response = copy_response.copy()
 
         mock_http_client.add_response("/flows/100/copy", copy_response)
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act
         result = mock_client.flows.copy_and_replace_credentials(
@@ -1033,9 +1069,7 @@ class TestFlowsUnit:
         mock_http_client.add_response(
             f"/projects/{target_project_id}/flows", add_flows_response
         )
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act
         result = mock_client.flows.copy_and_replace_credentials(
@@ -1071,9 +1105,7 @@ class TestFlowsUnit:
         refetch_response = copy_response.copy()
 
         mock_http_client.add_response("/flows/100/copy", copy_response)
-        mock_http_client.add_response(
-            f"/flows/{origin_node_id}", refetch_response
-        )
+        mock_http_client.add_response(f"/flows/{origin_node_id}", refetch_response)
 
         # Act — no target_project_id
         result = mock_client.flows.copy_and_replace_credentials(
