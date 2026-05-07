@@ -12,7 +12,7 @@ Authentication utilities for the Nexla SDK
 
 ### TokenAuthHandler
 
-Defined in `nexla_sdk/auth.py:14`
+Defined in `nexla_sdk/auth.py:15`
 
 Handles authentication and token management for Nexla API
 
@@ -21,13 +21,13 @@ Supports two authentication flows as per Nexla API documentation:
 1. **Service Key Flow**: Uses service keys to obtain session tokens via POST to
    /token endpoint with `Authorization: Basic <Service-Key>`. Automatically
    refreshes tokens before expiry using /token/refresh endpoint.
-   
+
 2. **Direct Token Flow**: Uses pre-obtained access tokens directly. These tokens
    expire after a configured interval (usually 1 hour).
 
 Responsible for:
 - Obtaining session tokens using service keys (Basic auth)
-- Using directly provided access tokens (Bearer auth)  
+- Using directly provided access tokens (Bearer auth)
 - Refreshing session tokens before expiry (service key flow only)
 - Ensuring valid tokens are available for API requests
 - Handling authentication retries on 401 responses
@@ -35,21 +35,21 @@ Responsible for:
 Methods:
 
 - `ensure_valid_token(self) -> str`
-  - Source: `nexla_sdk/auth.py:145`
+  - Source: `nexla_sdk/auth.py:154`
   - Ensures a valid session token is available, refreshing if necessary
 - `execute_authenticated_request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/auth.py:191`
+  - Source: `nexla_sdk/auth.py:202`
   - Execute a request with authentication handling
 - `get_access_token(self) -> str`
-  - Source: `nexla_sdk/auth.py:69`
+  - Source: `nexla_sdk/auth.py:72`
   - Get the current access token
 - `logout(self) -> None`
-  - Source: `nexla_sdk/auth.py:170`
+  - Source: `nexla_sdk/auth.py:179`
   - Ends the current session and invalidates the NexlaSessionToken.
 - `obtain_session_token(self) -> None`
-  - Source: `nexla_sdk/auth.py:83`
+  - Source: `nexla_sdk/auth.py:88`
   - Obtains a session token using the service key
 - `refresh_session_token(self) -> None`
-  - Source: `nexla_sdk/auth.py:134`
+  - Source: `nexla_sdk/auth.py:143`
   - Refresh token (compat shim).
 

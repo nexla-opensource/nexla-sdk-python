@@ -10,38 +10,38 @@ keywords: [Nexla, SDK, Python, API]
 
 ### AsyncTasksResource
 
-Defined in `nexla_sdk/resources/async_tasks.py:7`
+Defined in `nexla_sdk/resources/async_tasks.py:8`
 
 Resource for managing asynchronous tasks.
 
 Methods:
 
 - `acknowledge(self, task_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/async_tasks.py:72`
+  - Source: `nexla_sdk/resources/async_tasks.py:73`
 - `create(self, payload: nexla_sdk.models.async_tasks.requests.AsyncTaskCreate) -> nexla_sdk.models.async_tasks.responses.AsyncTask`
-  - Source: `nexla_sdk/resources/async_tasks.py:20`
+  - Source: `nexla_sdk/resources/async_tasks.py:21`
   - Create/start an asynchronous task.
 - `delete(self, task_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/async_tasks.py:49`
+  - Source: `nexla_sdk/resources/async_tasks.py:50`
   - Delete resource.
 - `download_link(self, task_id: int) -> Union[str, nexla_sdk.models.async_tasks.responses.DownloadLink]`
-  - Source: `nexla_sdk/resources/async_tasks.py:62`
+  - Source: `nexla_sdk/resources/async_tasks.py:63`
 - `explain_arguments(self, task_type: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/async_tasks.py:40`
+  - Source: `nexla_sdk/resources/async_tasks.py:41`
 - `get(self, task_id: int) -> nexla_sdk.models.async_tasks.responses.AsyncTask`
-  - Source: `nexla_sdk/resources/async_tasks.py:44`
+  - Source: `nexla_sdk/resources/async_tasks.py:45`
   - Get single resource by ID.
 - `list(self) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
-  - Source: `nexla_sdk/resources/async_tasks.py:15`
+  - Source: `nexla_sdk/resources/async_tasks.py:16`
   - List asynchronous tasks.
 - `list_by_status(self, status: str) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
-  - Source: `nexla_sdk/resources/async_tasks.py:31`
+  - Source: `nexla_sdk/resources/async_tasks.py:32`
 - `list_of_type(self, task_type: str) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
-  - Source: `nexla_sdk/resources/async_tasks.py:26`
+  - Source: `nexla_sdk/resources/async_tasks.py:27`
 - `rerun(self, task_id: int) -> nexla_sdk.models.async_tasks.responses.AsyncTask`
-  - Source: `nexla_sdk/resources/async_tasks.py:53`
+  - Source: `nexla_sdk/resources/async_tasks.py:54`
 - `result(self, task_id: int) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/async_tasks.py:58`
+  - Source: `nexla_sdk/resources/async_tasks.py:59`
 - `types(self) -> List[str]`
-  - Source: `nexla_sdk/resources/async_tasks.py:36`
+  - Source: `nexla_sdk/resources/async_tasks.py:37`
 

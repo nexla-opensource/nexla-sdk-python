@@ -10,31 +10,31 @@ keywords: [Nexla, SDK, Python, API]
 
 ### CodeContainersResource
 
-Defined in `nexla_sdk/resources/code_containers.py:7`
+Defined in `nexla_sdk/resources/code_containers.py:11`
 
 Resource for managing code containers.
 
 Methods:
 
 - `copy(self, code_container_id: int) -> nexla_sdk.models.code_containers.responses.CodeContainer`
-  - Source: `nexla_sdk/resources/code_containers.py:61`
+  - Source: `nexla_sdk/resources/code_containers.py:67`
   - Copy a code container by ID.
 - `create(self, data: nexla_sdk.models.code_containers.requests.CodeContainerCreate) -> nexla_sdk.models.code_containers.responses.CodeContainer`
-  - Source: `nexla_sdk/resources/code_containers.py:41`
+  - Source: `nexla_sdk/resources/code_containers.py:45`
   - Create a new code container.
 - `delete(self, code_container_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/code_containers.py:57`
+  - Source: `nexla_sdk/resources/code_containers.py:63`
   - Delete a code container by ID.
 - `get(self, code_container_id: int, expand: bool = False) -> nexla_sdk.models.code_containers.responses.CodeContainer`
-  - Source: `nexla_sdk/resources/code_containers.py:33`
+  - Source: `nexla_sdk/resources/code_containers.py:37`
   - Get a code container by ID.
 - `list(self, **kwargs) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
-  - Source: `nexla_sdk/resources/code_containers.py:15`
+  - Source: `nexla_sdk/resources/code_containers.py:19`
   - List code containers with optional filters.
 - `list_public(self) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
-  - Source: `nexla_sdk/resources/code_containers.py:65`
+  - Source: `nexla_sdk/resources/code_containers.py:71`
   - List publicly shared code containers.
 - `update(self, code_container_id: int, data: nexla_sdk.models.code_containers.requests.CodeContainerUpdate) -> nexla_sdk.models.code_containers.responses.CodeContainer`
-  - Source: `nexla_sdk/resources/code_containers.py:49`
+  - Source: `nexla_sdk/resources/code_containers.py:53`
   - Update an existing code container.
 

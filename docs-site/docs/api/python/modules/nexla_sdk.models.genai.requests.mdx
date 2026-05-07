@@ -26,9 +26,9 @@ Fields:
 
 - `name`: `str`
 - `type`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 - `data_credentials_id`: `int`
-- `description`: `typing.Optional[str]`
+- `description`: `Optional`
 
 ### GenAiConfigPayload
 
@@ -46,12 +46,12 @@ Features:
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `type`: `typing.Optional[str]`
-- `data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `type`: `Optional`
+- `data_credentials_id`: `Optional`
 
 ### GenAiOrgSettingPayload
 
@@ -69,7 +69,7 @@ Features:
 
 Fields:
 
-- `org_id`: `typing.Optional[int]`
+- `org_id`: `Optional`
 - `gen_ai_config_id`: `int`
 - `gen_ai_usage`: `str`
 

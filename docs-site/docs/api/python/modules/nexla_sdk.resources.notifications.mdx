@@ -10,73 +10,73 @@ keywords: [Nexla, SDK, Python, API]
 
 ### NotificationsResource
 
-Defined in `nexla_sdk/resources/notifications.py:13`
+Defined in `nexla_sdk/resources/notifications.py:19`
 
 Resource for managing notifications.
 
 Methods:
 
 - `create_channel_setting(self, data: nexla_sdk.models.notifications.requests.NotificationChannelSettingCreate) -> nexla_sdk.models.notifications.responses.NotificationChannelSetting`
-  - Source: `nexla_sdk/resources/notifications.py:190`
+  - Source: `nexla_sdk/resources/notifications.py:195`
   - Create notification channel setting.
 - `create_setting(self, data: nexla_sdk.models.notifications.requests.NotificationSettingCreate) -> nexla_sdk.models.notifications.responses.NotificationSetting`
-  - Source: `nexla_sdk/resources/notifications.py:276`
+  - Source: `nexla_sdk/resources/notifications.py:285`
   - Create notification setting.
 - `delete(self, notification_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:34`
+  - Source: `nexla_sdk/resources/notifications.py:40`
   - Delete notification.
 - `delete_all(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:82`
+  - Source: `nexla_sdk/resources/notifications.py:90`
   - Delete all notifications.
 - `delete_channel_setting(self, setting_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:235`
+  - Source: `nexla_sdk/resources/notifications.py:242`
   - Delete notification channel setting.
 - `delete_setting(self, setting_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:321`
+  - Source: `nexla_sdk/resources/notifications.py:330`
   - Delete notification setting.
 - `get(self, notification_id: int, expand: bool = False) -> nexla_sdk.models.notifications.responses.Notification`
-  - Source: `nexla_sdk/resources/notifications.py:21`
+  - Source: `nexla_sdk/resources/notifications.py:27`
   - Get single notification by ID.
 - `get_channel_setting(self, setting_id: int) -> nexla_sdk.models.notifications.responses.NotificationChannelSetting`
-  - Source: `nexla_sdk/resources/notifications.py:204`
+  - Source: `nexla_sdk/resources/notifications.py:211`
   - Get notification channel setting.
 - `get_count(self, read: Optional[int] = None) -> nexla_sdk.models.notifications.responses.NotificationCount`
-  - Source: `nexla_sdk/resources/notifications.py:92`
+  - Source: `nexla_sdk/resources/notifications.py:100`
   - Get notification count.
 - `get_resource_settings(self, resource_type: str, resource_id: int, expand: bool = False, filter_overridden: bool = False, notification_type_id: Optional[int] = None) -> List[nexla_sdk.models.notifications.responses.NotificationSetting]`
-  - Source: `nexla_sdk/resources/notifications.py:352`
+  - Source: `nexla_sdk/resources/notifications.py:361`
   - Get notification settings for a resource.
 - `get_setting(self, setting_id: int) -> nexla_sdk.models.notifications.responses.NotificationSetting`
-  - Source: `nexla_sdk/resources/notifications.py:290`
+  - Source: `nexla_sdk/resources/notifications.py:299`
   - Get notification setting.
 - `get_settings_by_type(self, notification_type_id: int, expand: bool = False) -> List[nexla_sdk.models.notifications.responses.NotificationSetting]`
-  - Source: `nexla_sdk/resources/notifications.py:334`
+  - Source: `nexla_sdk/resources/notifications.py:343`
   - Get notification settings for a type.
 - `get_type(self, event_type: str, resource_type: str) -> nexla_sdk.models.notifications.responses.NotificationType`
-  - Source: `nexla_sdk/resources/notifications.py:159`
+  - Source: `nexla_sdk/resources/notifications.py:167`
   - Get specific notification type.
 - `get_types(self, status: Optional[str] = None) -> List[nexla_sdk.models.notifications.responses.NotificationType]`
-  - Source: `nexla_sdk/resources/notifications.py:144`
+  - Source: `nexla_sdk/resources/notifications.py:152`
   - Get all notification types.
 - `list(self, read: Optional[int] = None, level: Optional[str] = None, from_timestamp: Optional[int] = None, to_timestamp: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.notifications.responses.Notification]`
-  - Source: `nexla_sdk/resources/notifications.py:46`
+  - Source: `nexla_sdk/resources/notifications.py:52`
   - List notifications with optional filters.
 - `list_channel_settings(self) -> List[nexla_sdk.models.notifications.responses.NotificationChannelSetting]`
-  - Source: `nexla_sdk/resources/notifications.py:179`
+  - Source: `nexla_sdk/resources/notifications.py:184`
   - List notification channel settings.
 - `list_settings(self, event_type: Optional[str] = None, resource_type: Optional[str] = None, status: Optional[str] = None) -> List[nexla_sdk.models.notifications.responses.NotificationSetting]`
-  - Source: `nexla_sdk/resources/notifications.py:249`
+  - Source: `nexla_sdk/resources/notifications.py:256`
   - List notification settings.
 - `mark_read(self, notification_ids: Union[List[int], str]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:107`
+  - Source: `nexla_sdk/resources/notifications.py:115`
   - Mark notifications as read.
 - `mark_unread(self, notification_ids: Union[List[int], str]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/notifications.py:125`
+  - Source: `nexla_sdk/resources/notifications.py:133`
   - Mark notifications as unread.
 - `update_channel_setting(self, setting_id: int, data: nexla_sdk.models.notifications.requests.NotificationChannelSettingUpdate) -> nexla_sdk.models.notifications.responses.NotificationChannelSetting`
-  - Source: `nexla_sdk/resources/notifications.py:218`
+  - Source: `nexla_sdk/resources/notifications.py:225`
   - Update notification channel setting.
 - `update_setting(self, setting_id: int, data: nexla_sdk.models.notifications.requests.NotificationSettingUpdate) -> nexla_sdk.models.notifications.responses.NotificationSetting`
-  - Source: `nexla_sdk/resources/notifications.py:304`
+  - Source: `nexla_sdk/resources/notifications.py:313`
   - Update notification setting.
 

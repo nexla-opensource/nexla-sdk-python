@@ -108,6 +108,8 @@ from nexla_sdk.models.metrics import (
     DashboardMetrics,
     MetricsByRunResponse,
     MetricsResponse,
+    ResourceFlowLogsResponse,
+    ResourceFlowMetricsResponse,
     ResourceMetricDaily,
     ResourceMetricsByRun,
 )
@@ -328,6 +330,8 @@ __all__ = [
     "ResourceMetricsByRun",
     "MetricsResponse",
     "MetricsByRunResponse",
+    "ResourceFlowMetricsResponse",
+    "ResourceFlowLogsResponse",
     # Code containers
     "CodeContainer",
     "CodeContainerCreate",

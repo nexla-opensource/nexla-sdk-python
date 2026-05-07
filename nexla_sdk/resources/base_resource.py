@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
 from nexla_sdk.exceptions import NexlaError
@@ -24,6 +25,17 @@ class BaseResource:
         self.client = client
         self._path = ""  # Override in subclasses
         self._model_class = None  # Override in subclasses
+
+    @staticmethod
+    def _resolve_enum_value(enum_cls: Type[Enum], value: Any, param_name: str) -> str:
+        """Resolve an enum member or exact enum value string to the API value."""
+        try:
+            return enum_cls(value).value
+        except ValueError:
+            valid = ", ".join(repr(member.value) for member in enum_cls)
+            raise ValueError(
+                f"Invalid {param_name} {value!r}. Must be one of: {valid}"
+            ) from None
 
     def _make_request(
         self,

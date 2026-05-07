@@ -1,6 +1,7 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from nexla_sdk.models.common import LogEntry
+from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.organizations.custodians import OrgCustodiansPayload
 from nexla_sdk.models.organizations.requests import (
     OrganizationCreate,
@@ -291,20 +292,24 @@ class OrganizationsResource(BaseResource):
         return self._make_request("GET", path, params=params)
 
     def get_resource_audit_log(
-        self, org_id: int, resource_type: str, **params
+        self, org_id: int, resource_type: Union[ResourceType, str], **params
     ) -> List[LogEntry]:
         """
         Get audit log for a specific resource type within an organization.
 
         Args:
             org_id: Organization ID
-            resource_type: The type of resource (e.g., 'data_source', 'data_sink')
+            resource_type: ResourceType or exact string value
+                ("data_sources", "data_sets", "data_sinks").
             **params: Additional query parameters
 
         Returns:
             List of audit log entries
         """
-        path = f"{self._path}/{org_id}/{resource_type}/audit_log"
+        resource_type_value = self._resolve_enum_value(
+            ResourceType, resource_type, "resource_type"
+        )
+        path = f"{self._path}/{org_id}/{resource_type_value}/audit_log"
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in response]
 

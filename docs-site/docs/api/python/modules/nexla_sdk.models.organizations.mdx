@@ -10,28 +10,28 @@ keywords: [Nexla, SDK, Python, API]
 
 ### AccountSummary
 
-Defined in `nexla_sdk/models/organizations/responses.py:60`
+Defined in `nexla_sdk/models/organizations/responses.py:65`
 
 Organization account summary statistics.
 
 Fields:
 
 - `org_id`: `int`
-- `data_sources`: `typing.Dict[str, int]`
-- `data_sets`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_sinks`: `typing.Dict[str, int]`
+- `data_sources`: `Dict`
+- `data_sets`: `Dict`
+- `data_sinks`: `Dict`
 
 ### CustodianUser
 
-Defined in `nexla_sdk/models/organizations/responses.py:68`
+Defined in `nexla_sdk/models/organizations/responses.py:74`
 
 Simplified user view for organization custodians endpoints.
 
 Fields:
 
 - `id`: `int`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
+- `email`: `Optional`
+- `full_name`: `Optional`
 
 ### OrgCustodianRef
 
@@ -41,22 +41,22 @@ Reference to a user for organization custodians (by id or email).
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 
 ### OrgCustodiansPayload
 
-Defined in `nexla_sdk/models/organizations/custodians.py:12`
+Defined in `nexla_sdk/models/organizations/custodians.py:13`
 
 Payload for organization custodians endpoints.
 
 Fields:
 
-- `custodians`: `typing.List[nexla_sdk.models.organizations.custodians.OrgCustodianRef]`
+- `custodians`: `List`
 
 ### OrgMember
 
-Defined in `nexla_sdk/models/organizations/responses.py:49`
+Defined in `nexla_sdk/models/organizations/responses.py:53`
 
 Organization member information.
 
@@ -66,23 +66,23 @@ Fields:
 - `full_name`: `str`
 - `email`: `str`
 - `is_admin`: `bool`
-- `access_role`: `typing.Optional[typing.List[str]]`
+- `access_role`: `Optional`
 - `org_membership_status`: `str`
 - `user_status`: `str`
 
 ### OrgMemberActivateDeactivateRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:70`
+Defined in `nexla_sdk/models/organizations/requests.py:79`
 
 Request model for activating/deactivating org members.
 
 Fields:
 
-- `members`: `typing.List[typing.Dict[str, typing.Any]]`
+- `members`: `List`
 
 ### OrgMemberCreateRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:11`
+Defined in `nexla_sdk/models/organizations/requests.py:13`
 
 Request model for creating an org member.
 
@@ -94,53 +94,53 @@ Fields:
 
 ### OrgMemberDelete
 
-Defined in `nexla_sdk/models/organizations/requests.py:65`
+Defined in `nexla_sdk/models/organizations/requests.py:73`
 
 Request model for deleting org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberDeleteRequest]`
+- `members`: `List`
 
 ### OrgMemberDeleteRequest
 
-Defined in `nexla_sdk/models/organizations/requests.py:58`
+Defined in `nexla_sdk/models/organizations/requests.py:65`
 
 Request model for deleting a single org member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `delegate_owner_id`: `typing.Optional[int]`
+- `id`: `Optional`
+- `email`: `Optional`
+- `delegate_owner_id`: `Optional`
 
 ### OrgMemberList
 
-Defined in `nexla_sdk/models/organizations/requests.py:53`
+Defined in `nexla_sdk/models/organizations/requests.py:59`
 
 Request model for updating org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberUpdate]`
+- `members`: `List`
 
 ### OrgMemberUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:44`
+Defined in `nexla_sdk/models/organizations/requests.py:49`
 
 Request model for updating org member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
-- `admin`: `typing.Optional[bool]`
-- `access_role`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
+- `full_name`: `Optional`
+- `admin`: `Optional`
+- `access_role`: `Optional`
 
 ### OrgTier
 
-Defined in `nexla_sdk/models/organizations/responses.py:8`
+Defined in `nexla_sdk/models/organizations/responses.py:10`
 
 Organization tier information.
 
@@ -152,11 +152,11 @@ Fields:
 - `record_count_limit`: `int`
 - `record_count_limit_time`: `str`
 - `data_source_count_limit`: `int`
-- `trial_period_days`: `typing.Optional[int]`
+- `trial_period_days`: `Optional`
 
 ### Organization
 
-Defined in `nexla_sdk/models/organizations/responses.py:19`
+Defined in `nexla_sdk/models/organizations/responses.py:22`
 
 Organization response model.
 
@@ -164,33 +164,33 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `email_domain`: `typing.Optional[str]`
-- `access_roles`: `typing.List[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.users.responses.User]`
-- `status`: `typing.Optional[str]`
-- `members_default_access_role`: `typing.Optional[str]`
-- `default_reusable_code_container_access_role`: `typing.Optional[str]`
-- `require_org_admin_to_publish`: `typing.Optional[bool]`
-- `require_org_admin_to_subscribe`: `typing.Optional[bool]`
-- `enable_nexla_password_login`: `typing.Optional[bool]`
-- `description`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `client_identifier`: `typing.Optional[str]`
-- `org_webhook_host`: `typing.Optional[str]`
-- `default_cluster_id`: `typing.Optional[int]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.users.responses.User]`
-- `admins`: `typing.List[nexla_sdk.models.users.responses.User]`
-- `org_tier`: `typing.Optional[nexla_sdk.models.organizations.responses.OrgTier]`
-- `account_tier_display_name`: `typing.Optional[str]`
-- `account_tier_name`: `typing.Optional[str]`
-- `email_domain_verified_at`: `typing.Optional[datetime.datetime]`
-- `name_verified_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `email_domain`: `Optional`
+- `access_roles`: `List`
+- `owner`: `Optional`
+- `status`: `Optional`
+- `members_default_access_role`: `Optional`
+- `default_reusable_code_container_access_role`: `Optional`
+- `require_org_admin_to_publish`: `Optional`
+- `require_org_admin_to_subscribe`: `Optional`
+- `enable_nexla_password_login`: `Optional`
+- `description`: `Optional`
+- `email`: `Optional`
+- `client_identifier`: `Optional`
+- `org_webhook_host`: `Optional`
+- `default_cluster_id`: `Optional`
+- `billing_owner`: `Optional`
+- `admins`: `List`
+- `org_tier`: `Optional`
+- `account_tier_display_name`: `Optional`
+- `account_tier_name`: `Optional`
+- `email_domain_verified_at`: `Optional`
+- `name_verified_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### OrganizationCreate
 
-Defined in `nexla_sdk/models/organizations/requests.py:18`
+Defined in `nexla_sdk/models/organizations/requests.py:21`
 
 Request model for creating an organization.
 
@@ -198,29 +198,29 @@ Fields:
 
 - `name`: `str`
 - `email_domain`: `str`
-- `owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `owner_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `billing_owner_id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `account_tier_id`: `typing.Optional[int]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.organizations.requests.OrgMemberCreateRequest]]`
+- `owner`: `Optional`
+- `owner_id`: `Optional`
+- `description`: `Optional`
+- `billing_owner`: `Optional`
+- `billing_owner_id`: `Optional`
+- `email`: `Optional`
+- `account_tier_id`: `Optional`
+- `members`: `Optional`
 
 ### OrganizationUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:32`
+Defined in `nexla_sdk/models/organizations/requests.py:36`
 
 Request model for updating an organization.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `owner_id`: `typing.Optional[int]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `billing_owner_id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.organizations.requests.OrgMemberCreateRequest]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `owner`: `Optional`
+- `owner_id`: `Optional`
+- `billing_owner`: `Optional`
+- `billing_owner_id`: `Optional`
+- `email`: `Optional`
+- `members`: `Optional`
 

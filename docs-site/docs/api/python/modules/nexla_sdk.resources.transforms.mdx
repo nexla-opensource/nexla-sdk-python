@@ -10,31 +10,31 @@ keywords: [Nexla, SDK, Python, API]
 
 ### TransformsResource
 
-Defined in `nexla_sdk/resources/transforms.py:7`
+Defined in `nexla_sdk/resources/transforms.py:8`
 
 Resource for reusable record transforms (aliased to code containers).
 
 Methods:
 
 - `copy(self, transform_id: int) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:49`
+  - Source: `nexla_sdk/resources/transforms.py:50`
   - Copy a transform by ID.
 - `create(self, data: nexla_sdk.models.transforms.requests.TransformCreate) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:37`
+  - Source: `nexla_sdk/resources/transforms.py:38`
   - Create a new transform.
 - `delete(self, transform_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/transforms.py:45`
+  - Source: `nexla_sdk/resources/transforms.py:46`
   - Delete a transform by ID.
 - `get(self, transform_id: int, expand: bool = False) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:33`
+  - Source: `nexla_sdk/resources/transforms.py:34`
   - Get a transform by ID.
 - `list(self, **kwargs) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:15`
+  - Source: `nexla_sdk/resources/transforms.py:16`
   - List transforms with optional filters.
 - `list_public(self) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:53`
+  - Source: `nexla_sdk/resources/transforms.py:54`
   - List publicly shared transforms.
 - `update(self, transform_id: int, data: nexla_sdk.models.transforms.requests.TransformUpdate) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:41`
+  - Source: `nexla_sdk/resources/transforms.py:42`
   - Update an existing transform.
 

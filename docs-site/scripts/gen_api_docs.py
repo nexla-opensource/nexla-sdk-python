@@ -116,6 +116,33 @@ def format_signature(obj) -> str:
         return "()"
 
 
+def mdx_text(text: str) -> str:
+    """Escape generated prose so Python examples are treated as MDX text.
+
+    This intentionally includes indented docstring examples: Docusaurus MDX parses
+    braces in generated indented Python examples before Markdown code-block
+    handling, so raw dict literals like {"id": 1} can break the docs build.
+    """
+    lines: List[str] = []
+    in_fence = False
+
+    for line in text.splitlines():
+        if line.strip().startswith("```"):
+            in_fence = not in_fence
+            lines.append(line)
+            continue
+        if in_fence:
+            lines.append(line)
+            continue
+
+        parts = line.split("`")
+        for index in range(0, len(parts), 2):
+            parts[index] = parts[index].replace("{", "\\{").replace("}", "\\}")
+        lines.append("`".join(parts))
+
+    return "\n".join(lines)
+
+
 def write_module_page(
     module_name: str, mod, coverage: Dict[str, Any], gaps: List[str]
 ) -> None:
@@ -150,7 +177,7 @@ def write_module_page(
 
         mdoc = inspect.getdoc(mod) or ""
         if mdoc:
-            f.write(mdoc + "\n\n")
+            f.write(mdx_text(mdoc) + "\n\n")
 
         if classes:
             f.write("## Classes\n\n")
@@ -162,13 +189,13 @@ def write_module_page(
                     f.write(f"Defined in `{cfile}:{cline}`\n\n")
                     TRACE[module_name]["classes"][cname] = f"{cfile}:{cline}"
                 if cdoc:
-                    f.write(cdoc + "\n\n")
+                    f.write(mdx_text(cdoc) + "\n\n")
                 # Pydantic fields
                 fields = pydantic_fields(cls)
                 if fields:
                     f.write("Fields:\n\n")
                     for n, t, d in fields:
-                        dd = f" — {d}" if d else ""
+                        dd = f" — {mdx_text(d)}" if d else ""
                         f.write(f"- `{n}`: `{t}`{dd}\n")
                     f.write("\n")
                 # Enum members
@@ -194,11 +221,11 @@ def write_module_page(
                         f.write(f"- `{n}{sig}`\n")
                         if mfile and mline:
                             f.write(f"  - Source: `{mfile}:{mline}`\n")
-                            TRACE[module_name]["classes"][
-                                f"{cname}.{n}"
-                            ] = f"{mfile}:{mline}"
+                            TRACE[module_name]["classes"][f"{cname}.{n}"] = (
+                                f"{mfile}:{mline}"
+                            )
                         if mdoc:
-                            f.write(f"  - {mdoc.splitlines()[0]}\n")
+                            f.write(f"  - {mdx_text(mdoc.splitlines()[0])}\n")
                     f.write("\n")
                 documented += 1
 
@@ -213,7 +240,7 @@ def write_module_page(
                     f.write(f"Source: `{ffile}:{fline}`\n\n")
                     TRACE[module_name]["functions"][fname] = f"{ffile}:{fline}"
                 if fdoc:
-                    f.write(fdoc + "\n\n")
+                    f.write(mdx_text(fdoc) + "\n\n")
                 documented += 1
 
         # TODO marker if no symbols found

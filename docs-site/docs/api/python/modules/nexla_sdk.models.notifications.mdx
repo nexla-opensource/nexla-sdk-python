@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### Notification
 
-Defined in `nexla_sdk/models/notifications/responses.py:8`
+Defined in `nexla_sdk/models/notifications/responses.py:10`
 
 Notification response model.
 
@@ -19,19 +19,19 @@ Fields:
 - `id`: `int`
 - `owner`: `Owner`
 - `org`: `Organization`
-- `access_roles`: `typing.List[str]`
+- `access_roles`: `List`
 - `level`: `str`
-- `resource_id`: `int`
+- `resource_id`: `Optional`
 - `resource_type`: `str`
 - `message_id`: `int`
 - `message`: `str`
-- `read_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `read_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### NotificationChannelSetting
 
-Defined in `nexla_sdk/models/notifications/responses.py:37`
+Defined in `nexla_sdk/models/notifications/responses.py:41`
 
 Notification channel configuration.
 
@@ -41,33 +41,33 @@ Fields:
 - `owner_id`: `int`
 - `org_id`: `int`
 - `channel`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 
 ### NotificationChannelSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:6`
+Defined in `nexla_sdk/models/notifications/requests.py:8`
 
 Request model for creating notification channel setting.
 
 Fields:
 
 - `channel`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 
 ### NotificationChannelSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:12`
+Defined in `nexla_sdk/models/notifications/requests.py:15`
 
 Request model for updating notification channel setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `channel`: `Optional`
+- `config`: `Optional`
 
 ### NotificationCount
 
-Defined in `nexla_sdk/models/notifications/responses.py:67`
+Defined in `nexla_sdk/models/notifications/responses.py:73`
 
 Notification count response.
 
@@ -77,7 +77,7 @@ Fields:
 
 ### NotificationSetting
 
-Defined in `nexla_sdk/models/notifications/responses.py:46`
+Defined in `nexla_sdk/models/notifications/responses.py:51`
 
 Notification setting configuration.
 
@@ -88,7 +88,7 @@ Fields:
 - `owner_id`: `int`
 - `channel`: `str`
 - `notification_resource_type`: `str`
-- `resource_id`: `int`
+- `resource_id`: `Optional`
 - `status`: `str`
 - `notification_type_id`: `int`
 - `name`: `str`
@@ -97,12 +97,12 @@ Fields:
 - `category`: `str`
 - `event_type`: `str`
 - `resource_type`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
-- `priority`: `typing.Optional[int]`
+- `config`: `Dict`
+- `priority`: `Optional`
 
 ### NotificationSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:18`
+Defined in `nexla_sdk/models/notifications/requests.py:22`
 
 Request model for creating notification setting.
 
@@ -110,32 +110,32 @@ Fields:
 
 - `channel`: `str`
 - `notification_type_id`: `int`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Dict[str, typing.Any]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
+- `status`: `Optional`
+- `config`: `Dict`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `notification_channel_setting_id`: `Optional`
 
 ### NotificationSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:29`
+Defined in `nexla_sdk/models/notifications/requests.py:34`
 
 Request model for updating notification setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `checked`: `typing.Optional[bool]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
-- `notification_type_id`: `typing.Optional[int]`
+- `channel`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `checked`: `Optional`
+- `notification_channel_setting_id`: `Optional`
+- `notification_type_id`: `Optional`
 
 ### NotificationType
 
-Defined in `nexla_sdk/models/notifications/responses.py:25`
+Defined in `nexla_sdk/models/notifications/responses.py:28`
 
 Notification type information.
 

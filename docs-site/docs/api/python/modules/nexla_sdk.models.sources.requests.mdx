@@ -12,7 +12,7 @@ Request models for sources.
 
 ### SourceCopyOptions
 
-Defined in `nexla_sdk/models/sources/requests.py:30`
+Defined in `nexla_sdk/models/sources/requests.py:34`
 
 Options for copying a source.
 
@@ -20,12 +20,12 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 ### SourceCreate
 
-Defined in `nexla_sdk/models/sources/requests.py:6`
+Defined in `nexla_sdk/models/sources/requests.py:8`
 
 Request model for creating a source.
 
@@ -33,23 +33,23 @@ Fields:
 
 - `name`: `str`
 - `source_type`: `str`
-- `data_credentials_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `ingest_method`: `typing.Optional[str]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `data_credentials_id`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `ingest_method`: `Optional`
+- `template_config`: `Optional`
 
 ### SourceUpdate
 
-Defined in `nexla_sdk/models/sources/requests.py:22`
+Defined in `nexla_sdk/models/sources/requests.py:25`
 
 Request model for updating a source.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `data_credentials_id`: `Optional`
 

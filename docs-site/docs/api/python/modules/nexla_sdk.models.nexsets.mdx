@@ -10,61 +10,61 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataSinkSimplified
 
-Defined in `nexla_sdk/models/nexsets/responses.py:10`
+Defined in `nexla_sdk/models/nexsets/responses.py:12`
 
 Simplified data sink information.
 
 Fields:
 
 - `id`: `int`
-- `owner_id`: `int`
-- `org_id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 - `name`: `str`
-- `status`: `typing.Optional[str]`
-- `sink_type`: `typing.Optional[nexla_sdk.models.destinations.enums.DestinationType]`
+- `status`: `Optional`
+- `sink_type`: `Optional`
 
 ### Nexset
 
-Defined in `nexla_sdk/models/nexsets/responses.py:20`
+Defined in `nexla_sdk/models/nexsets/responses.py:23`
 
 Nexset (data set) response model.
 
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `flow_type`: `typing.Optional[str]`
-- `data_source_id`: `typing.Optional[int]`
-- `data_source`: `typing.Optional[nexla_sdk.models.sources.responses.Source]`
-- `parent_data_sets`: `typing.List[nexla_sdk.models.sources.responses.DataSetBrief]`
-- `data_sinks`: `typing.List[nexla_sdk.models.nexsets.responses.DataSinkSimplified]`
-- `transform_id`: `typing.Optional[int]`
-- `output_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `flow_type`: `Optional`
+- `data_source_id`: `Optional`
+- `data_source`: `Optional`
+- `parent_data_sets`: `List`
+- `data_sinks`: `List`
+- `transform_id`: `Optional`
+- `output_schema`: `Optional`
+- `copied_from_id`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### NexsetCopyOptions
 
-Defined in `nexla_sdk/models/nexsets/requests.py:41`
+Defined in `nexla_sdk/models/nexsets/requests.py:46`
 
 Options for copying a nexset.
 
 Fields:
 
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 ### NexsetCreate
 
-Defined in `nexla_sdk/models/nexsets/requests.py:7`
+Defined in `nexla_sdk/models/nexsets/requests.py:10`
 
 Request model for creating a nexset.
 
@@ -73,26 +73,26 @@ Fields:
 - `name`: `str`
 - `parent_data_set_id`: `int`
 - `has_custom_transform`: `bool`
-- `transform`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `transform_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `output_schema_annotations`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `transform`: `Optional`
+- `transform_id`: `Optional`
+- `description`: `Optional`
+- `output_schema_annotations`: `Optional`
 - `output_schema_validation_enabled`: `bool`
-- `output_validation_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_sinks`: `typing.List[typing.Union[int, typing.Dict[str, typing.Any]]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
+- `output_validation_schema`: `Optional`
+- `data_sinks`: `List`
+- `custom_config`: `Optional`
+- `tags`: `List`
 
 ### NexsetSample
 
-Defined in `nexla_sdk/models/nexsets/responses.py:43`
+Defined in `nexla_sdk/models/nexsets/responses.py:47`
 
 Nexset sample record.
 
 Fields:
 
-- `raw_message`: `typing.Dict[str, typing.Any]`
-- `nexla_metadata`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `raw_message`: `Dict`
+- `nexla_metadata`: `Optional`
 
 ### NexsetStatus
 
@@ -111,27 +111,27 @@ Members:
 
 ### NexsetUpdate
 
-Defined in `nexla_sdk/models/nexsets/requests.py:26`
+Defined in `nexla_sdk/models/nexsets/requests.py:30`
 
 Request model for updating a nexset.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `has_custom_transform`: `typing.Optional[bool]`
-- `transform`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `transform_id`: `typing.Optional[int]`
-- `output_schema_annotations`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `output_schema_validation_enabled`: `typing.Optional[bool]`
-- `output_validation_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_sinks`: `typing.Optional[typing.List[typing.Union[int, typing.Dict[str, typing.Any]]]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `has_custom_transform`: `Optional`
+- `transform`: `Optional`
+- `transform_id`: `Optional`
+- `output_schema_annotations`: `Optional`
+- `output_schema_validation_enabled`: `Optional`
+- `output_validation_schema`: `Optional`
+- `data_sinks`: `Optional`
+- `custom_config`: `Optional`
+- `tags`: `Optional`
 
 ### OutputType
 
-Defined in `nexla_sdk/models/nexsets/enums.py:23`
+Defined in `nexla_sdk/models/nexsets/enums.py:25`
 
 Transform output types.
 
@@ -143,7 +143,7 @@ Members:
 
 ### TransformType
 
-Defined in `nexla_sdk/models/nexsets/enums.py:14`
+Defined in `nexla_sdk/models/nexsets/enums.py:15`
 
 Transform types.
 

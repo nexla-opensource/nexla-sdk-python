@@ -1,0 +1,54 @@
+---
+id: nexla_sdk.resources.webhooks
+title: nexla_sdk.resources.webhooks
+slug: /api/python/modules/nexla_sdk/resources/webhooks
+description: API for nexla_sdk.resources.webhooks
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for sending data to Nexla webhooks.
+
+## Classes
+
+### WebhooksResource
+
+Defined in `nexla_sdk/resources/webhooks.py:11`
+
+Resource for sending data to Nexla webhooks.
+
+Webhooks use API key authentication instead of session tokens.
+The webhook URL is provided when you create a webhook source in Nexla.
+
+Examples:
+    # Initialize with API key
+    webhooks = WebhooksResource(api_key="your-api-key")
+
+    # Send a single record
+    response = webhooks.send_one_record(
+        webhook_url="https://api.nexla.com/webhook/abc123",
+        record=\{"id": 1, "name": "test"\}
+    )
+
+    # Send multiple records
+    response = webhooks.send_many_records(
+        webhook_url="https://api.nexla.com/webhook/abc123",
+        records=[
+            \{"id": 1, "name": "first"\},
+            \{"id": 2, "name": "second"\}
+        ]
+    )
+
+Note:
+    This resource operates independently of the NexlaClient as it uses
+    different authentication. You can also access it through the client
+    for convenience if you set the webhook API key.
+
+Methods:
+
+- `send_many_records(self, webhook_url: str, records: List[Dict[str, Any]], options: Optional[nexla_sdk.models.webhooks.requests.WebhookSendOptions] = None, auth_method: str = 'query') -> nexla_sdk.models.webhooks.responses.WebhookResponse`
+  - Source: `nexla_sdk/resources/webhooks.py:173`
+  - Send multiple records to a webhook.
+- `send_one_record(self, webhook_url: str, record: Dict[str, Any], options: Optional[nexla_sdk.models.webhooks.requests.WebhookSendOptions] = None, auth_method: str = 'query') -> nexla_sdk.models.webhooks.responses.WebhookResponse`
+  - Source: `nexla_sdk/resources/webhooks.py:126`
+  - Send a single record to a webhook.
+

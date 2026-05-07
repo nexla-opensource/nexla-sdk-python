@@ -10,47 +10,47 @@ keywords: [Nexla, SDK, Python, API]
 
 ### ProjectCreate
 
-Defined in `nexla_sdk/models/projects/requests.py:12`
+Defined in `nexla_sdk/models/projects/requests.py:15`
 
 Request model for creating a project.
 
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `data_flows`: `typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]`
+- `description`: `Optional`
+- `data_flows`: `List`
 
 ### ProjectFlowIdentifier
 
-Defined in `nexla_sdk/models/projects/requests.py:6`
+Defined in `nexla_sdk/models/projects/requests.py:8`
 
 Flow identifier for project.
 
 Fields:
 
-- `data_source_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
+- `data_source_id`: `Optional`
+- `data_set_id`: `Optional`
 
 ### ProjectFlowList
 
-Defined in `nexla_sdk/models/projects/requests.py:26`
+Defined in `nexla_sdk/models/projects/requests.py:31`
 
 Request model for managing project flows.
 
 Fields:
 
-- `data_flows`: `typing.Optional[typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]]`
-- `flows`: `typing.Optional[typing.List[int]]`
+- `data_flows`: `Optional`
+- `flows`: `Optional`
 
 ### ProjectUpdate
 
-Defined in `nexla_sdk/models/projects/requests.py:19`
+Defined in `nexla_sdk/models/projects/requests.py:23`
 
 Request model for updating a project.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `data_flows`: `typing.Optional[typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `data_flows`: `Optional`
 
