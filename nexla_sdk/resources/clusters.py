@@ -2,10 +2,7 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from nexla_sdk.models.clusters.requests import (
-    ClusterCreate,
-    ClusterUpdate,
-)
+from nexla_sdk.models.clusters.requests import ClusterCreate, ClusterUpdate
 from nexla_sdk.models.clusters.responses import Cluster
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -65,7 +62,9 @@ class ClustersResource(BaseResource):
         Returns:
             List of clusters
         """
-        return super().list(page=page, per_page=per_page, access_role=access_role, **kwargs)
+        return super().list(
+            page=page, per_page=per_page, access_role=access_role, **kwargs
+        )
 
     def get(self, cluster_id: int, expand: bool = False) -> Cluster:
         """Get cluster by ID.

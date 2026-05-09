@@ -1,0 +1,38 @@
+---
+id: nexla_sdk.resources.vendor_endpoints
+title: nexla_sdk.resources.vendor_endpoints
+slug: /api/python/modules/nexla_sdk/resources/vendor_endpoints
+description: API for nexla_sdk.resources.vendor_endpoints
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### VendorEndpointsResource
+
+Defined in `nexla_sdk/resources/vendor_endpoints.py:11`
+
+Resource for managing vendor endpoints.
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.vendor_endpoints.requests.VendorEndpointCreate, Dict[str, Any]]) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:25`
+  - Create new resource.
+- `delete(self, vendor_endpoint_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:37`
+  - Delete resource.
+- `delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:43`
+- `get(self, vendor_endpoint_id: int) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:22`
+  - Get single resource by ID.
+- `list(self, **kwargs) -> List[nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint]`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:19`
+  - List resources with optional filters.
+- `update(self, vendor_endpoint_id: int, data: Union[nexla_sdk.models.vendor_endpoints.requests.VendorEndpointUpdate, Dict[str, Any]]) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:30`
+  - Update resource.
+- `update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:40`
+

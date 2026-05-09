@@ -2,25 +2,6 @@
 
 A Python SDK for interacting with the Nexla API.
 
-## TypeScript SDK (New)
-
-This repository now includes a production-ready TypeScript SDK in `packages/ts-sdk`.
-
-### Install
-
-```bash
-npm install @nexla/sdk
-```
-
-### Quick Start
-
-```ts
-import { NexlaClient } from "@nexla/sdk";
-
-const client = new NexlaClient({ serviceKey: process.env.NEXLA_SERVICE_KEY });
-const flows = await client.request("get", "/flows");
-```
-
 ## Installation
 
 ```bash

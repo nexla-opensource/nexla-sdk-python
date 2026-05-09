@@ -10,7 +10,6 @@ from nexla_sdk.models.validators.requests import (
 from nexla_sdk.models.validators.responses import Validator
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_VALIDATOR = {
     "id": 123,
@@ -132,9 +131,7 @@ class TestValidatorsResource:
         """Test updating a validator."""
         validator_id = 123
         updated_response = {**sample_validator_response, "name": "Updated Validator"}
-        mock_http_client.add_response(
-            f"/validators/{validator_id}", updated_response
-        )
+        mock_http_client.add_response(f"/validators/{validator_id}", updated_response)
 
         update_data = ValidatorUpdate(name="Updated Validator")
         validator = mock_client.validators.update(validator_id, update_data)
@@ -145,9 +142,7 @@ class TestValidatorsResource:
     def test_delete_validator_success(self, mock_client, mock_http_client):
         """Test deleting a validator."""
         validator_id = 123
-        mock_http_client.add_response(
-            f"/validators/{validator_id}", {"success": True}
-        )
+        mock_http_client.add_response(f"/validators/{validator_id}", {"success": True})
 
         result = mock_client.validators.delete(validator_id)
 
@@ -159,7 +154,11 @@ class TestValidatorsResource:
     ):
         """Test copying a validator."""
         validator_id = 123
-        copied_response = {**sample_validator_response, "id": 200, "copied_from_id": 123}
+        copied_response = {
+            **sample_validator_response,
+            "id": 200,
+            "copied_from_id": 123,
+        }
         mock_http_client.add_response(
             f"/validators/{validator_id}/copy", copied_response
         )
@@ -208,12 +207,16 @@ class TestValidatorsResource:
         """Test removing validator tags."""
         validator_id = 123
         remaining_tags = ["tag1"]
-        mock_http_client.add_response(f"/validators/{validator_id}/tags", remaining_tags)
+        mock_http_client.add_response(
+            f"/validators/{validator_id}/tags", remaining_tags
+        )
 
         result = mock_client.validators.remove_tags(validator_id, ["tag2"])
 
         assert result == remaining_tags
-        mock_http_client.assert_request_made("DELETE", f"/validators/{validator_id}/tags")
+        mock_http_client.assert_request_made(
+            "DELETE", f"/validators/{validator_id}/tags"
+        )
 
     def test_search_tags_success(
         self, mock_client, mock_http_client, sample_validators_list

@@ -10,7 +10,6 @@ from nexla_sdk.models.clusters.requests import (
 from nexla_sdk.models.clusters.responses import Cluster
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_CLUSTER = {
     "id": 123,

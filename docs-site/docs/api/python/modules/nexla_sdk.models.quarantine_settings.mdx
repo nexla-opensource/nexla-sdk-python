@@ -1,0 +1,80 @@
+---
+id: nexla_sdk.models.quarantine_settings
+title: nexla_sdk.models.quarantine_settings
+slug: /api/python/modules/nexla_sdk/models/quarantine_settings
+description: API for nexla_sdk.models.quarantine_settings
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### QuarantineSetting
+
+Defined in `nexla_sdk/models/quarantine_settings/responses.py:9`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `credentials_type`: `Optional`
+- `data_credentials`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### QuarantineSettingCreate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `int`
+- `config`: `Dict`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+
+### QuarantineSettingUpdate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `Optional`
+- `config`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+

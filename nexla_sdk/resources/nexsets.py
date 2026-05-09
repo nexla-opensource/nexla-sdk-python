@@ -1,12 +1,12 @@
 from typing import Any, Dict, List, Optional, Union
 
+from nexla_sdk.models.catalog_refs.responses import CatalogRef
 from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
 from nexla_sdk.models.nexsets.requests import (
     NexsetCopyOptions,
     NexsetCreate,
     NexsetUpdate,
 )
-from nexla_sdk.models.catalog_refs.responses import CatalogRef
 from nexla_sdk.models.nexsets.responses import Nexset, NexsetSample
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -274,11 +274,15 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/quarantine_settings"
         return self._make_request("GET", path)
 
-    def create_quarantine_settings(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_quarantine_settings(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
         return self._make_request("POST", path, json=payload)
 
-    def update_quarantine_settings(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_quarantine_settings(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
         return self._make_request("PUT", path, json=payload)
 
@@ -290,11 +294,15 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/dashboard_transforms"
         return self._make_request("GET", path)
 
-    def create_dashboard_transforms(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_dashboard_transforms(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
         return self._make_request("POST", path, json=payload)
 
-    def update_dashboard_transforms(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_dashboard_transforms(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
         return self._make_request("PUT", path, json=payload)
 
@@ -314,7 +322,9 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/sharers"
         return self._make_request("PUT", path, json=payload) or []
 
-    def remove_sharers(self, set_id: int, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def remove_sharers(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         path = f"{self._path}/{set_id}/sharers"
         return self._make_request("DELETE", path, json=payload) or []
 
@@ -322,7 +332,9 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/sharers/shared"
         return self._make_request("PUT", path)
 
-    def probe_quarantine_sample(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_quarantine_sample(
+        self, set_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/probe/quarantine/sample"
         return self._make_request("POST", path, json=payload)
 
@@ -391,7 +403,9 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/api_keys"
         return self._make_request("GET", path, params=params)
 
-    def search_api_keys(self, set_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]:
+    def search_api_keys(
+        self, set_id: int, filters: Dict[str, Any], **params
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/search"
         return self._make_request("POST", path, json=filters, params=params)
 
@@ -403,7 +417,9 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/{set_id}/api_keys"
         return self._make_request("POST", path, json=payload)
 
-    def update_api_key(self, set_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_api_key(
+        self, set_id: int, api_key_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}"
         return self._make_request("PUT", path, json=payload)
 
@@ -512,9 +528,7 @@ class NexsetsResource(BaseResource):
         """
         path = f"{self._path}/{set_id}/docs"
         serialized = [self._serialize_data(d) for d in docs]
-        response = self._make_request(
-            "POST", path, json={"docs": serialized}
-        )
+        response = self._make_request("POST", path, json={"docs": serialized})
         if isinstance(response, list):
             return [DocContainer.model_validate(item) for item in response]
         return []
@@ -551,9 +565,7 @@ class NexsetsResource(BaseResource):
         if not source_docs:
             return []
         payload = [
-            DocContainerInput.model_validate(
-                doc.model_dump(exclude_none=True)
-            )
+            DocContainerInput.model_validate(doc.model_dump(exclude_none=True))
             for doc in source_docs
         ]
         return self.update_docs(dst_id, payload)

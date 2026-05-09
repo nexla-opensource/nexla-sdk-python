@@ -1,0 +1,42 @@
+---
+id: nexla_sdk.models.flow_triggers.requests
+title: nexla_sdk.models.flow_triggers.requests
+slug: /api/python/modules/nexla_sdk/models/flow_triggers/requests
+description: API for nexla_sdk.models.flow_triggers.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Flow trigger request models.
+
+## Classes
+
+### FlowTriggerCreate
+
+Defined in `nexla_sdk/models/flow_triggers/requests.py:8`
+
+Request model for creating a flow trigger.
+
+Flow triggers define when one flow should trigger based on events
+from another flow. The triggering and triggered resources must be
+specified, along with the event types.
+
+Event Types:
+    - DATA_SINK_WRITE_DONE: Triggered when a data sink finishes writing
+    - DATA_SOURCE_READ_START: Triggered when a data source starts reading
+    - DATA_SOURCE_READ_DONE: Triggered when a data source finishes reading
+
+Fields:
+
+- `triggering_event_type`: `str`
+- `triggered_event_type`: `str`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `data_sink_id`: `Optional`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `data_source_id`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+

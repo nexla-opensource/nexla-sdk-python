@@ -16,7 +16,9 @@ from tests.utils import MockResponseBuilder, create_http_error
 class TestGetAccessInsights:
     """Tests for get_access_insights operation."""
 
-    def test_get_access_insights_returns_rules_list(self, mock_client, mock_http_client):
+    def test_get_access_insights_returns_rules_list(
+        self, mock_client, mock_http_client
+    ):
         """Test that get_access_insights returns access insights payload."""
         # Arrange
         resource_id = 123
@@ -187,9 +189,7 @@ class TestGetUsersAccessInsights:
             "GET", f"/data_sources/{resource_id}/users_access_insights"
         )
 
-    def test_get_users_access_insights_empty_list(
-        self, mock_client, mock_http_client
-    ):
+    def test_get_users_access_insights_empty_list(self, mock_client, mock_http_client):
         """Test get_users_access_insights when no users have access."""
         # Arrange
         resource_id = 123
@@ -248,9 +248,7 @@ class TestListAccessible:
         assert result == []
         mock_http_client.assert_request_made("GET", "/data_sources/accessible")
 
-    def test_list_accessible_with_query_params(
-        self, mock_client, mock_http_client
-    ):
+    def test_list_accessible_with_query_params(self, mock_client, mock_http_client):
         """Test list_accessible passes additional query parameters."""
         # Arrange
         accessible_sources = [MockResponseBuilder.source(source_id=1)]
@@ -271,9 +269,7 @@ class TestListAccessible:
 class TestAccessInsightsErrorHandling:
     """Tests for access insights error scenarios."""
 
-    def test_access_insights_not_found_returns_404(
-        self, mock_client, mock_http_client
-    ):
+    def test_access_insights_not_found_returns_404(self, mock_client, mock_http_client):
         """Test that accessing non-existent resource returns 404."""
         # Arrange
         resource_id = 99999
@@ -301,9 +297,7 @@ class TestAccessInsightsErrorHandling:
         with pytest.raises(AuthorizationError):
             mock_client.sources.get_access_insights(resource_id)
 
-    def test_users_access_insights_not_found(
-        self, mock_client, mock_http_client
-    ):
+    def test_users_access_insights_not_found(self, mock_client, mock_http_client):
         """Test users_access_insights for non-existent resource."""
         # Arrange
         resource_id = 99999
@@ -366,9 +360,7 @@ class TestAccessInsightsAcrossResources:
 
         # Assert
         assert result["access_granted"] is True
-        mock_http_client.assert_request_made(
-            "GET", f"{endpoint}/{resource_id}/access"
-        )
+        mock_http_client.assert_request_made("GET", f"{endpoint}/{resource_id}/access")
 
     @pytest.mark.parametrize(
         "resource_name,endpoint",

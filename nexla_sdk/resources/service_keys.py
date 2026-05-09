@@ -2,10 +2,7 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from nexla_sdk.models.service_keys.requests import (
-    ServiceKeyCreate,
-    ServiceKeyUpdate,
-)
+from nexla_sdk.models.service_keys.requests import ServiceKeyCreate, ServiceKeyUpdate
 from nexla_sdk.models.service_keys.responses import ServiceKey
 from nexla_sdk.resources.base_resource import BaseResource
 

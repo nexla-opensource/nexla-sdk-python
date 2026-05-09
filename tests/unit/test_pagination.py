@@ -127,6 +127,7 @@ class TestPaginatorWithRawFetch:
 
     def test_paginator_extracts_data_from_paginated_response(self):
         """Test that Paginator extracts items from paginated response format."""
+
         # Arrange
         def mock_fetch(page=1, per_page=20):
             return {
@@ -151,6 +152,7 @@ class TestPaginatorWithRawFetch:
 
     def test_paginator_handles_list_response(self):
         """Test that Paginator handles plain list responses."""
+
         # Arrange
         def mock_fetch(page=1, per_page=20):
             return [{"id": i} for i in range(10)]
@@ -188,6 +190,7 @@ class TestPaginatorWithRawFetch:
 
     def test_iterate_stops_on_empty_page(self):
         """Test that iteration stops when page is empty."""
+
         # Arrange
         def mock_fetch(page=1, per_page=5):
             if page == 1:
@@ -203,6 +206,7 @@ class TestPaginatorWithRawFetch:
 
     def test_iter_pages_yields_page_objects(self):
         """Test iter_pages yields Page objects."""
+
         # Arrange
         def mock_fetch(page=1, per_page=5):
             if page == 1:
@@ -225,6 +229,7 @@ class TestPaginationMetadata:
 
     def test_page_extracts_total_pages_from_camel_case_meta(self):
         """Test extracting total pages from camelCase meta keys."""
+
         # Arrange
         def mock_fetch(page=1, per_page=5):
             return {
@@ -248,6 +253,7 @@ class TestPaginationMetadata:
 
     def test_page_handles_snake_case_meta_keys(self):
         """Test handling of snake_case meta keys."""
+
         # Arrange
         def mock_fetch(page=1, per_page=5):
             return {
@@ -274,9 +280,13 @@ class TestPaginationEdgeCases:
 
     def test_empty_results(self):
         """Test handling of empty results."""
+
         # Arrange
         def mock_fetch(page=1, per_page=20):
-            return {"data": [], "meta": {"currentPage": 1, "totalCount": 0, "pageCount": 0}}
+            return {
+                "data": [],
+                "meta": {"currentPage": 1, "totalCount": 0, "pageCount": 0},
+            }
 
         # Act
         paginator = Paginator(fetch_func=mock_fetch, page_size=20)
@@ -289,9 +299,13 @@ class TestPaginationEdgeCases:
 
     def test_single_item(self):
         """Test handling of single item results."""
+
         # Arrange
         def mock_fetch(page=1, per_page=20):
-            return {"data": [{"id": 1}], "meta": {"currentPage": 1, "totalCount": 1, "pageCount": 1}}
+            return {
+                "data": [{"id": 1}],
+                "meta": {"currentPage": 1, "totalCount": 1, "pageCount": 1},
+            }
 
         # Act
         paginator = Paginator(fetch_func=mock_fetch, page_size=20)
@@ -303,6 +317,7 @@ class TestPaginationEdgeCases:
 
     def test_has_next_based_on_total_pages(self):
         """Test has_next calculation when total_pages is known."""
+
         # Arrange
         def mock_fetch(page=1, per_page=5):
             return {
@@ -321,6 +336,7 @@ class TestPaginationEdgeCases:
 
     def test_list_response_without_meta(self):
         """Test handling when response is just a list (no meta)."""
+
         # Arrange
         def mock_fetch(page=1, per_page=20):
             return [{"id": i} for i in range(3)]

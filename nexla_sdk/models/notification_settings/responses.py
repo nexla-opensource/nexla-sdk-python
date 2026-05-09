@@ -1,9 +1,7 @@
 """Notification Setting response models."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-
-from pydantic import Field
+from typing import Any, Dict, Optional
 
 from nexla_sdk.models.base import BaseModel
 

@@ -2,13 +2,9 @@
 
 import pytest
 
-from nexla_sdk.models.service_keys.requests import (
-    ServiceKeyCreate,
-    ServiceKeyUpdate,
-)
+from nexla_sdk.models.service_keys.requests import ServiceKeyCreate, ServiceKeyUpdate
 from nexla_sdk.models.service_keys.responses import ServiceKey
 from tests.utils import assert_model_list_valid, assert_model_valid
-
 
 # Sample response data
 SAMPLE_SERVICE_KEY = {
@@ -131,9 +127,7 @@ class TestServiceKeysResource:
         """Test updating a service key."""
         key_id = 123
         updated_response = {**sample_service_key_response, "name": "Updated Key"}
-        mock_http_client.add_response(
-            f"/service_keys/{key_id}", updated_response
-        )
+        mock_http_client.add_response(f"/service_keys/{key_id}", updated_response)
 
         update_data = ServiceKeyUpdate(name="Updated Key")
         key = mock_client.service_keys.update(key_id, update_data)
@@ -144,9 +138,7 @@ class TestServiceKeysResource:
     def test_delete_service_key_success(self, mock_client, mock_http_client):
         """Test deleting a service key."""
         key_id = 123
-        mock_http_client.add_response(
-            f"/service_keys/{key_id}", {"success": True}
-        )
+        mock_http_client.add_response(f"/service_keys/{key_id}", {"success": True})
 
         result = mock_client.service_keys.delete(key_id)
 
@@ -195,9 +187,7 @@ class TestServiceKeysResource:
         """Test pausing a service key."""
         key_id = 123
         paused_response = {**sample_service_key_response, "status": "PAUSED"}
-        mock_http_client.add_response(
-            f"/service_keys/{key_id}/pause", paused_response
-        )
+        mock_http_client.add_response(f"/service_keys/{key_id}/pause", paused_response)
 
         key = mock_client.service_keys.pause(key_id)
 

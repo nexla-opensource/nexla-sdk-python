@@ -69,7 +69,9 @@ class AuthTemplatesResource(BaseResource):
         Returns:
             List of auth templates
         """
-        return super().list(page=page, per_page=per_page, access_role=access_role, **kwargs)
+        return super().list(
+            page=page, per_page=per_page, access_role=access_role, **kwargs
+        )
 
     def get(self, auth_template_id: int, expand: bool = False) -> AuthTemplate:
         """Get auth template by ID.
@@ -135,7 +137,9 @@ class AuthTemplatesResource(BaseResource):
         """
         params = {"auth_template_name": auth_template_name}
         serialized_data = self._serialize_data(data)
-        response = self._make_request("PUT", self._path, json=serialized_data, params=params)
+        response = self._make_request(
+            "PUT", self._path, json=serialized_data, params=params
+        )
         return self._parse_response(response)
 
     def delete(self, auth_template_id: int) -> Dict[str, Any]:

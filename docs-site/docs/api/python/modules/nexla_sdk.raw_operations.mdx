@@ -1,0 +1,53 @@
+---
+id: nexla_sdk.raw_operations
+title: nexla_sdk.raw_operations
+slug: /api/python/modules/nexla_sdk/raw_operations
+description: API for nexla_sdk.raw_operations
+keywords: [Nexla, SDK, Python, API]
+---
+
+Typed operation-level access for the full OpenAPI surface.
+
+## Classes
+
+### OperationDefinition
+
+Defined in `nexla_sdk/raw_operations.py:19`
+
+Normalized operation metadata.
+
+### RawOperationsClient
+
+Defined in `nexla_sdk/raw_operations.py:31`
+
+Low-level typed access to any OpenAPI operation.
+
+Methods:
+
+- `call(self, operation_id: 'Union[OperationId, str]', *, path_params: 'Optional[Mapping[str, Any]]' = None, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:63`
+  - Call an operation by operation id.
+- `delete(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:155`
+- `get(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:107`
+- `get_operation(self, operation_id: 'Union[OperationId, str]') -> 'OperationDefinition'`
+  - Source: `nexla_sdk/raw_operations.py:41`
+  - Get metadata for a specific operation id.
+- `head(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:189`
+- `list_operations(self) -> 'List[str]'`
+  - Source: `nexla_sdk/raw_operations.py:37`
+  - Return sorted operation ids available in this SDK build.
+- `options(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:203`
+- `patch(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:172`
+- `post(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:121`
+- `put(self, path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:138`
+- `request(self, method: 'str', path: 'str', *, query: 'Optional[Mapping[str, Any]]' = None, body: 'Any' = None, headers: 'Optional[Mapping[str, str]]' = None) -> 'Any'`
+  - Source: `nexla_sdk/raw_operations.py:88`
+  - Send an arbitrary request to support non-spec or backend-only endpoints.
+

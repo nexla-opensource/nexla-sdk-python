@@ -168,22 +168,13 @@ logs/
 *.sqlite
 *.sqlite3
 
-# Node.js
-.node/
-node_modules/
-**/node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-.yarn-integrity
-
-# Documentation site
+# Documentation site (Docusaurus / Node-based)
 docs_venv/
 docs-site/docs_venv/
 docs-site/.docusaurus/
 docs-site/build/
 docs-site/.cache/
+docs-site/node_modules/
 
 # OpenAPI
 openapi/
@@ -191,7 +182,6 @@ openapi/
 # Project-specific files
 CLAUDE.md
 digest.txt
-plugin-redoc-0.yaml
 
 # Sample directory
 create_flow_sample/

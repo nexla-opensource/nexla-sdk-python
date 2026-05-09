@@ -53,7 +53,9 @@ class DataSchemasResource(BaseResource):
     def search_tags(self, tags: List[str], **params) -> List[DataSchema]:
         return super().search_tags(tags, **params)
 
-    def copy(self, schema_id: int, payload: Optional[Dict[str, Any]] = None) -> DataSchema:
+    def copy(
+        self, schema_id: int, payload: Optional[Dict[str, Any]] = None
+    ) -> DataSchema:
         return super().copy(schema_id, payload)
 
     def get_audit_log(self, schema_id: int, **params) -> List[LogEntry]:

@@ -62,7 +62,9 @@ def FlexibleEnum(enum_cls: Type[E]) -> Type[Union[E, str]]:
     Returns:
         An Annotated type suitable for Pydantic model fields
     """
-    return Annotated[Union[enum_cls, str], BeforeValidator(flexible_enum_validator(enum_cls))]
+    return Annotated[
+        Union[enum_cls, str], BeforeValidator(flexible_enum_validator(enum_cls))
+    ]
 
 
 # Pre-defined flexible connector types for convenience

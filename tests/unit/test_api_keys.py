@@ -5,7 +5,6 @@ import pytest
 from nexla_sdk.models.api_keys.responses import ApiKey, ApiKeysIndex
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_API_KEY = {
     "id": 123,

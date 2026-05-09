@@ -282,7 +282,9 @@ class OrganizationsResource(BaseResource):
         path = f"{self._path}/{org_id}/notification_settings"
         return self._make_request("GET", path, params=params) or []
 
-    def create_notification_settings(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_notification_settings(
+        self, org_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{org_id}/notification_settings"
         return self._make_request("POST", path, json=payload)
 
@@ -292,7 +294,9 @@ class OrganizationsResource(BaseResource):
         path = f"{self._path}/{org_id}/notification_settings/{notification_settings_id}"
         return self._make_request("PUT", path, json=payload)
 
-    def delete_notification_settings(self, org_id: int, notification_settings_id: int) -> Dict[str, Any]:
+    def delete_notification_settings(
+        self, org_id: int, notification_settings_id: int
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{org_id}/notification_settings/{notification_settings_id}"
         return self._make_request("DELETE", path)
 
@@ -328,11 +332,15 @@ class OrganizationsResource(BaseResource):
         path = f"{self._path}/{org_id}/dashboard_transforms"
         return self._make_request("GET", path)
 
-    def create_dashboard_transforms(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_dashboard_transforms(
+        self, org_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{org_id}/dashboard_transforms"
         return self._make_request("POST", path, json=payload)
 
-    def update_dashboard_transforms(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_dashboard_transforms(
+        self, org_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{org_id}/dashboard_transforms"
         return self._make_request("PUT", path, json=payload)
 

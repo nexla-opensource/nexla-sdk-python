@@ -1,0 +1,38 @@
+---
+id: nexla_sdk.models.service_keys.responses
+title: nexla_sdk.models.service_keys.responses
+slug: /api/python/modules/nexla_sdk/models/service_keys/responses
+description: API for nexla_sdk.models.service_keys.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+Service key response models.
+
+## Classes
+
+### ServiceKey
+
+Defined in `nexla_sdk/models/service_keys/responses.py:9`
+
+Service key response model.
+
+Service keys are long-lived credentials used for programmatic API access.
+They can be rotated and have lifecycle management (activate/pause).
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `str`
+- `api_key`: `str`
+- `last_rotated_key`: `Optional`
+- `last_rotated_at`: `Optional`
+- `data_source_id`: `Optional`
+- `cluster_id`: `Optional`
+- `cluster_uid`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+

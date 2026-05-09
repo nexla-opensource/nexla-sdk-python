@@ -112,7 +112,9 @@ class MarketplaceResource(BaseResource):
         return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
 
     def search_items(self, payload: Dict[str, Any]) -> List[MarketplaceDomainsItem]:
-        response = self._make_request("POST", f"{self._path}/items/search", json=payload)
+        response = self._make_request(
+            "POST", f"{self._path}/items/search", json=payload
+        )
         return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
 
     # Custodians

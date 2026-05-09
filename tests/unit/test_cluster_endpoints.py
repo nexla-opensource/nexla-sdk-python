@@ -9,7 +9,6 @@ from nexla_sdk.models.clusters.requests import (
 from nexla_sdk.models.clusters.responses import ClusterEndpoint
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_CLUSTER_ENDPOINT = {
     "id": 456,
@@ -84,9 +83,7 @@ class TestClusterEndpointsResource:
         endpoint = mock_client.cluster_endpoints.get(endpoint_id)
 
         assert_model_valid(endpoint, {"id": endpoint_id})
-        mock_http_client.assert_request_made(
-            "GET", f"/cluster_endpoints/{endpoint_id}"
-        )
+        mock_http_client.assert_request_made("GET", f"/cluster_endpoints/{endpoint_id}")
 
     def test_create_endpoint_success(
         self, mock_client, mock_http_client, sample_endpoint_response
@@ -120,9 +117,7 @@ class TestClusterEndpointsResource:
         endpoint = mock_client.cluster_endpoints.update(endpoint_id, update_data)
 
         assert endpoint.host == "new-host.example.com"
-        mock_http_client.assert_request_made(
-            "PUT", f"/cluster_endpoints/{endpoint_id}"
-        )
+        mock_http_client.assert_request_made("PUT", f"/cluster_endpoints/{endpoint_id}")
 
     def test_get_audit_log_success(self, mock_client, mock_http_client):
         """Test getting audit log for an endpoint."""

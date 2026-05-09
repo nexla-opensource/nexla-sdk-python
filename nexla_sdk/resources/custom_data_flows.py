@@ -40,10 +40,14 @@ class CustomDataFlowsResource(BaseResource):
     def delete(self, custom_data_flow_id: int) -> Dict[str, Any]:
         return super().delete(custom_data_flow_id)
 
-    def copy(self, custom_data_flow_id: int, payload: Optional[Dict[str, Any]] = None) -> CustomDataFlow:
+    def copy(
+        self, custom_data_flow_id: int, payload: Optional[Dict[str, Any]] = None
+    ) -> CustomDataFlow:
         return super().copy(custom_data_flow_id, payload)
 
-    def activate(self, custom_data_flow_id: int, activate: bool = True) -> CustomDataFlow:
+    def activate(
+        self, custom_data_flow_id: int, activate: bool = True
+    ) -> CustomDataFlow:
         action = "activate" if activate else "pause"
         path = f"{self._path}/{custom_data_flow_id}/{action}"
         response = self._make_request("PUT", path)

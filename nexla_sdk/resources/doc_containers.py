@@ -28,7 +28,9 @@ class DocContainersResource(BaseResource):
     def delete(self, doc_container_id: int) -> Dict[str, Any]:
         return super().delete(doc_container_id)
 
-    def copy(self, doc_container_id: int, payload: Optional[Dict[str, Any]] = None) -> DocContainer:
+    def copy(
+        self, doc_container_id: int, payload: Optional[Dict[str, Any]] = None
+    ) -> DocContainer:
         return super().copy(doc_container_id, payload)
 
     def search(self, filters: Dict[str, Any], **params) -> List[DocContainer]:

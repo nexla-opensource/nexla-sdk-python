@@ -50,9 +50,9 @@ tracing = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/nexla/nexla-sdk"
-Documentation = "https://github.com/nexla/nexla-sdk"
-"Bug Tracker" = "https://github.com/nexla/nexla-sdk/issues"
+Homepage = "https://github.com/nexla-opensource/nexla-sdk-python"
+Documentation = "https://github.com/nexla-opensource/nexla-sdk-python"
+"Bug Tracker" = "https://github.com/nexla-opensource/nexla-sdk-python/issues"
 
 [tool.setuptools_scm]
 version_scheme = "no-guess-dev"

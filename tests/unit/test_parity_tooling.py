@@ -9,7 +9,17 @@ from pathlib import Path
 
 import pytest
 
+# The OpenAPI spec is sourced from upstream and not committed to this repo.
+# Skip parity-tooling tests when the spec file is absent so unit suites stay
+# green for contributors who do not have the spec checked out locally.
+SPEC_PATH = Path("plugin-redoc-0.yaml")
+spec_required = pytest.mark.skipif(
+    not SPEC_PATH.exists(),
+    reason="plugin-redoc-0.yaml not present at repo root; parity tooling tests are local-only",
+)
 
+
+@spec_required
 @pytest.mark.unit
 def test_generate_operation_map_script():
     result = subprocess.run(
@@ -29,6 +39,7 @@ def test_generate_operation_map_script():
     assert Path("nexla_sdk/generated/operation_map.py").exists()
 
 
+@spec_required
 @pytest.mark.unit
 def test_check_operation_map_sync_script():
     result = subprocess.run(
@@ -40,6 +51,7 @@ def test_check_operation_map_sync_script():
     assert result.returncode == 0, result.stderr
 
 
+@spec_required
 @pytest.mark.unit
 def test_build_matrices_script_with_temp_routes(tmp_path: Path):
     routes = tmp_path / "routes.rb"

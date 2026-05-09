@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Union
 
 from nexla_sdk.models.auth_parameters.requests import (
     AuthParameterCreate,
@@ -22,9 +22,7 @@ class AuthParametersResource(BaseResource):
     def get(self, auth_parameter_id: int) -> AuthParameter:
         return super().get(auth_parameter_id)
 
-    def create(
-        self, data: Union[AuthParameterCreate, Dict[str, Any]]
-    ) -> AuthParameter:
+    def create(self, data: Union[AuthParameterCreate, Dict[str, Any]]) -> AuthParameter:
         return super().create(data)
 
     def update(

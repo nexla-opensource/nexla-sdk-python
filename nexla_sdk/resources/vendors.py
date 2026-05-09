@@ -147,7 +147,9 @@ class VendorsResource(BaseResource):
         """
         params = {"vendor_name": vendor_name}
         serialized_data = self._serialize_data(data)
-        response = self._make_request("PUT", self._path, json=serialized_data, params=params)
+        response = self._make_request(
+            "PUT", self._path, json=serialized_data, params=params
+        )
         return self._parse_response(response)
 
     def delete(self, vendor_id: int) -> Dict[str, Any]:

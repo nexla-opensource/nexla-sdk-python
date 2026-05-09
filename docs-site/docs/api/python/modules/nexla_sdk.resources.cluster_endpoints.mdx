@@ -1,0 +1,63 @@
+---
+id: nexla_sdk.resources.cluster_endpoints
+title: nexla_sdk.resources.cluster_endpoints
+slug: /api/python/modules/nexla_sdk/resources/cluster_endpoints
+description: API for nexla_sdk.resources.cluster_endpoints
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing cluster endpoints.
+
+## Classes
+
+### ClusterEndpointsResource
+
+Defined in `nexla_sdk/resources/cluster_endpoints.py:13`
+
+Resource for managing cluster endpoints.
+
+Cluster endpoints define individual service connections within a cluster.
+Most operations require super user access.
+
+Examples:
+    # List cluster endpoints
+    endpoints = client.cluster_endpoints.list()
+
+    # Get a specific endpoint
+    endpoint = client.cluster_endpoints.get(123)
+
+    # Create an endpoint
+    endpoint = client.cluster_endpoints.create(ClusterEndpointCreate(
+        cluster_id=456,
+        service="data_ingestion",
+        protocol="https",
+        host="ingestion.example.com",
+        port=443
+    ))
+
+    # Update an endpoint
+    endpoint = client.cluster_endpoints.update(123, ClusterEndpointUpdate(
+        host="new-ingestion.example.com"
+    ))
+
+    # Get audit log
+    audit_log = client.cluster_endpoints.get_audit_log(123)
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.clusters.requests.ClusterEndpointCreate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:84`
+  - Create a new cluster endpoint.
+- `get(self, endpoint_id: int) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:71`
+  - Get cluster endpoint by ID.
+- `get_audit_log(self, endpoint_id: int, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:116`
+  - Get audit log for a cluster endpoint.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.clusters.responses.ClusterEndpoint]`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:54`
+  - List cluster endpoints.
+- `update(self, endpoint_id: int, data: Union[nexla_sdk.models.clusters.requests.ClusterEndpointUpdate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:99`
+  - Update a cluster endpoint.
+

@@ -10,7 +10,7 @@ Tests cover:
 import pytest
 
 from nexla_sdk.exceptions import AuthorizationError, NotFoundError
-from tests.utils import MockResponseBuilder, create_http_error
+from tests.utils import create_http_error
 
 
 @pytest.mark.unit
@@ -33,9 +33,7 @@ class TestGetTags:
         assert result == expected_tags
         assert isinstance(result, list)
         assert len(result) == 3
-        mock_http_client.assert_request_made(
-            "GET", f"/data_sources/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("GET", f"/data_sources/{resource_id}/tags")
 
     def test_get_tags_empty_list(self, mock_client, mock_http_client):
         """Test get_tags returns empty list when no tags exist."""
@@ -49,9 +47,7 @@ class TestGetTags:
         # Assert
         assert result == []
         assert isinstance(result, list)
-        mock_http_client.assert_request_made(
-            "GET", f"/data_sources/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("GET", f"/data_sources/{resource_id}/tags")
 
     def test_get_tags_single_tag(self, mock_client, mock_http_client):
         """Test get_tags with a single tag."""
@@ -79,9 +75,7 @@ class TestSetTags:
         # Arrange
         resource_id = 123
         new_tags = ["new-tag-1", "new-tag-2"]
-        mock_http_client.add_response(
-            f"/data_sources/{resource_id}/tags", new_tags
-        )
+        mock_http_client.add_response(f"/data_sources/{resource_id}/tags", new_tags)
 
         # Act
         result = mock_client.sources.set_tags(resource_id, new_tags)
@@ -119,9 +113,7 @@ class TestSetTags:
         resource_id = 789
         # Simulate replacing ["old-tag"] with ["completely", "new", "tags"]
         new_tags = ["completely", "new", "tags"]
-        mock_http_client.add_response(
-            f"/data_sinks/{resource_id}/tags", new_tags
-        )
+        mock_http_client.add_response(f"/data_sinks/{resource_id}/tags", new_tags)
 
         # Act
         result = mock_client.destinations.set_tags(resource_id, new_tags)
@@ -129,9 +121,7 @@ class TestSetTags:
         # Assert
         assert result == new_tags
         assert "completely" in result
-        mock_http_client.assert_request_made(
-            "POST", f"/data_sinks/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("POST", f"/data_sinks/{resource_id}/tags")
 
 
 @pytest.mark.unit
@@ -145,18 +135,14 @@ class TestAddTags:
         tags_to_add = ["new-tag"]
         # Simulated merged response (existing + new)
         merged_tags = ["existing-tag", "new-tag"]
-        mock_http_client.add_response(
-            f"/data_sources/{resource_id}/tags", merged_tags
-        )
+        mock_http_client.add_response(f"/data_sources/{resource_id}/tags", merged_tags)
 
         # Act
         result = mock_client.sources.add_tags(resource_id, tags_to_add)
 
         # Assert
         assert result == merged_tags
-        mock_http_client.assert_request_made(
-            "PUT", f"/data_sources/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("PUT", f"/data_sources/{resource_id}/tags")
         last_request = mock_http_client.get_last_request()
         assert last_request.get("json") == tags_to_add
 
@@ -181,9 +167,7 @@ class TestAddTags:
         assert result == existing_tags
         # Verify no duplicate "existing-tag" in result
         assert result.count("existing-tag") == 1
-        mock_http_client.assert_request_made(
-            "PUT", f"/data_sources/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("PUT", f"/data_sources/{resource_id}/tags")
 
     def test_add_multiple_tags(self, mock_client, mock_http_client):
         """Test adding multiple tags at once."""
@@ -191,9 +175,7 @@ class TestAddTags:
         resource_id = 456
         tags_to_add = ["tag-1", "tag-2", "tag-3"]
         merged_tags = ["original", "tag-1", "tag-2", "tag-3"]
-        mock_http_client.add_response(
-            f"/data_sets/{resource_id}/tags", merged_tags
-        )
+        mock_http_client.add_response(f"/data_sets/{resource_id}/tags", merged_tags)
 
         # Act
         result = mock_client.nexsets.add_tags(resource_id, tags_to_add)
@@ -201,9 +183,7 @@ class TestAddTags:
         # Assert
         assert result == merged_tags
         assert all(tag in result for tag in tags_to_add)
-        mock_http_client.assert_request_made(
-            "PUT", f"/data_sets/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("PUT", f"/data_sets/{resource_id}/tags")
 
 
 @pytest.mark.unit
@@ -466,9 +446,7 @@ class TestTagsAcrossResources:
 
         # Assert
         assert result == remaining_tags
-        mock_http_client.assert_request_made(
-            "DELETE", f"{endpoint}/{resource_id}/tags"
-        )
+        mock_http_client.assert_request_made("DELETE", f"{endpoint}/{resource_id}/tags")
 
 
 @pytest.mark.unit
@@ -480,9 +458,7 @@ class TestTagFormats:
         # Arrange
         resource_id = 123
         special_tags = ["env:production", "team/data-eng", "version_2.0"]
-        mock_http_client.add_response(
-            f"/data_sources/{resource_id}/tags", special_tags
-        )
+        mock_http_client.add_response(f"/data_sources/{resource_id}/tags", special_tags)
 
         # Act
         result = mock_client.sources.get_tags(resource_id)
@@ -496,9 +472,7 @@ class TestTagFormats:
         # Arrange
         resource_id = 123
         unicode_tags = ["categoria-datos", "equipo-analisis"]
-        mock_http_client.add_response(
-            f"/data_sources/{resource_id}/tags", unicode_tags
-        )
+        mock_http_client.add_response(f"/data_sources/{resource_id}/tags", unicode_tags)
 
         # Act
         result = mock_client.sources.get_tags(resource_id)

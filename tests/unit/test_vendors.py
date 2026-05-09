@@ -6,7 +6,6 @@ from nexla_sdk.models.vendors.requests import VendorCreate, VendorUpdate
 from nexla_sdk.models.vendors.responses import Vendor
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_VENDOR = {
     "id": 123,

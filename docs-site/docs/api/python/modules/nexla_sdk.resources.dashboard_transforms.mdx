@@ -1,0 +1,36 @@
+---
+id: nexla_sdk.resources.dashboard_transforms
+title: nexla_sdk.resources.dashboard_transforms
+slug: /api/python/modules/nexla_sdk/resources/dashboard_transforms
+description: API for nexla_sdk.resources.dashboard_transforms
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### DashboardTransformsResource
+
+Defined in `nexla_sdk/resources/dashboard_transforms.py:11`
+
+Resource for dashboard transforms (global endpoints).
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.dashboard_transforms.requests.DashboardTransformCreate, Dict[str, Any]]) -> nexla_sdk.models.dashboard_transforms.responses.DashboardTransform`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:29`
+  - Create new resource.
+- `delete(self, dashboard_transform_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:41`
+  - Delete resource.
+- `get(self, dashboard_transform_id: int) -> nexla_sdk.models.dashboard_transforms.responses.DashboardTransform`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:26`
+  - Get single resource by ID.
+- `list(self, **kwargs) -> List[nexla_sdk.models.dashboard_transforms.responses.DashboardTransform]`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:19`
+  - List resources with optional filters.
+- `list_all(self, **params) -> List[nexla_sdk.models.dashboard_transforms.responses.DashboardTransform]`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:22`
+- `update(self, dashboard_transform_id: int, data: Union[nexla_sdk.models.dashboard_transforms.requests.DashboardTransformUpdate, Dict[str, Any]]) -> nexla_sdk.models.dashboard_transforms.responses.DashboardTransform`
+  - Source: `nexla_sdk/resources/dashboard_transforms.py:34`
+  - Update resource.
+

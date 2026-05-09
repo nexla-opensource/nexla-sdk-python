@@ -1229,7 +1229,7 @@ class TestFlowsUnit:
             "/flows/100/flow/logs", {"status": "ok", "data": []}
         )
 
-        result = mock_client.flows.get_flow_logs(flow_id=100)
+        mock_client.flows.get_flow_logs(flow_id=100)
 
         last_request = mock_http_client.get_last_request()
         assert last_request["method"] == "GET"
@@ -1268,7 +1268,7 @@ class TestFlowsUnit:
             "/flows/100/logs_v2", {"status": "ok", "data": []}
         )
 
-        result = mock_client.flows.search_flow_logs(flow_id=100)
+        mock_client.flows.search_flow_logs(flow_id=100)
 
         last_request = mock_http_client.get_last_request()
         assert last_request["method"] == "GET"
@@ -1304,7 +1304,7 @@ class TestFlowsUnit:
             "/flows/active_flows_metrics", {"status": "ok", "data": []}
         )
 
-        result = mock_client.flows.get_active_flows_metrics()
+        mock_client.flows.get_active_flows_metrics()
 
         last_request = mock_http_client.get_last_request()
         assert last_request["method"] == "GET"

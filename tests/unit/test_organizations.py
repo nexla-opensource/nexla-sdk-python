@@ -284,7 +284,7 @@ class TestOrganizationsResource:
         )
 
         # Act
-        result = mock_client.organizations.get_org_flow_account_metrics(
+        mock_client.organizations.get_org_flow_account_metrics(
             org_id=org_id, from_date="2024-01-01"
         )
 
@@ -303,7 +303,7 @@ class TestOrganizationsResource:
         )
 
         # Act
-        result = mock_client.organizations.get_org_flow_account_metrics(
+        mock_client.organizations.get_org_flow_account_metrics(
             org_id=org_id,
             from_date="2024-01-01",
             to_date="2024-01-31",
@@ -361,7 +361,7 @@ class TestOrganizationsResource:
         )
 
         # Act
-        result = mock_client.organizations.get_flow_status_metrics(org_id=org_id)
+        mock_client.organizations.get_flow_status_metrics(org_id=org_id)
 
         # Assert
         last_request = mock_client.http_client.get_last_request()
@@ -377,7 +377,7 @@ class TestOrganizationsResource:
         )
 
         # Act
-        result = mock_client.organizations.get_flow_status_metrics(
+        mock_client.organizations.get_flow_status_metrics(
             org_id=org_id, from_date="2024-01-01", page=2, per_page=25
         )
 

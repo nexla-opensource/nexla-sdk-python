@@ -1,0 +1,73 @@
+---
+id: nexla_sdk.resources.flow_triggers
+title: nexla_sdk.resources.flow_triggers
+slug: /api/python/modules/nexla_sdk/resources/flow_triggers
+description: API for nexla_sdk.resources.flow_triggers
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing flow triggers.
+
+## Classes
+
+### FlowTriggersResource
+
+Defined in `nexla_sdk/resources/flow_triggers.py:10`
+
+Resource for managing flow triggers (orchestration events).
+
+Flow triggers define when one flow should trigger based on events
+from another flow. They are immutable once created - to change a
+trigger, delete and recreate it.
+
+Examples:
+    # List flow triggers
+    triggers = client.flow_triggers.list()
+
+    # List all triggers (super user only)
+    all_triggers = client.flow_triggers.list_all()
+
+    # Create a trigger: start data source when sink completes
+    trigger = client.flow_triggers.create(FlowTriggerCreate(
+        triggering_event_type="DATA_SINK_WRITE_DONE",
+        triggered_event_type="DATA_SOURCE_READ_START",
+        data_sink_id=123,  # Triggering sink
+        data_source_id=456  # Triggered source
+    ))
+
+    # Pause a trigger
+    client.flow_triggers.pause(trigger.id)
+
+    # Activate a trigger
+    client.flow_triggers.activate(trigger.id)
+
+    # Delete a trigger
+    client.flow_triggers.delete(trigger.id)
+
+Methods:
+
+- `activate(self, trigger_id: int) -> nexla_sdk.models.flow_triggers.responses.FlowTrigger`
+  - Source: `nexla_sdk/resources/flow_triggers.py:139`
+  - Activate a flow trigger.
+- `create(self, data: Union[nexla_sdk.models.flow_triggers.requests.FlowTriggerCreate, Dict[str, Any]]) -> nexla_sdk.models.flow_triggers.responses.FlowTrigger`
+  - Source: `nexla_sdk/resources/flow_triggers.py:111`
+  - Create a new flow trigger.
+- `delete(self, trigger_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flow_triggers.py:128`
+  - Delete a flow trigger.
+- `get(self, trigger_id: int, expand: bool = False) -> nexla_sdk.models.flow_triggers.responses.FlowTrigger`
+  - Source: `nexla_sdk/resources/flow_triggers.py:99`
+  - Get flow trigger by ID.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **kwargs) -> List[nexla_sdk.models.flow_triggers.responses.FlowTrigger]`
+  - Source: `nexla_sdk/resources/flow_triggers.py:52`
+  - List flow triggers accessible by current user.
+- `list_all(self, page: Optional[int] = None, per_page: Optional[int] = None) -> List[nexla_sdk.models.flow_triggers.responses.FlowTrigger]`
+  - Source: `nexla_sdk/resources/flow_triggers.py:73`
+  - List all flow triggers (super user only).
+- `pause(self, trigger_id: int) -> nexla_sdk.models.flow_triggers.responses.FlowTrigger`
+  - Source: `nexla_sdk/resources/flow_triggers.py:150`
+  - Pause a flow trigger.
+- `update(self, resource_id=None, data=None)`
+  - Source: `nexla_sdk/resources/flow_triggers.py:161`
+  - Flow triggers are immutable. To change a trigger, delete and recreate it.
+

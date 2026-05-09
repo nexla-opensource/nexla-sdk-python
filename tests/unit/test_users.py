@@ -295,7 +295,7 @@ class TestUsersUnitTests:
             "/users/123/flows/account_metrics", {"data": []}
         )
 
-        result = client.users.get_account_metrics(
+        client.users.get_account_metrics(
             user_id=123,
             from_date="2024-01-01",
             to_date="2024-01-31",
@@ -317,24 +317,18 @@ class TestUsersUnitTests:
     def test_get_flow_status_metrics_basic(self, mock_client):
         """Test getting flow status metrics with basic params."""
         client = mock_client
-        client.http_client.add_response(
-            "/users/123/flows/status_metrics", {"data": []}
-        )
+        client.http_client.add_response("/users/123/flows/status_metrics", {"data": []})
 
-        result = client.users.get_flow_status_metrics(user_id=123)
+        client.users.get_flow_status_metrics(user_id=123)
 
-        client.http_client.assert_request_made(
-            "GET", "/users/123/flows/status_metrics"
-        )
+        client.http_client.assert_request_made("GET", "/users/123/flows/status_metrics")
 
     def test_get_flow_status_metrics_with_params(self, mock_client):
         """Test getting flow status metrics with all params."""
         client = mock_client
-        client.http_client.add_response(
-            "/users/123/flows/status_metrics", {"data": []}
-        )
+        client.http_client.add_response("/users/123/flows/status_metrics", {"data": []})
 
-        result = client.users.get_flow_status_metrics(
+        client.users.get_flow_status_metrics(
             user_id=123, from_date="2024-01-01", page=2, per_page=25
         )
 

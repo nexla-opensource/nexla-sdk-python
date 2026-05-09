@@ -5,14 +5,6 @@ import pytest
 from nexla_sdk.models.connectors.enums import ConnectionType, ConnectorType
 from nexla_sdk.models.credentials.enums import CredentialType
 from nexla_sdk.models.destinations.enums import DestinationType
-from nexla_sdk.models.flexible_enums import (
-    FlexibleConnectionType,
-    FlexibleConnectorType,
-    FlexibleCredentialType,
-    FlexibleDestinationType,
-    FlexibleSourceType,
-    flexible_enum_validator,
-)
 from nexla_sdk.models.sources.enums import SourceType
 
 
@@ -305,7 +297,16 @@ class TestConnectionTypeEnum:
 
     def test_connection_type_categories(self):
         """ConnectionType should have all expected categories."""
-        expected = ["file", "database", "nosql", "streaming", "api", "vector_db", "special", "data_lake"]
+        expected = [
+            "file",
+            "database",
+            "nosql",
+            "streaming",
+            "api",
+            "vector_db",
+            "special",
+            "data_lake",
+        ]
         values = [e.value for e in ConnectionType]
         for category in expected:
             assert category in values, f"ConnectionType missing {category}"

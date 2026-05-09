@@ -1,9 +1,6 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Union
 
-from nexla_sdk.models.user_settings.requests import (
-    UserSettingCreate,
-    UserSettingUpdate,
-)
+from nexla_sdk.models.user_settings.requests import UserSettingCreate, UserSettingUpdate
 from nexla_sdk.models.user_settings.responses import UserSetting
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -27,9 +24,7 @@ class UserSettingsResource(BaseResource):
     def get(self, user_setting_id: int) -> UserSetting:
         return super().get(user_setting_id)
 
-    def create(
-        self, data: Union[UserSettingCreate, Dict[str, Any]]
-    ) -> UserSetting:
+    def create(self, data: Union[UserSettingCreate, Dict[str, Any]]) -> UserSetting:
         return super().create(data)
 
     def update(

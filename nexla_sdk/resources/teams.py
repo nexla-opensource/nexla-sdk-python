@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional
 
-from nexla_sdk.models.teams.requests import TeamCreate, TeamMemberList, TeamUpdate
 from nexla_sdk.models.common import LogEntry
+from nexla_sdk.models.teams.requests import TeamCreate, TeamMemberList, TeamUpdate
 from nexla_sdk.models.teams.responses import Team, TeamMember
 from nexla_sdk.resources.base_resource import BaseResource
 

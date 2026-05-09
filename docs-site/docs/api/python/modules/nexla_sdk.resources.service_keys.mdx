@@ -1,0 +1,68 @@
+---
+id: nexla_sdk.resources.service_keys
+title: nexla_sdk.resources.service_keys
+slug: /api/python/modules/nexla_sdk/resources/service_keys
+description: API for nexla_sdk.resources.service_keys
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing service keys.
+
+## Classes
+
+### ServiceKeysResource
+
+Defined in `nexla_sdk/resources/service_keys.py:10`
+
+Resource for managing service keys.
+
+Service keys are long-lived credentials for programmatic API access.
+Unlike session tokens, service keys don't expire but can be rotated
+and have lifecycle management (activate/pause).
+
+Examples:
+    # List service keys
+    keys = client.service_keys.list()
+
+    # List all keys in org (admin only)
+    all_keys = client.service_keys.list(all_keys=True)
+
+    # Create a service key
+    key = client.service_keys.create(ServiceKeyCreate(
+        name="My Service Key",
+        description="For automated pipelines"
+    ))
+
+    # Rotate a key
+    rotated_key = client.service_keys.rotate(key.id)
+
+    # Pause a key
+    client.service_keys.pause(key.id)
+
+Methods:
+
+- `activate(self, key_id: Union[int, str]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:151`
+  - Activate a paused service key.
+- `create(self, data: Union[nexla_sdk.models.service_keys.requests.ServiceKeyCreate, Dict[str, Any]]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:92`
+  - Create a new service key.
+- `delete(self, key_id: Union[int, str]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/service_keys.py:120`
+  - Delete a service key.
+- `get(self, key_id: Union[int, str]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:79`
+  - Get service key by ID or key value.
+- `list(self, access_role: Optional[str] = None, all_keys: bool = False, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.service_keys.responses.ServiceKey]`
+  - Source: `nexla_sdk/resources/service_keys.py:47`
+  - List service keys.
+- `pause(self, key_id: Union[int, str]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:164`
+  - Pause a service key (temporarily disable).
+- `rotate(self, key_id: Union[int, str]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:135`
+  - Rotate a service key to generate a new key value.
+- `update(self, key_id: Union[int, str], data: Union[nexla_sdk.models.service_keys.requests.ServiceKeyUpdate, Dict[str, Any]]) -> nexla_sdk.models.service_keys.responses.ServiceKey`
+  - Source: `nexla_sdk/resources/service_keys.py:103`
+  - Update a service key.
+

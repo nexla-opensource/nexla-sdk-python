@@ -159,7 +159,9 @@ class NotificationsResource(BaseResource):
         else:
             return self._make_request("PUT", path, json=notification_ids)
 
-    def mark_read_for(self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def mark_read_for(
+        self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{notification_id}/mark_read"
         return self._make_request("PUT", path, json=payload or {})
 

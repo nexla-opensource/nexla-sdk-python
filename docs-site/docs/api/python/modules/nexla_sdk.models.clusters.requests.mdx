@@ -1,0 +1,90 @@
+---
+id: nexla_sdk.models.clusters.requests
+title: nexla_sdk.models.clusters.requests
+slug: /api/python/modules/nexla_sdk/models/clusters/requests
+description: API for nexla_sdk.models.clusters.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Cluster request models.
+
+## Classes
+
+### ClusterCreate
+
+Defined in `nexla_sdk/models/clusters/requests.py:19`
+
+Request model for creating a cluster.
+
+Fields:
+
+- `org_id`: `int`
+- `name`: `str`
+- `region`: `str`
+- `description`: `Optional`
+- `provider`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `endpoints`: `Optional`
+
+### ClusterEndpointCreate
+
+Defined in `nexla_sdk/models/clusters/requests.py:43`
+
+Request model for creating a cluster endpoint.
+
+Fields:
+
+- `cluster_id`: `int`
+- `service`: `str`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+### ClusterEndpointItem
+
+Defined in `nexla_sdk/models/clusters/requests.py:8`
+
+Endpoint configuration for cluster create/update.
+
+Fields:
+
+- `service`: `str`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+### ClusterEndpointUpdate
+
+Defined in `nexla_sdk/models/clusters/requests.py:55`
+
+Request model for updating a cluster endpoint.
+
+Fields:
+
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+### ClusterUpdate
+
+Defined in `nexla_sdk/models/clusters/requests.py:32`
+
+Request model for updating a cluster.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `provider`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `endpoints`: `Optional`
+

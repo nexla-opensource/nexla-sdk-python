@@ -30,18 +30,14 @@ class TestGetDocs:
         assert result == docs_response
         assert "entries" in result
         assert len(result["entries"]) > 0
-        mock_http_client.assert_request_made(
-            "GET", f"/data_sources/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("GET", f"/data_sources/{resource_id}/docs")
 
     def test_get_docs_empty_by_default(self, mock_client, mock_http_client):
         """Test getting docs returns empty when no docs exist."""
         # Arrange
         resource_id = 123
         empty_docs = {"entries": []}
-        mock_http_client.add_response(
-            f"/data_sources/{resource_id}/docs", empty_docs
-        )
+        mock_http_client.add_response(f"/data_sources/{resource_id}/docs", empty_docs)
 
         # Act
         result = mock_client.sources.get_docs(resource_id)
@@ -49,9 +45,7 @@ class TestGetDocs:
         # Assert
         assert result == empty_docs
         assert result["entries"] == []
-        mock_http_client.assert_request_made(
-            "GET", f"/data_sources/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("GET", f"/data_sources/{resource_id}/docs")
 
 
 @pytest.mark.unit
@@ -130,9 +124,7 @@ class TestAddDocs:
 
         # Assert
         assert result == merged_response
-        mock_http_client.assert_request_made(
-            "PUT", f"/data_sources/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("PUT", f"/data_sources/{resource_id}/docs")
         # Verify the request body contains the docs to add
         last_request = mock_http_client.get_last_request()
         assert last_request is not None
@@ -158,9 +150,7 @@ class TestAddDocs:
         # Assert
         assert result == merged_response
         assert len(result["entries"]) == 3
-        mock_http_client.assert_request_made(
-            "PUT", f"/data_sources/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("PUT", f"/data_sources/{resource_id}/docs")
         # Verify all docs were sent
         last_request = mock_http_client.get_last_request()
         assert len(last_request.get("json", [])) == 3
@@ -199,7 +189,9 @@ class TestRemoveDocs:
         assert last_request is not None
         assert last_request.get("json") == docs_to_remove
 
-    def test_remove_docs_with_none_sends_empty_list(self, mock_client, mock_http_client):
+    def test_remove_docs_with_none_sends_empty_list(
+        self, mock_client, mock_http_client
+    ):
         """Test that remove_docs with None sends empty list."""
         # Arrange
         resource_id = 123
@@ -262,7 +254,9 @@ class TestDocsErrorHandling:
 
         # Act & Assert
         with pytest.raises(AuthorizationError):
-            mock_client.sources.set_docs(resource_id, [{"key": "test", "value": "data"}])
+            mock_client.sources.set_docs(
+                resource_id, [{"key": "test", "value": "data"}]
+            )
 
 
 @pytest.mark.unit
@@ -292,9 +286,7 @@ class TestDocsAcrossResources:
 
         # Assert
         assert result == docs_response
-        mock_http_client.assert_request_made(
-            "GET", f"{endpoint}/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("GET", f"{endpoint}/{resource_id}/docs")
 
     @pytest.mark.parametrize(
         "resource_name,endpoint",
@@ -312,7 +304,9 @@ class TestDocsAcrossResources:
         resource_id = 123
         new_docs = [{"key": "test", "value": "Test documentation"}]
         expected_response = {"entries": new_docs}
-        mock_http_client.add_response(f"{endpoint}/{resource_id}/docs", expected_response)
+        mock_http_client.add_response(
+            f"{endpoint}/{resource_id}/docs", expected_response
+        )
 
         # Act
         resource = getattr(mock_client, resource_name)
@@ -320,9 +314,7 @@ class TestDocsAcrossResources:
 
         # Assert
         assert result == expected_response
-        mock_http_client.assert_request_made(
-            "POST", f"{endpoint}/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("POST", f"{endpoint}/{resource_id}/docs")
 
     @pytest.mark.parametrize(
         "resource_name,endpoint",
@@ -340,7 +332,9 @@ class TestDocsAcrossResources:
         resource_id = 123
         docs_to_add = [{"key": "additional", "value": "Additional documentation"}]
         expected_response = {"entries": docs_to_add}
-        mock_http_client.add_response(f"{endpoint}/{resource_id}/docs", expected_response)
+        mock_http_client.add_response(
+            f"{endpoint}/{resource_id}/docs", expected_response
+        )
 
         # Act
         resource = getattr(mock_client, resource_name)
@@ -348,9 +342,7 @@ class TestDocsAcrossResources:
 
         # Assert
         assert result == expected_response
-        mock_http_client.assert_request_made(
-            "PUT", f"{endpoint}/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("PUT", f"{endpoint}/{resource_id}/docs")
 
     @pytest.mark.parametrize(
         "resource_name,endpoint",
@@ -368,7 +360,9 @@ class TestDocsAcrossResources:
         resource_id = 123
         docs_to_remove = [{"key": "obsolete", "value": "Obsolete documentation"}]
         expected_response = {"entries": []}
-        mock_http_client.add_response(f"{endpoint}/{resource_id}/docs", expected_response)
+        mock_http_client.add_response(
+            f"{endpoint}/{resource_id}/docs", expected_response
+        )
 
         # Act
         resource = getattr(mock_client, resource_name)
@@ -376,6 +370,4 @@ class TestDocsAcrossResources:
 
         # Assert
         assert result == expected_response
-        mock_http_client.assert_request_made(
-            "DELETE", f"{endpoint}/{resource_id}/docs"
-        )
+        mock_http_client.assert_request_made("DELETE", f"{endpoint}/{resource_id}/docs")

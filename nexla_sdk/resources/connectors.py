@@ -105,7 +105,9 @@ class ConnectorsResource(BaseResource):
         return self._parse_response(response)
 
     def update(
-        self, connector_id: Union[int, str], data: Union[ConnectorUpdate, Dict[str, Any]]
+        self,
+        connector_id: Union[int, str],
+        data: Union[ConnectorUpdate, Dict[str, Any]],
     ) -> Connector:
         """Update a connector (super user only).
 

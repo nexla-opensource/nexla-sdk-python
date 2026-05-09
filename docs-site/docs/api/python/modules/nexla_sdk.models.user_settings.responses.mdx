@@ -1,0 +1,37 @@
+---
+id: nexla_sdk.models.user_settings.responses
+title: nexla_sdk.models.user_settings.responses
+slug: /api/python/modules/nexla_sdk/models/user_settings/responses
+description: API for nexla_sdk.models.user_settings.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### UserSetting
+
+Defined in `nexla_sdk/models/user_settings/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `user_settings_type`: `Optional`
+- `primary_key_value`: `Optional`
+- `description`: `Optional`
+- `settings`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+

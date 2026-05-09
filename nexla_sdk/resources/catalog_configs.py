@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Union
 
 from nexla_sdk.models.catalog_configs.requests import (
     CatalogConfigCreate,
@@ -26,9 +26,7 @@ class CatalogConfigsResource(BaseResource):
     def get(self, catalog_config_id: int) -> CatalogConfig:
         return super().get(catalog_config_id)
 
-    def create(
-        self, data: Union[CatalogConfigCreate, Dict[str, Any]]
-    ) -> CatalogConfig:
+    def create(self, data: Union[CatalogConfigCreate, Dict[str, Any]]) -> CatalogConfig:
         return super().create(data)
 
     def update(

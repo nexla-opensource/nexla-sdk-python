@@ -1,0 +1,49 @@
+---
+id: nexla_sdk.models.notification_settings.responses
+title: nexla_sdk.models.notification_settings.responses
+slug: /api/python/modules/nexla_sdk/models/notification_settings/responses
+description: API for nexla_sdk.models.notification_settings.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+Notification Setting response models.
+
+## Classes
+
+### NotificationSetting
+
+Defined in `nexla_sdk/models/notification_settings/responses.py:9`
+
+Notification Setting response model.
+
+Fields:
+
+- `id`: `int`
+- `notification_type_id`: `int`
+- `resource_id`: `Optional`
+- `resource_type`: `Optional`
+- `channel`: `str`
+- `priority`: `int`
+- `status`: `str`
+- `payload`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### NotificationSettingBrief
+
+Defined in `nexla_sdk/models/notification_settings/responses.py:26`
+
+Brief Notification Setting response model for list views.
+
+Fields:
+
+- `id`: `int`
+- `notification_type_id`: `int`
+- `channel`: `str`
+- `priority`: `int`
+- `status`: `str`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+

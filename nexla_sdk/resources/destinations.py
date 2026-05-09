@@ -52,7 +52,9 @@ class DestinationsResource(BaseResource):
         return self._make_request("GET", f"{self._path}/all/ids", params=params)
 
     def list_all_by_data_set(self, **params) -> List[Destination]:
-        response = self._make_request("GET", f"{self._path}/all/data_set", params=params)
+        response = self._make_request(
+            "GET", f"{self._path}/all/data_set", params=params
+        )
         return self._parse_response(response)
 
     def list_accessible(self, **params) -> List[Destination]:
@@ -232,11 +234,15 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/probe/files"
         return self._make_request("POST", path, json=payload)
 
-    def probe_detect_schemas(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_detect_schemas(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/schemas"
         return self._make_request("POST", path, json=payload)
 
-    def probe_quarantine_sample(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_quarantine_sample(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/quarantine/sample"
         return self._make_request("POST", path, json=payload)
 
@@ -244,11 +250,15 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/quarantine_settings"
         return self._make_request("GET", path)
 
-    def create_quarantine_settings(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_quarantine_settings(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
         return self._make_request("POST", path, json=payload)
 
-    def update_quarantine_settings(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_quarantine_settings(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
         return self._make_request("PUT", path, json=payload)
 
@@ -260,11 +270,15 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/dashboard_transforms"
         return self._make_request("GET", path)
 
-    def create_dashboard_transforms(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_dashboard_transforms(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
         return self._make_request("POST", path, json=payload)
 
-    def update_dashboard_transforms(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_dashboard_transforms(
+        self, sink_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
         return self._make_request("PUT", path, json=payload)
 
@@ -293,7 +307,11 @@ class DestinationsResource(BaseResource):
         return self._make_request("GET", path) or []
 
     def edit_flow_triggers(
-        self, sink_id: int, payload: Dict[str, Any], mode: str, all_triggers: bool = False
+        self,
+        sink_id: int,
+        payload: Dict[str, Any],
+        mode: str,
+        all_triggers: bool = False,
     ) -> List[Dict[str, Any]]:
         path = f"{self._path}/{sink_id}/flow_triggers"
         if mode in {"pause", "activate"}:
@@ -309,7 +327,9 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/api_keys"
         return self._make_request("GET", path, params=params)
 
-    def search_api_keys(self, sink_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]:
+    def search_api_keys(
+        self, sink_id: int, filters: Dict[str, Any], **params
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/search"
         return self._make_request("POST", path, json=filters, params=params)
 
@@ -321,7 +341,9 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/api_keys"
         return self._make_request("POST", path, json=payload)
 
-    def update_api_key(self, sink_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_api_key(
+        self, sink_id: int, api_key_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}"
         return self._make_request("PUT", path, json=payload)
 

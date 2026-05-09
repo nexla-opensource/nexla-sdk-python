@@ -6,9 +6,7 @@ from nexla_sdk.models.notification_settings.requests import (
     NotificationSettingCreate,
     NotificationSettingUpdate,
 )
-from nexla_sdk.models.notification_settings.responses import (
-    NotificationSetting,
-)
+from nexla_sdk.models.notification_settings.responses import NotificationSetting
 from nexla_sdk.resources.base_resource import BaseResource
 
 

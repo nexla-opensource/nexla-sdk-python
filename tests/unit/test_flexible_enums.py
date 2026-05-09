@@ -1,10 +1,8 @@
 """Unit tests for flexible enum handling."""
 
-import pytest
-
 from nexla_sdk.models.destinations.enums import DestinationFormat, DestinationType
 from nexla_sdk.models.destinations.responses import Destination
-from nexla_sdk.models.flexible_enums import FlexibleEnum, flexible_enum_validator
+from nexla_sdk.models.flexible_enums import flexible_enum_validator
 from nexla_sdk.models.nexsets.responses import DataSinkSimplified, Nexset
 
 

@@ -9,7 +9,6 @@ from nexla_sdk.models.auth_templates.requests import (
 from nexla_sdk.models.auth_templates.responses import AuthTemplate
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_AUTH_TEMPLATE = {
     "id": 123,
@@ -43,7 +42,12 @@ SAMPLE_AUTH_TEMPLATE = {
 SAMPLE_AUTH_TEMPLATES_LIST = [
     SAMPLE_AUTH_TEMPLATE,
     {**SAMPLE_AUTH_TEMPLATE, "id": 124, "name": "api_key", "display_name": "API Key"},
-    {**SAMPLE_AUTH_TEMPLATE, "id": 125, "name": "basic_auth", "display_name": "Basic Auth"},
+    {
+        **SAMPLE_AUTH_TEMPLATE,
+        "id": 125,
+        "name": "basic_auth",
+        "display_name": "Basic Auth",
+    },
 ]
 
 

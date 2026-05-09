@@ -610,7 +610,9 @@ class MockResponseBuilder:
         for i in range(count):
             accessor_type = "USER" if i % 2 == 0 else "TEAM"
             accessors.append(
-                MockResponseBuilder.accessor_response(accessor_type=accessor_type, **overrides)
+                MockResponseBuilder.accessor_response(
+                    accessor_type=accessor_type, **overrides
+                )
             )
         return accessors
 
@@ -632,7 +634,9 @@ class MockResponseBuilder:
         """Build a mock access insights response."""
         base = {
             "access_granted": True,
-            "access_reason": fake.random_element(["owner", "collaborator", "team_member"]),
+            "access_reason": fake.random_element(
+                ["owner", "collaborator", "team_member"]
+            ),
             "access_path": [
                 {
                     "type": "direct",

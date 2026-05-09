@@ -1,12 +1,12 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Union
 
+from nexla_sdk.models.credentials.responses import Credential
 from nexla_sdk.models.data_credentials_groups.requests import (
     DataCredentialsGroupCreate,
     DataCredentialsGroupRemoveCredentials,
     DataCredentialsGroupUpdate,
 )
 from nexla_sdk.models.data_credentials_groups.responses import DataCredentialsGroup
-from nexla_sdk.models.credentials.responses import Credential
 from nexla_sdk.resources.base_resource import BaseResource
 
 

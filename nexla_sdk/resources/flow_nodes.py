@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from nexla_sdk.models.common import FlowNode
 from nexla_sdk.resources.base_resource import BaseResource
@@ -25,6 +25,4 @@ class FlowNodesResource(BaseResource):
         return self._make_request("GET", "/flows/all/minimal", params=params)
 
     def get_access_insights(self, flow_node_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"/flows/{flow_node_id}/access", params=params
-        )
+        return self._make_request("GET", f"/flows/{flow_node_id}/access", params=params)

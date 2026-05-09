@@ -32,6 +32,8 @@ class Vendor(BaseModel):
     logo: Optional[str] = None
     connection_type: Optional[str] = None  # From associated connector
     auth_templates: Optional[List[Any]] = Field(default_factory=list)  # IDs or objects
-    vendor_endpoints: Optional[List[Any]] = Field(default_factory=list)  # IDs or objects
+    vendor_endpoints: Optional[List[Any]] = Field(
+        default_factory=list
+    )  # IDs or objects
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

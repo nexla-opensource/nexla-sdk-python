@@ -9,8 +9,8 @@ HTTP requests are made and responses are handled appropriately.
 import pytest
 
 from nexla_sdk.exceptions import AuthorizationError, NotFoundError
-from nexla_sdk.models.access import UserAccessorRequest, TeamAccessorRequest
-from tests.utils import MockResponseBuilder, create_http_error
+from nexla_sdk.models.access import TeamAccessorRequest, UserAccessorRequest
+from tests.utils import create_http_error
 
 
 @pytest.mark.unit
@@ -52,9 +52,7 @@ class TestAccessorCRUDOperations:
         """Test that add_accessors makes PUT request with correct body."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["collaborator"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["collaborator"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -73,9 +71,7 @@ class TestAccessorCRUDOperations:
         """Test that replace_accessors uses POST method."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["owner"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["owner"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -90,9 +86,7 @@ class TestAccessorCRUDOperations:
         """Test deleting specific accessors."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["collaborator"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["collaborator"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -199,9 +193,7 @@ class TestAccessControlAcrossResources:
         """Test add_accessors works for different resource types."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["collaborator"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["collaborator"])
         mock_http_client.add_response(f"{endpoint}/{resource_id}/accessors", [])
 
         # Act
@@ -222,9 +214,7 @@ class TestAccessorRequestTypes:
         """Test creating a USER type accessor request."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["collaborator"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["collaborator"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -241,9 +231,7 @@ class TestAccessorRequestTypes:
         """Test creating a TEAM type accessor request."""
         # Arrange
         resource_id = 123
-        accessor = TeamAccessorRequest(
-            id=789, access_roles=["collaborator"]
-        )
+        accessor = TeamAccessorRequest(id=789, access_roles=["collaborator"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -260,9 +248,7 @@ class TestAccessorRequestTypes:
         """Test accessor with multiple access roles."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=["collaborator", "admin"]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=["collaborator", "admin"])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act
@@ -284,15 +270,11 @@ class TestAccessRoleTypes:
         "access_role",
         ["owner", "collaborator", "admin", "operator"],
     )
-    def test_supported_access_roles(
-        self, mock_client, mock_http_client, access_role
-    ):
+    def test_supported_access_roles(self, mock_client, mock_http_client, access_role):
         """Test that common access roles are accepted."""
         # Arrange
         resource_id = 123
-        accessor = UserAccessorRequest(
-            id=456, access_roles=[access_role]
-        )
+        accessor = UserAccessorRequest(id=456, access_roles=[access_role])
         mock_http_client.add_response(f"/data_sources/{resource_id}/accessors", [])
 
         # Act

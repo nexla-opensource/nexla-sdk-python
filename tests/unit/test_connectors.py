@@ -6,7 +6,6 @@ from nexla_sdk.models.connectors.requests import ConnectorUpdate
 from nexla_sdk.models.connectors.responses import Connector
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_CONNECTOR = {
     "id": 123,

@@ -66,7 +66,9 @@ class FlowTriggersResource(BaseResource):
         Returns:
             List of flow triggers
         """
-        return super().list(page=page, per_page=per_page, access_role=access_role, **kwargs)
+        return super().list(
+            page=page, per_page=per_page, access_role=access_role, **kwargs
+        )
 
     def list_all(
         self,

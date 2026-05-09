@@ -179,9 +179,7 @@ class TestGetAuditLog:
             "per_page": 25,
         }
 
-    def test_get_audit_log_with_no_optional_params(
-        self, mock_client, mock_http_client
-    ):
+    def test_get_audit_log_with_no_optional_params(self, mock_client, mock_http_client):
         """Test get_audit_log sends no query params when none are provided."""
         # Arrange
         resource_id = 123

@@ -314,9 +314,7 @@ class TestSearchResponseBuilder:
         """Test building search response with pagination params."""
         items = [{"id": 1, "name": "Item 1"}]
 
-        response = MockResponseBuilder.search_response(
-            items=items, page=3, per_page=50
-        )
+        response = MockResponseBuilder.search_response(items=items, page=3, per_page=50)
 
         assert response["meta"]["page"] == 3
         assert response["meta"]["per_page"] == 50

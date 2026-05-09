@@ -14,7 +14,6 @@ except PackageNotFoundError:  # pragma: no cover
 
 # Import main client
 from nexla_sdk.client import NexlaClient
-from nexla_sdk.raw_operations import RawOperationsClient
 
 # Import exceptions
 from nexla_sdk.exceptions import (
@@ -53,6 +52,7 @@ from nexla_sdk.models.enums import (
     UserStatus,
     UserTier,
 )
+from nexla_sdk.raw_operations import RawOperationsClient
 
 # Import resources
 from nexla_sdk.resources import (

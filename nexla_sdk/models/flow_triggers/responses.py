@@ -19,12 +19,16 @@ class FlowTrigger(BaseModel):
     owner: Optional[Owner] = None
     org: Optional[Organization] = None
     status: str  # ACTIVE, PAUSED
-    triggering_event_type: str  # DATA_SINK_WRITE_DONE, DATA_SOURCE_READ_START, DATA_SOURCE_READ_DONE
+    triggering_event_type: (
+        str  # DATA_SINK_WRITE_DONE, DATA_SOURCE_READ_START, DATA_SOURCE_READ_DONE
+    )
     triggering_origin_node_id: Optional[int] = None
     triggering_flow_node_id: Optional[int] = None
     triggering_resource_type: Optional[str] = None  # data_source, data_sink
     triggering_resource_id: Optional[int] = None
-    triggered_event_type: str  # DATA_SINK_WRITE_DONE, DATA_SOURCE_READ_START, DATA_SOURCE_READ_DONE
+    triggered_event_type: (
+        str  # DATA_SINK_WRITE_DONE, DATA_SOURCE_READ_START, DATA_SOURCE_READ_DONE
+    )
     triggered_origin_node_id: Optional[int] = None
     triggered_resource_type: Optional[str] = None  # data_source, data_sink
     triggered_resource_id: Optional[int] = None

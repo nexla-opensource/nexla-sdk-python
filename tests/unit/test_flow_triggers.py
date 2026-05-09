@@ -6,7 +6,6 @@ from nexla_sdk.models.flow_triggers.requests import FlowTriggerCreate
 from nexla_sdk.models.flow_triggers.responses import FlowTrigger
 from tests.utils import assert_model_list_valid, assert_model_valid
 
-
 # Sample response data
 SAMPLE_FLOW_TRIGGER = {
     "id": 123,
@@ -142,9 +141,7 @@ class TestFlowTriggersResource:
     def test_delete_flow_trigger_success(self, mock_client, mock_http_client):
         """Test deleting a flow trigger."""
         trigger_id = 123
-        mock_http_client.add_response(
-            f"/flow_triggers/{trigger_id}", {"success": True}
-        )
+        mock_http_client.add_response(f"/flow_triggers/{trigger_id}", {"success": True})
 
         result = mock_client.flow_triggers.delete(trigger_id)
 
@@ -164,7 +161,9 @@ class TestFlowTriggersResource:
         trigger = mock_client.flow_triggers.activate(trigger_id)
 
         assert trigger.status == "ACTIVE"
-        mock_http_client.assert_request_made("PUT", f"/flow_triggers/{trigger_id}/activate")
+        mock_http_client.assert_request_made(
+            "PUT", f"/flow_triggers/{trigger_id}/activate"
+        )
 
     def test_pause_flow_trigger_success(
         self, mock_client, mock_http_client, sample_flow_trigger_response
@@ -179,7 +178,9 @@ class TestFlowTriggersResource:
         trigger = mock_client.flow_triggers.pause(trigger_id)
 
         assert trigger.status == "PAUSED"
-        mock_http_client.assert_request_made("PUT", f"/flow_triggers/{trigger_id}/pause")
+        mock_http_client.assert_request_made(
+            "PUT", f"/flow_triggers/{trigger_id}/pause"
+        )
 
 
 @pytest.mark.unit

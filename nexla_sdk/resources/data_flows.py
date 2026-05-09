@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -27,7 +27,9 @@ class DataFlowsResource(BaseResource):
         return self._make_request("GET", path, params=params)
 
     def list_data_source_flows(self, **params) -> List[Dict[str, Any]]:
-        return self._make_request("GET", f"{self._path}/data_source", params=params) or []
+        return (
+            self._make_request("GET", f"{self._path}/data_source", params=params) or []
+        )
 
     def get_data_source_flow(self, data_source_id: int, **params) -> Dict[str, Any]:
         path = f"{self._path}/data_source/{data_source_id}"

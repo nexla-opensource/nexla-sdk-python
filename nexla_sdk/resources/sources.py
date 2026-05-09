@@ -220,7 +220,9 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/probe/authenticate"
         return self._make_request("GET", path)
 
-    def probe_list_files(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_list_files(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/buckets"
         return self._make_request("POST", path, json=payload)
 
@@ -228,15 +230,21 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/probe/tree"
         return self._make_request("POST", path, json=payload)
 
-    def probe_read_file(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_read_file(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/files"
         return self._make_request("POST", path, json=payload)
 
-    def probe_detect_schemas(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_detect_schemas(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/schemas"
         return self._make_request("POST", path, json=payload)
 
-    def probe_quarantine_sample(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def probe_quarantine_sample(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/quarantine/sample"
         return self._make_request("POST", path, json=payload)
 
@@ -256,11 +264,15 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/quarantine_settings"
         return self._make_request("GET", path)
 
-    def create_quarantine_settings(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_quarantine_settings(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
         return self._make_request("POST", path, json=payload)
 
-    def update_quarantine_settings(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_quarantine_settings(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
         return self._make_request("PUT", path, json=payload)
 
@@ -272,11 +284,15 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/dashboard_transforms"
         return self._make_request("GET", path)
 
-    def create_dashboard_transforms(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_dashboard_transforms(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
         return self._make_request("POST", path, json=payload)
 
-    def update_dashboard_transforms(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_dashboard_transforms(
+        self, source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
         return self._make_request("PUT", path, json=payload)
 
@@ -311,7 +327,11 @@ class SourcesResource(BaseResource):
         return self._make_request("GET", path) or []
 
     def edit_flow_triggers(
-        self, source_id: int, payload: Dict[str, Any], mode: str, all_triggers: bool = False
+        self,
+        source_id: int,
+        payload: Dict[str, Any],
+        mode: str,
+        all_triggers: bool = False,
     ) -> List[Dict[str, Any]]:
         path = f"{self._path}/{source_id}/flow_triggers"
         if mode in {"pause", "activate"}:
@@ -327,7 +347,9 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/api_keys"
         return self._make_request("GET", path, params=params)
 
-    def search_api_keys(self, source_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]:
+    def search_api_keys(
+        self, source_id: int, filters: Dict[str, Any], **params
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/search"
         return self._make_request("POST", path, json=filters, params=params)
 
@@ -339,7 +361,9 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/api_keys"
         return self._make_request("POST", path, json=payload)
 
-    def update_api_key(self, source_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def update_api_key(
+        self, source_id: int, api_key_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}"
         return self._make_request("PUT", path, json=payload)
 

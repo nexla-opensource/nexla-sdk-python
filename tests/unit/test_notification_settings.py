@@ -9,7 +9,6 @@ from nexla_sdk.models.notification_settings import (
     NotificationSettingUpdate,
 )
 from nexla_sdk.resources.notification_settings import NotificationSettingsResource
-from tests.utils import assert_model_list_valid, assert_model_valid
 
 
 @pytest.fixture
@@ -72,10 +71,16 @@ class TestNotificationSettingsResource:
     """Unit tests for NotificationSettingsResource."""
 
     def test_list_notification_settings_success(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_settings_list
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_settings_list,
     ):
         """Test listing notification settings with successful response."""
-        mock_http_client.add_response("/notification_settings", sample_notification_settings_list)
+        mock_http_client.add_response(
+            "/notification_settings", sample_notification_settings_list
+        )
 
         settings = notification_settings_resource.list()
         assert len(settings) == 2
@@ -85,7 +90,15 @@ class TestNotificationSettingsResource:
         self, mock_client, mock_http_client, notification_settings_resource
     ):
         """Test listing notification settings with filters."""
-        response = [{"id": 1, "notification_type_id": 5, "channel": "email", "priority": 5, "status": "ENABLED"}]
+        response = [
+            {
+                "id": 1,
+                "notification_type_id": 5,
+                "channel": "email",
+                "priority": 5,
+                "status": "ENABLED",
+            }
+        ]
         mock_http_client.add_response("/notification_settings", response)
 
         settings = notification_settings_resource.list(
@@ -100,10 +113,16 @@ class TestNotificationSettingsResource:
         assert params["resource_id"] == 123
 
     def test_list_all_notification_settings(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_settings_list
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_settings_list,
     ):
         """Test listing all notification settings (super user)."""
-        mock_http_client.add_response("/notification_settings/all", sample_notification_settings_list)
+        mock_http_client.add_response(
+            "/notification_settings/all", sample_notification_settings_list
+        )
 
         settings = notification_settings_resource.list_all(
             resource_type="data_sources",
@@ -114,10 +133,16 @@ class TestNotificationSettingsResource:
         mock_http_client.assert_request_made("GET", "/notification_settings/all")
 
     def test_get_notification_setting_success(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test getting a notification setting by ID."""
-        mock_http_client.add_response("/notification_settings/1", sample_notification_setting)
+        mock_http_client.add_response(
+            "/notification_settings/1", sample_notification_setting
+        )
 
         setting = notification_settings_resource.get(1)
         assert setting.id == 1
@@ -126,10 +151,16 @@ class TestNotificationSettingsResource:
         mock_http_client.assert_request_made("GET", "/notification_settings/1")
 
     def test_create_notification_setting_success(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test creating a notification setting."""
-        mock_http_client.add_response("/notification_settings", sample_notification_setting)
+        mock_http_client.add_response(
+            "/notification_settings", sample_notification_setting
+        )
 
         setting = notification_settings_resource.create(
             NotificationSettingCreate(
@@ -143,10 +174,16 @@ class TestNotificationSettingsResource:
         mock_http_client.assert_request_made("POST", "/notification_settings")
 
     def test_create_notification_setting_with_dict(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test creating a notification setting with dict input."""
-        mock_http_client.add_response("/notification_settings", sample_notification_setting)
+        mock_http_client.add_response(
+            "/notification_settings", sample_notification_setting
+        )
 
         setting = notification_settings_resource.create(
             {"notification_type_id": 5, "channel": "email", "priority": 5}
@@ -155,14 +192,20 @@ class TestNotificationSettingsResource:
         mock_http_client.assert_request_made("POST", "/notification_settings")
 
     def test_update_notification_setting_success(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test updating a notification setting."""
         updated_setting = sample_notification_setting.copy()
         updated_setting["priority"] = 10
         mock_http_client.add_response("/notification_settings/1", updated_setting)
 
-        setting = notification_settings_resource.update(1, NotificationSettingUpdate(priority=10))
+        setting = notification_settings_resource.update(
+            1, NotificationSettingUpdate(priority=10)
+        )
         assert setting.priority == 10
         mock_http_client.assert_request_made("PUT", "/notification_settings/1")
 
@@ -177,7 +220,11 @@ class TestNotificationSettingsResource:
         mock_http_client.assert_request_made("DELETE", "/notification_settings/1")
 
     def test_show_resource_settings(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_settings_list
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_settings_list,
     ):
         """Test getting notification settings for a resource."""
         mock_http_client.add_response(
@@ -194,61 +241,98 @@ class TestNotificationSettingsResource:
         assert params["filter_overridden_settings"] == "true"
 
     def test_show_type_settings(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_settings_list
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_settings_list,
     ):
         """Test getting notification settings for a notification type."""
         mock_http_client.add_response(
-            "/notification_settings/notification_types/5", sample_notification_settings_list
+            "/notification_settings/notification_types/5",
+            sample_notification_settings_list,
         )
 
-        settings = notification_settings_resource.show_type_settings(notification_type_id=5)
+        settings = notification_settings_resource.show_type_settings(
+            notification_type_id=5
+        )
         assert len(settings) == 2
-        mock_http_client.assert_request_made("GET", "/notification_settings/notification_types/5")
+        mock_http_client.assert_request_made(
+            "GET", "/notification_settings/notification_types/5"
+        )
 
     def test_org_index(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_settings_list
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_settings_list,
     ):
         """Test listing organization notification settings."""
-        mock_http_client.add_response("/orgs/1/notification_settings", sample_notification_settings_list)
+        mock_http_client.add_response(
+            "/orgs/1/notification_settings", sample_notification_settings_list
+        )
 
         settings = notification_settings_resource.org_index(org_id=1)
         assert len(settings) == 2
         mock_http_client.assert_request_made("GET", "/orgs/1/notification_settings")
 
     def test_org_create(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test creating an organization notification setting."""
-        mock_http_client.add_response("/orgs/1/notification_settings", sample_notification_setting)
+        mock_http_client.add_response(
+            "/orgs/1/notification_settings", sample_notification_setting
+        )
 
         setting = notification_settings_resource.org_create(
             org_id=1,
-            data=NotificationSettingCreate(notification_type_id=5, channel="email", priority=5),
+            data=NotificationSettingCreate(
+                notification_type_id=5, channel="email", priority=5
+            ),
         )
         assert setting.id == 1
         mock_http_client.assert_request_made("POST", "/orgs/1/notification_settings")
 
     def test_org_update(
-        self, mock_client, mock_http_client, notification_settings_resource, sample_notification_setting
+        self,
+        mock_client,
+        mock_http_client,
+        notification_settings_resource,
+        sample_notification_setting,
     ):
         """Test updating an organization notification setting."""
         updated_setting = sample_notification_setting.copy()
         updated_setting["priority"] = 8
-        mock_http_client.add_response("/orgs/1/notification_settings/1", updated_setting)
+        mock_http_client.add_response(
+            "/orgs/1/notification_settings/1", updated_setting
+        )
 
         setting = notification_settings_resource.org_update(
-            org_id=1, notification_settings_id=1, data=NotificationSettingUpdate(priority=8)
+            org_id=1,
+            notification_settings_id=1,
+            data=NotificationSettingUpdate(priority=8),
         )
         assert setting.priority == 8
         mock_http_client.assert_request_made("PUT", "/orgs/1/notification_settings/1")
 
-    def test_org_delete(self, mock_client, mock_http_client, notification_settings_resource):
+    def test_org_delete(
+        self, mock_client, mock_http_client, notification_settings_resource
+    ):
         """Test deleting an organization notification setting."""
         mock_http_client.add_response("/orgs/1/notification_settings/1", {})
 
-        result = notification_settings_resource.org_delete(org_id=1, notification_settings_id=1)
+        result = notification_settings_resource.org_delete(
+            org_id=1, notification_settings_id=1
+        )
         assert result == {}
-        mock_http_client.assert_request_made("DELETE", "/orgs/1/notification_settings/1")
+        mock_http_client.assert_request_made(
+            "DELETE", "/orgs/1/notification_settings/1"
+        )
 
 
 class TestNotificationSettingModels:
