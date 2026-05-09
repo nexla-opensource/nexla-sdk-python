@@ -906,6 +906,32 @@ class MockDataFactory:
             "metadata": kwargs.get("metadata", {"source": "test"}),
         }
 
+    def create_mock_doc_container(self, **kwargs) -> Dict[str, Any]:
+        """Create mock doc container data (nexset documentation entry)."""
+        return {
+            "id": kwargs.get("id", self.fake.random_int(min=1, max=100000)),
+            "owner": kwargs.get("owner", self.create_mock_owner()),
+            "org": kwargs.get("org", self.create_mock_organization()),
+            "name": kwargs.get(
+                "name", f"Doc for Nexset {self.fake.random_int(min=1, max=1000)}"
+            ),
+            "description": kwargs.get("description", self.fake.sentence()),
+            "doc_type": kwargs.get("doc_type", "md"),
+            "public": kwargs.get("public", False),
+            "repo_type": kwargs.get("repo_type", "embedded"),
+            "repo_config": kwargs.get("repo_config", {}),
+            "text": kwargs.get("text", "# Heading\n\nMarkdown body."),
+            "access_roles": kwargs.get("access_roles", ["owner"]),
+            "tags": kwargs.get("tags", []),
+            "copied_from_id": kwargs.get("copied_from_id"),
+            "created_at": kwargs.get(
+                "created_at", self.fake.date_time(tzinfo=timezone.utc).isoformat()
+            ),
+            "updated_at": kwargs.get(
+                "updated_at", self.fake.date_time(tzinfo=timezone.utc).isoformat()
+            ),
+        }
+
     def create_mock_org_member(self, **kwargs) -> Dict[str, Any]:
         """Create mock org member data."""
         return {

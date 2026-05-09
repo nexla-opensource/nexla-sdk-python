@@ -56,7 +56,7 @@ from nexla_sdk.models.destinations import (
     DestinationType,
     DestinationUpdate,
 )
-from nexla_sdk.models.doc_containers import DocContainer
+from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
 from nexla_sdk.models.enums import (
     AccessRole,
     ConnectorCategory,
@@ -377,6 +377,7 @@ __all__ = [
     "BlockedDomain",
     # Doc containers / Data schemas
     "DocContainer",
+    "DocContainerInput",
     "DataSchema",
     # Webhooks
     "WebhookSendOptions",
