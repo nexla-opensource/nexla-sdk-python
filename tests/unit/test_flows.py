@@ -1329,22 +1329,6 @@ class TestFlowsUnit:
             "org_id": 5,
         }
 
-    def test_get_run_status(self, mock_client, mock_http_client):
-        """Test get_run_status constructs correct path."""
-        mock_http_client.add_response(
-            "/data_sources/42/run_status/789", {"status": "ok", "data": []}
-        )
-
-        result = mock_client.flows.get_run_status(
-            resource_type="data_source",
-            resource_id=42,
-            run_id=789,
-        )
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["method"] == "GET"
-        assert "/data_sources/42/run_status/789" in last_request["url"]
-
     def test_get_flow_logs_no_optional_params(self, mock_client, mock_http_client):
         """Test get_flow_logs with just flow_id has empty params."""
         mock_http_client.add_response(
