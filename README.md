@@ -704,13 +704,20 @@ pytest tests/integration/
 
 ### Parity Tooling
 
+The parity scripts compare the SDK surface against the OpenAPI spec
+(`plugin-redoc-0.yaml`, sourced from upstream and not committed) and the admin
+API's `routes.rb`. Set `NEXLA_ADMIN_API_PATH` to the local checkout of the
+admin-api repo before running `build_matrices.py`, or pass `--admin-routes`
+explicitly.
+
 ```bash
 # Generate operation map for client.raw
 python scripts/parity/generate_operation_map.py
 
 # Build OpenAPI/admin-routes/SDK parity matrices
+export NEXLA_ADMIN_API_PATH="/path/to/admin-api"
 python scripts/parity/build_matrices.py \
-  --admin-routes /Users/sakshammittal/Documents/GitHub/admin-api/config/routes.rb
+  --admin-routes "$NEXLA_ADMIN_API_PATH/config/routes.rb"
 ```
 
 ### Setting Up Environment

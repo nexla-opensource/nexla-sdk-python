@@ -224,19 +224,26 @@ def write_json(path: Path, payload: Any) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spec", default="plugin-redoc-0.yaml")
+    admin_api_root = os.environ.get("NEXLA_ADMIN_API_PATH")
     parser.add_argument(
         "--admin-routes",
-        default=os.path.join(
-            os.getenv(
-                "NEXLA_ADMIN_API_PATH",
-                "/Users/sakshammittal/Documents/GitHub/admin-api",
-            ),
-            "config/routes.rb",
+        default=(
+            os.path.join(admin_api_root, "config/routes.rb") if admin_api_root else None
+        ),
+        help=(
+            "Path to admin-api config/routes.rb. Defaults to "
+            "$NEXLA_ADMIN_API_PATH/config/routes.rb when the env var is set."
         ),
     )
     parser.add_argument("--resources-dir", default="nexla_sdk/resources")
     parser.add_argument("--out-dir", default="artifacts/parity")
     args = parser.parse_args()
+
+    if not args.admin_routes:
+        parser.error(
+            "--admin-routes was not provided and NEXLA_ADMIN_API_PATH is unset. "
+            "Pass the path explicitly or export the env var."
+        )
 
     out_dir = Path(args.out_dir)
     spec_endpoints = dedupe(load_openapi_endpoints(Path(args.spec)))
