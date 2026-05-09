@@ -5,9 +5,10 @@ without raising validation errors. Unknown values are preserved as strings.
 """
 
 from enum import Enum
-from typing import Annotated, Type, TypeVar, Union
+from typing import Type, TypeVar, Union
 
 from pydantic import BeforeValidator
+from typing_extensions import Annotated  # typing.Annotated only landed in 3.9
 
 # Import directly from .enums modules to avoid circular imports through __init__.py
 from nexla_sdk.models.connectors.enums import ConnectionType, ConnectorType
