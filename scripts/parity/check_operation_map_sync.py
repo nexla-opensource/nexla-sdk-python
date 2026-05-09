@@ -16,6 +16,18 @@ def main() -> int:
     parser.add_argument("--target", default="nexla_sdk/generated/operation_map.py")
     args = parser.parse_args()
 
+    spec = Path(args.spec)
+    if not spec.exists():
+        # The OpenAPI spec is sourced from upstream and not committed to this
+        # repo, so the parity check has nothing to compare against in CI or for
+        # contributors who have not checked it out locally. Match the skip
+        # behavior used in tests/unit/test_parity_tooling.py.
+        print(
+            f"Spec {spec} not present; skipping operation_map sync check.",
+            file=sys.stderr,
+        )
+        return 0
+
     target = Path(args.target)
     if not target.exists():
         print(f"Target file does not exist: {target}", file=sys.stderr)
