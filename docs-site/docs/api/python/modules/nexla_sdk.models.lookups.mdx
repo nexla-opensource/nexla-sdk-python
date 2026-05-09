@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### Lookup
 
-Defined in `nexla_sdk/models/lookups/responses.py:8`
+Defined in `nexla_sdk/models/lookups/responses.py:10`
 
 Lookup (data map) response model.
 
@@ -22,25 +22,25 @@ Fields:
 - `map_primary_key`: `str`
 - `owner`: `Owner`
 - `org`: `Organization`
-- `access_roles`: `typing.List[str]`
+- `access_roles`: `List`
 - `public`: `bool`
 - `managed`: `bool`
 - `data_type`: `str`
 - `emit_data_default`: `bool`
 - `use_versioning`: `bool`
-- `data_format`: `typing.Optional[str]`
-- `data_sink_id`: `typing.Optional[int]`
-- `data_defaults`: `typing.Dict[str, typing.Any]`
-- `data_set_id`: `typing.Optional[int]`
-- `map_entry_count`: `typing.Optional[int]`
-- `map_entry_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `data_format`: `Optional`
+- `data_sink_id`: `Optional`
+- `data_defaults`: `Dict`
+- `data_set_id`: `Optional`
+- `map_entry_count`: `Optional`
+- `map_entry_schema`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### LookupCreate
 
-Defined in `nexla_sdk/models/lookups/requests.py:6`
+Defined in `nexla_sdk/models/lookups/requests.py:8`
 
 Request model for creating a lookup.
 
@@ -49,34 +49,34 @@ Fields:
 - `name`: `str`
 - `data_type`: `str`
 - `map_primary_key`: `str`
-- `description`: `typing.Optional[str]`
-- `data_defaults`: `typing.Dict[str, typing.Any]`
+- `description`: `Optional`
+- `data_defaults`: `Dict`
 - `emit_data_default`: `bool`
-- `data_map`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `tags`: `typing.List[str]`
+- `data_map`: `Optional`
+- `tags`: `List`
 
 ### LookupEntriesUpsert
 
-Defined in `nexla_sdk/models/lookups/requests.py:28`
+Defined in `nexla_sdk/models/lookups/requests.py:32`
 
 Request model for upserting lookup entries.
 
 Fields:
 
-- `entries`: `typing.List[typing.Dict[str, typing.Any]]`
+- `entries`: `List`
 
 ### LookupUpdate
 
-Defined in `nexla_sdk/models/lookups/requests.py:18`
+Defined in `nexla_sdk/models/lookups/requests.py:21`
 
 Request model for updating a lookup.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `map_primary_key`: `typing.Optional[str]`
-- `data_defaults`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `emit_data_default`: `typing.Optional[bool]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `map_primary_key`: `Optional`
+- `data_defaults`: `Optional`
+- `emit_data_default`: `Optional`
+- `tags`: `Optional`
 

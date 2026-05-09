@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### Connector
 
-Defined in `nexla_sdk/models/common.py:31`
+Defined in `nexla_sdk/models/common.py:34`
 
 Connector information.
 
@@ -25,7 +25,7 @@ Fields:
 
 ### FlowNode
 
-Defined in `nexla_sdk/models/common.py:61`
+Defined in `nexla_sdk/models/common.py:66`
 
 Flow node in a data pipeline.
 
@@ -33,21 +33,21 @@ Fields:
 
 - `id`: `int`
 - `origin_node_id`: `int`
-- `parent_node_id`: `typing.Optional[int]`
-- `data_source_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
-- `data_sink_id`: `typing.Optional[int]`
-- `status`: `typing.Optional[str]`
-- `project_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `ingestion_mode`: `typing.Optional[str]`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `children`: `typing.Optional[typing.List[nexla_sdk.models.common.FlowNode]]`
+- `parent_node_id`: `Optional`
+- `data_source_id`: `Optional`
+- `data_set_id`: `Optional`
+- `data_sink_id`: `Optional`
+- `status`: `Optional`
+- `project_id`: `Optional`
+- `flow_type`: `Optional`
+- `ingestion_mode`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `children`: `Optional`
 
 ### LogEntry
 
-Defined in `nexla_sdk/models/common.py:41`
+Defined in `nexla_sdk/models/common.py:45`
 
 Audit log entry.
 
@@ -57,22 +57,22 @@ Fields:
 - `item_type`: `str`
 - `item_id`: `int`
 - `event`: `str`
-- `change_summary`: `typing.List[str]`
-- `object_changes`: `typing.Dict[str, typing.List[typing.Any]]`
+- `change_summary`: `List`
+- `object_changes`: `Dict`
 - `request_ip`: `str`
 - `request_user_agent`: `str`
 - `request_url`: `str`
-- `user`: `typing.Dict[str, typing.Any]`
+- `user`: `Dict`
 - `org_id`: `int`
 - `owner_id`: `int`
 - `owner_email`: `str`
 - `created_at`: `datetime`
-- `association_resource`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `impersonator_id`: `typing.Optional[str]`
+- `association_resource`: `Optional`
+- `impersonator_id`: `Optional`
 
 ### Organization
 
-Defined in `nexla_sdk/models/common.py:14`
+Defined in `nexla_sdk/models/common.py:16`
 
 Organization details.
 
@@ -80,21 +80,21 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `email_domain`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `client_identifier`: `typing.Optional[str]`
-- `org_webhook_host`: `typing.Optional[str]`
-- `cluster_id`: `typing.Optional[int]`
-- `new_cluster_id`: `typing.Optional[int]`
-- `cluster_status`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `self_signup`: `typing.Optional[bool]`
-- `features_enabled`: `typing.Optional[typing.List[str]]`
-- `org_tier`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `email_domain`: `Optional`
+- `email`: `Optional`
+- `client_identifier`: `Optional`
+- `org_webhook_host`: `Optional`
+- `cluster_id`: `Optional`
+- `new_cluster_id`: `Optional`
+- `cluster_status`: `Optional`
+- `status`: `Optional`
+- `self_signup`: `Optional`
+- `features_enabled`: `Optional`
+- `org_tier`: `Optional`
 
 ### Owner
 
-Defined in `nexla_sdk/models/common.py:6`
+Defined in `nexla_sdk/models/common.py:7`
 
 User who owns a resource.
 
@@ -103,5 +103,5 @@ Fields:
 - `id`: `int`
 - `full_name`: `str`
 - `email`: `str`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
+- `email_verified_at`: `Optional`
 

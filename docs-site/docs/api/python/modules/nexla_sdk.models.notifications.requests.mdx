@@ -10,29 +10,29 @@ keywords: [Nexla, SDK, Python, API]
 
 ### NotificationChannelSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:6`
+Defined in `nexla_sdk/models/notifications/requests.py:8`
 
 Request model for creating notification channel setting.
 
 Fields:
 
 - `channel`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 
 ### NotificationChannelSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:12`
+Defined in `nexla_sdk/models/notifications/requests.py:15`
 
 Request model for updating notification channel setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `channel`: `Optional`
+- `config`: `Optional`
 
 ### NotificationSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:18`
+Defined in `nexla_sdk/models/notifications/requests.py:22`
 
 Request model for creating notification setting.
 
@@ -40,26 +40,26 @@ Fields:
 
 - `channel`: `str`
 - `notification_type_id`: `int`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Dict[str, typing.Any]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
+- `status`: `Optional`
+- `config`: `Dict`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `notification_channel_setting_id`: `Optional`
 
 ### NotificationSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:29`
+Defined in `nexla_sdk/models/notifications/requests.py:34`
 
 Request model for updating notification setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `checked`: `typing.Optional[bool]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
-- `notification_type_id`: `typing.Optional[int]`
+- `channel`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `checked`: `Optional`
+- `notification_channel_setting_id`: `Optional`
+- `notification_type_id`: `Optional`
 

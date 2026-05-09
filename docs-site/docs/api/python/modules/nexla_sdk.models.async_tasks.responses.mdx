@@ -25,14 +25,14 @@ Features:
 Fields:
 
 - `id`: `int`
-- `type`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `started_at`: `typing.Optional[datetime.datetime]`
-- `finished_at`: `typing.Optional[datetime.datetime]`
-- `result`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `error`: `typing.Optional[str]`
+- `type`: `Optional`
+- `status`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+- `started_at`: `Optional`
+- `finished_at`: `Optional`
+- `result`: `Optional`
+- `error`: `Optional`
 
 ### AsyncTaskResult
 
@@ -50,8 +50,8 @@ Features:
 
 Fields:
 
-- `task_id`: `typing.Optional[int]`
-- `result`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `task_id`: `Optional`
+- `result`: `Optional`
 
 ### DownloadLink
 
@@ -70,5 +70,5 @@ Features:
 Fields:
 
 - `url`: `str`
-- `expires_at`: `typing.Optional[datetime.datetime]`
+- `expires_at`: `Optional`
 

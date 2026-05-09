@@ -35,63 +35,63 @@ Members:
 
 ### AccessorsRequest
 
-Defined in `nexla_sdk/models/access/requests.py:38`
+Defined in `nexla_sdk/models/access/requests.py:49`
 
 Request model for accessor operations.
 
 Fields:
 
-- `accessors`: `typing.List[typing.Union[nexla_sdk.models.access.requests.UserAccessorRequest, nexla_sdk.models.access.requests.TeamAccessorRequest, nexla_sdk.models.access.requests.OrgAccessorRequest]]` — List of accessor requests
+- `accessors`: `List` — List of accessor requests
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AccountMetrics
 
-Defined in `nexla_sdk/models/metrics/responses.py:5`
+Defined in `nexla_sdk/models/metrics/responses.py:7`
 
 Account utilization metrics.
 
 Fields:
 
 - `status`: `int`
-- `metrics`: `typing.List[typing.Dict[str, typing.Any]]`
+- `metrics`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AccountSummary
 
-Defined in `nexla_sdk/models/users/responses.py:42`
+Defined in `nexla_sdk/models/users/responses.py:47`
 
 User account summary.
 
 Fields:
 
-- `data_sources`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_sets`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_sinks`: `typing.Dict[str, typing.Dict[str, int]]`
-- `data_maps`: `typing.Dict[str, typing.Dict[str, int]]`
+- `data_sources`: `Dict`
+- `data_sets`: `Dict`
+- `data_sinks`: `Dict`
+- `data_maps`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ActiveConfigView
@@ -110,16 +110,16 @@ Features:
 
 Fields:
 
-- `gen_ai_usage`: `typing.Optional[str]`
-- `active_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `gen_ai_usage`: `Optional`
+- `active_config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ApprovalDecision
@@ -139,15 +139,15 @@ Features:
 Fields:
 
 - `approved`: `bool`
-- `reason`: `typing.Optional[str]`
+- `reason`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ApprovalRequest
@@ -167,22 +167,22 @@ Features:
 Fields:
 
 - `id`: `int`
-- `status`: `typing.Optional[str]`
-- `request_type`: `typing.Optional[str]`
-- `requester_id`: `typing.Optional[int]`
-- `resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `reason`: `typing.Optional[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `status`: `Optional`
+- `request_type`: `Optional`
+- `requester_id`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `reason`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AsyncTask
@@ -202,22 +202,22 @@ Features:
 Fields:
 
 - `id`: `int`
-- `type`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `started_at`: `typing.Optional[datetime.datetime]`
-- `finished_at`: `typing.Optional[datetime.datetime]`
-- `result`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `error`: `typing.Optional[str]`
+- `type`: `Optional`
+- `status`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+- `started_at`: `Optional`
+- `finished_at`: `Optional`
+- `result`: `Optional`
+- `error`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AsyncTaskCreate
@@ -234,16 +234,16 @@ Fields:
 Fields:
 
 - `type`: `str`
-- `priority`: `typing.Optional[int]`
-- `arguments`: `typing.Dict[str, typing.Any]`
+- `priority`: `Optional`
+- `arguments`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AsyncTaskResult
@@ -262,16 +262,16 @@ Features:
 
 Fields:
 
-- `task_id`: `typing.Optional[int]`
-- `result`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `task_id`: `Optional`
+- `result`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AttributeTransform
@@ -292,34 +292,34 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `resource_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `access_roles`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `runtime_data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `description`: `typing.Optional[str]`
-- `code_type`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `data_sets`: `typing.Optional[typing.List[int]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `resource_type`: `Optional`
+- `reusable`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `data_credentials`: `Optional`
+- `runtime_data_credentials`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `output_type`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `managed`: `Optional`
+- `data_sets`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `tags`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AttributeTransformCreate
@@ -344,19 +344,19 @@ Fields:
 - `code_type`: `str`
 - `code_encoding`: `str`
 - `code`: `str`
-- `description`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
+- `description`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AttributeTransformUpdate
@@ -375,25 +375,25 @@ Features:
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `code_type`: `typing.Optional[str]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `code_type`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `description`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AuthConfig
@@ -413,41 +413,41 @@ Features:
 Fields:
 
 - `id`: `int`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `uid`: `typing.Optional[str]`
-- `protocol`: `typing.Optional[str]`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `global_`: `typing.Optional[bool]`
-- `auto_create_users_enabled`: `typing.Optional[bool]`
-- `name_identifier_format`: `typing.Optional[str]`
-- `nexla_base_url`: `typing.Optional[str]`
-- `service_entity_id`: `typing.Optional[str]`
-- `assertion_consumer_url`: `typing.Optional[str]`
-- `logout_url`: `typing.Optional[str]`
-- `metadata_url`: `typing.Optional[str]`
-- `idp_entity_id`: `typing.Optional[str]`
-- `idp_sso_target_url`: `typing.Optional[str]`
-- `idp_slo_target_url`: `typing.Optional[str]`
-- `idp_cert`: `typing.Optional[str]`
-- `security_settings`: `typing.Optional[str]`
-- `oidc_domain`: `typing.Optional[str]`
-- `oidc_keys_url_key`: `typing.Optional[str]`
-- `oidc_token_verify_url`: `typing.Optional[str]`
-- `oidc_id_claims`: `typing.Optional[str]`
-- `oidc_access_claims`: `typing.Optional[str]`
-- `client_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `uid`: `Optional`
+- `protocol`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `global_`: `Optional`
+- `auto_create_users_enabled`: `Optional`
+- `name_identifier_format`: `Optional`
+- `nexla_base_url`: `Optional`
+- `service_entity_id`: `Optional`
+- `assertion_consumer_url`: `Optional`
+- `logout_url`: `Optional`
+- `metadata_url`: `Optional`
+- `idp_entity_id`: `Optional`
+- `idp_sso_target_url`: `Optional`
+- `idp_slo_target_url`: `Optional`
+- `idp_cert`: `Optional`
+- `security_settings`: `Optional`
+- `oidc_domain`: `Optional`
+- `oidc_keys_url_key`: `Optional`
+- `oidc_token_verify_url`: `Optional`
+- `oidc_id_claims`: `Optional`
+- `oidc_access_claims`: `Optional`
+- `client_config`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### AuthConfigPayload
@@ -466,43 +466,43 @@ Features:
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
-- `uid`: `typing.Optional[str]`
-- `protocol`: `typing.Optional[str]`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `global_`: `typing.Optional[bool]`
-- `enabled_by_default`: `typing.Optional[bool]`
-- `auto_create_users_enabled`: `typing.Optional[bool]`
-- `name_identifier_format`: `typing.Optional[str]`
-- `nexla_base_url`: `typing.Optional[str]`
-- `service_entity_id`: `typing.Optional[str]`
-- `assertion_consumer_url`: `typing.Optional[str]`
-- `idp_entity_id`: `typing.Optional[str]`
-- `idp_sso_target_url`: `typing.Optional[str]`
-- `idp_slo_target_url`: `typing.Optional[str]`
-- `idp_cert`: `typing.Optional[str]`
-- `security_settings`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `metadata`: `typing.Optional[str]`
-- `oidc_domain`: `typing.Optional[str]`
-- `oidc_keys_url_key`: `typing.Optional[str]`
-- `oidc_id_claims`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `oidc_access_claims`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `id`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `uid`: `Optional`
+- `protocol`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `global_`: `Optional`
+- `enabled_by_default`: `Optional`
+- `auto_create_users_enabled`: `Optional`
+- `name_identifier_format`: `Optional`
+- `nexla_base_url`: `Optional`
+- `service_entity_id`: `Optional`
+- `assertion_consumer_url`: `Optional`
+- `idp_entity_id`: `Optional`
+- `idp_sso_target_url`: `Optional`
+- `idp_slo_target_url`: `Optional`
+- `idp_cert`: `Optional`
+- `security_settings`: `Optional`
+- `metadata`: `Optional`
+- `oidc_domain`: `Optional`
+- `oidc_keys_url_key`: `Optional`
+- `oidc_id_claims`: `Optional`
+- `oidc_access_claims`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### BaseModel
 
-Defined in `nexla_sdk/models/base.py:8`
+Defined in `nexla_sdk/models/base.py:10`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -517,10 +517,10 @@ Features:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### BlockedDomain
@@ -545,10 +545,10 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CodeContainer
@@ -561,41 +561,41 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `resource_type`: `typing.Optional[str]`
-- `ai_function_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `public`: `typing.Optional[bool]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `access_roles`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `runtime_data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `description`: `typing.Optional[str]`
-- `code_type`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[typing.List[nexla_sdk.models.code_containers.responses.CodeOperation]]`
-- `managed`: `typing.Optional[bool]`
-- `data_sets`: `typing.Optional[typing.List[int]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `resource_type`: `Optional`
+- `ai_function_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `data_credentials`: `Optional`
+- `runtime_data_credentials`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `output_type`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `managed`: `Optional`
+- `data_sets`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `tags`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CodeContainerCreate
 
-Defined in `nexla_sdk/models/code_containers/requests.py:7`
+Defined in `nexla_sdk/models/code_containers/requests.py:8`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -614,27 +614,27 @@ Fields:
 - `reusable`: `bool`
 - `code_type`: `str`
 - `code_encoding`: `str`
-- `code`: `typing.List[nexla_sdk.models.code_containers.responses.CodeOperation]`
-- `description`: `typing.Optional[str]`
-- `public`: `typing.Optional[bool]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
-- `ai_function_type`: `typing.Optional[str]`
+- `code`: `List`
+- `description`: `Optional`
+- `public`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `ai_function_type`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CodeContainerUpdate
 
-Defined in `nexla_sdk/models/code_containers/requests.py:25`
+Defined in `nexla_sdk/models/code_containers/requests.py:26`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -648,32 +648,32 @@ Features:
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `code_type`: `typing.Optional[str]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[typing.List[nexla_sdk.models.code_containers.responses.CodeOperation]]`
-- `description`: `typing.Optional[str]`
-- `public`: `typing.Optional[bool]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
-- `ai_function_type`: `typing.Optional[str]`
+- `name`: `Optional`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `code_type`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `description`: `Optional`
+- `public`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `ai_function_type`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Connector
 
-Defined in `nexla_sdk/models/common.py:31`
+Defined in `nexla_sdk/models/common.py:34`
 
 Connector information.
 
@@ -689,15 +689,15 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ConnectorCategory
 
-Defined in `nexla_sdk/models/enums.py:85`
+Defined in `nexla_sdk/models/enums.py:93`
 
 Connector categories.
 
@@ -713,7 +713,7 @@ Members:
 
 ### Credential
 
-Defined in `nexla_sdk/models/credentials/responses.py:8`
+Defined in `nexla_sdk/models/credentials/responses.py:10`
 
 Data credential response model.
 
@@ -722,38 +722,38 @@ Fields:
 - `id`: `int`
 - `name`: `str`
 - `credentials_type`: `str`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `verified_status`: `typing.Optional[str]`
-- `connector`: `typing.Optional[nexla_sdk.models.common.Connector]`
-- `description`: `typing.Optional[str]`
-- `credentials_version`: `typing.Optional[str]`
-- `api_keys`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `credentials_non_secure_data`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `verified_at`: `typing.Optional[datetime.datetime]`
-- `copied_from_id`: `typing.Optional[int]`
-- `template_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `vendor`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `auth_template`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `referenced_resource_ids`: `typing.Optional[typing.Dict[str, typing.List[int]]]`
-- `tags`: `typing.Optional[typing.List[str]]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `verified_status`: `Optional`
+- `connector`: `Optional`
+- `description`: `Optional`
+- `credentials_version`: `Optional`
+- `api_keys`: `Optional`
+- `credentials_non_secure_data`: `Optional`
+- `verified_at`: `Optional`
+- `copied_from_id`: `Optional`
+- `template_config`: `Optional`
+- `vendor`: `Optional`
+- `auth_template`: `Optional`
+- `referenced_resource_ids`: `Optional`
+- `tags`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 - `managed`: `bool`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CredentialCreate
 
-Defined in `nexla_sdk/models/credentials/requests.py:5`
+Defined in `nexla_sdk/models/credentials/requests.py:6`
 
 Request model for creating a credential.
 
@@ -761,19 +761,19 @@ Fields:
 
 - `name`: `str`
 - `credentials_type`: `str`
-- `description`: `typing.Optional[str]`
-- `auth_template_id`: `typing.Optional[int]`
-- `vendor_id`: `typing.Optional[int]`
-- `template_config`: `typing.Optional[typing.Dict]`
-- `credentials`: `typing.Optional[typing.Dict]`
+- `description`: `Optional`
+- `auth_template_id`: `Optional`
+- `vendor_id`: `Optional`
+- `template_config`: `Optional`
+- `credentials`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CredentialType
@@ -839,49 +839,49 @@ Members:
 
 ### CredentialUpdate
 
-Defined in `nexla_sdk/models/credentials/requests.py:20`
+Defined in `nexla_sdk/models/credentials/requests.py:22`
 
 Request model for updating a credential.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `credentials`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CustodianUser
 
-Defined in `nexla_sdk/models/organizations/responses.py:68`
+Defined in `nexla_sdk/models/organizations/responses.py:74`
 
 Simplified user view for organization custodians endpoints.
 
 Fields:
 
 - `id`: `int`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
+- `email`: `Optional`
+- `full_name`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### CustodiansPayload
 
-Defined in `nexla_sdk/models/marketplace/requests.py:12`
+Defined in `nexla_sdk/models/marketplace/requests.py:13`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -895,40 +895,40 @@ Features:
 
 Fields:
 
-- `custodians`: `typing.List[nexla_sdk.models.marketplace.requests.CustodianRef]`
+- `custodians`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DashboardMetrics
 
-Defined in `nexla_sdk/models/metrics/responses.py:19`
+Defined in `nexla_sdk/models/metrics/responses.py:23`
 
 24-hour dashboard metrics.
 
 Fields:
 
 - `status`: `int`
-- `metrics`: `typing.Dict[str, typing.Any]`
+- `metrics`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DataMapInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:22`
+Defined in `nexla_sdk/models/destinations/responses.py:25`
 
 Basic data map information for destination.
 
@@ -938,7 +938,7 @@ Fields:
 - `owner_id`: `int`
 - `org_id`: `int`
 - `name`: `str`
-- `description`: `str`
+- `description`: `Optional`
 - `public`: `bool`
 - `created_at`: `datetime`
 - `updated_at`: `datetime`
@@ -946,10 +946,10 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DataSchema
@@ -969,20 +969,20 @@ Features:
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
+- `name`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DataSetBrief
 
-Defined in `nexla_sdk/models/sources/responses.py:9`
+Defined in `nexla_sdk/models/sources/responses.py:11`
 
 Brief dataset information.
 
@@ -991,24 +991,24 @@ Fields:
 - `id`: `int`
 - `owner_id`: `int`
 - `org_id`: `int`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `version`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `version`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DataSetInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:10`
+Defined in `nexla_sdk/models/destinations/responses.py:12`
 
 Basic dataset information for destination.
 
@@ -1016,49 +1016,49 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `output_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `version`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `description`: `Optional`
+- `status`: `Optional`
+- `output_schema`: `Optional`
+- `version`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DataSinkSimplified
 
-Defined in `nexla_sdk/models/nexsets/responses.py:10`
+Defined in `nexla_sdk/models/nexsets/responses.py:12`
 
 Simplified data sink information.
 
 Fields:
 
 - `id`: `int`
-- `owner_id`: `int`
-- `org_id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 - `name`: `str`
-- `status`: `typing.Optional[str]`
-- `sink_type`: `typing.Optional[nexla_sdk.models.destinations.enums.DestinationType]`
+- `status`: `Optional`
+- `sink_type`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DefaultOrg
 
-Defined in `nexla_sdk/models/users/responses.py:7`
+Defined in `nexla_sdk/models/users/responses.py:9`
 
 User's default organization.
 
@@ -1070,15 +1070,15 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Destination
 
-Defined in `nexla_sdk/models/destinations/responses.py:34`
+Defined in `nexla_sdk/models/destinations/responses.py:38`
 
 Destination (data sink) response model.
 
@@ -1088,45 +1088,45 @@ Fields:
 - `name`: `str`
 - `status`: `str`
 - `sink_type`: `str`
-- `connector_type`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `managed`: `typing.Optional[bool]`
-- `connector`: `typing.Optional[nexla_sdk.models.common.Connector]`
-- `description`: `typing.Optional[str]`
-- `data_set_id`: `typing.Optional[int]`
-- `data_map_id`: `typing.Optional[int]`
-- `data_source_id`: `typing.Optional[int]`
-- `sink_format`: `typing.Optional[nexla_sdk.models.destinations.enums.DestinationFormat]`
-- `sink_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `sink_schedule`: `typing.Optional[str]`
+- `connector_type`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `managed`: `Optional`
+- `connector`: `Optional`
+- `description`: `Optional`
+- `data_set_id`: `Optional`
+- `data_map_id`: `Optional`
+- `data_source_id`: `Optional`
+- `sink_format`: `Optional`
+- `sink_config`: `Optional`
+- `sink_schedule`: `Optional`
 - `in_memory`: `bool`
-- `data_set`: `typing.Optional[nexla_sdk.models.destinations.responses.DataSetInfo]`
-- `data_map`: `typing.Optional[nexla_sdk.models.destinations.responses.DataMapInfo]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_credentials`: `typing.Optional[nexla_sdk.models.credentials.responses.Credential]`
-- `copied_from_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `has_template`: `typing.Optional[bool]`
-- `vendor_endpoint`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `vendor`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `data_set`: `Optional`
+- `data_map`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_credentials`: `Optional`
+- `copied_from_id`: `Optional`
+- `flow_type`: `Optional`
+- `has_template`: `Optional`
+- `vendor_endpoint`: `Optional`
+- `vendor`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DestinationCopyOptions
 
-Defined in `nexla_sdk/models/destinations/requests.py:30`
+Defined in `nexla_sdk/models/destinations/requests.py:33`
 
 Options for copying a destination.
 
@@ -1134,21 +1134,21 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DestinationCreate
 
-Defined in `nexla_sdk/models/destinations/requests.py:5`
+Defined in `nexla_sdk/models/destinations/requests.py:6`
 
 Request model for creating a destination.
 
@@ -1158,23 +1158,23 @@ Fields:
 - `sink_type`: `str`
 - `data_credentials_id`: `int`
 - `data_set_id`: `int`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `template_config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DestinationFormat
 
-Defined in `nexla_sdk/models/destinations/enums.py:58`
+Defined in `nexla_sdk/models/destinations/enums.py:89`
 
 Output format for destinations.
 
@@ -1204,7 +1204,7 @@ Members:
 
 ### DestinationType
 
-Defined in `nexla_sdk/models/destinations/enums.py:13`
+Defined in `nexla_sdk/models/destinations/enums.py:14`
 
 Supported sink types.
 
@@ -1213,51 +1213,80 @@ Members:
 - `S3` = `s3`
 - `GCS` = `gcs`
 - `AZURE_BLB` = `azure_blb`
+- `AZURE_DATA_LAKE` = `azure_data_lake`
 - `FTP` = `ftp`
 - `DROPBOX` = `dropbox`
 - `BOX` = `box`
 - `GDRIVE` = `gdrive`
 - `SHAREPOINT` = `sharepoint`
+- `MIN_IO_S3` = `min_io_s3`
+- `WEBDAV` = `webdav`
 - `MYSQL` = `mysql`
 - `POSTGRES` = `postgres`
+- `SUPABASE` = `supabase`
 - `SQLSERVER` = `sqlserver`
 - `ORACLE` = `oracle`
+- `ORACLE_AUTONOMOUS` = `oracle_autonomous`
 - `REDSHIFT` = `redshift`
 - `SNOWFLAKE` = `snowflake`
+- `SNOWFLAKE_DCR` = `snowflake_dcr`
 - `BIGQUERY` = `bigquery`
 - `DATABRICKS` = `databricks`
+- `AS400` = `as400`
+- `AWS_ATHENA` = `aws_athena`
+- `AZURE_SYNAPSE` = `azure_synapse`
+- `CLOUDSQL_MYSQL` = `cloudsql_mysql`
+- `CLOUDSQL_POSTGRES` = `cloudsql_postgres`
+- `CLOUDSQL_SQLSERVER` = `cloudsql_sqlserver`
+- `DB2` = `db2`
+- `FIREBOLT` = `firebolt`
+- `GCP_ALLOYDB` = `gcp_alloydb`
+- `GCP_SPANNER` = `gcp_spanner`
+- `HANA_JDBC` = `hana_jdbc`
+- `HIVE` = `hive`
+- `NETSUITE_JDBC` = `netsuite_jdbc`
+- `SYBASE` = `sybase`
+- `TERADATA` = `teradata`
+- `DELTA_LAKE_AZURE_BLB` = `delta_lake_azure_blb`
+- `DELTA_LAKE_AZURE_DATA_LAKE` = `delta_lake_azure_data_lake`
+- `DELTA_LAKE_S3` = `delta_lake_s3`
+- `S3_ICEBERG` = `s3_iceberg`
 - `MONGO` = `mongo`
 - `DYNAMODB` = `dynamodb`
 - `FIREBASE` = `firebase`
 - `KAFKA` = `kafka`
 - `CONFLUENT_KAFKA` = `confluent_kafka`
 - `GOOGLE_PUBSUB` = `google_pubsub`
+- `JMS` = `jms`
+- `TIBCO` = `tibco`
 - `REST` = `rest`
+- `SOAP` = `soap`
 - `EMAIL` = `email`
 - `DATA_MAP` = `data_map`
+- `NEXLA_MONITOR` = `nexla_monitor`
 - `PINECONE` = `pinecone`
 
 ### DestinationUpdate
 
-Defined in `nexla_sdk/models/destinations/requests.py:21`
+Defined in `nexla_sdk/models/destinations/requests.py:23`
 
 Request model for updating a destination.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_set_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DocContainer
@@ -1277,15 +1306,39 @@ Features:
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
+- `name`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DocsRecommendation
+
+Defined in `nexla_sdk/models/flows/responses.py:152`
+
+Response from docs_recommendation() with AI-generated documentation.
+
+Attributes:
+    recommendation: The AI-generated documentation suggestion.
+    status: Status of the recommendation request.
+
+Fields:
+
+- `recommendation`: `Optional`
+- `status`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### DownloadLink
@@ -1305,20 +1358,20 @@ Features:
 Fields:
 
 - `url`: `str`
-- `expires_at`: `typing.Optional[datetime.datetime]`
+- `expires_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowCopyOptions
 
-Defined in `nexla_sdk/models/flows/requests.py:5`
+Defined in `nexla_sdk/models/flows/requests.py:6`
 
 Options for copying a flow.
 
@@ -1327,48 +1380,150 @@ Fields:
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
 - `copy_dependent_data_flows`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowElements
 
-Defined in `nexla_sdk/models/flows/responses.py:22`
+Defined in `nexla_sdk/models/flows/responses.py:164`
 
 Flow elements containing all resources.
 
 Fields:
 
-- `code_containers`: `typing.List[typing.Dict[str, typing.Any]]`
-- `data_sources`: `typing.List[nexla_sdk.models.sources.responses.Source]`
-- `data_sets`: `typing.List[nexla_sdk.models.nexsets.responses.Nexset]`
-- `data_sinks`: `typing.List[nexla_sdk.models.destinations.responses.Destination]`
-- `data_credentials`: `typing.List[nexla_sdk.models.credentials.responses.Credential]`
-- `shared_data_sets`: `typing.List[typing.Dict[str, typing.Any]]`
-- `orgs`: `typing.List[typing.Dict[str, typing.Any]]`
-- `users`: `typing.List[typing.Dict[str, typing.Any]]`
-- `projects`: `typing.List[typing.Dict[str, typing.Any]]`
+- `code_containers`: `List`
+- `data_sources`: `List`
+- `data_sets`: `List`
+- `data_sinks`: `List`
+- `data_credentials`: `List`
+- `shared_data_sets`: `List`
+- `orgs`: `List`
+- `users`: `List`
+- `projects`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowLogEntry
+
+Defined in `nexla_sdk/models/flows/responses.py:25`
+
+A single flow execution log entry.
+
+Fields:
+
+- `timestamp`: `Optional`
+- `level`: `Optional`
+- `message`: `Optional`
+- `log_type`: `Optional`
+- `resource_id`: `Optional`
+- `resource_type`: `Optional`
+- `run_id`: `Optional`
+- `details`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowLogsMeta
+
+Defined in `nexla_sdk/models/flows/responses.py:53`
+
+Metadata for flow logs pagination.
+
+The live API also returns run context fields (org_id, run_id) in logs.meta.
+
+Fields:
+
+- `current_page`: `Optional`
+- `page_count`: `Optional`
+- `total_count`: `Optional`
+- `org_id`: `Optional`
+- `run_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowLogsResponse
+
+Defined in `nexla_sdk/models/flows/responses.py:82`
+
+Response from get_logs() containing flow execution logs.
+
+Attributes:
+    status: Status code of the response (200 for success).
+    message: Status message ("Ok" for success).
+    logs: List of log entries.
+    meta: Pagination metadata.
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `logs`: `List`
+- `meta`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowMetricData
+
+Defined in `nexla_sdk/models/flows/responses.py:113`
+
+Flow metric data for a resource.
+
+Fields:
+
+- `records`: `Optional`
+- `size`: `Optional`
+- `errors`: `Optional`
+- `run_id`: `Optional`
+- `reporting_date`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowMetrics
 
-Defined in `nexla_sdk/models/flows/responses.py:12`
+Defined in `nexla_sdk/models/flows/responses.py:14`
 
 Flow metrics information.
 
@@ -1384,15 +1539,82 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowMetricsApiResponse
+
+Defined in `nexla_sdk/models/flows/responses.py:138`
+
+Response from get_metrics() containing flow metrics.
+
+Attributes:
+    status: Status code of the response (200 for success).
+    message: Status message ("Ok" for success).
+    metrics: Metrics data including resource-keyed data and pagination.
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `metrics`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowMetricsData
+
+Defined in `nexla_sdk/models/flows/responses.py:131`
+
+Flow metrics data container.
+
+Fields:
+
+- `data`: `Optional`
+- `meta`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowMetricsMeta
+
+Defined in `nexla_sdk/models/flows/responses.py:123`
+
+Metadata for flow metrics pagination.
+
+Fields:
+
+- `current_page`: `Optional`
+- `page_count`: `Optional`
+- `total_count`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowNode
 
-Defined in `nexla_sdk/models/common.py:61`
+Defined in `nexla_sdk/models/common.py:66`
 
 Flow node in a data pipeline.
 
@@ -1400,59 +1622,59 @@ Fields:
 
 - `id`: `int`
 - `origin_node_id`: `int`
-- `parent_node_id`: `typing.Optional[int]`
-- `data_source_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
-- `data_sink_id`: `typing.Optional[int]`
-- `status`: `typing.Optional[str]`
-- `project_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `ingestion_mode`: `typing.Optional[str]`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `children`: `typing.Optional[typing.List[nexla_sdk.models.common.FlowNode]]`
+- `parent_node_id`: `Optional`
+- `data_source_id`: `Optional`
+- `data_set_id`: `Optional`
+- `data_sink_id`: `Optional`
+- `status`: `Optional`
+- `project_id`: `Optional`
+- `flow_type`: `Optional`
+- `ingestion_mode`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `children`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowResponse
 
-Defined in `nexla_sdk/models/flows/responses.py:35`
+Defined in `nexla_sdk/models/flows/responses.py:178`
 
 Flow response model.
 
 Fields:
 
-- `flows`: `typing.List[nexla_sdk.models.common.FlowNode]`
-- `code_containers`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `data_sources`: `typing.Optional[typing.List[nexla_sdk.models.sources.responses.Source]]`
-- `data_sets`: `typing.Optional[typing.List[nexla_sdk.models.nexsets.responses.Nexset]]`
-- `data_sinks`: `typing.Optional[typing.List[nexla_sdk.models.destinations.responses.Destination]]`
-- `data_credentials`: `typing.Optional[typing.List[nexla_sdk.models.credentials.responses.Credential]]`
-- `shared_data_sets`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `orgs`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `users`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `projects`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `metrics`: `typing.Optional[typing.List[nexla_sdk.models.flows.responses.FlowMetrics]]`
+- `flows`: `List`
+- `code_containers`: `Optional`
+- `data_sources`: `Optional`
+- `data_sets`: `Optional`
+- `data_sinks`: `Optional`
+- `data_credentials`: `Optional`
+- `shared_data_sets`: `Optional`
+- `orgs`: `Optional`
+- `users`: `Optional`
+- `projects`: `Optional`
+- `metrics`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### FlowType
 
-Defined in `nexla_sdk/models/sources/enums.py:68`
+Defined in `nexla_sdk/models/sources/enums.py:72`
 
 Flow processing types.
 
@@ -1479,19 +1701,19 @@ Features:
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
-- `provider`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `provider`: `Optional`
+- `config`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### GenAiConfigCreatePayload
@@ -1512,17 +1734,17 @@ Fields:
 
 - `name`: `str`
 - `type`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 - `data_credentials_id`: `int`
-- `description`: `typing.Optional[str]`
+- `description`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### GenAiConfigPayload
@@ -1541,20 +1763,20 @@ Features:
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `type`: `typing.Optional[str]`
-- `data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `type`: `Optional`
+- `data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### GenAiOrgSetting
@@ -1574,20 +1796,20 @@ Features:
 Fields:
 
 - `id`: `int`
-- `org_id`: `typing.Optional[int]`
-- `gen_ai_usage`: `typing.Optional[str]`
-- `active_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `configs`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `org_id`: `Optional`
+- `gen_ai_usage`: `Optional`
+- `active_config`: `Optional`
+- `configs`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### GenAiOrgSettingPayload
@@ -1606,22 +1828,22 @@ Features:
 
 Fields:
 
-- `org_id`: `typing.Optional[int]`
+- `org_id`: `Optional`
 - `gen_ai_config_id`: `int`
 - `gen_ai_usage`: `str`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### IngestMethod
 
-Defined in `nexla_sdk/models/sources/enums.py:59`
+Defined in `nexla_sdk/models/sources/enums.py:62`
 
 Data ingestion methods.
 
@@ -1635,7 +1857,7 @@ Members:
 
 ### LogEntry
 
-Defined in `nexla_sdk/models/common.py:41`
+Defined in `nexla_sdk/models/common.py:45`
 
 Audit log entry.
 
@@ -1645,31 +1867,31 @@ Fields:
 - `item_type`: `str`
 - `item_id`: `int`
 - `event`: `str`
-- `change_summary`: `typing.List[str]`
-- `object_changes`: `typing.Dict[str, typing.List[typing.Any]]`
+- `change_summary`: `List`
+- `object_changes`: `Dict`
 - `request_ip`: `str`
 - `request_user_agent`: `str`
 - `request_url`: `str`
-- `user`: `typing.Dict[str, typing.Any]`
+- `user`: `Dict`
 - `org_id`: `int`
 - `owner_id`: `int`
 - `owner_email`: `str`
 - `created_at`: `datetime`
-- `association_resource`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `impersonator_id`: `typing.Optional[str]`
+- `association_resource`: `Optional`
+- `impersonator_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Lookup
 
-Defined in `nexla_sdk/models/lookups/responses.py:8`
+Defined in `nexla_sdk/models/lookups/responses.py:10`
 
 Lookup (data map) response model.
 
@@ -1681,34 +1903,34 @@ Fields:
 - `map_primary_key`: `str`
 - `owner`: `Owner`
 - `org`: `Organization`
-- `access_roles`: `typing.List[str]`
+- `access_roles`: `List`
 - `public`: `bool`
 - `managed`: `bool`
 - `data_type`: `str`
 - `emit_data_default`: `bool`
 - `use_versioning`: `bool`
-- `data_format`: `typing.Optional[str]`
-- `data_sink_id`: `typing.Optional[int]`
-- `data_defaults`: `typing.Dict[str, typing.Any]`
-- `data_set_id`: `typing.Optional[int]`
-- `map_entry_count`: `typing.Optional[int]`
-- `map_entry_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `data_format`: `Optional`
+- `data_sink_id`: `Optional`
+- `data_defaults`: `Dict`
+- `data_set_id`: `Optional`
+- `map_entry_count`: `Optional`
+- `map_entry_schema`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### LookupCreate
 
-Defined in `nexla_sdk/models/lookups/requests.py:6`
+Defined in `nexla_sdk/models/lookups/requests.py:8`
 
 Request model for creating a lookup.
 
@@ -1717,67 +1939,67 @@ Fields:
 - `name`: `str`
 - `data_type`: `str`
 - `map_primary_key`: `str`
-- `description`: `typing.Optional[str]`
-- `data_defaults`: `typing.Dict[str, typing.Any]`
+- `description`: `Optional`
+- `data_defaults`: `Dict`
 - `emit_data_default`: `bool`
-- `data_map`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `tags`: `typing.List[str]`
+- `data_map`: `Optional`
+- `tags`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### LookupEntriesUpsert
 
-Defined in `nexla_sdk/models/lookups/requests.py:28`
+Defined in `nexla_sdk/models/lookups/requests.py:32`
 
 Request model for upserting lookup entries.
 
 Fields:
 
-- `entries`: `typing.List[typing.Dict[str, typing.Any]]`
+- `entries`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### LookupUpdate
 
-Defined in `nexla_sdk/models/lookups/requests.py:18`
+Defined in `nexla_sdk/models/lookups/requests.py:21`
 
 Request model for updating a lookup.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `map_primary_key`: `typing.Optional[str]`
-- `data_defaults`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `emit_data_default`: `typing.Optional[bool]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `map_primary_key`: `Optional`
+- `data_defaults`: `Optional`
+- `emit_data_default`: `Optional`
+- `tags`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MarketplaceDomain
 
-Defined in `nexla_sdk/models/marketplace/responses.py:8`
+Defined in `nexla_sdk/models/marketplace/responses.py:7`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -1793,24 +2015,24 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `slug`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `org_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `slug`: `Optional`
+- `description`: `Optional`
+- `org_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MarketplaceDomainCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:16`
+Defined in `nexla_sdk/models/marketplace/requests.py:17`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -1824,25 +2046,25 @@ Features:
 
 Fields:
 
-- `org_id`: `typing.Optional[int]`
-- `owner_id`: `typing.Optional[int]`
+- `org_id`: `Optional`
+- `owner_id`: `Optional`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `parent_id`: `typing.Optional[int]`
-- `custodians`: `typing.Optional[nexla_sdk.models.marketplace.requests.CustodiansPayload]`
+- `description`: `Optional`
+- `parent_id`: `Optional`
+- `custodians`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MarketplaceDomainsItem
 
-Defined in `nexla_sdk/models/marketplace/responses.py:18`
+Defined in `nexla_sdk/models/marketplace/responses.py:17`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -1857,24 +2079,24 @@ Features:
 Fields:
 
 - `id`: `int`
-- `domain_id`: `typing.Optional[int]`
-- `resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `domain_id`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MarketplaceDomainsItemCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:25`
+Defined in `nexla_sdk/models/marketplace/requests.py:26`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -1889,118 +2111,118 @@ Features:
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
+- `description`: `Optional`
 - `data_set_id`: `int`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MetricsByRunResponse
 
-Defined in `nexla_sdk/models/metrics/responses.py:49`
+Defined in `nexla_sdk/models/metrics/responses.py:57`
 
 Metrics by run response with pagination.
 
 Fields:
 
 - `status`: `int`
-- `metrics`: `typing.Dict[str, typing.Any]`
+- `metrics`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### MetricsResponse
 
-Defined in `nexla_sdk/models/metrics/responses.py:43`
+Defined in `nexla_sdk/models/metrics/responses.py:50`
 
 Generic metrics response.
 
 Fields:
 
 - `status`: `int`
-- `metrics`: `typing.List[typing.Any]`
+- `metrics`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Nexset
 
-Defined in `nexla_sdk/models/nexsets/responses.py:20`
+Defined in `nexla_sdk/models/nexsets/responses.py:23`
 
 Nexset (data set) response model.
 
 Fields:
 
 - `id`: `int`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `flow_type`: `typing.Optional[str]`
-- `data_source_id`: `typing.Optional[int]`
-- `data_source`: `typing.Optional[nexla_sdk.models.sources.responses.Source]`
-- `parent_data_sets`: `typing.List[nexla_sdk.models.sources.responses.DataSetBrief]`
-- `data_sinks`: `typing.List[nexla_sdk.models.nexsets.responses.DataSinkSimplified]`
-- `transform_id`: `typing.Optional[int]`
-- `output_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `flow_type`: `Optional`
+- `data_source_id`: `Optional`
+- `data_source`: `Optional`
+- `parent_data_sets`: `List`
+- `data_sinks`: `List`
+- `transform_id`: `Optional`
+- `output_schema`: `Optional`
+- `copied_from_id`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NexsetCopyOptions
 
-Defined in `nexla_sdk/models/nexsets/requests.py:41`
+Defined in `nexla_sdk/models/nexsets/requests.py:46`
 
 Options for copying a nexset.
 
 Fields:
 
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NexsetCreate
 
-Defined in `nexla_sdk/models/nexsets/requests.py:7`
+Defined in `nexla_sdk/models/nexsets/requests.py:10`
 
 Request model for creating a nexset.
 
@@ -2009,43 +2231,43 @@ Fields:
 - `name`: `str`
 - `parent_data_set_id`: `int`
 - `has_custom_transform`: `bool`
-- `transform`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `transform_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `output_schema_annotations`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `transform`: `Optional`
+- `transform_id`: `Optional`
+- `description`: `Optional`
+- `output_schema_annotations`: `Optional`
 - `output_schema_validation_enabled`: `bool`
-- `output_validation_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_sinks`: `typing.List[typing.Union[int, typing.Dict[str, typing.Any]]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
+- `output_validation_schema`: `Optional`
+- `data_sinks`: `List`
+- `custom_config`: `Optional`
+- `tags`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NexsetSample
 
-Defined in `nexla_sdk/models/nexsets/responses.py:43`
+Defined in `nexla_sdk/models/nexsets/responses.py:47`
 
 Nexset sample record.
 
 Fields:
 
-- `raw_message`: `typing.Dict[str, typing.Any]`
-- `nexla_metadata`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `raw_message`: `Dict`
+- `nexla_metadata`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NexsetStatus
@@ -2065,36 +2287,36 @@ Members:
 
 ### NexsetUpdate
 
-Defined in `nexla_sdk/models/nexsets/requests.py:26`
+Defined in `nexla_sdk/models/nexsets/requests.py:30`
 
 Request model for updating a nexset.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `has_custom_transform`: `typing.Optional[bool]`
-- `transform`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `transform_id`: `typing.Optional[int]`
-- `output_schema_annotations`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `output_schema_validation_enabled`: `typing.Optional[bool]`
-- `output_validation_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_sinks`: `typing.Optional[typing.List[typing.Union[int, typing.Dict[str, typing.Any]]]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `has_custom_transform`: `Optional`
+- `transform`: `Optional`
+- `transform_id`: `Optional`
+- `output_schema_annotations`: `Optional`
+- `output_schema_validation_enabled`: `Optional`
+- `output_validation_schema`: `Optional`
+- `data_sinks`: `Optional`
+- `custom_config`: `Optional`
+- `tags`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Notification
 
-Defined in `nexla_sdk/models/notifications/responses.py:8`
+Defined in `nexla_sdk/models/notifications/responses.py:10`
 
 Notification response model.
 
@@ -2103,28 +2325,28 @@ Fields:
 - `id`: `int`
 - `owner`: `Owner`
 - `org`: `Organization`
-- `access_roles`: `typing.List[str]`
+- `access_roles`: `List`
 - `level`: `str`
-- `resource_id`: `int`
+- `resource_id`: `Optional`
 - `resource_type`: `str`
 - `message_id`: `int`
 - `message`: `str`
-- `read_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `read_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationChannel
 
-Defined in `nexla_sdk/models/enums.py:53`
+Defined in `nexla_sdk/models/enums.py:57`
 
 Notification delivery channels.
 
@@ -2138,7 +2360,7 @@ Members:
 
 ### NotificationChannelSetting
 
-Defined in `nexla_sdk/models/notifications/responses.py:37`
+Defined in `nexla_sdk/models/notifications/responses.py:41`
 
 Notification channel configuration.
 
@@ -2148,60 +2370,60 @@ Fields:
 - `owner_id`: `int`
 - `org_id`: `int`
 - `channel`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationChannelSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:6`
+Defined in `nexla_sdk/models/notifications/requests.py:8`
 
 Request model for creating notification channel setting.
 
 Fields:
 
 - `channel`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
+- `config`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationChannelSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:12`
+Defined in `nexla_sdk/models/notifications/requests.py:15`
 
 Request model for updating notification channel setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `channel`: `Optional`
+- `config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationCount
 
-Defined in `nexla_sdk/models/notifications/responses.py:67`
+Defined in `nexla_sdk/models/notifications/responses.py:73`
 
 Notification count response.
 
@@ -2212,15 +2434,15 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationLevel
 
-Defined in `nexla_sdk/models/enums.py:43`
+Defined in `nexla_sdk/models/enums.py:46`
 
 Notification levels.
 
@@ -2235,7 +2457,7 @@ Members:
 
 ### NotificationSetting
 
-Defined in `nexla_sdk/models/notifications/responses.py:46`
+Defined in `nexla_sdk/models/notifications/responses.py:51`
 
 Notification setting configuration.
 
@@ -2246,7 +2468,7 @@ Fields:
 - `owner_id`: `int`
 - `channel`: `str`
 - `notification_resource_type`: `str`
-- `resource_id`: `int`
+- `resource_id`: `Optional`
 - `status`: `str`
 - `notification_type_id`: `int`
 - `name`: `str`
@@ -2255,21 +2477,21 @@ Fields:
 - `category`: `str`
 - `event_type`: `str`
 - `resource_type`: `str`
-- `config`: `typing.Dict[str, typing.Any]`
-- `priority`: `typing.Optional[int]`
+- `config`: `Dict`
+- `priority`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationSettingCreate
 
-Defined in `nexla_sdk/models/notifications/requests.py:18`
+Defined in `nexla_sdk/models/notifications/requests.py:22`
 
 Request model for creating notification setting.
 
@@ -2277,50 +2499,50 @@ Fields:
 
 - `channel`: `str`
 - `notification_type_id`: `int`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Dict[str, typing.Any]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
+- `status`: `Optional`
+- `config`: `Dict`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `notification_channel_setting_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationSettingUpdate
 
-Defined in `nexla_sdk/models/notifications/requests.py:29`
+Defined in `nexla_sdk/models/notifications/requests.py:34`
 
 Request model for updating notification setting.
 
 Fields:
 
-- `channel`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `notification_resource_type`: `typing.Optional[str]`
-- `resource_id`: `typing.Optional[int]`
-- `checked`: `typing.Optional[bool]`
-- `notification_channel_setting_id`: `typing.Optional[int]`
-- `notification_type_id`: `typing.Optional[int]`
+- `channel`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `notification_resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `checked`: `Optional`
+- `notification_channel_setting_id`: `Optional`
+- `notification_type_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### NotificationType
 
-Defined in `nexla_sdk/models/notifications/responses.py:25`
+Defined in `nexla_sdk/models/notifications/responses.py:28`
 
 Notification type information.
 
@@ -2338,58 +2560,58 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgAccessorRequest
 
-Defined in `nexla_sdk/models/access/requests.py:25`
+Defined in `nexla_sdk/models/access/requests.py:31`
 
 Request model for ORG type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.ORG: 'ORG'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the organization
-- `client_identifier`: `typing.Optional[str]` — Client identifier for the organization
-- `email_domain`: `typing.Optional[str]` — Email domain for the organization
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the organization
+- `client_identifier`: `Optional` — Client identifier for the organization
+- `email_domain`: `Optional` — Email domain for the organization
+- `access_roles`: `List` — List of access roles
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:30`
+Defined in `nexla_sdk/models/access/responses.py:36`
 
 Response model for ORG type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.ORG: 'ORG'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the organization
-- `client_identifier`: `typing.Optional[str]` — Client identifier for the organization
-- `email_domain`: `typing.Optional[str]` — Email domain for the organization
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the organization
+- `client_identifier`: `Optional` — Client identifier for the organization
+- `email_domain`: `Optional` — Email domain for the organization
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgCustodianRef
@@ -2400,40 +2622,40 @@ Reference to a user for organization custodians (by id or email).
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgCustodiansPayload
 
-Defined in `nexla_sdk/models/organizations/custodians.py:12`
+Defined in `nexla_sdk/models/organizations/custodians.py:13`
 
 Payload for organization custodians endpoints.
 
 Fields:
 
-- `custodians`: `typing.List[nexla_sdk.models.organizations.custodians.OrgCustodianRef]`
+- `custodians`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMember
 
-Defined in `nexla_sdk/models/organizations/responses.py:49`
+Defined in `nexla_sdk/models/organizations/responses.py:53`
 
 Organization member information.
 
@@ -2443,83 +2665,83 @@ Fields:
 - `full_name`: `str`
 - `email`: `str`
 - `is_admin`: `bool`
-- `access_role`: `typing.Optional[typing.List[str]]`
+- `access_role`: `Optional`
 - `org_membership_status`: `str`
 - `user_status`: `str`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMemberDelete
 
-Defined in `nexla_sdk/models/organizations/requests.py:65`
+Defined in `nexla_sdk/models/organizations/requests.py:73`
 
 Request model for deleting org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberDeleteRequest]`
+- `members`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMemberList
 
-Defined in `nexla_sdk/models/organizations/requests.py:53`
+Defined in `nexla_sdk/models/organizations/requests.py:59`
 
 Request model for updating org members.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.organizations.requests.OrgMemberUpdate]`
+- `members`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMemberUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:44`
+Defined in `nexla_sdk/models/organizations/requests.py:49`
 
 Request model for updating org member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
-- `admin`: `typing.Optional[bool]`
-- `access_role`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
+- `full_name`: `Optional`
+- `admin`: `Optional`
+- `access_role`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMembership
 
-Defined in `nexla_sdk/models/users/responses.py:13`
+Defined in `nexla_sdk/models/users/responses.py:16`
 
 Organization membership details.
 
@@ -2527,22 +2749,22 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `is_admin`: `typing.Optional[bool]`
+- `is_admin`: `Optional`
 - `org_membership_status`: `str`
-- `api_key`: `typing.Optional[str]`
+- `api_key`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrgMembershipStatus
 
-Defined in `nexla_sdk/models/enums.py:79`
+Defined in `nexla_sdk/models/enums.py:86`
 
 Organization membership status.
 
@@ -2553,7 +2775,7 @@ Members:
 
 ### OrgTier
 
-Defined in `nexla_sdk/models/organizations/responses.py:8`
+Defined in `nexla_sdk/models/organizations/responses.py:10`
 
 Organization tier information.
 
@@ -2565,20 +2787,20 @@ Fields:
 - `record_count_limit`: `int`
 - `record_count_limit_time`: `str`
 - `data_source_count_limit`: `int`
-- `trial_period_days`: `typing.Optional[int]`
+- `trial_period_days`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Organization
 
-Defined in `nexla_sdk/models/common.py:14`
+Defined in `nexla_sdk/models/common.py:16`
 
 Organization details.
 
@@ -2586,56 +2808,56 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `email_domain`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `client_identifier`: `typing.Optional[str]`
-- `org_webhook_host`: `typing.Optional[str]`
-- `cluster_id`: `typing.Optional[int]`
-- `new_cluster_id`: `typing.Optional[int]`
-- `cluster_status`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `self_signup`: `typing.Optional[bool]`
-- `features_enabled`: `typing.Optional[typing.List[str]]`
-- `org_tier`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `email_domain`: `Optional`
+- `email`: `Optional`
+- `client_identifier`: `Optional`
+- `org_webhook_host`: `Optional`
+- `cluster_id`: `Optional`
+- `new_cluster_id`: `Optional`
+- `cluster_status`: `Optional`
+- `status`: `Optional`
+- `self_signup`: `Optional`
+- `features_enabled`: `Optional`
+- `org_tier`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OrganizationUpdate
 
-Defined in `nexla_sdk/models/organizations/requests.py:32`
+Defined in `nexla_sdk/models/organizations/requests.py:36`
 
 Request model for updating an organization.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `owner_id`: `typing.Optional[int]`
-- `billing_owner`: `typing.Optional[nexla_sdk.models.organizations.requests.OrgOwnerRequest]`
-- `billing_owner_id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.organizations.requests.OrgMemberCreateRequest]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `owner`: `Optional`
+- `owner_id`: `Optional`
+- `billing_owner`: `Optional`
+- `billing_owner_id`: `Optional`
+- `email`: `Optional`
+- `members`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### OutputType
 
-Defined in `nexla_sdk/models/nexsets/enums.py:23`
+Defined in `nexla_sdk/models/nexsets/enums.py:25`
 
 Transform output types.
 
@@ -2647,7 +2869,7 @@ Members:
 
 ### Owner
 
-Defined in `nexla_sdk/models/common.py:6`
+Defined in `nexla_sdk/models/common.py:7`
 
 User who owns a resource.
 
@@ -2656,39 +2878,39 @@ Fields:
 - `id`: `int`
 - `full_name`: `str`
 - `email`: `str`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
+- `email_verified_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProbeSampleRequest
 
-Defined in `nexla_sdk/models/credentials/requests.py:35`
+Defined in `nexla_sdk/models/credentials/requests.py:39`
 
 Request for previewing connector content.
 
 Fields:
 
-- `path`: `typing.Optional[str]`
+- `path`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProbeSampleResponse
 
-Defined in `nexla_sdk/models/credentials/responses.py:61`
+Defined in `nexla_sdk/models/credentials/responses.py:65`
 
 Response from credential probe sample operation.
 
@@ -2697,42 +2919,42 @@ Fields:
 - `status`: `str`
 - `message`: `str`
 - `connection_type`: `str`
-- `output`: `typing.Dict[str, typing.Any]`
+- `output`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProbeTreeRequest
 
-Defined in `nexla_sdk/models/credentials/requests.py:27`
+Defined in `nexla_sdk/models/credentials/requests.py:30`
 
 Request for probing storage structure.
 
 Fields:
 
 - `depth`: `int`
-- `path`: `typing.Optional[str]`
-- `database`: `typing.Optional[str]`
-- `table`: `typing.Optional[str]`
+- `path`: `Optional`
+- `database`: `Optional`
+- `table`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProbeTreeResponse
 
-Defined in `nexla_sdk/models/credentials/responses.py:53`
+Defined in `nexla_sdk/models/credentials/responses.py:56`
 
 Response from credential probe tree operation.
 
@@ -2741,20 +2963,20 @@ Fields:
 - `status`: `str`
 - `message`: `str`
 - `connection_type`: `str`
-- `object`: `typing.Dict[str, typing.Any]`
+- `object`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Project
 
-Defined in `nexla_sdk/models/projects/responses.py:21`
+Defined in `nexla_sdk/models/projects/responses.py:24`
 
 Project response model.
 
@@ -2765,50 +2987,50 @@ Fields:
 - `org`: `Organization`
 - `name`: `str`
 - `description`: `str`
-- `access_roles`: `typing.List[str]`
-- `data_flows`: `typing.List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-- `flows`: `typing.List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-- `client_identifier`: `typing.Optional[str]`
-- `client_url`: `typing.Optional[str]`
-- `flows_count`: `typing.Optional[int]`
-- `tags`: `typing.List[str]`
-- `copied_from_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `access_roles`: `List`
+- `data_flows`: `List`
+- `flows`: `List`
+- `client_identifier`: `Optional`
+- `client_url`: `Optional`
+- `flows_count`: `Optional`
+- `tags`: `List`
+- `copied_from_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProjectCreate
 
-Defined in `nexla_sdk/models/projects/requests.py:12`
+Defined in `nexla_sdk/models/projects/requests.py:15`
 
 Request model for creating a project.
 
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `data_flows`: `typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]`
+- `description`: `Optional`
+- `data_flows`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProjectDataFlow
 
-Defined in `nexla_sdk/models/projects/responses.py:8`
+Defined in `nexla_sdk/models/projects/responses.py:10`
 
 Project data flow information.
 
@@ -2816,87 +3038,130 @@ Fields:
 
 - `id`: `int`
 - `project_id`: `int`
-- `data_source_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
-- `data_sink_id`: `typing.Optional[int]`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `data_source_id`: `Optional`
+- `data_set_id`: `Optional`
+- `data_sink_id`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProjectFlowIdentifier
 
-Defined in `nexla_sdk/models/projects/requests.py:6`
+Defined in `nexla_sdk/models/projects/requests.py:8`
 
 Flow identifier for project.
 
 Fields:
 
-- `data_source_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
+- `data_source_id`: `Optional`
+- `data_set_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProjectFlowList
 
-Defined in `nexla_sdk/models/projects/requests.py:26`
+Defined in `nexla_sdk/models/projects/requests.py:31`
 
 Request model for managing project flows.
 
 Fields:
 
-- `data_flows`: `typing.Optional[typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]]`
-- `flows`: `typing.Optional[typing.List[int]]`
+- `data_flows`: `Optional`
+- `flows`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ProjectUpdate
 
-Defined in `nexla_sdk/models/projects/requests.py:19`
+Defined in `nexla_sdk/models/projects/requests.py:23`
 
 Request model for updating a project.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `data_flows`: `typing.Optional[typing.List[nexla_sdk.models.projects.requests.ProjectFlowIdentifier]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `data_flows`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ResourceFlowLogsResponse
+
+Defined in `nexla_sdk/models/metrics/responses.py:68`
+
+Flow logs response returned by MetricsResource.get_flow_logs().
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `logs`: `List`
+- `meta`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ResourceFlowMetricsResponse
+
+Defined in `nexla_sdk/models/metrics/responses.py:64`
+
+Flow metrics response returned by MetricsResource.get_flow_metrics().
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `metrics`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ResourceMetricDaily
 
-Defined in `nexla_sdk/models/metrics/responses.py:25`
+Defined in `nexla_sdk/models/metrics/responses.py:30`
 
 Daily resource metrics.
 
@@ -2910,22 +3175,22 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ResourceMetricsByRun
 
-Defined in `nexla_sdk/models/metrics/responses.py:33`
+Defined in `nexla_sdk/models/metrics/responses.py:39`
 
 Resource metrics grouped by run.
 
 Fields:
 
-- `runId`: `typing.Optional[int]`
-- `lastWritten`: `typing.Optional[int]`
+- `runId`: `Optional`
+- `lastWritten`: `Optional`
 - `dataSetId`: `int`
 - `records`: `int`
 - `size`: `int`
@@ -2934,15 +3199,15 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### ResourceStatus
 
-Defined in `nexla_sdk/models/enums.py:12`
+Defined in `nexla_sdk/models/enums.py:13`
 
 Common resource status values.
 
@@ -2958,7 +3223,7 @@ Members:
 
 ### ResourceType
 
-Defined in `nexla_sdk/models/enums.py:23`
+Defined in `nexla_sdk/models/enums.py:25`
 
 Resource types in Nexla.
 
@@ -2983,7 +3248,7 @@ Members:
 
 ### RunInfo
 
-Defined in `nexla_sdk/models/sources/responses.py:21`
+Defined in `nexla_sdk/models/sources/responses.py:24`
 
 Run information.
 
@@ -2995,10 +3260,10 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Runtime
@@ -3011,23 +3276,23 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### RuntimeCreate
@@ -3039,43 +3304,43 @@ Create payload for Custom Runtime matching OpenAPI RuntimePayload.
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### RuntimeUpdate
 
-Defined in `nexla_sdk/models/runtimes/requests.py:16`
+Defined in `nexla_sdk/models/runtimes/requests.py:17`
 
 Update payload for Custom Runtime matching OpenAPI RuntimePayload.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `active`: `typing.Optional[bool]`
-- `dockerpath`: `typing.Optional[str]`
-- `managed`: `typing.Optional[bool]`
-- `config`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `active`: `Optional`
+- `dockerpath`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### SelfSignupRequest
@@ -3095,25 +3360,25 @@ Features:
 Fields:
 
 - `id`: `int`
-- `status`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `full_name`: `typing.Optional[str]`
-- `invite_id`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `status`: `Optional`
+- `email`: `Optional`
+- `full_name`: `Optional`
+- `invite_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Source
 
-Defined in `nexla_sdk/models/sources/responses.py:27`
+Defined in `nexla_sdk/models/sources/responses.py:31`
 
 Data source response model.
 
@@ -3123,45 +3388,45 @@ Fields:
 - `name`: `str`
 - `status`: `str`
 - `source_type`: `str`
-- `connector_type`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `managed`: `typing.Optional[bool]`
-- `auto_generated`: `typing.Optional[bool]`
-- `connector`: `typing.Optional[nexla_sdk.models.common.Connector]`
-- `description`: `typing.Optional[str]`
-- `ingest_method`: `typing.Optional[str]`
-- `source_format`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `poll_schedule`: `typing.Optional[str]`
-- `code_container_id`: `typing.Optional[int]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_credentials`: `typing.Optional[nexla_sdk.models.credentials.responses.Credential]`
-- `data_sets`: `typing.List[nexla_sdk.models.sources.responses.DataSetBrief]`
-- `api_keys`: `typing.List[typing.Dict[str, typing.Any]]`
-- `run_ids`: `typing.List[nexla_sdk.models.sources.responses.RunInfo]`
-- `copied_from_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `has_template`: `typing.Optional[bool]`
-- `vendor_endpoint`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `vendor`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `connector_type`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `managed`: `Optional`
+- `auto_generated`: `Optional`
+- `connector`: `Optional`
+- `description`: `Optional`
+- `ingest_method`: `Optional`
+- `source_format`: `Optional`
+- `source_config`: `Optional`
+- `poll_schedule`: `Optional`
+- `code_container_id`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_credentials`: `Optional`
+- `data_sets`: `List`
+- `api_keys`: `List`
+- `run_ids`: `List`
+- `copied_from_id`: `Optional`
+- `flow_type`: `Optional`
+- `has_template`: `Optional`
+- `vendor_endpoint`: `Optional`
+- `vendor`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### SourceCopyOptions
 
-Defined in `nexla_sdk/models/sources/requests.py:30`
+Defined in `nexla_sdk/models/sources/requests.py:34`
 
 Options for copying a source.
 
@@ -3169,21 +3434,21 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### SourceCreate
 
-Defined in `nexla_sdk/models/sources/requests.py:6`
+Defined in `nexla_sdk/models/sources/requests.py:8`
 
 Request model for creating a source.
 
@@ -3191,25 +3456,25 @@ Fields:
 
 - `name`: `str`
 - `source_type`: `str`
-- `data_credentials_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `ingest_method`: `typing.Optional[str]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `data_credentials_id`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `ingest_method`: `Optional`
+- `template_config`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### SourceStatus
 
-Defined in `nexla_sdk/models/sources/enums.py:5`
+Defined in `nexla_sdk/models/sources/enums.py:6`
 
 Source status values.
 
@@ -3223,7 +3488,7 @@ Members:
 
 ### SourceType
 
-Defined in `nexla_sdk/models/sources/enums.py:14`
+Defined in `nexla_sdk/models/sources/enums.py:16`
 
 Supported source types.
 
@@ -3260,29 +3525,29 @@ Members:
 
 ### SourceUpdate
 
-Defined in `nexla_sdk/models/sources/requests.py:22`
+Defined in `nexla_sdk/models/sources/requests.py:25`
 
 Request model for updating a source.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Team
 
-Defined in `nexla_sdk/models/teams/responses.py:15`
+Defined in `nexla_sdk/models/teams/responses.py:18`
 
 Team response model.
 
@@ -3294,91 +3559,91 @@ Fields:
 - `owner`: `Owner`
 - `org`: `Organization`
 - `member`: `bool`
-- `members`: `typing.List[nexla_sdk.models.teams.responses.TeamMember]`
-- `access_roles`: `typing.List[str]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `members`: `List`
+- `access_roles`: `List`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamAccessorRequest
 
-Defined in `nexla_sdk/models/access/requests.py:17`
+Defined in `nexla_sdk/models/access/requests.py:22`
 
 Request model for TEAM type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.TEAM: 'TEAM'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the team
-- `name`: `typing.Optional[str]` — Name of the team
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the team
+- `name`: `Optional` — Name of the team
+- `access_roles`: `List` — List of access roles
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:20`
+Defined in `nexla_sdk/models/access/responses.py:25`
 
 Response model for TEAM type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.TEAM: 'TEAM'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the team
-- `name`: `typing.Optional[str]` — Name of the team
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the team
+- `name`: `Optional` — Name of the team
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamCreate
 
-Defined in `nexla_sdk/models/teams/requests.py:14`
+Defined in `nexla_sdk/models/teams/requests.py:17`
 
 Request model for creating a team.
 
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `members`: `typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]`
+- `description`: `Optional`
+- `members`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamMember
 
-Defined in `nexla_sdk/models/teams/responses.py:8`
+Defined in `nexla_sdk/models/teams/responses.py:10`
 
 Team member information.
 
@@ -3391,71 +3656,71 @@ Fields:
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamMemberList
 
-Defined in `nexla_sdk/models/teams/requests.py:28`
+Defined in `nexla_sdk/models/teams/requests.py:33`
 
 Request model for team member operations.
 
 Fields:
 
-- `members`: `typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]`
+- `members`: `List`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamMemberRequest
 
-Defined in `nexla_sdk/models/teams/requests.py:6`
+Defined in `nexla_sdk/models/teams/requests.py:8`
 
 Request model for team member.
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 - `admin`: `bool`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TeamUpdate
 
-Defined in `nexla_sdk/models/teams/requests.py:21`
+Defined in `nexla_sdk/models/teams/requests.py:25`
 
 Request model for updating a team.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `members`: `typing.Optional[typing.List[nexla_sdk.models.teams.requests.TeamMemberRequest]]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `members`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### Transform
@@ -3476,39 +3741,39 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `resource_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `access_roles`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `runtime_data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `description`: `typing.Optional[str]`
-- `code_type`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[typing.List[nexla_sdk.models.transforms.responses.TransformCodeOp]]`
-- `managed`: `typing.Optional[bool]`
-- `data_sets`: `typing.Optional[typing.List[int]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `resource_type`: `Optional`
+- `reusable`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `data_credentials`: `Optional`
+- `runtime_data_credentials`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `output_type`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `managed`: `Optional`
+- `data_sets`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `tags`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TransformCreate
 
-Defined in `nexla_sdk/models/transforms/requests.py:7`
+Defined in `nexla_sdk/models/transforms/requests.py:8`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -3527,25 +3792,25 @@ Fields:
 - `reusable`: `bool`
 - `code_type`: `str`
 - `code_encoding`: `str`
-- `code`: `typing.List[nexla_sdk.models.transforms.responses.TransformCodeOp]`
-- `description`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
+- `code`: `List`
+- `description`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### TransformType
 
-Defined in `nexla_sdk/models/nexsets/enums.py:14`
+Defined in `nexla_sdk/models/nexsets/enums.py:15`
 
 Transform types.
 
@@ -3559,7 +3824,7 @@ Members:
 
 ### TransformUpdate
 
-Defined in `nexla_sdk/models/transforms/requests.py:22`
+Defined in `nexla_sdk/models/transforms/requests.py:23`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -3573,30 +3838,30 @@ Features:
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `code_type`: `typing.Optional[str]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[typing.List[nexla_sdk.models.transforms.responses.TransformCodeOp]]`
-- `description`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `runtime_data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `code_type`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `description`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### User
 
-Defined in `nexla_sdk/models/users/responses.py:22`
+Defined in `nexla_sdk/models/users/responses.py:26`
 
 User response model.
 
@@ -3605,79 +3870,79 @@ Fields:
 - `id`: `int`
 - `email`: `str`
 - `full_name`: `str`
-- `super_user`: `typing.Optional[bool]`
+- `super_user`: `Optional`
 - `impersonated`: `bool`
 - `default_org`: `DefaultOrg`
-- `user_tier`: `typing.Optional[str]`
+- `user_tier`: `Optional`
 - `status`: `str`
 - `account_locked`: `bool`
-- `org_memberships`: `typing.List[nexla_sdk.models.users.responses.OrgMembership]`
-- `api_key`: `typing.Optional[str]`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `org_memberships`: `List`
+- `api_key`: `Optional`
+- `email_verified_at`: `Optional`
+- `tos_signed_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserAccessorRequest
 
-Defined in `nexla_sdk/models/access/requests.py:8`
+Defined in `nexla_sdk/models/access/requests.py:10`
 
 Request model for USER type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.USER: 'USER'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the user
-- `email`: `typing.Optional[str]` — Email of the user
-- `org_id`: `typing.Optional[int]` — Organization ID for cross-org access
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the user
+- `email`: `Optional` — Email of the user
+- `org_id`: `Optional` — Organization ID for cross-org access
+- `access_roles`: `List` — List of access roles
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserAccessorResponse
 
-Defined in `nexla_sdk/models/access/responses.py:9`
+Defined in `nexla_sdk/models/access/responses.py:11`
 
 Response model for USER type accessor.
 
 Fields:
 
-- `type`: `typing.Literal[<AccessorType.USER: 'USER'>]`
-- `id`: `typing.Optional[int]` — Unique ID of the user
-- `email`: `typing.Optional[str]` — Email of the user
-- `org_id`: `typing.Optional[int]` — Organization ID for cross-org access
-- `access_roles`: `typing.List[nexla_sdk.models.enums.AccessRole]` — List of access roles
-- `created_at`: `typing.Optional[datetime.datetime]` — Creation timestamp
-- `updated_at`: `typing.Optional[datetime.datetime]` — Last update timestamp
+- `type`: `Literal`
+- `id`: `Optional` — Unique ID of the user
+- `email`: `Optional` — Email of the user
+- `org_id`: `Optional` — Organization ID for cross-org access
+- `access_roles`: `List` — List of access roles
+- `created_at`: `Optional` — Creation timestamp
+- `updated_at`: `Optional` — Last update timestamp
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserCreate
 
-Defined in `nexla_sdk/models/users/requests.py:6`
+Defined in `nexla_sdk/models/users/requests.py:7`
 
 Request model for creating a user.
 
@@ -3685,26 +3950,26 @@ Fields:
 
 - `full_name`: `str`
 - `email`: `str`
-- `default_org_id`: `typing.Optional[int]`
-- `status`: `typing.Optional[str]`
-- `user_tier_id`: `typing.Optional[int]`
-- `user_tier`: `typing.Optional[str]`
-- `password`: `typing.Optional[str]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `admin`: `typing.Union[str, bool, typing.List[typing.Dict[str, typing.Any]], NoneType]`
+- `default_org_id`: `Optional`
+- `status`: `Optional`
+- `user_tier_id`: `Optional`
+- `user_tier`: `Optional`
+- `password`: `Optional`
+- `tos_signed_at`: `Optional`
+- `admin`: `Union`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserExpanded
 
-Defined in `nexla_sdk/models/users/responses.py:50`
+Defined in `nexla_sdk/models/users/responses.py:56`
 
 User with expanded account summary.
 
@@ -3713,55 +3978,55 @@ Fields:
 - `id`: `int`
 - `email`: `str`
 - `full_name`: `str`
-- `super_user`: `typing.Optional[bool]`
+- `super_user`: `Optional`
 - `impersonated`: `bool`
 - `default_org`: `DefaultOrg`
-- `user_tier`: `typing.Optional[str]`
+- `user_tier`: `Optional`
 - `status`: `str`
 - `account_locked`: `bool`
-- `org_memberships`: `typing.List[nexla_sdk.models.users.responses.OrgMembership]`
-- `api_key`: `typing.Optional[str]`
-- `email_verified_at`: `typing.Optional[datetime.datetime]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `account_summary`: `typing.Optional[nexla_sdk.models.users.responses.AccountSummary]`
+- `org_memberships`: `List`
+- `api_key`: `Optional`
+- `email_verified_at`: `Optional`
+- `tos_signed_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+- `account_summary`: `Optional`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserSettings
 
-Defined in `nexla_sdk/models/users/responses.py:55`
+Defined in `nexla_sdk/models/users/responses.py:62`
 
 User settings.
 
 Fields:
 
 - `id`: `str`
-- `owner`: `typing.Dict[str, typing.Any]`
-- `org`: `typing.Dict[str, typing.Any]`
+- `owner`: `Dict`
+- `org`: `Dict`
 - `user_settings_type`: `str`
-- `settings`: `typing.Dict[str, typing.Any]`
+- `settings`: `Dict`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### UserStatus
 
-Defined in `nexla_sdk/models/enums.py:70`
+Defined in `nexla_sdk/models/enums.py:76`
 
 User account status.
 
@@ -3775,7 +4040,7 @@ Members:
 
 ### UserTier
 
-Defined in `nexla_sdk/models/enums.py:62`
+Defined in `nexla_sdk/models/enums.py:67`
 
 User account tiers.
 
@@ -3788,35 +4053,35 @@ Members:
 
 ### UserUpdate
 
-Defined in `nexla_sdk/models/users/requests.py:19`
+Defined in `nexla_sdk/models/users/requests.py:21`
 
 Request model for updating a user.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `email`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `user_tier_id`: `typing.Optional[int]`
-- `user_tier`: `typing.Optional[str]`
-- `password`: `typing.Optional[str]`
-- `password_confirmation`: `typing.Optional[str]`
-- `password_current`: `typing.Optional[str]`
-- `tos_signed_at`: `typing.Optional[datetime.datetime]`
-- `admin`: `typing.Union[str, bool, typing.List[typing.Dict[str, typing.Any]], NoneType]`
+- `name`: `Optional`
+- `email`: `Optional`
+- `status`: `Optional`
+- `user_tier_id`: `Optional`
+- `user_tier`: `Optional`
+- `password`: `Optional`
+- `password_confirmation`: `Optional`
+- `password_current`: `Optional`
+- `tos_signed_at`: `Optional`
+- `admin`: `Union`
 
 Methods:
 
 - `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/models/base.py:40`
+  - Source: `nexla_sdk/models/base.py:42`
   - Convert model to dictionary.
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
-  - Source: `nexla_sdk/models/base.py:52`
+  - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
 ### VerifiedStatus
 
-Defined in `nexla_sdk/models/credentials/enums.py:60`
+Defined in `nexla_sdk/models/credentials/enums.py:61`
 
 Credential verification status.
 
@@ -3825,4 +4090,60 @@ Members:
 - `VERIFIED` = `VERIFIED`
 - `UNVERIFIED` = `UNVERIFIED`
 - `FAILED` = `FAILED`
+
+### WebhookResponse
+
+Defined in `nexla_sdk/models/webhooks/responses.py:8`
+
+Response from sending data to a webhook.
+
+Attributes:
+    dataset_id: Nexset ID of the Nexset receiving the record(s).
+    processed: Number of records successfully processed.
+
+Fields:
+
+- `dataset_id`: `Optional`
+- `processed`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### WebhookSendOptions
+
+Defined in `nexla_sdk/models/webhooks/requests.py:8`
+
+Options for sending data to a webhook.
+
+Attributes:
+    include_headers: Include custom headers in ingested records.
+        Custom headers will be added as `header_<header_name>` attributes.
+        Standard headers like `Authorization` and `Content-Type` are ignored.
+    include_url_params: Include custom query parameters in ingested records.
+        Custom params will be added as `url_param_<param_name>` attributes.
+        Standard params like `api_key` are ignored.
+    force_schema_detection: Force schema detection for this record.
+        Normally, schema detection only happens for the first few records.
+        Set to True to force detection on every record.
+
+Fields:
+
+- `include_headers`: `Optional`
+- `include_url_params`: `Optional`
+- `force_schema_detection`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
 

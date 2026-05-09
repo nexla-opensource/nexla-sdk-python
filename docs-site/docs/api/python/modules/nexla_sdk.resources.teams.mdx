@@ -10,37 +10,37 @@ keywords: [Nexla, SDK, Python, API]
 
 ### TeamsResource
 
-Defined in `nexla_sdk/resources/teams.py:7`
+Defined in `nexla_sdk/resources/teams.py:8`
 
 Resource for managing teams.
 
 Methods:
 
 - `add_members(self, team_id: int, members: nexla_sdk.models.teams.requests.TeamMemberList) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:103`
+  - Source: `nexla_sdk/resources/teams.py:104`
   - Add members to team.
 - `create(self, data: nexla_sdk.models.teams.requests.TeamCreate) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:49`
+  - Source: `nexla_sdk/resources/teams.py:50`
   - Create new team.
 - `delete(self, team_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/teams.py:77`
+  - Source: `nexla_sdk/resources/teams.py:78`
   - Delete team.
 - `get(self, team_id: int, expand: bool = False) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:33`
+  - Source: `nexla_sdk/resources/teams.py:34`
   - Get single team by ID.
 - `get_members(self, team_id: int) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:89`
+  - Source: `nexla_sdk/resources/teams.py:90`
   - Get team members.
 - `list(self, **kwargs) -> List[nexla_sdk.models.teams.responses.Team]`
-  - Source: `nexla_sdk/resources/teams.py:15`
+  - Source: `nexla_sdk/resources/teams.py:16`
   - List teams with optional filters.
 - `remove_members(self, team_id: int, members: Optional[nexla_sdk.models.teams.requests.TeamMemberList] = None) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:133`
+  - Source: `nexla_sdk/resources/teams.py:136`
   - Remove members from team.
 - `replace_members(self, team_id: int, members: nexla_sdk.models.teams.requests.TeamMemberList) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:118`
+  - Source: `nexla_sdk/resources/teams.py:119`
   - Replace all team members.
 - `update(self, team_id: int, data: nexla_sdk.models.teams.requests.TeamUpdate) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:64`
+  - Source: `nexla_sdk/resources/teams.py:65`
   - Update team.
 

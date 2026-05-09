@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataMapInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:22`
+Defined in `nexla_sdk/models/destinations/responses.py:25`
 
 Basic data map information for destination.
 
@@ -20,14 +20,14 @@ Fields:
 - `owner_id`: `int`
 - `org_id`: `int`
 - `name`: `str`
-- `description`: `str`
+- `description`: `Optional`
 - `public`: `bool`
 - `created_at`: `datetime`
 - `updated_at`: `datetime`
 
 ### DataSetInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:10`
+Defined in `nexla_sdk/models/destinations/responses.py:12`
 
 Basic dataset information for destination.
 
@@ -35,16 +35,16 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `status`: `typing.Optional[str]`
-- `output_schema`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `version`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `description`: `Optional`
+- `status`: `Optional`
+- `output_schema`: `Optional`
+- `version`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### Destination
 
-Defined in `nexla_sdk/models/destinations/responses.py:34`
+Defined in `nexla_sdk/models/destinations/responses.py:38`
 
 Destination (data sink) response model.
 
@@ -54,36 +54,36 @@ Fields:
 - `name`: `str`
 - `status`: `str`
 - `sink_type`: `str`
-- `connector_type`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `managed`: `typing.Optional[bool]`
-- `connector`: `typing.Optional[nexla_sdk.models.common.Connector]`
-- `description`: `typing.Optional[str]`
-- `data_set_id`: `typing.Optional[int]`
-- `data_map_id`: `typing.Optional[int]`
-- `data_source_id`: `typing.Optional[int]`
-- `sink_format`: `typing.Optional[nexla_sdk.models.destinations.enums.DestinationFormat]`
-- `sink_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `sink_schedule`: `typing.Optional[str]`
+- `connector_type`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `managed`: `Optional`
+- `connector`: `Optional`
+- `description`: `Optional`
+- `data_set_id`: `Optional`
+- `data_map_id`: `Optional`
+- `data_source_id`: `Optional`
+- `sink_format`: `Optional`
+- `sink_config`: `Optional`
+- `sink_schedule`: `Optional`
 - `in_memory`: `bool`
-- `data_set`: `typing.Optional[nexla_sdk.models.destinations.responses.DataSetInfo]`
-- `data_map`: `typing.Optional[nexla_sdk.models.destinations.responses.DataMapInfo]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_credentials`: `typing.Optional[nexla_sdk.models.credentials.responses.Credential]`
-- `copied_from_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `has_template`: `typing.Optional[bool]`
-- `vendor_endpoint`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `vendor`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `data_set`: `Optional`
+- `data_map`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_credentials`: `Optional`
+- `copied_from_id`: `Optional`
+- `flow_type`: `Optional`
+- `has_template`: `Optional`
+- `vendor_endpoint`: `Optional`
+- `vendor`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### DestinationCopyOptions
 
-Defined in `nexla_sdk/models/destinations/requests.py:30`
+Defined in `nexla_sdk/models/destinations/requests.py:33`
 
 Options for copying a destination.
 
@@ -91,12 +91,12 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 ### DestinationCreate
 
-Defined in `nexla_sdk/models/destinations/requests.py:5`
+Defined in `nexla_sdk/models/destinations/requests.py:6`
 
 Request model for creating a destination.
 
@@ -106,14 +106,14 @@ Fields:
 - `sink_type`: `str`
 - `data_credentials_id`: `int`
 - `data_set_id`: `int`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `template_config`: `Optional`
 
 ### DestinationFormat
 
-Defined in `nexla_sdk/models/destinations/enums.py:58`
+Defined in `nexla_sdk/models/destinations/enums.py:89`
 
 Output format for destinations.
 
@@ -143,7 +143,7 @@ Members:
 
 ### DestinationType
 
-Defined in `nexla_sdk/models/destinations/enums.py:13`
+Defined in `nexla_sdk/models/destinations/enums.py:14`
 
 Supported sink types.
 
@@ -152,41 +152,70 @@ Members:
 - `S3` = `s3`
 - `GCS` = `gcs`
 - `AZURE_BLB` = `azure_blb`
+- `AZURE_DATA_LAKE` = `azure_data_lake`
 - `FTP` = `ftp`
 - `DROPBOX` = `dropbox`
 - `BOX` = `box`
 - `GDRIVE` = `gdrive`
 - `SHAREPOINT` = `sharepoint`
+- `MIN_IO_S3` = `min_io_s3`
+- `WEBDAV` = `webdav`
 - `MYSQL` = `mysql`
 - `POSTGRES` = `postgres`
+- `SUPABASE` = `supabase`
 - `SQLSERVER` = `sqlserver`
 - `ORACLE` = `oracle`
+- `ORACLE_AUTONOMOUS` = `oracle_autonomous`
 - `REDSHIFT` = `redshift`
 - `SNOWFLAKE` = `snowflake`
+- `SNOWFLAKE_DCR` = `snowflake_dcr`
 - `BIGQUERY` = `bigquery`
 - `DATABRICKS` = `databricks`
+- `AS400` = `as400`
+- `AWS_ATHENA` = `aws_athena`
+- `AZURE_SYNAPSE` = `azure_synapse`
+- `CLOUDSQL_MYSQL` = `cloudsql_mysql`
+- `CLOUDSQL_POSTGRES` = `cloudsql_postgres`
+- `CLOUDSQL_SQLSERVER` = `cloudsql_sqlserver`
+- `DB2` = `db2`
+- `FIREBOLT` = `firebolt`
+- `GCP_ALLOYDB` = `gcp_alloydb`
+- `GCP_SPANNER` = `gcp_spanner`
+- `HANA_JDBC` = `hana_jdbc`
+- `HIVE` = `hive`
+- `NETSUITE_JDBC` = `netsuite_jdbc`
+- `SYBASE` = `sybase`
+- `TERADATA` = `teradata`
+- `DELTA_LAKE_AZURE_BLB` = `delta_lake_azure_blb`
+- `DELTA_LAKE_AZURE_DATA_LAKE` = `delta_lake_azure_data_lake`
+- `DELTA_LAKE_S3` = `delta_lake_s3`
+- `S3_ICEBERG` = `s3_iceberg`
 - `MONGO` = `mongo`
 - `DYNAMODB` = `dynamodb`
 - `FIREBASE` = `firebase`
 - `KAFKA` = `kafka`
 - `CONFLUENT_KAFKA` = `confluent_kafka`
 - `GOOGLE_PUBSUB` = `google_pubsub`
+- `JMS` = `jms`
+- `TIBCO` = `tibco`
 - `REST` = `rest`
+- `SOAP` = `soap`
 - `EMAIL` = `email`
 - `DATA_MAP` = `data_map`
+- `NEXLA_MONITOR` = `nexla_monitor`
 - `PINECONE` = `pinecone`
 
 ### DestinationUpdate
 
-Defined in `nexla_sdk/models/destinations/requests.py:21`
+Defined in `nexla_sdk/models/destinations/requests.py:23`
 
 Request model for updating a destination.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `sink_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_set_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `sink_config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_set_id`: `Optional`
 

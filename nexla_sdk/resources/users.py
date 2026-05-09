@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.metrics.enums import UserMetricResourceType
 from nexla_sdk.models.users.credits import UserCredit, UserCreditCreate
@@ -509,7 +509,11 @@ class UsersResource(BaseResource):
         return self._make_request("GET", path, params=params)
 
     def get_flow_status_metrics(
-        self, user_id: int, from_date: str = None, page: int = None, per_page: int = None
+        self,
+        user_id: int,
+        from_date: str = None,
+        page: int = None,
+        per_page: int = None,
     ) -> Dict[str, Any]:
         """
         Get flow status metrics for a user.
@@ -556,7 +560,7 @@ class UsersResource(BaseResource):
     def get_daily_metrics(
         self,
         user_id: int,
-        resource_type: UserMetricResourceType,
+        resource_type: Union[UserMetricResourceType, str],
         from_date: str,
         to_date: Optional[str] = None,
         org_id: Optional[int] = None,
@@ -566,7 +570,8 @@ class UsersResource(BaseResource):
 
         Args:
             user_id: User ID
-            resource_type: Type of resource (SOURCE, SINK)
+            resource_type: UserMetricResourceType or exact string value
+                ("SOURCE", "SINK").
             from_date: Start date (YYYY-MM-DD)
             to_date: End date (optional)
             org_id: Organization ID (optional)
@@ -574,8 +579,15 @@ class UsersResource(BaseResource):
         Returns:
             Daily metrics data
         """
+        resource_type_value = self._resolve_enum_value(
+            UserMetricResourceType, resource_type, "resource_type"
+        )
         path = f"{self._path}/{user_id}/metrics"
-        params = {"resource_type": resource_type, "from": from_date, "aggregate": 1}
+        params = {
+            "resource_type": resource_type_value,
+            "from": from_date,
+            "aggregate": 1,
+        }
         if to_date:
             params["to"] = to_date
         if org_id:

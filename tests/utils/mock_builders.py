@@ -499,7 +499,7 @@ class MockResponseBuilder:
 
     @staticmethod
     def flow_log_entry(**overrides) -> Dict[str, Any]:
-        """Build a mock flow log entry."""
+        """Build a mock flow log entry in the SDK model shape."""
         base = {
             "timestamp": fake.date_time(tzinfo=timezone.utc).isoformat(),
             "level": fake.random_element(["DEBUG", "INFO", "WARN", "ERROR"]),
@@ -515,13 +515,38 @@ class MockResponseBuilder:
         return base
 
     @staticmethod
+    def live_flow_log_entry(**overrides) -> Dict[str, Any]:
+        """Build a mock flow log entry in the live API response shape."""
+        base = {
+            "log": fake.sentence(),
+            "log_type": fake.random_element(["LOG", "EVENT"]),
+            "severity": fake.random_element(["DEBUG", "INFO", "WARN", "ERROR"]),
+            "resource_id": fake.random_int(1, 10000),
+            "resource_type": fake.random_element(["SOURCE", "DATASET", "SINK"]),
+            "timestamp": fake.random_int(1700000000000, 1800000000000),
+            "run_id": fake.random_int(1, 10000),
+            "details": {"records": fake.random_int(0, 1000)},
+        }
+        base.update(overrides)
+        return base
+
+    @staticmethod
     def flow_logs_response(log_count: int = 3, **overrides) -> Dict[str, Any]:
         """Build a mock flow logs response."""
+        logs = [MockResponseBuilder.live_flow_log_entry() for _ in range(log_count)]
         base = {
             "status": 200,
             "message": "Ok",
-            "logs": [MockResponseBuilder.flow_log_entry() for _ in range(log_count)],
-            "meta": {"currentPage": 1, "pageCount": 1, "totalCount": log_count},
+            "logs": {
+                "data": logs,
+                "meta": {
+                    "org_id": fake.random_int(1, 10000),
+                    "run_id": fake.random_int(1, 10000),
+                    "current_page": 1,
+                    "pages_count": 1,
+                    "total_count": log_count,
+                },
+            },
         }
         base.update(overrides)
         return base
@@ -995,6 +1020,32 @@ class MockDataFactory:
             "name": kwargs.get("name", self.fake.name()),
             "value": kwargs.get("value", self.fake.word()),
             "metadata": kwargs.get("metadata", {"source": "test"}),
+        }
+
+    def create_mock_doc_container(self, **kwargs) -> Dict[str, Any]:
+        """Create mock doc container data (nexset documentation entry)."""
+        return {
+            "id": kwargs.get("id", self.fake.random_int(min=1, max=100000)),
+            "owner": kwargs.get("owner", self.create_mock_owner()),
+            "org": kwargs.get("org", self.create_mock_organization()),
+            "name": kwargs.get(
+                "name", f"Doc for Nexset {self.fake.random_int(min=1, max=1000)}"
+            ),
+            "description": kwargs.get("description", self.fake.sentence()),
+            "doc_type": kwargs.get("doc_type", "md"),
+            "public": kwargs.get("public", False),
+            "repo_type": kwargs.get("repo_type", "embedded"),
+            "repo_config": kwargs.get("repo_config", {}),
+            "text": kwargs.get("text", "# Heading\n\nMarkdown body."),
+            "access_roles": kwargs.get("access_roles", ["owner"]),
+            "tags": kwargs.get("tags", []),
+            "copied_from_id": kwargs.get("copied_from_id"),
+            "created_at": kwargs.get(
+                "created_at", self.fake.date_time(tzinfo=timezone.utc).isoformat()
+            ),
+            "updated_at": kwargs.get(
+                "updated_at", self.fake.date_time(tzinfo=timezone.utc).isoformat()
+            ),
         }
 
     def create_mock_org_member(self, **kwargs) -> Dict[str, Any]:

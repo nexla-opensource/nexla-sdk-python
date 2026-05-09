@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataSetBrief
 
-Defined in `nexla_sdk/models/sources/responses.py:9`
+Defined in `nexla_sdk/models/sources/responses.py:11`
 
 Brief dataset information.
 
@@ -19,15 +19,15 @@ Fields:
 - `id`: `int`
 - `owner_id`: `int`
 - `org_id`: `int`
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `version`: `typing.Optional[int]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `version`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### FlowType
 
-Defined in `nexla_sdk/models/sources/enums.py:68`
+Defined in `nexla_sdk/models/sources/enums.py:72`
 
 Flow processing types.
 
@@ -39,7 +39,7 @@ Members:
 
 ### IngestMethod
 
-Defined in `nexla_sdk/models/sources/enums.py:59`
+Defined in `nexla_sdk/models/sources/enums.py:62`
 
 Data ingestion methods.
 
@@ -53,7 +53,7 @@ Members:
 
 ### RunInfo
 
-Defined in `nexla_sdk/models/sources/responses.py:21`
+Defined in `nexla_sdk/models/sources/responses.py:24`
 
 Run information.
 
@@ -64,7 +64,7 @@ Fields:
 
 ### Source
 
-Defined in `nexla_sdk/models/sources/responses.py:27`
+Defined in `nexla_sdk/models/sources/responses.py:31`
 
 Data source response model.
 
@@ -74,36 +74,36 @@ Fields:
 - `name`: `str`
 - `status`: `str`
 - `source_type`: `str`
-- `connector_type`: `typing.Optional[str]`
-- `owner`: `typing.Optional[nexla_sdk.models.common.Owner]`
-- `org`: `typing.Optional[nexla_sdk.models.common.Organization]`
-- `access_roles`: `typing.Optional[typing.List[str]]`
-- `managed`: `typing.Optional[bool]`
-- `auto_generated`: `typing.Optional[bool]`
-- `connector`: `typing.Optional[nexla_sdk.models.common.Connector]`
-- `description`: `typing.Optional[str]`
-- `ingest_method`: `typing.Optional[str]`
-- `source_format`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `poll_schedule`: `typing.Optional[str]`
-- `code_container_id`: `typing.Optional[int]`
-- `data_credentials_id`: `typing.Optional[int]`
-- `data_credentials`: `typing.Optional[nexla_sdk.models.credentials.responses.Credential]`
-- `data_sets`: `typing.List[nexla_sdk.models.sources.responses.DataSetBrief]`
-- `api_keys`: `typing.List[typing.Dict[str, typing.Any]]`
-- `run_ids`: `typing.List[nexla_sdk.models.sources.responses.RunInfo]`
-- `copied_from_id`: `typing.Optional[int]`
-- `flow_type`: `typing.Optional[str]`
-- `has_template`: `typing.Optional[bool]`
-- `vendor_endpoint`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `vendor`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `tags`: `typing.List[str]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
+- `connector_type`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `managed`: `Optional`
+- `auto_generated`: `Optional`
+- `connector`: `Optional`
+- `description`: `Optional`
+- `ingest_method`: `Optional`
+- `source_format`: `Optional`
+- `source_config`: `Optional`
+- `poll_schedule`: `Optional`
+- `code_container_id`: `Optional`
+- `data_credentials_id`: `Optional`
+- `data_credentials`: `Optional`
+- `data_sets`: `List`
+- `api_keys`: `List`
+- `run_ids`: `List`
+- `copied_from_id`: `Optional`
+- `flow_type`: `Optional`
+- `has_template`: `Optional`
+- `vendor_endpoint`: `Optional`
+- `vendor`: `Optional`
+- `tags`: `List`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
 
 ### SourceCopyOptions
 
-Defined in `nexla_sdk/models/sources/requests.py:30`
+Defined in `nexla_sdk/models/sources/requests.py:34`
 
 Options for copying a source.
 
@@ -111,12 +111,12 @@ Fields:
 
 - `reuse_data_credentials`: `bool`
 - `copy_access_controls`: `bool`
-- `owner_id`: `typing.Optional[int]`
-- `org_id`: `typing.Optional[int]`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
 
 ### SourceCreate
 
-Defined in `nexla_sdk/models/sources/requests.py:6`
+Defined in `nexla_sdk/models/sources/requests.py:8`
 
 Request model for creating a source.
 
@@ -124,16 +124,16 @@ Fields:
 
 - `name`: `str`
 - `source_type`: `str`
-- `data_credentials_id`: `typing.Optional[int]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict]`
-- `vendor_endpoint_id`: `typing.Optional[int]`
-- `ingest_method`: `typing.Optional[str]`
-- `template_config`: `typing.Optional[typing.Dict]`
+- `data_credentials_id`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `ingest_method`: `Optional`
+- `template_config`: `Optional`
 
 ### SourceStatus
 
-Defined in `nexla_sdk/models/sources/enums.py:5`
+Defined in `nexla_sdk/models/sources/enums.py:6`
 
 Source status values.
 
@@ -147,7 +147,7 @@ Members:
 
 ### SourceType
 
-Defined in `nexla_sdk/models/sources/enums.py:14`
+Defined in `nexla_sdk/models/sources/enums.py:16`
 
 Supported source types.
 
@@ -184,14 +184,14 @@ Members:
 
 ### SourceUpdate
 
-Defined in `nexla_sdk/models/sources/requests.py:22`
+Defined in `nexla_sdk/models/sources/requests.py:25`
 
 Request model for updating a source.
 
 Fields:
 
-- `name`: `typing.Optional[str]`
-- `description`: `typing.Optional[str]`
-- `source_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials_id`: `typing.Optional[int]`
+- `name`: `Optional`
+- `description`: `Optional`
+- `source_config`: `Optional`
+- `data_credentials_id`: `Optional`
 

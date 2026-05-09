@@ -16,12 +16,12 @@ Reference to a user for custodians payload (by id or email).
 
 Fields:
 
-- `id`: `typing.Optional[int]`
-- `email`: `typing.Optional[str]`
+- `id`: `Optional`
+- `email`: `Optional`
 
 ### CustodiansPayload
 
-Defined in `nexla_sdk/models/marketplace/requests.py:12`
+Defined in `nexla_sdk/models/marketplace/requests.py:13`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -35,11 +35,11 @@ Features:
 
 Fields:
 
-- `custodians`: `typing.List[nexla_sdk.models.marketplace.requests.CustodianRef]`
+- `custodians`: `List`
 
 ### MarketplaceDomainCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:16`
+Defined in `nexla_sdk/models/marketplace/requests.py:17`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -53,16 +53,16 @@ Features:
 
 Fields:
 
-- `org_id`: `typing.Optional[int]`
-- `owner_id`: `typing.Optional[int]`
+- `org_id`: `Optional`
+- `owner_id`: `Optional`
 - `name`: `str`
-- `description`: `typing.Optional[str]`
-- `parent_id`: `typing.Optional[int]`
-- `custodians`: `typing.Optional[nexla_sdk.models.marketplace.requests.CustodiansPayload]`
+- `description`: `Optional`
+- `parent_id`: `Optional`
+- `custodians`: `Optional`
 
 ### MarketplaceDomainsItemCreate
 
-Defined in `nexla_sdk/models/marketplace/requests.py:25`
+Defined in `nexla_sdk/models/marketplace/requests.py:26`
 
 Base model class with Pydantic functionality and Nexla API compatibility.
 
@@ -77,6 +77,6 @@ Features:
 Fields:
 
 - `name`: `str`
-- `description`: `typing.Optional[str]`
+- `description`: `Optional`
 - `data_set_id`: `int`
 

@@ -18,28 +18,28 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `resource_type`: `typing.Optional[str]`
-- `ai_function_type`: `typing.Optional[str]`
-- `reusable`: `typing.Optional[bool]`
-- `public`: `typing.Optional[bool]`
-- `owner`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `org`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `access_roles`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `runtime_data_credentials`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `description`: `typing.Optional[str]`
-- `code_type`: `typing.Optional[str]`
-- `output_type`: `typing.Optional[str]`
-- `code_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `custom_config`: `typing.Optional[typing.Dict[str, typing.Any]]`
-- `code_encoding`: `typing.Optional[str]`
-- `code`: `typing.Optional[typing.List[nexla_sdk.models.code_containers.responses.CodeOperation]]`
-- `managed`: `typing.Optional[bool]`
-- `data_sets`: `typing.Optional[typing.List[int]]`
-- `copied_from_id`: `typing.Optional[int]`
-- `updated_at`: `typing.Optional[datetime.datetime]`
-- `created_at`: `typing.Optional[datetime.datetime]`
-- `tags`: `typing.Optional[typing.List[str]]`
+- `resource_type`: `Optional`
+- `ai_function_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `data_credentials`: `Optional`
+- `runtime_data_credentials`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `output_type`: `Optional`
+- `code_config`: `Optional`
+- `custom_config`: `Optional`
+- `code_encoding`: `Optional`
+- `code`: `Optional`
+- `managed`: `Optional`
+- `data_sets`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `tags`: `Optional`
 
 ### CodeOperation
 
@@ -57,6 +57,6 @@ Features:
 
 Fields:
 
-- `operation`: `typing.Optional[str]`
-- `spec`: `typing.Optional[typing.Dict[str, typing.Any]]`
+- `operation`: `Optional`
+- `spec`: `Optional`
 

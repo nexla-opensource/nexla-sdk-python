@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from pydantic import Field
+from pydantic import AliasChoices, Field, field_validator, model_validator
 
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import FlowNode
@@ -26,20 +26,57 @@ class FlowLogEntry(BaseModel):
     """A single flow execution log entry."""
 
     timestamp: Optional[datetime] = None
-    level: Optional[str] = None
-    message: Optional[str] = None
+    level: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("level", "severity"),
+    )
+    message: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("message", "log"),
+    )
+    log_type: Optional[str] = None
     resource_id: Optional[int] = None
     resource_type: Optional[str] = None
     run_id: Optional[int] = None
     details: Optional[Dict[str, Any]] = None
 
+    @field_validator("timestamp", mode="before")
+    @classmethod
+    def coerce_ms_timestamp(cls, value):
+        """Convert live API millisecond timestamps to datetimes explicitly."""
+        # Unix epoch seconds will not reach 1e10 until year 2286; larger values are ms.
+        if isinstance(value, (int, float)) and abs(value) > 1e10:
+            return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
+        return value
+
 
 class FlowLogsMeta(BaseModel):
-    """Metadata for flow logs pagination."""
+    """Metadata for flow logs pagination.
 
-    current_page: Optional[int] = Field(default=None, alias="currentPage")
-    page_count: Optional[int] = Field(default=None, alias="pageCount")
-    total_count: Optional[int] = Field(default=None, alias="totalCount")
+    The live API also returns run context fields (org_id, run_id) in logs.meta.
+    """
+
+    current_page: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("currentPage", "current_page"),
+        serialization_alias="currentPage",
+    )
+    page_count: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "pageCount",
+            "page_count",
+            "pages_count",  # live API uses this spelling in logs.meta
+        ),
+        serialization_alias="pageCount",
+    )
+    total_count: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("totalCount", "total_count"),
+        serialization_alias="totalCount",
+    )
+    org_id: Optional[int] = None
+    run_id: Optional[int] = None
 
 
 class FlowLogsResponse(BaseModel):
@@ -56,6 +93,21 @@ class FlowLogsResponse(BaseModel):
     message: Optional[str] = None
     logs: List[FlowLogEntry] = Field(default_factory=list)
     meta: Optional[FlowLogsMeta] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_live_logs_shape(cls, data):
+        """Flatten live API logs.data/logs.meta into the SDK response model."""
+        if not isinstance(data, dict) or not isinstance(data.get("logs"), dict):
+            return data
+
+        logs = data["logs"]
+        normalized = data.copy()
+        logs_data = logs.get("data")
+        normalized["logs"] = logs_data if logs_data is not None else []
+        if normalized.get("meta") is None:  # outer meta wins if already set
+            normalized["meta"] = logs.get("meta")
+        return normalized
 
 
 class FlowMetricData(BaseModel):

@@ -8,27 +8,108 @@ keywords: [Nexla, SDK, Python, API]
 
 ## Classes
 
+### DocsRecommendation
+
+Defined in `nexla_sdk/models/flows/responses.py:152`
+
+Response from docs_recommendation() with AI-generated documentation.
+
+Attributes:
+    recommendation: The AI-generated documentation suggestion.
+    status: Status of the recommendation request.
+
+Fields:
+
+- `recommendation`: `Optional`
+- `status`: `Optional`
+
 ### FlowElements
 
-Defined in `nexla_sdk/models/flows/responses.py:22`
+Defined in `nexla_sdk/models/flows/responses.py:164`
 
 Flow elements containing all resources.
 
 Fields:
 
-- `code_containers`: `typing.List[typing.Dict[str, typing.Any]]`
-- `data_sources`: `typing.List[nexla_sdk.models.sources.responses.Source]`
-- `data_sets`: `typing.List[nexla_sdk.models.nexsets.responses.Nexset]`
-- `data_sinks`: `typing.List[nexla_sdk.models.destinations.responses.Destination]`
-- `data_credentials`: `typing.List[nexla_sdk.models.credentials.responses.Credential]`
-- `shared_data_sets`: `typing.List[typing.Dict[str, typing.Any]]`
-- `orgs`: `typing.List[typing.Dict[str, typing.Any]]`
-- `users`: `typing.List[typing.Dict[str, typing.Any]]`
-- `projects`: `typing.List[typing.Dict[str, typing.Any]]`
+- `code_containers`: `List`
+- `data_sources`: `List`
+- `data_sets`: `List`
+- `data_sinks`: `List`
+- `data_credentials`: `List`
+- `shared_data_sets`: `List`
+- `orgs`: `List`
+- `users`: `List`
+- `projects`: `List`
+
+### FlowLogEntry
+
+Defined in `nexla_sdk/models/flows/responses.py:25`
+
+A single flow execution log entry.
+
+Fields:
+
+- `timestamp`: `Optional`
+- `level`: `Optional`
+- `message`: `Optional`
+- `log_type`: `Optional`
+- `resource_id`: `Optional`
+- `resource_type`: `Optional`
+- `run_id`: `Optional`
+- `details`: `Optional`
+
+### FlowLogsMeta
+
+Defined in `nexla_sdk/models/flows/responses.py:53`
+
+Metadata for flow logs pagination.
+
+The live API also returns run context fields (org_id, run_id) in logs.meta.
+
+Fields:
+
+- `current_page`: `Optional`
+- `page_count`: `Optional`
+- `total_count`: `Optional`
+- `org_id`: `Optional`
+- `run_id`: `Optional`
+
+### FlowLogsResponse
+
+Defined in `nexla_sdk/models/flows/responses.py:82`
+
+Response from get_logs() containing flow execution logs.
+
+Attributes:
+    status: Status code of the response (200 for success).
+    message: Status message ("Ok" for success).
+    logs: List of log entries.
+    meta: Pagination metadata.
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `logs`: `List`
+- `meta`: `Optional`
+
+### FlowMetricData
+
+Defined in `nexla_sdk/models/flows/responses.py:113`
+
+Flow metric data for a resource.
+
+Fields:
+
+- `records`: `Optional`
+- `size`: `Optional`
+- `errors`: `Optional`
+- `run_id`: `Optional`
+- `reporting_date`: `Optional`
 
 ### FlowMetrics
 
-Defined in `nexla_sdk/models/flows/responses.py:12`
+Defined in `nexla_sdk/models/flows/responses.py:14`
 
 Flow metrics information.
 
@@ -41,23 +122,63 @@ Fields:
 - `reporting_date`: `datetime`
 - `run_id`: `int`
 
+### FlowMetricsApiResponse
+
+Defined in `nexla_sdk/models/flows/responses.py:138`
+
+Response from get_metrics() containing flow metrics.
+
+Attributes:
+    status: Status code of the response (200 for success).
+    message: Status message ("Ok" for success).
+    metrics: Metrics data including resource-keyed data and pagination.
+
+Fields:
+
+- `status`: `Optional`
+- `message`: `Optional`
+- `metrics`: `Optional`
+
+### FlowMetricsData
+
+Defined in `nexla_sdk/models/flows/responses.py:131`
+
+Flow metrics data container.
+
+Fields:
+
+- `data`: `Optional`
+- `meta`: `Optional`
+
+### FlowMetricsMeta
+
+Defined in `nexla_sdk/models/flows/responses.py:123`
+
+Metadata for flow metrics pagination.
+
+Fields:
+
+- `current_page`: `Optional`
+- `page_count`: `Optional`
+- `total_count`: `Optional`
+
 ### FlowResponse
 
-Defined in `nexla_sdk/models/flows/responses.py:35`
+Defined in `nexla_sdk/models/flows/responses.py:178`
 
 Flow response model.
 
 Fields:
 
-- `flows`: `typing.List[nexla_sdk.models.common.FlowNode]`
-- `code_containers`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `data_sources`: `typing.Optional[typing.List[nexla_sdk.models.sources.responses.Source]]`
-- `data_sets`: `typing.Optional[typing.List[nexla_sdk.models.nexsets.responses.Nexset]]`
-- `data_sinks`: `typing.Optional[typing.List[nexla_sdk.models.destinations.responses.Destination]]`
-- `data_credentials`: `typing.Optional[typing.List[nexla_sdk.models.credentials.responses.Credential]]`
-- `shared_data_sets`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `orgs`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `users`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `projects`: `typing.Optional[typing.List[typing.Dict[str, typing.Any]]]`
-- `metrics`: `typing.Optional[typing.List[nexla_sdk.models.flows.responses.FlowMetrics]]`
+- `flows`: `List`
+- `code_containers`: `Optional`
+- `data_sources`: `Optional`
+- `data_sets`: `Optional`
+- `data_sinks`: `Optional`
+- `data_credentials`: `Optional`
+- `shared_data_sets`: `Optional`
+- `orgs`: `Optional`
+- `users`: `Optional`
+- `projects`: `Optional`
+- `metrics`: `Optional`
 

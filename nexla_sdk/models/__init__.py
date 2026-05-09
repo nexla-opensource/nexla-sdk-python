@@ -110,7 +110,7 @@ from nexla_sdk.models.destinations import (
     DestinationType,
     DestinationUpdate,
 )
-from nexla_sdk.models.doc_containers import DocContainer
+from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
 from nexla_sdk.models.notification_channel_settings import (
     NotificationChannelSetting as NotificationChannelSettingResource,
     NotificationChannelSettingCreate as NotificationChannelSettingResourceCreate,
@@ -203,6 +203,8 @@ from nexla_sdk.models.metrics import (
     DashboardMetrics,
     MetricsByRunResponse,
     MetricsResponse,
+    ResourceFlowLogsResponse,
+    ResourceFlowMetricsResponse,
     ResourceMetricDaily,
     ResourceMetricsByRun,
 )
@@ -475,6 +477,8 @@ __all__ = [
     "ResourceMetricsByRun",
     "MetricsResponse",
     "MetricsByRunResponse",
+    "ResourceFlowMetricsResponse",
+    "ResourceFlowLogsResponse",
     # Code containers
     "CodeContainer",
     "CodeContainerCreate",
@@ -534,6 +538,7 @@ __all__ = [
     "ServiceKeyUpdate",
     # Doc containers / Data schemas
     "DocContainer",
+    "DocContainerInput",
     "DataSchema",
     # Custom data flows
     "CustomDataFlow",

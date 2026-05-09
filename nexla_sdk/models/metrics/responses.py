@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional
 
 from nexla_sdk.models.base import BaseModel
+from nexla_sdk.models.flows.responses import FlowLogsResponse, FlowMetricsApiResponse
 
 
 class AccountMetrics(BaseModel):
@@ -58,3 +59,11 @@ class MetricsByRunResponse(BaseModel):
 
     status: int
     metrics: Dict[str, Any]  # Contains data and meta
+
+
+class ResourceFlowMetricsResponse(FlowMetricsApiResponse):
+    """Flow metrics response returned by MetricsResource.get_flow_metrics()."""
+
+
+class ResourceFlowLogsResponse(FlowLogsResponse):
+    """Flow logs response returned by MetricsResource.get_flow_logs()."""

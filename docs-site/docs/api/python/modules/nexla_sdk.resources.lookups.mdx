@@ -12,34 +12,34 @@ Lookups resource implementation.
 
 ### LookupsResource
 
-Defined in `nexla_sdk/resources/lookups.py:8`
+Defined in `nexla_sdk/resources/lookups.py:14`
 
 Resource for managing lookups (data maps).
 
 Methods:
 
 - `create(self, data: nexla_sdk.models.lookups.requests.LookupCreate) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:50`
+  - Source: `nexla_sdk/resources/lookups.py:56`
   - Create new lookup.
 - `delete(self, data_map_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:78`
+  - Source: `nexla_sdk/resources/lookups.py:84`
   - Delete lookup.
 - `delete_entries(self, data_map_id: int, entry_keys: Union[str, List[str]]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:131`
+  - Source: `nexla_sdk/resources/lookups.py:137`
   - Delete specific entries from a lookup.
 - `get(self, data_map_id: int, expand: bool = False) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:34`
+  - Source: `nexla_sdk/resources/lookups.py:40`
   - Get single lookup by ID.
 - `get_entries(self, data_map_id: int, entry_keys: Union[str, List[str]]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/lookups.py:110`
+  - Source: `nexla_sdk/resources/lookups.py:116`
   - Get specific entries from a lookup.
 - `list(self, **kwargs) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:16`
+  - Source: `nexla_sdk/resources/lookups.py:22`
   - List lookups with optional filters.
 - `update(self, data_map_id: int, data: nexla_sdk.models.lookups.requests.LookupUpdate) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:65`
+  - Source: `nexla_sdk/resources/lookups.py:71`
   - Update lookup.
 - `upsert_entries(self, data_map_id: int, entries: List[Dict[str, Any]]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/lookups.py:90`
+  - Source: `nexla_sdk/resources/lookups.py:96`
   - Upsert entries in a lookup.
 

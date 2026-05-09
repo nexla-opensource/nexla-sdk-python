@@ -1,0 +1,35 @@
+---
+id: nexla_sdk.models.webhooks.requests
+title: nexla_sdk.models.webhooks.requests
+slug: /api/python/modules/nexla_sdk/models/webhooks/requests
+description: API for nexla_sdk.models.webhooks.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Webhook request models.
+
+## Classes
+
+### WebhookSendOptions
+
+Defined in `nexla_sdk/models/webhooks/requests.py:8`
+
+Options for sending data to a webhook.
+
+Attributes:
+    include_headers: Include custom headers in ingested records.
+        Custom headers will be added as `header_<header_name>` attributes.
+        Standard headers like `Authorization` and `Content-Type` are ignored.
+    include_url_params: Include custom query parameters in ingested records.
+        Custom params will be added as `url_param_<param_name>` attributes.
+        Standard params like `api_key` are ignored.
+    force_schema_detection: Force schema detection for this record.
+        Normally, schema detection only happens for the first few records.
+        Set to True to force detection on every record.
+
+Fields:
+
+- `include_headers`: `Optional`
+- `include_url_params`: `Optional`
+- `force_schema_detection`: `Optional`
+
