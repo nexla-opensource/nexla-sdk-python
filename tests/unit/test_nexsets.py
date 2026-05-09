@@ -5,6 +5,7 @@ from pydantic import ValidationError
 
 from nexla_sdk.exceptions import NotFoundError, ServerError
 from nexla_sdk.http_client import HttpClientError
+from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
 from nexla_sdk.models.nexsets.requests import (
     NexsetCopyOptions,
     NexsetCreate,
@@ -338,3 +339,205 @@ class TestNexsetsResource:
         # Assert
         assert nexsets == []
         assert len(nexsets) == 0
+
+    def test_list_docs(self, mock_client):
+        """Test listing docs for a nexset."""
+        # Arrange
+        nexset_id = 419706
+        mock_factory = MockDataFactory()
+        mock_response = [
+            mock_factory.create_mock_doc_container(
+                id=25122, name="Doc 1", text="# Heading\n\nbody"
+            )
+        ]
+        mock_client.http_client.add_response(
+            f"/data_sets/{nexset_id}/docs", mock_response
+        )
+
+        # Act
+        docs = mock_client.nexsets.list_docs(nexset_id)
+
+        # Assert
+        assert len(docs) == 1
+        assert isinstance(docs[0], DocContainer)
+        assert docs[0].id == 25122
+        assert docs[0].text == "# Heading\n\nbody"
+        mock_client.http_client.assert_request_made(
+            "GET", f"/data_sets/{nexset_id}/docs"
+        )
+        request = mock_client.http_client.get_last_request()
+        assert request["params"].get("expand") == 1
+
+    def test_list_docs_no_expand(self, mock_client):
+        """Test listing docs without the expand flag."""
+        # Arrange
+        nexset_id = 419706
+        mock_client.http_client.add_response(
+            f"/data_sets/{nexset_id}/docs", []
+        )
+
+        # Act
+        docs = mock_client.nexsets.list_docs(nexset_id, expand=False)
+
+        # Assert
+        assert docs == []
+        request = mock_client.http_client.get_last_request()
+        assert "expand" not in request["params"]
+
+    def test_update_docs(self, mock_client):
+        """Test replacing docs on a nexset using DocContainerInput."""
+        # Arrange
+        nexset_id = 419706
+        mock_factory = MockDataFactory()
+        mock_response = [
+            mock_factory.create_mock_doc_container(
+                id=25124, name="Doc 1", text="# Heading\n\nbody"
+            )
+        ]
+        mock_client.http_client.add_response(
+            f"/data_sets/{nexset_id}/docs", mock_response
+        )
+
+        new_doc = DocContainerInput(
+            name="Doc 1",
+            description="d",
+            text="# Heading\n\nbody",
+        )
+
+        # Act
+        result = mock_client.nexsets.update_docs(nexset_id, [new_doc])
+
+        # Assert
+        assert len(result) == 1
+        assert isinstance(result[0], DocContainer)
+        assert result[0].id == 25124
+        mock_client.http_client.assert_request_made(
+            "POST", f"/data_sets/{nexset_id}/docs"
+        )
+        request = mock_client.http_client.get_last_request()
+        assert "docs" in request["json"]
+        assert len(request["json"]["docs"]) == 1
+        sent = request["json"]["docs"][0]
+        assert sent["name"] == "Doc 1"
+        assert sent["text"] == "# Heading\n\nbody"
+        assert sent["doc_type"] == "md"
+
+    def test_update_docs_accepts_dicts(self, mock_client):
+        """Test update_docs accepts plain dicts (e.g. from MCP layer)."""
+        # Arrange
+        nexset_id = 419706
+        mock_client.http_client.add_response(
+            f"/data_sets/{nexset_id}/docs", []
+        )
+
+        # Act — pass a plain dict, not a DocContainerInput
+        mock_client.nexsets.update_docs(
+            nexset_id,
+            [{"name": "Raw", "doc_type": "md", "text": "# x"}],
+        )
+
+        # Assert
+        request = mock_client.http_client.get_last_request()
+        assert request["json"] == {
+            "docs": [{"name": "Raw", "doc_type": "md", "text": "# x"}]
+        }
+
+    def test_copy_docs(self, mock_client):
+        """Test copy_docs reads source, strips server fields, writes dest."""
+        # Arrange
+        src_id = 419706
+        dst_id = 419800
+        mock_factory = MockDataFactory()
+
+        # Source docs include all server-owned fields that must be stripped
+        source_docs = [
+            mock_factory.create_mock_doc_container(
+                id=25122,
+                name="Doc 1",
+                description="desc 1",
+                doc_type="md",
+                text="# body 1",
+                public=False,
+                tags=["a"],
+                copied_from_id=None,
+            )
+        ]
+        # Destination response after the POST
+        dest_docs = [
+            mock_factory.create_mock_doc_container(
+                id=99999, name="Doc 1", text="# body 1", copied_from_id=25122
+            )
+        ]
+
+        mock_client.http_client.add_response(
+            f"/data_sets/{src_id}/docs", source_docs
+        )
+        mock_client.http_client.add_response(
+            f"/data_sets/{dst_id}/docs", dest_docs
+        )
+
+        # Act
+        result = mock_client.nexsets.copy_docs(src_id, dst_id)
+
+        # Assert
+        assert len(result) == 1
+        assert result[0].id == 99999
+        assert result[0].copied_from_id == 25122
+
+        # Verify GET to source
+        get_requests = mock_client.http_client.get_requests_by_url_pattern(
+            f"/data_sets/{src_id}/docs"
+        )
+        assert any(r["method"] == "GET" for r in get_requests)
+
+        # Verify POST to destination with stripped body
+        dest_requests = mock_client.http_client.get_requests_by_url_pattern(
+            f"/data_sets/{dst_id}/docs"
+        )
+        post_requests = [r for r in dest_requests if r["method"] == "POST"]
+        assert len(post_requests) == 1
+        sent_docs = post_requests[0]["json"]["docs"]
+        assert len(sent_docs) == 1
+        sent = sent_docs[0]
+
+        # Writable fields are carried over
+        assert sent["name"] == "Doc 1"
+        assert sent["description"] == "desc 1"
+        assert sent["doc_type"] == "md"
+        assert sent["text"] == "# body 1"
+
+        # Server-owned and read-only fields are stripped
+        for stripped in (
+            "id",
+            "owner",
+            "org",
+            "access_roles",
+            "copied_from_id",
+            "created_at",
+            "updated_at",
+            "repo_type",
+            "repo_config",
+            "public",
+            "tags",
+        ):
+            assert stripped not in sent, f"{stripped!r} should be stripped"
+
+    def test_copy_docs_empty_source(self, mock_client):
+        """Test copy_docs no-ops when source has no docs."""
+        # Arrange
+        src_id = 419706
+        dst_id = 419800
+        mock_client.http_client.add_response(
+            f"/data_sets/{src_id}/docs", []
+        )
+
+        # Act
+        result = mock_client.nexsets.copy_docs(src_id, dst_id)
+
+        # Assert
+        assert result == []
+        # No POST should have been made to the destination
+        dest_requests = mock_client.http_client.get_requests_by_url_pattern(
+            f"/data_sets/{dst_id}/docs"
+        )
+        assert all(r["method"] != "POST" for r in dest_requests)
