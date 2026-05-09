@@ -2683,7 +2683,7 @@ Methods:
   - Source: `nexla_sdk/resources/base_resource.py:305`
   - Pause resource.
 - `remove_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:521`
+  - Source: `nexla_sdk/resources/organizations.py:511`
 - `remove_docs(self, resource_id: int, docs: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/base_resource.py:479`
   - Remove documentation entries for a resource.
@@ -2696,8 +2696,6 @@ Methods:
 - `replace_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberList) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
   - Source: `nexla_sdk/resources/organizations.py:144`
   - Replace all members in organization.
-- `reset_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/organizations.py:511`
 - `revert_cluster(self, org_id: int) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/organizations.py:277`
 - `search(self, filters: Dict[str, Any], **params) -> List[~T]`

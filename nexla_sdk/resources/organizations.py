@@ -503,16 +503,6 @@ class OrganizationsResource(BaseResource):
     ) -> List[CustodianUser]:
         path = f"{self._path}/{org_id}/custodians"
         data = self._serialize_data(payload)
-        response = self._make_request("PUT", path, json=data)
-        if isinstance(response, list):
-            return [CustodianUser.model_validate(item) for item in response]
-        return []
-
-    def reset_custodians(
-        self, org_id: int, payload: OrgCustodiansPayload
-    ) -> List[CustodianUser]:
-        path = f"{self._path}/{org_id}/custodians"
-        data = self._serialize_data(payload)
         response = self._make_request("POST", path, json=data)
         if isinstance(response, list):
             return [CustodianUser.model_validate(item) for item in response]
