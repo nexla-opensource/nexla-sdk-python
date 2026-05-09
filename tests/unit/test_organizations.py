@@ -2,6 +2,10 @@
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.metrics.enums import ResourceType
+from nexla_sdk.models.organizations.custodians import (
+    OrgCustodianRef,
+    OrgCustodiansPayload,
+)
 from nexla_sdk.models.organizations.requests import (
     OrganizationCreate,
     OrgMemberActivateDeactivateRequest,
@@ -406,3 +410,48 @@ class TestOrganizationsResource:
         assert last_request["method"] == "GET"
         assert f"/orgs/{org_id}/data_sources/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
+
+    def test_add_custodians_uses_post(self, mock_client):
+        """add_custodians must use POST per OpenAPI spec (add_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(
+            custodians=[OrgCustodianRef(email="custodian@example.com")]
+        )
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", [{"id": 1, "email": "custodian@example.com"}]
+        )
+
+        result = mock_client.organizations.add_custodians(org_id, payload)
+
+        assert len(result) == 1
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "POST"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]
+
+    def test_update_custodians_uses_put(self, mock_client):
+        """update_custodians must use PUT per OpenAPI spec (update_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", [{"id": 42, "email": "x@y.com"}]
+        )
+
+        mock_client.organizations.update_custodians(org_id, payload)
+
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "PUT"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]
+
+    def test_remove_custodians_uses_delete(self, mock_client):
+        """remove_custodians must use DELETE per OpenAPI spec (remove_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", {"status": "ok"}
+        )
+
+        mock_client.organizations.remove_custodians(org_id, payload)
+
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "DELETE"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]
