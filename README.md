@@ -692,6 +692,15 @@ NEXLA_API_URL=https://dataops.nexla.io/nexla-api
 EOF
 ```
 
+## Releasing
+
+Versions are derived from Git tags via `setuptools_scm` (no manual version bumps). To release:
+
+1. Create a GitHub Release with tag `v<major>.<minor>.<patch>` (e.g. `v1.1.0`) targeting `main`.
+2. The `release.yml` workflow automatically builds and publishes to PyPI via trusted publishing.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full release process, pre-release checklist, and troubleshooting.
+
 ## License
 
 This project is licensed under the terms of the MIT license.
