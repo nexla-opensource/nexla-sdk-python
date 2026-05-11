@@ -1,5 +1,6 @@
 import logging
 import warnings
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
@@ -16,6 +17,28 @@ from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
 
 logger = logging.getLogger(__name__)
+
+
+def _iso_date_to_unix_seconds(value: Any) -> Any:
+    """
+    Convert a YYYY-MM-DD string to a UTC unix-seconds integer for admin-api
+    log endpoints, which run inputs through ``DateInterval.unix_to_db_datetime_str``.
+
+    Numeric inputs (int/float, or all-digit strings) pass through unchanged so
+    callers that already use unix timestamps keep working. Unrecognised values
+    pass through unchanged for the server to handle. ``None`` returns ``None``.
+    """
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    try:
+        dt = datetime.strptime(value, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        return int(dt.timestamp())
+    except (TypeError, ValueError):
+        return value
 
 
 class FlowsResource(BaseResource):
@@ -419,12 +442,14 @@ class FlowsResource(BaseResource):
         Returns:
             Flow execution logs
         """
-        path = f"{self._path}/{flow_id}/flow/logs"
+        path = f"{self._path}/{flow_id}/logs"
         params = {}
-        if from_date is not None:
-            params["from"] = from_date
-        if to_date is not None:
-            params["to"] = to_date
+        from_ts = _iso_date_to_unix_seconds(from_date)
+        if from_ts is not None:
+            params["from"] = from_ts
+        to_ts = _iso_date_to_unix_seconds(to_date)
+        if to_ts is not None:
+            params["to"] = to_ts
         if severity is not None:
             params["severity"] = severity
         if run_id is not None:
@@ -438,39 +463,71 @@ class FlowsResource(BaseResource):
     def search_flow_logs(
         self,
         flow_id: int,
-        run_ids: str = None,
-        severity: str = None,
+        run_ids: Union[str, List[int]] = None,
+        severity: Union[str, List[str]] = None,
+        log_type: Union[str, List[str]] = None,
         search_string: str = None,
         from_date: str = None,
         to_date: str = None,
+        size: int = None,
+        sort: str = None,
+        facets: bool = None,
     ) -> Dict[str, Any]:
         """
         Advanced search for flow execution logs.
 
+        Calls ``POST /flows/:id/logs_v2``. ``severity``/``run_ids``/``log_type``/
+        ``search_string`` are sent in the JSON body (the admin-api endpoint
+        requires this); ``from``/``to``/``sort``/``size``/``facets`` are sent
+        as query parameters.
+
         Args:
             flow_id: Flow ID
-            run_ids: Comma-separated list of run IDs to filter
-            severity: Filter by log severity
+            run_ids: Run IDs to filter — comma-separated string or list of ints
+            severity: Log severity (e.g. "ERROR") or list of severities
+            log_type: Log type or list of log types
             search_string: Free-text search string
             from_date: Start date filter (YYYY-MM-DD)
             to_date: End date filter (YYYY-MM-DD)
+            size: Page size
+            sort: Sort directive
+            facets: Whether to include facet aggregations in the response
 
         Returns:
             Matching flow logs
         """
         path = f"{self._path}/{flow_id}/logs_v2"
-        params = {}
+
+        body: Dict[str, Any] = {}
         if run_ids is not None:
-            params["run_ids"] = run_ids
+            if isinstance(run_ids, str):
+                parsed = [int(s) for s in run_ids.split(",") if s.strip()]
+            else:
+                parsed = [int(r) for r in run_ids]
+            if parsed:
+                body["run_ids"] = parsed
         if severity is not None:
-            params["severity"] = severity
+            body["severity"] = [severity] if isinstance(severity, str) else list(severity)
+        if log_type is not None:
+            body["log_type"] = [log_type] if isinstance(log_type, str) else list(log_type)
         if search_string is not None:
-            params["search_string"] = search_string
-        if from_date is not None:
-            params["from"] = from_date
-        if to_date is not None:
-            params["to"] = to_date
-        return self._make_request("GET", path, params=params)
+            body["search_string"] = search_string
+
+        params: Dict[str, Any] = {}
+        from_ts = _iso_date_to_unix_seconds(from_date)
+        if from_ts is not None:
+            params["from"] = from_ts
+        to_ts = _iso_date_to_unix_seconds(to_date)
+        if to_ts is not None:
+            params["to"] = to_ts
+        if size is not None:
+            params["size"] = size
+        if sort is not None:
+            params["sort"] = sort
+        if facets is not None:
+            params["facets"] = facets
+
+        return self._make_request("POST", path, params=params, json=body)
 
     def get_active_flows_metrics(
         self, from_date: str = None, to_date: str = None, org_id: int = None
