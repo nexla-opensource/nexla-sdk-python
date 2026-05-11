@@ -406,6 +406,108 @@ class FlowsResource(BaseResource):
 
         return self._make_request("POST", path, params=params, json=body)
 
+    def get_org_health_summary(
+        self,
+        org_id: int = None,
+        owner_id: int = None,
+        from_date: str = None,
+        to_date: str = None,
+    ) -> Dict[str, Any]:
+        """
+        Get the overall health snapshot for an org's flows.
+
+        Calls ``GET /health/org/all``. Returns aggregate counts of flows
+        bucketed by their current health status (GREEN/YELLOW/RED) across
+        the optional date window.
+
+        Args:
+            org_id: Organization ID (defaults server-side to current org)
+            owner_id: Restrict to flows owned by this user
+            from_date: Start date (YYYY-MM-DD, treated as UTC)
+            to_date: End date (YYYY-MM-DD, treated as UTC)
+
+        Returns:
+            Aggregate health metrics for the org
+        """
+        params: Dict[str, Any] = {}
+        if org_id is not None:
+            params["org_id"] = org_id
+        if owner_id is not None:
+            params["owner_id"] = owner_id
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        return self._make_request("GET", "/health/org/all", params=params)
+
+    def get_org_health_flows(
+        self,
+        org_id: int = None,
+        owner_id: int = None,
+        from_date: str = None,
+        to_date: str = None,
+        health_status: str = None,
+        page: int = None,
+        size: int = None,
+        sort_by: str = None,
+        sort_order: str = None,
+    ) -> Dict[str, Any]:
+        """
+        List per-flow health status across an org. Use this to answer
+        questions like "which flows had errors today" or "show me unhealthy
+        flows in the last week".
+
+        Calls ``GET /health/org/flows``. Each entry includes the flow's
+        origin_node_id, current healthStatus, latestErrorCount,
+        latestRecordCount, latestRunId, errorSummary, and updatedAtEpoch.
+
+        Args:
+            org_id: Organization ID (defaults server-side to current org)
+            owner_id: Restrict to flows owned by this user
+            from_date: Start date (YYYY-MM-DD, treated as UTC)
+            to_date: End date (YYYY-MM-DD, treated as UTC)
+            health_status: Filter to one of GREEN (OK), YELLOW (WARNING),
+                or RED (ERROR). Case-insensitive.
+            page: 1-based page number
+            size: Page size
+            sort_by: Field to sort by (e.g. ``run_id``, ``updated_at``)
+            sort_order: ``asc`` or ``desc``
+
+        Returns:
+            Paginated list of flow health entries
+        """
+        params: Dict[str, Any] = {}
+        if org_id is not None:
+            params["org_id"] = org_id
+        if owner_id is not None:
+            params["owner_id"] = owner_id
+        if from_date is not None:
+            params["from"] = from_date
+        if to_date is not None:
+            params["to"] = to_date
+        if health_status is not None:
+            params["health_status"] = health_status
+        if page is not None:
+            params["page"] = page
+        if size is not None:
+            params["size"] = size
+        if sort_by is not None:
+            params["sort_by"] = sort_by
+        if sort_order is not None:
+            params["sort_order"] = sort_order
+        return self._make_request("GET", "/health/org/flows", params=params)
+
+    def get_flow_health(self, flow_id: int) -> Dict[str, Any]:
+        """
+        Get detailed health information for a single flow.
+
+        Calls ``GET /health/flow/:flow_id``. Returns the flow's current
+        health status plus a breakdown of latest errors / records / run
+        information; the inverse of :meth:`get_org_health_flows` for one
+        specific flow.
+        """
+        return self._make_request("GET", f"/health/flow/{flow_id}")
+
     def get_active_flows_metrics(
         self, from_date: str = None, to_date: str = None, org_id: int = None
     ) -> Dict[str, Any]:
