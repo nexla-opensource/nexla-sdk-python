@@ -60,7 +60,8 @@ class LogEntry(BaseModel):
     owner_email: str
     created_at: datetime
     association_resource: Optional[Dict[str, Any]] = None
-    impersonator_id: Optional[str] = None
+    # admin-api returns the impersonating user's numeric id, not a string.
+    impersonator_id: Optional[int] = None
 
 
 class FlowNode(BaseModel):
