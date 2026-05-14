@@ -645,7 +645,10 @@ class FlowsResource(BaseResource):
         Returns:
             Active flows metrics
         """
-        path = f"{self._path}/active_flows_metrics"
+        # Admin-api defines this route at /data_flows/metrics/active_flows_metrics
+        # (config/routes.rb), not under /flows/. Calling /flows/active_flows_metrics
+        # 404s.
+        path = "/data_flows/metrics/active_flows_metrics"
         params = {}
         if from_date is not None:
             params["from"] = from_date
