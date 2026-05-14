@@ -823,6 +823,27 @@ class TestFlowsUnit:
         req = mock_http_client.get_last_request()
         assert req["json"]["run_ids"] == [10, 20, 30]
 
+    def test_get_active_flows_metrics_uses_data_flows_metrics_path(
+        self, mock_client, mock_http_client
+    ):
+        """admin-api defines the route as /data_flows/metrics/active_flows_metrics.
+        Calling /flows/active_flows_metrics 404s in production."""
+        mock_http_client.add_response(
+            "/data_flows/metrics/active_flows_metrics", {"metrics": []}
+        )
+
+        mock_client.flows.get_active_flows_metrics(
+            from_date="2026-05-01", to_date="2026-05-13", org_id=484
+        )
+
+        req = mock_http_client.get_last_request()
+        assert req["method"] == "GET"
+        assert req["url"].endswith("/data_flows/metrics/active_flows_metrics")
+        assert "/flows/active_flows_metrics" not in req["url"]
+        assert req["params"]["from"] == "2026-05-01"
+        assert req["params"]["to"] == "2026-05-13"
+        assert req["params"]["org_id"] == 484
+
     def test_get_metrics_success(self, mock_client, mock_http_client):
         """Test get_metrics returns FlowMetricsApiResponse model."""
         # Arrange
