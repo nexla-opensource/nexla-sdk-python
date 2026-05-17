@@ -357,6 +357,7 @@ class TestCredentialsErrorHandling:
             (403, AuthorizationError),
             (404, NotFoundError),
             (409, ResourceConflictError),
+            (422, SDKValidationError),
             (429, RateLimitError),
             (500, ServerError),
         ],

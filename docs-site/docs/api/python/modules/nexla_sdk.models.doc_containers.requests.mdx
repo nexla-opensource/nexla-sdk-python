@@ -1,0 +1,30 @@
+---
+id: nexla_sdk.models.doc_containers.requests
+title: nexla_sdk.models.doc_containers.requests
+slug: /api/python/modules/nexla_sdk/models/doc_containers/requests
+description: API for nexla_sdk.models.doc_containers.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Request models for doc containers.
+
+## Classes
+
+### DocContainerInput
+
+Defined in `nexla_sdk/models/doc_containers/requests.py:10`
+
+Writable fields for creating or replacing a documentation entry.
+
+Server-owned and read-only fields (``id``, ``owner``, ``org``,
+``public``, ``tags``, ``created_at`` etc.) are silently ignored on
+construction so a full ``DocContainer`` response can be round-tripped
+through this model to drop fields the API does not accept on input.
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `doc_type`: `str`
+- `text`: `str`
+

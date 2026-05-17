@@ -16,22 +16,31 @@ Resource for organization authentication configurations (/api_auth_configs).
 
 Methods:
 
+- `client_config(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:30`
+  - Get client config for API auth.
 - `create(self, payload: nexla_sdk.models.org_auth_configs.requests.AuthConfigPayload) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:31`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:43`
   - Create a new authentication configuration.
 - `delete(self, auth_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:45`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:57`
   - Delete an authentication configuration by ID.
 - `get(self, auth_config_id: int) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:26`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:38`
   - Get a specific authentication configuration by ID.
+- `info(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:34`
+  - Get API auth info.
 - `list(self) -> List[nexla_sdk.models.org_auth_configs.responses.AuthConfig]`
   - Source: `nexla_sdk/resources/org_auth_configs.py:16`
   - List authentication configurations for the current organization.
 - `list_all(self) -> List[nexla_sdk.models.org_auth_configs.responses.AuthConfig]`
   - Source: `nexla_sdk/resources/org_auth_configs.py:21`
   - List all authentication configurations (admin only).
+- `list_sign_on_options(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:26`
+  - List sign-on options (public).
 - `update(self, auth_config_id: int, payload: nexla_sdk.models.org_auth_configs.requests.AuthConfigPayload) -> nexla_sdk.models.org_auth_configs.responses.AuthConfig`
-  - Source: `nexla_sdk/resources/org_auth_configs.py:37`
+  - Source: `nexla_sdk/resources/org_auth_configs.py:49`
   - Update an existing authentication configuration.
 

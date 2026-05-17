@@ -580,6 +580,126 @@ class MockResponseBuilder:
         base.update(overrides)
         return base
 
+    @staticmethod
+    def accessor_response(
+        accessor_type: str = "USER",
+        access_role: str = "collaborator",
+        **overrides,
+    ) -> Dict[str, Any]:
+        """Build a mock accessor response for access control testing."""
+        base = {
+            "id": fake.random_int(1, 10000),
+            "type": accessor_type,
+            "access_roles": [access_role],
+            "org_id": fake.random_int(1, 100),
+        }
+        if accessor_type == "USER":
+            base["email"] = fake.email()
+            base["full_name"] = fake.name()
+            base["user_id"] = fake.random_int(1, 10000)
+        elif accessor_type == "TEAM":
+            base["name"] = f"{fake.word().title()} Team"
+            base["team_id"] = fake.random_int(1, 1000)
+        base.update(overrides)
+        return base
+
+    @staticmethod
+    def accessor_list(count: int = 3, **overrides) -> List[Dict[str, Any]]:
+        """Generate a list of accessor responses."""
+        accessors = []
+        for i in range(count):
+            accessor_type = "USER" if i % 2 == 0 else "TEAM"
+            accessors.append(
+                MockResponseBuilder.accessor_response(
+                    accessor_type=accessor_type, **overrides
+                )
+            )
+        return accessors
+
+    @staticmethod
+    def docs_response(**overrides) -> Dict[str, Any]:
+        """Build a mock documentation response for a resource."""
+        base = {
+            "entries": [
+                {"key": "description", "value": fake.sentence()},
+                {"key": "usage", "value": fake.paragraph()},
+                {"key": "notes", "value": fake.text(max_nb_chars=100)},
+            ]
+        }
+        base.update(overrides)
+        return base
+
+    @staticmethod
+    def access_insights_response(**overrides) -> Dict[str, Any]:
+        """Build a mock access insights response."""
+        base = {
+            "access_granted": True,
+            "access_reason": fake.random_element(
+                ["owner", "collaborator", "team_member"]
+            ),
+            "access_path": [
+                {
+                    "type": "direct",
+                    "role": fake.random_element(["owner", "collaborator", "admin"]),
+                }
+            ],
+            "resource_id": fake.random_int(1, 10000),
+            "resource_type": fake.random_element(
+                ["data_source", "data_sink", "data_set", "data_credentials"]
+            ),
+        }
+        base.update(overrides)
+        return base
+
+    @staticmethod
+    def search_response(
+        items: List[Dict[str, Any]] = None,
+        total: int = None,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> Dict[str, Any]:
+        """Build a mock search response.
+
+        Args:
+            items: List of items in the search results
+            total: Total count of items (defaults to len(items))
+            page: Current page number
+            per_page: Items per page
+
+        Returns:
+            Dictionary with data and meta information
+        """
+        if items is None:
+            items = []
+        return {
+            "data": items,
+            "meta": {
+                "total_count": total if total is not None else len(items),
+                "page": page,
+                "per_page": per_page,
+            },
+        }
+
+    @staticmethod
+    def paginated_response(
+        items: List[Dict[str, Any]],
+        page: int = 1,
+        per_page: int = 20,
+        total: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """Build a paginated response with meta information."""
+        total = total if total is not None else len(items)
+        total_pages = (total + per_page - 1) // per_page if per_page > 0 else 1
+        return {
+            "data": items,
+            "meta": {
+                "currentPage": page,
+                "totalCount": total,
+                "pageCount": total_pages,
+                "perPage": per_page,
+            },
+        }
+
 
 class MockDataFactory:
     """Factory for generating mock data for testing."""
@@ -1233,3 +1353,65 @@ def team_list(count: int = 3) -> List[Dict[str, Any]]:
 def project_list(count: int = 3) -> List[Dict[str, Any]]:
     """Generate a list of mock projects."""
     return [MockResponseBuilder.project() for _ in range(count)]
+
+
+def accessor_list(count: int = 3) -> List[Dict[str, Any]]:
+    """Generate a list of mock accessors."""
+    return MockResponseBuilder.accessor_list(count)
+
+
+def nexset_list(count: int = 3) -> List[Dict[str, Any]]:
+    """Generate a list of mock nexsets."""
+    factory = MockDataFactory()
+    return [factory.create_mock_nexset() for _ in range(count)]
+
+
+class SearchResponseBuilder:
+    """Builder for creating mock search responses."""
+
+    @staticmethod
+    def search_response(
+        items: List[Dict[str, Any]] = None,
+        total: int = None,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> Dict[str, Any]:
+        """Build a mock search response.
+
+        Args:
+            items: List of items in the search results
+            total: Total count of items (defaults to len(items))
+            page: Current page number
+            per_page: Items per page
+
+        Returns:
+            Dictionary with data and meta information
+        """
+        if items is None:
+            items = []
+        return {
+            "data": items,
+            "meta": {
+                "total_count": total if total is not None else len(items),
+                "page": page,
+                "per_page": per_page,
+            },
+        }
+
+    @staticmethod
+    def search_tags_response(
+        items: List[Dict[str, Any]] = None,
+        tags: List[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Build a mock search_tags response.
+
+        Args:
+            items: List of items matching the tags
+            tags: Tags that were searched for
+
+        Returns:
+            List of matching items
+        """
+        if items is None:
+            items = []
+        return items

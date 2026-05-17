@@ -122,6 +122,128 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### ApiKey
+
+Defined in `nexla_sdk/models/api_keys/responses.py:9`
+
+API key response model.
+
+API keys are used for programmatic access to specific resources
+like datasets, data sources, data sinks, and users.
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `data_set_id`: `Optional`
+- `data_source_id`: `Optional`
+- `data_sink_id`: `Optional`
+- `user_id`: `Optional`
+- `cluster_id`: `Optional`
+- `cluster_uid`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `scope`: `Optional`
+- `api_key`: `Optional`
+- `url`: `Optional`
+- `last_rotated_key`: `Optional`
+- `last_rotated_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ApiKeyCreate
+
+Defined in `nexla_sdk/models/api_keys/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `scope`: `Optional`
+- `expires_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ApiKeyUpdate
+
+Defined in `nexla_sdk/models/api_keys/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `scope`: `Optional`
+- `expires_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ApiKeysIndex
+
+Defined in `nexla_sdk/models/api_keys/responses.py:37`
+
+Response model for API keys index (grouped by type).
+
+Fields:
+
+- `data_sets`: `Optional`
+- `data_sinks`: `Optional`
+- `data_sources`: `Optional`
+- `users`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### ApprovalDecision
 
 Defined in `nexla_sdk/models/approval_requests/requests.py:6`
@@ -500,6 +622,280 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### AuthParameter
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:12`
+
+Auth parameter configuration for auth templates.
+
+This is a lightweight nested model used within AuthTemplate responses.
+For the full auth parameter resource model, see nexla_sdk.models.auth_parameters.
+
+Fields:
+
+- `id`: `Optional`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthParameterCreate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:8`
+
+Auth parameter for template creation.
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthParameterResource
+
+Defined in `nexla_sdk/models/auth_parameters/responses.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `vendor`: `Optional`
+- `auth_template`: `Optional`
+- `allowed_values`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthParameterResourceCreate
+
+Defined in `nexla_sdk/models/auth_parameters/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `auth_template_id`: `Optional`
+- `vendor_id`: `Optional`
+- `allowed_values`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthParameterResourceUpdate
+
+Defined in `nexla_sdk/models/auth_parameters/requests.py:20`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `auth_template_id`: `Optional`
+- `vendor_id`: `Optional`
+- `allowed_values`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthTemplate
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:33`
+
+Auth template response model.
+
+Auth templates define authentication configurations for vendors.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `credentials_type`: `Optional`
+- `vendor`: `Optional`
+- `vendor_id`: `Optional`
+- `auth_parameters`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthTemplateCreate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:20`
+
+Request model for creating an auth template (super user only).
+
+Fields:
+
+- `name`: `str`
+- `vendor_id`: `int`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `auth_parameters`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthTemplateParameter
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:12`
+
+Auth parameter configuration for auth templates.
+
+This is a lightweight nested model used within AuthTemplate responses.
+For the full auth parameter resource model, see nexla_sdk.models.auth_parameters.
+
+Fields:
+
+- `id`: `Optional`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### AuthTemplateUpdate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:31`
+
+Request model for updating an auth template (super user only).
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### BaseModel
 
 Defined in `nexla_sdk/models/base.py:10`
@@ -541,6 +937,418 @@ Fields:
 
 - `id`: `int`
 - `domain`: `str`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogConfig
+
+Defined in `nexla_sdk/models/catalog_configs/responses.py:9`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `data_credentials`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `config`: `Optional`
+- `templates`: `Optional`
+- `mode`: `Optional`
+- `job_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogConfigCreate
+
+Defined in `nexla_sdk/models/catalog_configs/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `data_credentials_id`: `Optional`
+- `config`: `Optional`
+- `templates`: `Optional`
+- `mode`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogConfigUpdate
+
+Defined in `nexla_sdk/models/catalog_configs/requests.py:15`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `data_credentials_id`: `Optional`
+- `config`: `Optional`
+- `templates`: `Optional`
+- `mode`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogRef
+
+Defined in `nexla_sdk/models/catalog_refs/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `data_set_id`: `Optional`
+- `status`: `Optional`
+- `reference_id`: `Optional`
+- `link`: `Optional`
+- `error_msg`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `catalog_config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogRefCreate
+
+Defined in `nexla_sdk/models/catalog_refs/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_set_id`: `int`
+- `catalog_config_id`: `int`
+- `reference_id`: `Optional`
+- `link`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CatalogRefUpdate
+
+Defined in `nexla_sdk/models/catalog_refs/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `reference_id`: `Optional`
+- `link`: `Optional`
+- `status`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### Cluster
+
+Defined in `nexla_sdk/models/clusters/responses.py:24`
+
+Cluster response model.
+
+Clusters define infrastructure endpoints for processing data flows.
+They contain multiple endpoints for different services.
+
+Fields:
+
+- `id`: `int`
+- `org_id`: `Optional`
+- `uid`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `region`: `Optional`
+- `provider`: `Optional`
+- `org`: `Optional`
+- `endpoints`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterCreate
+
+Defined in `nexla_sdk/models/clusters/requests.py:19`
+
+Request model for creating a cluster.
+
+Fields:
+
+- `org_id`: `int`
+- `name`: `str`
+- `region`: `str`
+- `description`: `Optional`
+- `provider`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `endpoints`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterEndpoint
+
+Defined in `nexla_sdk/models/clusters/responses.py:47`
+
+Cluster endpoint response model.
+
+Endpoints define individual service connections within a cluster.
+
+Fields:
+
+- `id`: `int`
+- `cluster_id`: `Optional`
+- `org_id`: `Optional`
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+- `org`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterEndpointCreate
+
+Defined in `nexla_sdk/models/clusters/requests.py:43`
+
+Request model for creating a cluster endpoint.
+
+Fields:
+
+- `cluster_id`: `int`
+- `service`: `str`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterEndpointItem
+
+Defined in `nexla_sdk/models/clusters/requests.py:8`
+
+Endpoint configuration for cluster create/update.
+
+Fields:
+
+- `service`: `str`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterEndpointRef
+
+Defined in `nexla_sdk/models/clusters/responses.py:12`
+
+Cluster endpoint reference for cluster response.
+
+Fields:
+
+- `id`: `int`
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterEndpointUpdate
+
+Defined in `nexla_sdk/models/clusters/requests.py:55`
+
+Request model for updating a cluster endpoint.
+
+Fields:
+
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ClusterUpdate
+
+Defined in `nexla_sdk/models/clusters/requests.py:32`
+
+Request model for updating a cluster.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `provider`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `endpoints`: `Optional`
 
 Methods:
 
@@ -673,15 +1481,15 @@ Methods:
 
 ### Connector
 
-Defined in `nexla_sdk/models/common.py:34`
+Defined in `nexla_sdk/models/common.py:38`
 
 Connector information.
 
 Fields:
 
 - `id`: `int`
-- `type`: `str`
-- `connection_type`: `str`
+- `type`: `Union`
+- `connection_type`: `Union`
 - `name`: `str`
 - `description`: `str`
 - `nexset_api_compatible`: `bool`
@@ -711,9 +1519,62 @@ Members:
 - `VECTOR_DB` = `vector_db`
 - `SPECIAL` = `special`
 
+### ConnectorDefinition
+
+Defined in `nexla_sdk/models/connectors/responses.py:13`
+
+Connector response model.
+
+Connectors define connection types for data sources and destinations.
+
+Fields:
+
+- `id`: `int`
+- `type`: `Optional`
+- `connection_type`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `nexset_api_compatible`: `Optional`
+- `sync_api_compatible`: `Optional`
+- `config`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ConnectorUpdate
+
+Defined in `nexla_sdk/models/connectors/requests.py:8`
+
+Request model for updating a connector (super user only).
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `nexset_api_compatible`: `Optional`
+- `sync_api_compatible`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### Credential
 
-Defined in `nexla_sdk/models/credentials/responses.py:10`
+Defined in `nexla_sdk/models/credentials/responses.py:11`
 
 Data credential response model.
 
@@ -721,7 +1582,7 @@ Fields:
 
 - `id`: `int`
 - `name`: `str`
-- `credentials_type`: `str`
+- `credentials_type`: `Union`
 - `owner`: `Optional`
 - `org`: `Optional`
 - `access_roles`: `Optional`
@@ -906,6 +1767,116 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### CustomDataFlow
+
+Defined in `nexla_sdk/models/custom_data_flows/responses.py:10`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `flow_type`: `Optional`
+- `status`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `code_containers`: `Optional`
+- `data_credentials`: `Optional`
+- `access_roles`: `Optional`
+- `tags`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CustomDataFlowCreate
+
+Defined in `nexla_sdk/models/custom_data_flows/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `flow_type`: `Optional`
+- `status`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `code_container_ids`: `Optional`
+- `data_credentials_ids`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### CustomDataFlowUpdate
+
+Defined in `nexla_sdk/models/custom_data_flows/requests.py:17`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `flow_type`: `Optional`
+- `status`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `code_container_ids`: `Optional`
+- `data_credentials_ids`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### DashboardMetrics
 
 Defined in `nexla_sdk/models/metrics/responses.py:23`
@@ -926,9 +1897,217 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### DashboardTransform
+
+Defined in `nexla_sdk/models/dashboard_transforms/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `error_transform`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DashboardTransformCreate
+
+Defined in `nexla_sdk/models/dashboard_transforms/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `code_container_id`: `int`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DashboardTransformUpdate
+
+Defined in `nexla_sdk/models/dashboard_transforms/requests.py:10`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `code_container_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DataCredentialsGroup
+
+Defined in `nexla_sdk/models/data_credentials_groups/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `description`: `Optional`
+- `credentials_type`: `Optional`
+- `data_credentials_count`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DataCredentialsGroupCreate
+
+Defined in `nexla_sdk/models/data_credentials_groups/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `credentials_type`: `Optional`
+- `data_credentials`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DataCredentialsGroupRemoveCredentials
+
+Defined in `nexla_sdk/models/data_credentials_groups/requests.py:20`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials`: `List`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DataCredentialsGroupUpdate
+
+Defined in `nexla_sdk/models/data_credentials_groups/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `credentials_type`: `Optional`
+- `data_credentials`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### DataMapInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:25`
+Defined in `nexla_sdk/models/destinations/responses.py:28`
 
 Basic data map information for destination.
 
@@ -982,7 +2161,7 @@ Methods:
 
 ### DataSetBrief
 
-Defined in `nexla_sdk/models/sources/responses.py:11`
+Defined in `nexla_sdk/models/sources/responses.py:12`
 
 Brief dataset information.
 
@@ -1008,7 +2187,7 @@ Methods:
 
 ### DataSetInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:12`
+Defined in `nexla_sdk/models/destinations/responses.py:15`
 
 Basic dataset information for destination.
 
@@ -1078,7 +2257,7 @@ Methods:
 
 ### Destination
 
-Defined in `nexla_sdk/models/destinations/responses.py:38`
+Defined in `nexla_sdk/models/destinations/responses.py:41`
 
 Destination (data sink) response model.
 
@@ -1087,7 +2266,7 @@ Fields:
 - `id`: `int`
 - `name`: `str`
 - `status`: `str`
-- `sink_type`: `str`
+- `sink_type`: `Union`
 - `connector_type`: `Optional`
 - `owner`: `Optional`
 - `org`: `Optional`
@@ -1291,22 +2470,54 @@ Methods:
 
 ### DocContainer
 
-Defined in `nexla_sdk/models/doc_containers/responses.py:6`
+Defined in `nexla_sdk/models/doc_containers/responses.py:10`
 
-Base model class with Pydantic functionality and Nexla API compatibility.
-
-Features:
-- Automatically ignores unknown fields from API responses
-- Supports both camelCase and snake_case field names
-- Handles datetime parsing automatically
-- Provides JSON serialization methods
-- Validates data types automatically
-- Easy logging and printing support
+Documentation container attached to a Nexla resource (e.g. a nexset).
 
 Fields:
 
 - `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
 - `name`: `Optional`
+- `description`: `Optional`
+- `doc_type`: `Optional`
+- `public`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+- `text`: `Optional`
+- `access_roles`: `List`
+- `tags`: `List`
+- `copied_from_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### DocContainerInput
+
+Defined in `nexla_sdk/models/doc_containers/requests.py:10`
+
+Writable fields for creating or replacing a documentation entry.
+
+Server-owned and read-only fields (``id``, ``owner``, ``org``,
+``public``, ``tags``, ``created_at`` etc.) are silently ignored on
+construction so a full ``DocContainer`` response can be round-tripped
+through this model to drop fields the API does not accept on input.
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `doc_type`: `str`
+- `text`: `str`
 
 Methods:
 
@@ -1614,7 +2825,7 @@ Methods:
 
 ### FlowNode
 
-Defined in `nexla_sdk/models/common.py:66`
+Defined in `nexla_sdk/models/common.py:70`
 
 Flow node in a data pipeline.
 
@@ -1672,9 +2883,85 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### FlowTrigger
+
+Defined in `nexla_sdk/models/flow_triggers/responses.py:10`
+
+Flow trigger response model.
+
+Flow triggers define orchestration events that trigger one flow
+based on events from another flow. For example, triggering a
+data source read when a data sink write completes.
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `status`: `str`
+- `triggering_event_type`: `str`
+- `triggering_origin_node_id`: `Optional`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggered_event_type`: `str`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### FlowTriggerCreate
+
+Defined in `nexla_sdk/models/flow_triggers/requests.py:8`
+
+Request model for creating a flow trigger.
+
+Flow triggers define when one flow should trigger based on events
+from another flow. The triggering and triggered resources must be
+specified, along with the event types.
+
+Event Types:
+    - DATA_SINK_WRITE_DONE: Triggered when a data sink finishes writing
+    - DATA_SOURCE_READ_START: Triggered when a data source starts reading
+    - DATA_SOURCE_READ_DONE: Triggered when a data source finishes reading
+
+Fields:
+
+- `triggering_event_type`: `str`
+- `triggered_event_type`: `str`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `data_sink_id`: `Optional`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `data_source_id`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### FlowType
 
-Defined in `nexla_sdk/models/sources/enums.py:72`
+Defined in `nexla_sdk/models/sources/enums.py:108`
 
 Flow processing types.
 
@@ -1843,7 +3130,7 @@ Methods:
 
 ### IngestMethod
 
-Defined in `nexla_sdk/models/sources/enums.py:62`
+Defined in `nexla_sdk/models/sources/enums.py:98`
 
 Data ingestion methods.
 
@@ -1857,7 +3144,7 @@ Members:
 
 ### LogEntry
 
-Defined in `nexla_sdk/models/common.py:45`
+Defined in `nexla_sdk/models/common.py:49`
 
 Audit log entry.
 
@@ -2401,6 +3688,96 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### NotificationChannelSettingResource
+
+Defined in `nexla_sdk/models/notification_channel_settings/responses.py:7`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `channel`: `Optional`
+- `config`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### NotificationChannelSettingResourceCreate
+
+Defined in `nexla_sdk/models/notification_channel_settings/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `channel`: `str`
+- `config`: `Optional`
+- `org_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### NotificationChannelSettingResourceUpdate
+
+Defined in `nexla_sdk/models/notification_channel_settings/requests.py:12`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `channel`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### NotificationChannelSettingUpdate
 
 Defined in `nexla_sdk/models/notifications/requests.py:15`
@@ -2489,6 +3866,31 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### NotificationSettingBrief
+
+Defined in `nexla_sdk/models/notifications/responses.py:79`
+
+Brief Notification Setting response model for list views.
+
+Fields:
+
+- `id`: `int`
+- `notification_type_id`: `int`
+- `channel`: `str`
+- `priority`: `int`
+- `status`: `str`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### NotificationSettingCreate
 
 Defined in `nexla_sdk/models/notifications/requests.py:22`
@@ -2556,6 +3958,40 @@ Fields:
 - `status`: `bool`
 - `event_type`: `str`
 - `resource_type`: `str`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### NotificationTypeResource
+
+Defined in `nexla_sdk/models/notification_types/responses.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `description`: `Optional`
+- `category`: `Optional`
+- `default`: `Optional`
+- `status`: `Optional`
+- `event_type`: `Optional`
+- `resource_type`: `Optional`
 
 Methods:
 
@@ -2798,9 +4234,42 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### OrgTierInfo
+
+Defined in `nexla_sdk/models/org_tiers/responses.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `record_count_limit`: `Optional`
+- `record_count_limit_time`: `Optional`
+- `data_source_count_limit`: `Optional`
+- `trial_period_days`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### Organization
 
-Defined in `nexla_sdk/models/common.py:16`
+Defined in `nexla_sdk/models/common.py:20`
 
 Organization details.
 
@@ -2869,7 +4338,7 @@ Members:
 
 ### Owner
 
-Defined in `nexla_sdk/models/common.py:7`
+Defined in `nexla_sdk/models/common.py:11`
 
 User who owns a resource.
 
@@ -2910,7 +4379,7 @@ Methods:
 
 ### ProbeSampleResponse
 
-Defined in `nexla_sdk/models/credentials/responses.py:65`
+Defined in `nexla_sdk/models/credentials/responses.py:66`
 
 Response from credential probe sample operation.
 
@@ -2954,7 +4423,7 @@ Methods:
 
 ### ProbeTreeResponse
 
-Defined in `nexla_sdk/models/credentials/responses.py:56`
+Defined in `nexla_sdk/models/credentials/responses.py:57`
 
 Response from credential probe tree operation.
 
@@ -3116,6 +4585,103 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### QuarantineSetting
+
+Defined in `nexla_sdk/models/quarantine_settings/responses.py:9`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `config`: `Optional`
+- `data_credentials_id`: `Optional`
+- `credentials_type`: `Optional`
+- `data_credentials`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### QuarantineSettingCreate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `int`
+- `config`: `Dict`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### QuarantineSettingUpdate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `Optional`
+- `config`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### ResourceFlowLogsResponse
 
 Defined in `nexla_sdk/models/metrics/responses.py:68`
@@ -3205,6 +4771,117 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### ResourceParameter
+
+Defined in `nexla_sdk/models/resource_parameters/responses.py:10`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `resource_type`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `global_param`: `Optional`
+- `vendor_endpoint`: `Optional`
+- `allowed_values`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ResourceParameterCreate
+
+Defined in `nexla_sdk/models/resource_parameters/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `resource_type`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `global_param`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `allowed_values`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ResourceParameterUpdate
+
+Defined in `nexla_sdk/models/resource_parameters/requests.py:19`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `resource_type`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `global_param`: `Optional`
+- `vendor_endpoint_id`: `Optional`
+- `allowed_values`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### ResourceStatus
 
 Defined in `nexla_sdk/models/enums.py:13`
@@ -3248,7 +4925,7 @@ Members:
 
 ### RunInfo
 
-Defined in `nexla_sdk/models/sources/responses.py:24`
+Defined in `nexla_sdk/models/sources/responses.py:25`
 
 Run information.
 
@@ -3376,9 +5053,85 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### ServiceKey
+
+Defined in `nexla_sdk/models/service_keys/responses.py:9`
+
+Service key response model.
+
+Service keys are long-lived credentials used for programmatic API access.
+They can be rotated and have lifecycle management (activate/pause).
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `str`
+- `api_key`: `str`
+- `last_rotated_key`: `Optional`
+- `last_rotated_at`: `Optional`
+- `data_source_id`: `Optional`
+- `cluster_id`: `Optional`
+- `cluster_uid`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ServiceKeyCreate
+
+Defined in `nexla_sdk/models/service_keys/requests.py:8`
+
+Request model for creating a service key.
+
+Fields:
+
+- `name`: `str`
+- `description`: `str`
+- `data_source_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ServiceKeyUpdate
+
+Defined in `nexla_sdk/models/service_keys/requests.py:16`
+
+Request model for updating a service key.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### Source
 
-Defined in `nexla_sdk/models/sources/responses.py:31`
+Defined in `nexla_sdk/models/sources/responses.py:32`
 
 Data source response model.
 
@@ -3387,7 +5140,7 @@ Fields:
 - `id`: `int`
 - `name`: `str`
 - `status`: `str`
-- `source_type`: `str`
+- `source_type`: `Union`
 - `connector_type`: `Optional`
 - `owner`: `Optional`
 - `org`: `Optional`
@@ -3497,31 +5250,59 @@ Members:
 - `S3` = `s3`
 - `GCS` = `gcs`
 - `AZURE_BLB` = `azure_blb`
+- `AZURE_DATA_LAKE` = `azure_data_lake`
 - `FTP` = `ftp`
 - `DROPBOX` = `dropbox`
 - `BOX` = `box`
 - `GDRIVE` = `gdrive`
 - `SHAREPOINT` = `sharepoint`
+- `MIN_IO_S3` = `min_io_s3`
+- `WEBDAV` = `webdav`
 - `MYSQL` = `mysql`
 - `POSTGRES` = `postgres`
+- `SUPABASE` = `supabase`
 - `SQLSERVER` = `sqlserver`
 - `ORACLE` = `oracle`
+- `ORACLE_AUTONOMOUS` = `oracle_autonomous`
+- `AS400` = `as400`
+- `DB2` = `db2`
+- `SYBASE` = `sybase`
+- `HANA_JDBC` = `hana_jdbc`
+- `NETSUITE_JDBC` = `netsuite_jdbc`
 - `REDSHIFT` = `redshift`
 - `SNOWFLAKE` = `snowflake`
+- `SNOWFLAKE_DCR` = `snowflake_dcr`
 - `BIGQUERY` = `bigquery`
 - `DATABRICKS` = `databricks`
+- `AWS_ATHENA` = `aws_athena`
+- `AZURE_SYNAPSE` = `azure_synapse`
+- `FIREBOLT` = `firebolt`
+- `TERADATA` = `teradata`
+- `HIVE` = `hive`
+- `CLOUDSQL_MYSQL` = `cloudsql_mysql`
+- `CLOUDSQL_POSTGRES` = `cloudsql_postgres`
+- `CLOUDSQL_SQLSERVER` = `cloudsql_sqlserver`
+- `GCP_ALLOYDB` = `gcp_alloydb`
+- `GCP_SPANNER` = `gcp_spanner`
+- `DELTA_LAKE_AZURE_BLB` = `delta_lake_azure_blb`
+- `DELTA_LAKE_AZURE_DATA_LAKE` = `delta_lake_azure_data_lake`
+- `DELTA_LAKE_S3` = `delta_lake_s3`
+- `S3_ICEBERG` = `s3_iceberg`
 - `MONGO` = `mongo`
 - `DYNAMODB` = `dynamodb`
 - `FIREBASE` = `firebase`
 - `KAFKA` = `kafka`
 - `CONFLUENT_KAFKA` = `confluent_kafka`
 - `GOOGLE_PUBSUB` = `google_pubsub`
+- `JMS` = `jms`
+- `TIBCO` = `tibco`
 - `REST` = `rest`
 - `SOAP` = `soap`
 - `NEXLA_REST` = `nexla_rest`
 - `FILE_UPLOAD` = `file_upload`
 - `EMAIL` = `email`
 - `NEXLA_MONITOR` = `nexla_monitor`
+- `PINECONE` = `pinecone`
 
 ### SourceUpdate
 
@@ -3967,6 +5748,76 @@ Methods:
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
 
+### UserCredit
+
+Defined in `nexla_sdk/models/users/credits.py:7`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `grant_type`: `Optional`
+- `credits_available`: `Optional`
+- `credits`: `Optional`
+- `credits_used`: `Optional`
+- `credits_monthly`: `Optional`
+- `credits_used_in_month`: `Optional`
+- `granted_at`: `Optional`
+- `refreshed_at`: `Optional`
+- `expires_at`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### UserCreditCreate
+
+Defined in `nexla_sdk/models/users/credits.py:24`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `grant_type`: `Optional`
+- `credits`: `Optional`
+- `credits_monthly`: `Optional`
+- `expires_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### UserExpanded
 
 Defined in `nexla_sdk/models/users/responses.py:56`
@@ -3991,6 +5842,101 @@ Fields:
 - `created_at`: `Optional`
 - `updated_at`: `Optional`
 - `account_summary`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### UserSetting
+
+Defined in `nexla_sdk/models/user_settings/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `user_settings_type`: `Optional`
+- `primary_key_value`: `Optional`
+- `description`: `Optional`
+- `settings`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### UserSettingCreate
+
+Defined in `nexla_sdk/models/user_settings/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `user_settings_type`: `str`
+- `primary_key_value`: `str`
+- `description`: `Optional`
+- `settings`: `Optional`
+- `copied_from_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### UserSettingUpdate
+
+Defined in `nexla_sdk/models/user_settings/requests.py:14`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `description`: `Optional`
+- `settings`: `Optional`
 
 Methods:
 
@@ -4051,6 +5997,39 @@ Members:
 - `PAID` = `PAID`
 - `FREE_FOREVER` = `FREE_FOREVER`
 
+### UserTierInfo
+
+Defined in `nexla_sdk/models/user_tiers/responses.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `record_count_limit`: `Optional`
+- `record_count_limit_time`: `Optional`
+- `data_source_count_limit`: `Optional`
+- `trial_period_days`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
 ### UserUpdate
 
 Defined in `nexla_sdk/models/users/requests.py:21`
@@ -4069,6 +6048,339 @@ Fields:
 - `password_current`: `Optional`
 - `tos_signed_at`: `Optional`
 - `admin`: `Union`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### Validator
+
+Defined in `nexla_sdk/models/validators/responses.py:22`
+
+Validator response model.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `description`: `Optional`
+- `resource_type`: `str`
+- `code_type`: `Optional`
+- `output_type`: `Optional`
+- `code`: `Optional`
+- `code_config`: `Optional`
+- `code_encoding`: `Optional`
+- `code_error`: `Optional`
+- `custom_config`: `Optional`
+- `repo_config`: `Optional`
+- `reusable`: `bool`
+- `public`: `bool`
+- `managed`: `bool`
+- `ai_function_type`: `Optional`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `access_roles`: `Optional`
+- `data_credentials`: `Optional`
+- `runtime_data_credentials`: `Optional`
+- `data_sets`: `Optional`
+- `tags`: `Optional`
+- `referenced_resource_ids`: `Optional`
+- `copied_from_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ValidatorCopyOptions
+
+Defined in `nexla_sdk/models/validators/requests.py:52`
+
+Options for copying a validator.
+
+Fields:
+
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `copy_access_controls`: `Optional`
+- `reuse_data_credentials`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ValidatorCreate
+
+Defined in `nexla_sdk/models/validators/requests.py:8`
+
+Request model for creating a validator.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `code_type`: `str`
+- `code`: `Optional`
+- `code_config`: `Optional`
+- `code_encoding`: `Optional`
+- `custom_config`: `Optional`
+- `resource_type`: `str`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `tags`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+- `ai_function_type`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### ValidatorUpdate
+
+Defined in `nexla_sdk/models/validators/requests.py:32`
+
+Request model for updating a validator.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `code`: `Optional`
+- `code_config`: `Optional`
+- `code_encoding`: `Optional`
+- `custom_config`: `Optional`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `tags`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### Vendor
+
+Defined in `nexla_sdk/models/vendors/responses.py:19`
+
+Vendor response model.
+
+Vendors represent third-party service providers that can be
+connected via auth templates and endpoints.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
+- `connection_type`: `Optional`
+- `auth_templates`: `Optional`
+- `vendor_endpoints`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorCreate
+
+Defined in `nexla_sdk/models/vendors/requests.py:8`
+
+Request model for creating a vendor (super user only).
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
+- `connector_id`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorEndpoint
+
+Defined in `nexla_sdk/models/vendor_endpoints/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `resource_type`: `Optional`
+- `config`: `Optional`
+- `vendor`: `Optional`
+- `vendor_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorEndpointCreate
+
+Defined in `nexla_sdk/models/vendor_endpoints/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `vendor_id`: `int`
+- `resource_type`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorEndpointUpdate
+
+Defined in `nexla_sdk/models/vendor_endpoints/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `resource_type`: `Optional`
+- `config`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorRef
+
+Defined in `nexla_sdk/models/vendors/responses.py:11`
+
+Minimal vendor reference.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+
+Methods:
+
+- `to_dict(self, exclude_none: bool = True) -> Dict[str, Any]`
+  - Source: `nexla_sdk/models/base.py:42`
+  - Convert model to dictionary.
+- `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
+  - Source: `nexla_sdk/models/base.py:54`
+  - Convert model to JSON string.
+
+### VendorUpdate
+
+Defined in `nexla_sdk/models/vendors/requests.py:20`
+
+Request model for updating a vendor (super user only).
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
 
 Methods:
 
@@ -4146,4 +6458,25 @@ Methods:
 - `to_json(self, exclude_none: bool = True, indent: int = 2) -> str`
   - Source: `nexla_sdk/models/base.py:54`
   - Convert model to JSON string.
+
+## Functions
+
+### `FlexibleEnum(enum_cls: Type[~E]) -> Type[Union[~E, str]]`
+
+Source: `nexla_sdk/models/flexible_enums.py:49`
+
+Create a flexible enum type annotation for Pydantic models.
+
+This creates an Annotated type that accepts either a valid enum value
+or any string. Known values are returned as enum members; unknown values
+are returned as raw strings.
+
+Usage:
+    sink_type: Optional[FlexibleEnum(DestinationType)] = None
+
+Args:
+    enum_cls: The enum class to create a flexible version of
+
+Returns:
+    An Annotated type suitable for Pydantic model fields
 

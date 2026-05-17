@@ -1,0 +1,77 @@
+---
+id: nexla_sdk.models.validators.requests
+title: nexla_sdk.models.validators.requests
+slug: /api/python/modules/nexla_sdk/models/validators/requests
+description: API for nexla_sdk.models.validators.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Validator request models.
+
+## Classes
+
+### ValidatorCopyOptions
+
+Defined in `nexla_sdk/models/validators/requests.py:52`
+
+Options for copying a validator.
+
+Fields:
+
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `copy_access_controls`: `Optional`
+- `reuse_data_credentials`: `Optional`
+
+### ValidatorCreate
+
+Defined in `nexla_sdk/models/validators/requests.py:8`
+
+Request model for creating a validator.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `code_type`: `str`
+- `code`: `Optional`
+- `code_config`: `Optional`
+- `code_encoding`: `Optional`
+- `custom_config`: `Optional`
+- `resource_type`: `str`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `tags`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+- `ai_function_type`: `Optional`
+
+### ValidatorUpdate
+
+Defined in `nexla_sdk/models/validators/requests.py:32`
+
+Request model for updating a validator.
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `code_type`: `Optional`
+- `code`: `Optional`
+- `code_config`: `Optional`
+- `code_encoding`: `Optional`
+- `custom_config`: `Optional`
+- `output_type`: `Optional`
+- `reusable`: `Optional`
+- `public`: `Optional`
+- `data_credentials_id`: `Optional`
+- `runtime_data_credentials_id`: `Optional`
+- `tags`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+

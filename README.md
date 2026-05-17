@@ -576,6 +576,25 @@ doc_audit = client.doc_containers.get_audit_log(doc_container_id=1001)
 schema_audit = client.data_schemas.get_audit_log(schema_id=5001)
 ```
 
+### Raw Operation-Level Access
+
+```python
+# List available OpenAPI operation ids
+ops = client.raw.list_operations()
+
+# Call by operation id with typed path/query/body slots
+project_flows = client.raw.call(
+    "get_project_flows",
+    path_params={"project_id": 123},
+)
+
+# Direct raw HTTP helpers are also available
+limits = client.raw.get("/limits")
+
+# Backend-only or non-spec route access
+approved = client.raw.request("POST", "/self_signup_requests/42/approve")
+```
+
 ## Coverage Matrix
 
 Mapping of major OpenAPI areas to SDK resources. All requests set `Accept: application/vnd.nexla.api.v1+json` and default base URL `https://dataops.nexla.io/nexla-api`.
@@ -605,7 +624,8 @@ Mapping of major OpenAPI areas to SDK resources. All requests set `Accept: appli
 - GenAI Configurations/Org Settings: `client.genai` — configs CRUD; org settings CRUD; active_config
 - Doc Containers: `client.doc_containers` — audit_log; (access control via BaseResource helpers)
 - Data Schemas: `client.data_schemas` — audit_log; (access control via BaseResource helpers)
-- Webhooks: not included as a dedicated helper yet (use direct HTTP with API key per spec)
+- Webhooks: `client.create_webhook_client(api_key=...)` for API-key authenticated webhook sends
+- Full OpenAPI operation-level access: `client.raw.call(operation_id, ...)`
 
 ## Error Handling
 
@@ -680,6 +700,24 @@ pytest tests/
 export NEXLA_SERVICE_KEY="your_service_key"
 export NEXLA_API_URL="https://your-nexla-instance.com/nexla-api"
 pytest tests/integration/
+```
+
+### Parity Tooling
+
+The parity scripts compare the SDK surface against the OpenAPI spec
+(`plugin-redoc-0.yaml`, sourced from upstream and not committed) and the admin
+API's `routes.rb`. Set `NEXLA_ADMIN_API_PATH` to the local checkout of the
+admin-api repo before running `build_matrices.py`, or pass `--admin-routes`
+explicitly.
+
+```bash
+# Generate operation map for client.raw
+python scripts/parity/generate_operation_map.py
+
+# Build OpenAPI/admin-routes/SDK parity matrices
+export NEXLA_ADMIN_API_PATH="/path/to/admin-api"
+python scripts/parity/build_matrices.py \
+  --admin-routes "$NEXLA_ADMIN_API_PATH/config/routes.rb"
 ```
 
 ### Setting Up Environment

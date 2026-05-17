@@ -52,6 +52,7 @@ from nexla_sdk.models.enums import (
     UserStatus,
     UserTier,
 )
+from nexla_sdk.raw_operations import RawOperationsClient
 
 # Import resources
 from nexla_sdk.resources import (
@@ -84,6 +85,7 @@ from nexla_sdk.resources import (
 __all__ = [
     # Client
     "NexlaClient",
+    "RawOperationsClient",
     # Resources
     "CredentialsResource",
     "FlowsResource",

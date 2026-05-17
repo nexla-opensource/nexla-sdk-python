@@ -1,0 +1,60 @@
+---
+id: nexla_sdk.models.custom_data_flows.requests
+title: nexla_sdk.models.custom_data_flows.requests
+slug: /api/python/modules/nexla_sdk/models/custom_data_flows/requests
+description: API for nexla_sdk.models.custom_data_flows.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### CustomDataFlowCreate
+
+Defined in `nexla_sdk/models/custom_data_flows/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `flow_type`: `Optional`
+- `status`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `code_container_ids`: `Optional`
+- `data_credentials_ids`: `Optional`
+
+### CustomDataFlowUpdate
+
+Defined in `nexla_sdk/models/custom_data_flows/requests.py:17`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `flow_type`: `Optional`
+- `status`: `Optional`
+- `managed`: `Optional`
+- `config`: `Optional`
+- `code_container_ids`: `Optional`
+- `data_credentials_ids`: `Optional`
+

@@ -185,3 +185,31 @@ class TestMetricsResource:
             "/users/7/metrics",
             params={"resource_type": "SOURCE", "from": "2024-01-01", "aggregate": 1},
         )
+
+
+class TestNewMetricsMethods:
+    """Tests for newly added metrics methods."""
+
+    @pytest.fixture
+    def client(self, mock_client: NexlaClient) -> NexlaClient:
+        return mock_client
+
+    def test_publish_raw(self, client, mock_http_client):
+        """Test publish_raw sends POST to /metrics/raw."""
+        mock_http_client.clear_responses()
+        mock_http_client.add_response("/metrics/raw", {"status": "ok"})
+
+        result = client.metrics.publish_raw({"event": "test"})
+
+        assert result == {"status": "ok"}
+        mock_http_client.assert_request_made("POST", "/metrics/raw")
+
+    def test_get_flow_metrics_summary(self, client, mock_http_client):
+        """Test get_flow_metrics_summary with a period."""
+        mock_http_client.clear_responses()
+        mock_http_client.add_response("/data_flows/metrics/daily", {"status": "ok"})
+
+        result = client.metrics.get_flow_metrics_summary(period="daily")
+
+        assert result == {"status": "ok"}
+        mock_http_client.assert_request_made("GET", "/data_flows/metrics/daily")

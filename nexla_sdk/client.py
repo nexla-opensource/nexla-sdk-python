@@ -18,30 +18,60 @@ from .exceptions import (
     ValidationError,
 )
 from .http_client import HttpClientError, HttpClientInterface, RequestsHttpClient
+from .raw_operations import RawOperationsClient
+from .resources.api_keys import ApiKeysResource
 from .resources.approval_requests import ApprovalRequestsResource
 from .resources.async_tasks import AsyncTasksResource
 from .resources.attribute_transforms import AttributeTransformsResource
+from .resources.auth_parameters import AuthParametersResource
+from .resources.auth_templates import AuthTemplatesResource
+from .resources.catalog_configs import CatalogConfigsResource
+from .resources.cluster_endpoints import ClusterEndpointsResource
+from .resources.clusters import ClustersResource
 from .resources.code_containers import CodeContainersResource
+from .resources.connectors import ConnectorsResource
 from .resources.credentials import CredentialsResource
+from .resources.cubejs import CubeJsResource
+from .resources.custom_data_flows import CustomDataFlowsResource
+from .resources.dashboard_transforms import DashboardTransformsResource
+from .resources.data_credentials_groups import DataCredentialsGroupsResource
+from .resources.data_flows import DataFlowsResource
 from .resources.data_schemas import DataSchemasResource
 from .resources.destinations import DestinationsResource
 from .resources.doc_containers import DocContainersResource
+from .resources.flow_nodes import FlowNodesResource
+from .resources.flow_triggers import FlowTriggersResource
 from .resources.flows import FlowsResource
 from .resources.genai import GenAIResource
 from .resources.lookups import LookupsResource
 from .resources.marketplace import MarketplaceResource
 from .resources.metrics import MetricsResource
 from .resources.nexsets import NexsetsResource
+from .resources.notification_channel_settings import NotificationChannelSettingsResource
+from .resources.notification_settings import NotificationSettingsResource
+from .resources.notification_types import NotificationTypesResource
 from .resources.notifications import NotificationsResource
 from .resources.org_auth_configs import OrgAuthConfigsResource
+from .resources.org_tiers import OrgTiersResource
 from .resources.organizations import OrganizationsResource
 from .resources.projects import ProjectsResource
+from .resources.quarantine_settings import QuarantineSettingsResource
+from .resources.resource_parameters import ResourceParametersResource
 from .resources.runtimes import RuntimesResource
+from .resources.search_health import SearchHealthResource
 from .resources.self_signup import SelfSignupResource
+from .resources.self_signup_blocked_domains import SelfSignupBlockedDomainsResource
+from .resources.service_keys import ServiceKeysResource
 from .resources.sources import SourcesResource
 from .resources.teams import TeamsResource
+from .resources.tokens import TokensResource
 from .resources.transforms import TransformsResource
+from .resources.user_settings import UserSettingsResource
+from .resources.user_tiers import UserTiersResource
 from .resources.users import UsersResource
+from .resources.validators import ValidatorsResource
+from .resources.vendor_endpoints import VendorEndpointsResource
+from .resources.vendors import VendorsResource
 from .resources.webhooks import WebhooksResource
 
 logger = logging.getLogger(__name__)
@@ -98,7 +128,7 @@ class NexlaClient:
             access_token: Nexla access token for direct authentication (mutually exclusive with service_key)
             base_url: Nexla API base URL (defaults to environment variable or standard URL)
             api_version: API version to use
-            token_refresh_margin: Seconds before token expiry to trigger refresh (default: 5 minutes)
+            token_refresh_margin: Seconds before token expiry to trigger refresh (default: 1 hour)
             http_client: HTTP client implementation (defaults to RequestsHttpClient)
             trace_enabled: Explicitly enable/disable OpenTelemetry tracing. If None,
                            tracing auto-enables when a global OTEL config is detected.
@@ -164,18 +194,32 @@ class NexlaClient:
             http_client=self.http_client,
         )
 
+        # Full operation-level API access (OpenAPI operation_id based)
+        self.raw: RawOperationsClient = RawOperationsClient(self)
+
         # Initialize API endpoints
         self.flows = FlowsResource(self)
+        self.flow_nodes = FlowNodesResource(self)
+        self.data_flows = DataFlowsResource(self)
         self.sources = SourcesResource(self)
         self.destinations = DestinationsResource(self)
         self.credentials = CredentialsResource(self)
+        self.custom_data_flows = CustomDataFlowsResource(self)
+        self.data_credentials_groups = DataCredentialsGroupsResource(self)
         self.lookups = LookupsResource(self)
         self.nexsets = NexsetsResource(self)
         self.users = UsersResource(self)
+        self.user_settings = UserSettingsResource(self)
+        self.user_tiers = UserTiersResource(self)
         self.organizations = OrganizationsResource(self)
         self.teams = TeamsResource(self)
         self.projects = ProjectsResource(self)
         self.notifications = NotificationsResource(self)
+        self.notification_settings = NotificationSettingsResource(self)
+        self.notification_channel_settings = NotificationChannelSettingsResource(self)
+        self.notification_types = NotificationTypesResource(self)
+        self.quarantine_settings = QuarantineSettingsResource(self)
+        self.dashboard_transforms = DashboardTransformsResource(self)
         self.metrics = MetricsResource(self)
         self.code_containers = CodeContainersResource(self)
         self.transforms = TransformsResource(self)
@@ -185,10 +229,34 @@ class NexlaClient:
         self.runtimes = RuntimesResource(self)
         self.marketplace = MarketplaceResource(self)
         self.org_auth_configs = OrgAuthConfigsResource(self)
+        self.org_tiers = OrgTiersResource(self)
+        self.auth_parameters = AuthParametersResource(self)
+        self.resource_parameters = ResourceParametersResource(self)
+        self.catalog_configs = CatalogConfigsResource(self)
+        self.vendor_endpoints = VendorEndpointsResource(self)
         self.genai = GenAIResource(self)
         self.self_signup = SelfSignupResource(self)
+        self.self_signup_blocked_domains = SelfSignupBlockedDomainsResource(self)
         self.doc_containers = DocContainersResource(self)
         self.data_schemas = DataSchemasResource(self)
+        self.tokens = TokensResource(self)
+        self.search_health = SearchHealthResource(self)
+        self.cubejs = CubeJsResource(self)
+
+        # Phase 1 resources
+        self.validators = ValidatorsResource(self)
+        self.service_keys = ServiceKeysResource(self)
+        self.flow_triggers = FlowTriggersResource(self)
+
+        # Phase 3 resources
+        self.clusters = ClustersResource(self)
+        self.cluster_endpoints = ClusterEndpointsResource(self)
+
+        # Phase 4 resources
+        self.api_keys = ApiKeysResource(self)
+        self.connectors = ConnectorsResource(self)
+        self.vendors = VendorsResource(self)
+        self.auth_templates = AuthTemplatesResource(self)
 
     def get_access_token(self) -> str:
         """
@@ -425,7 +493,7 @@ class NexlaClient:
         }
 
         # Map status codes to specific exceptions
-        if status_code == 400:
+        if status_code in (400, 422):
             raise ValidationError(
                 error_msg,
                 status_code=status_code,

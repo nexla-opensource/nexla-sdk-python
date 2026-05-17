@@ -1324,3 +1324,120 @@ class TestFlowsUnit:
         assert isinstance(result, FlowResponse)
         project_requests = mock_http_client.get_requests_by_url_pattern("/projects/")
         assert len(project_requests) == 0
+
+    def test_get_flow_logs_basic(self, mock_client, mock_http_client):
+        """Test get_flow_logs with only flow_id."""
+        mock_http_client.add_response(
+            "/flows/100/flow/logs", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.get_flow_logs(flow_id=100)
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert "/flows/100/flow/logs" in last_request["url"]
+        assert last_request["params"] == {}
+
+    def test_get_flow_logs_with_all_params(self, mock_client, mock_http_client):
+        """Test get_flow_logs with all parameters."""
+        mock_http_client.add_response(
+            "/flows/100/flow/logs", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.get_flow_logs(
+            flow_id=100,
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            severity="ERROR",
+            run_id=123,
+            page=1,
+            per_page=50,
+        )
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+            "severity": "ERROR",
+            "run_id": 123,
+            "page": 1,
+            "per_page": 50,
+        }
+
+    def test_search_flow_logs_basic(self, mock_client, mock_http_client):
+        """Test search_flow_logs with only flow_id."""
+        mock_http_client.add_response(
+            "/flows/100/logs_v2", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.search_flow_logs(flow_id=100)
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert "/flows/100/logs_v2" in last_request["url"]
+
+    def test_search_flow_logs_with_all_params(self, mock_client, mock_http_client):
+        """Test search_flow_logs with all parameters."""
+        mock_http_client.add_response(
+            "/flows/100/logs_v2", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.search_flow_logs(
+            flow_id=100,
+            run_ids="1,2,3",
+            severity="ERROR",
+            search_string="timeout",
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+        )
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["params"] == {
+            "run_ids": "1,2,3",
+            "severity": "ERROR",
+            "search_string": "timeout",
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+        }
+
+    def test_get_active_flows_metrics_basic(self, mock_client, mock_http_client):
+        """Test get_active_flows_metrics with no params."""
+        mock_http_client.add_response(
+            "/flows/active_flows_metrics", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.get_active_flows_metrics()
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert "/flows/active_flows_metrics" in last_request["url"]
+
+    def test_get_active_flows_metrics_with_params(self, mock_client, mock_http_client):
+        """Test get_active_flows_metrics with all parameters."""
+        mock_http_client.add_response(
+            "/flows/active_flows_metrics", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.get_active_flows_metrics(
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            org_id=5,
+        )
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+            "org_id": 5,
+        }
+
+    def test_get_flow_logs_no_optional_params(self, mock_client, mock_http_client):
+        """Test get_flow_logs with just flow_id has empty params."""
+        mock_http_client.add_response(
+            "/flows/200/flow/logs", {"status": "ok", "data": []}
+        )
+
+        mock_client.flows.get_flow_logs(flow_id=200)
+
+        last_request = mock_http_client.get_last_request()
+        assert last_request["params"] == {}

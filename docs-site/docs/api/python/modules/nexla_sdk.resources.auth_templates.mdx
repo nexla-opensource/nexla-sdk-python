@@ -1,0 +1,79 @@
+---
+id: nexla_sdk.resources.auth_templates
+title: nexla_sdk.resources.auth_templates
+slug: /api/python/modules/nexla_sdk/resources/auth_templates
+description: API for nexla_sdk.resources.auth_templates
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing auth templates.
+
+## Classes
+
+### AuthTemplatesResource
+
+Defined in `nexla_sdk/resources/auth_templates.py:13`
+
+Resource for managing auth templates.
+
+Auth templates define authentication configurations for vendors.
+Write operations (create, update, delete) require super user access.
+
+Examples:
+    # List all auth templates
+    templates = client.auth_templates.list()
+
+    # Get an auth template by ID
+    template = client.auth_templates.get(123)
+
+    # Get an auth template by name
+    template = client.auth_templates.get_by_name("oauth2_standard")
+
+    # Create an auth template (super user only)
+    template = client.auth_templates.create(AuthTemplateCreate(
+        name="new_template",
+        vendor_id=456,
+        display_name="New Auth Template"
+    ))
+
+    # Update an auth template (super user only)
+    template = client.auth_templates.update(123, AuthTemplateUpdate(
+        description="Updated description"
+    ))
+
+    # Delete an auth template (super user only)
+    client.auth_templates.delete(123)
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.auth_templates.requests.AuthTemplateCreate, Dict[str, Any]]) -> nexla_sdk.models.auth_templates.responses.AuthTemplate`
+  - Source: `nexla_sdk/resources/auth_templates.py:101`
+  - Create a new auth template (super user only).
+- `delete(self, auth_template_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/auth_templates.py:145`
+  - Delete an auth template (super user only).
+- `delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/auth_templates.py:172`
+  - Delete auth templates via collection endpoint.
+- `delete_by_name(self, auth_template_name: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/auth_templates.py:156`
+  - Delete an auth template by name (super user only).
+- `get(self, auth_template_id: int, expand: bool = False) -> nexla_sdk.models.auth_templates.responses.AuthTemplate`
+  - Source: `nexla_sdk/resources/auth_templates.py:76`
+  - Get auth template by ID.
+- `get_by_name(self, auth_template_name: str) -> nexla_sdk.models.auth_templates.responses.AuthTemplate`
+  - Source: `nexla_sdk/resources/auth_templates.py:88`
+  - Get auth template by name.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **kwargs) -> List[nexla_sdk.models.auth_templates.responses.AuthTemplate]`
+  - Source: `nexla_sdk/resources/auth_templates.py:55`
+  - List auth templates.
+- `update(self, auth_template_id: int, data: Union[nexla_sdk.models.auth_templates.requests.AuthTemplateUpdate, Dict[str, Any]]) -> nexla_sdk.models.auth_templates.responses.AuthTemplate`
+  - Source: `nexla_sdk/resources/auth_templates.py:112`
+  - Update an auth template (super user only).
+- `update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/auth_templates.py:168`
+  - Update auth templates via collection endpoint.
+- `update_by_name(self, auth_template_name: str, data: Union[nexla_sdk.models.auth_templates.requests.AuthTemplateUpdate, Dict[str, Any]]) -> nexla_sdk.models.auth_templates.responses.AuthTemplate`
+  - Source: `nexla_sdk/resources/auth_templates.py:126`
+  - Update an auth template by name (super user only).
+

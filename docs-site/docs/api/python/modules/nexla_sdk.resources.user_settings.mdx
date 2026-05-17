@@ -1,0 +1,37 @@
+---
+id: nexla_sdk.resources.user_settings
+title: nexla_sdk.resources.user_settings
+slug: /api/python/modules/nexla_sdk/resources/user_settings
+description: API for nexla_sdk.resources.user_settings
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### UserSettingsResource
+
+Defined in `nexla_sdk/resources/user_settings.py:8`
+
+Resource for managing user settings.
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.user_settings.requests.UserSettingCreate, Dict[str, Any]]) -> nexla_sdk.models.user_settings.responses.UserSetting`
+  - Source: `nexla_sdk/resources/user_settings.py:27`
+  - Create new resource.
+- `delete(self, user_setting_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/user_settings.py:37`
+  - Delete resource.
+- `get(self, user_setting_id: int) -> nexla_sdk.models.user_settings.responses.UserSetting`
+  - Source: `nexla_sdk/resources/user_settings.py:24`
+  - Get single resource by ID.
+- `list(self, **kwargs) -> List[nexla_sdk.models.user_settings.responses.UserSetting]`
+  - Source: `nexla_sdk/resources/user_settings.py:16`
+  - List resources with optional filters.
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.user_settings.responses.UserSetting]`
+  - Source: `nexla_sdk/resources/user_settings.py:19`
+  - Search resources using filter criteria.
+- `update(self, user_setting_id: int, data: Union[nexla_sdk.models.user_settings.requests.UserSettingUpdate, Dict[str, Any]]) -> nexla_sdk.models.user_settings.responses.UserSetting`
+  - Source: `nexla_sdk/resources/user_settings.py:30`
+  - Update resource.
+

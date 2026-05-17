@@ -35,6 +35,12 @@ class TestSelfSignupResource:
         )
         approved = client.self_signup.approve_request("1")
         assert isinstance(approved, SelfSignupRequest) and approved.id == 1
+        # The backend routes self-signup approve via POST. The OpenAPI spec
+        # advertises PUT in some versions; the SDK locks the POST contract
+        # here so future drift is caught.
+        last_request = mock_http_client.get_last_request()
+        assert last_request["method"] == "POST"
+        assert "/self_signup_requests/1/approve" in last_request["url"]
 
         mock_http_client.clear_responses()
         mock_http_client.add_response(

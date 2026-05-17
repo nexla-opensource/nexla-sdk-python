@@ -23,6 +23,18 @@ class OrgAuthConfigsResource(BaseResource):
         response = self._make_request("GET", f"{self._path}/all")
         return self._parse_response(response)
 
+    def list_sign_on_options(self) -> Dict[str, Any]:
+        """List sign-on options (public)."""
+        return self._make_request("GET", "/sign_on_options")
+
+    def client_config(self) -> Dict[str, Any]:
+        """Get client config for API auth."""
+        return self._make_request("GET", f"{self._path}/client_config")
+
+    def info(self) -> Dict[str, Any]:
+        """Get API auth info."""
+        return self._make_request("GET", f"{self._path}/info")
+
     def get(self, auth_config_id: int) -> AuthConfig:
         """Get a specific authentication configuration by ID."""
         response = self._make_request("GET", f"{self._path}/{auth_config_id}")

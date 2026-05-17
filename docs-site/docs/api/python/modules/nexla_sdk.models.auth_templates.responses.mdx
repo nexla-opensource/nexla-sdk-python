@@ -1,0 +1,74 @@
+---
+id: nexla_sdk.models.auth_templates.responses
+title: nexla_sdk.models.auth_templates.responses
+slug: /api/python/modules/nexla_sdk/models/auth_templates/responses
+description: API for nexla_sdk.models.auth_templates.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+Auth template response models.
+
+## Classes
+
+### AuthParameter
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:12`
+
+Auth parameter configuration for auth templates.
+
+This is a lightweight nested model used within AuthTemplate responses.
+For the full auth parameter resource model, see nexla_sdk.models.auth_parameters.
+
+Fields:
+
+- `id`: `Optional`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+
+### AuthTemplate
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:33`
+
+Auth template response model.
+
+Auth templates define authentication configurations for vendors.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `credentials_type`: `Optional`
+- `vendor`: `Optional`
+- `vendor_id`: `Optional`
+- `auth_parameters`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### AuthTemplateParameter
+
+Defined in `nexla_sdk/models/auth_templates/responses.py:12`
+
+Auth parameter configuration for auth templates.
+
+This is a lightweight nested model used within AuthTemplate responses.
+For the full auth parameter resource model, see nexla_sdk.models.auth_parameters.
+
+Fields:
+
+- `id`: `Optional`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+

@@ -211,6 +211,56 @@ class TestProjectsResource:
             "POST", f"/projects/{project_id}/flows/search"
         )
 
+    def test_legacy_data_flows_endpoints(self, mock_client):
+        """Test deprecated /data_flows project endpoints."""
+        project_id = 123
+        factory = MockDataFactory()
+        mock_data = [factory.create_mock_project_data_flow() for _ in range(2)]
+        mock_client.http_client.add_response(
+            f"/projects/{project_id}/data_flows", mock_data
+        )
+
+        list_result = mock_client.projects.get_data_flows_legacy(project_id)
+        assert len(list_result) == 2
+        assert all(isinstance(flow, ProjectDataFlow) for flow in list_result)
+        mock_client.http_client.assert_request_made(
+            "GET", f"/projects/{project_id}/data_flows"
+        )
+
+        flows = ProjectFlowList(data_flows=[ProjectFlowIdentifier(data_source_id=456)])
+
+        mock_client.http_client.clear_responses()
+        mock_client.http_client.add_response(
+            f"/projects/{project_id}/data_flows", mock_data
+        )
+        add_result = mock_client.projects.add_data_flows_legacy(project_id, flows)
+        assert len(add_result) == 2
+        mock_client.http_client.assert_request_made(
+            "PUT", f"/projects/{project_id}/data_flows"
+        )
+
+        mock_client.http_client.clear_responses()
+        mock_client.http_client.add_response(
+            f"/projects/{project_id}/data_flows", mock_data
+        )
+        replace_result = mock_client.projects.replace_data_flows_legacy(
+            project_id, flows
+        )
+        assert len(replace_result) == 2
+        mock_client.http_client.assert_request_made(
+            "POST", f"/projects/{project_id}/data_flows"
+        )
+
+        mock_client.http_client.clear_responses()
+        mock_client.http_client.add_response(
+            f"/projects/{project_id}/data_flows", mock_data
+        )
+        remove_result = mock_client.projects.remove_data_flows_legacy(project_id, flows)
+        assert len(remove_result) == 2
+        mock_client.http_client.assert_request_made(
+            "DELETE", f"/projects/{project_id}/data_flows"
+        )
+
     def test_add_data_flows(self, mock_client):
         """Test adding data flows to a project."""
         # Arrange

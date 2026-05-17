@@ -10,22 +10,22 @@ keywords: [Nexla, SDK, Python, API]
 
 ### Connector
 
-Defined in `nexla_sdk/models/common.py:34`
+Defined in `nexla_sdk/models/common.py:38`
 
 Connector information.
 
 Fields:
 
 - `id`: `int`
-- `type`: `str`
-- `connection_type`: `str`
+- `type`: `Union`
+- `connection_type`: `Union`
 - `name`: `str`
 - `description`: `str`
 - `nexset_api_compatible`: `bool`
 
 ### FlowNode
 
-Defined in `nexla_sdk/models/common.py:66`
+Defined in `nexla_sdk/models/common.py:70`
 
 Flow node in a data pipeline.
 
@@ -47,7 +47,7 @@ Fields:
 
 ### LogEntry
 
-Defined in `nexla_sdk/models/common.py:45`
+Defined in `nexla_sdk/models/common.py:49`
 
 Audit log entry.
 
@@ -72,7 +72,7 @@ Fields:
 
 ### Organization
 
-Defined in `nexla_sdk/models/common.py:16`
+Defined in `nexla_sdk/models/common.py:20`
 
 Organization details.
 
@@ -94,7 +94,7 @@ Fields:
 
 ### Owner
 
-Defined in `nexla_sdk/models/common.py:7`
+Defined in `nexla_sdk/models/common.py:11`
 
 User who owns a resource.
 

@@ -34,6 +34,18 @@ Methods:
 - `list_public(self) -> List[nexla_sdk.models.transforms.responses.Transform]`
   - Source: `nexla_sdk/resources/transforms.py:54`
   - List publicly shared transforms.
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.transforms.responses.Transform]`
+  - Source: `nexla_sdk/resources/transforms.py:60`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.transforms.responses.Transform]`
+  - Source: `nexla_sdk/resources/transforms.py:63`
+  - Search resources by tags.
+- `transform(self, transform_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/transforms.py:66`
+- `transform_data(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/transforms.py:73`
+- `transform_features(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/transforms.py:70`
 - `update(self, transform_id: int, data: nexla_sdk.models.transforms.requests.TransformUpdate) -> nexla_sdk.models.transforms.responses.Transform`
   - Source: `nexla_sdk/resources/transforms.py:42`
   - Update an existing transform.

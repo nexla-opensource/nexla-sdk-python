@@ -53,6 +53,8 @@ class NotificationsResource(BaseResource):
         self,
         read: Optional[int] = None,
         level: Optional[str] = None,
+        resource_id: Optional[int] = None,
+        resource_type: Optional[str] = None,
         from_timestamp: Optional[int] = None,
         to_timestamp: Optional[int] = None,
         **kwargs,
@@ -80,6 +82,10 @@ class NotificationsResource(BaseResource):
             params["read"] = read
         if level:
             params["level"] = level
+        if resource_id is not None:
+            params["resource_id"] = resource_id
+        if resource_type is not None:
+            params["resource_type"] = resource_type
         if from_timestamp:
             params["from"] = from_timestamp
         if to_timestamp:
@@ -87,7 +93,9 @@ class NotificationsResource(BaseResource):
 
         return super().list(**params)
 
-    def delete_all(self) -> Dict[str, Any]:
+    def delete_all(
+        self, payload: Optional[Dict[str, Any]] = None, async_mode: bool = False
+    ) -> Dict[str, Any]:
         """
         Delete all notifications.
 
@@ -95,7 +103,10 @@ class NotificationsResource(BaseResource):
             Response status
         """
         path = f"{self._path}/all"
-        return self._make_request("DELETE", path)
+        params = {"async": 1} if async_mode else None
+        return self._make_request(
+            "DELETE", path, json=payload or {}, params=params or {}
+        )
 
     def get_count(self, read: Optional[int] = None) -> NotificationCount:
         """
@@ -147,6 +158,21 @@ class NotificationsResource(BaseResource):
             return self._make_request("PUT", path, params=params)
         else:
             return self._make_request("PUT", path, json=notification_ids)
+
+    def mark_read_for(
+        self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{notification_id}/mark_read"
+        return self._make_request("PUT", path, json=payload or {})
+
+    def mark_unread_for(
+        self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{notification_id}/mark_unread"
+        return self._make_request("PUT", path, json=payload or {})
+
+    def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", f"{self._path}/raw", json=payload)
 
     # Notification Types
     def get_types(self, status: Optional[str] = None) -> List[NotificationType]:

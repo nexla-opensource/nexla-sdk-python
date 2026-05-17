@@ -336,6 +336,244 @@ class BaseResource:
         response = self._make_request("POST", path, json=serialized_options)
         return self._parse_response(response)
 
+    def list_public(
+        self,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **params,
+    ) -> List[T]:
+        """
+        List publicly available resources for this type.
+
+        Args:
+            page: Page number (1-based)
+            per_page: Items per page
+            **params: Additional query parameters
+
+        Returns:
+            List of public resources
+        """
+        path = f"{self._path}/public"
+        query_params: Dict[str, Any] = {}
+        if page is not None:
+            query_params["page"] = page
+        if per_page is not None:
+            query_params["per_page"] = per_page
+        query_params.update(params)
+        response = self._make_request("GET", path, params=query_params)
+        return self._parse_response(response)
+
+    def list_accessible(self, **params) -> List[T]:
+        """
+        List resources accessible to the current user (access_insights).
+
+        Args:
+            **params: Optional query parameters
+
+        Returns:
+            List of accessible resources
+        """
+        path = f"{self._path}/accessible"
+        response = self._make_request("GET", path, params=params)
+        return self._parse_response(response)
+
+    def get_access_insights(self, resource_id: int, **params) -> Dict[str, Any]:
+        """
+        Explain why the current user can access a resource.
+
+        Args:
+            resource_id: Resource ID
+            **params: Optional query parameters
+
+        Returns:
+            Access insights payload
+        """
+        path = f"{self._path}/{resource_id}/access"
+        return self._make_request("GET", path, params=params)
+
+    def get_users_access_insights(self, resource_id: int, **params) -> Dict[str, Any]:
+        """
+        Get access insights for all users with access to a resource.
+
+        Args:
+            resource_id: Resource ID
+            **params: Optional query parameters
+
+        Returns:
+            Users access insights payload
+        """
+        path = f"{self._path}/{resource_id}/users_access_insights"
+        return self._make_request("GET", path, params=params)
+
+    def search(self, filters: Dict[str, Any], **params) -> List[T]:
+        """
+        Search resources using filter criteria.
+
+        Args:
+            filters: Search filters payload
+            **params: Optional query parameters
+
+        Returns:
+            List of matching resources
+        """
+        path = f"{self._path}/search"
+        response = self._make_request("POST", path, json=filters, params=params)
+        return self._parse_response(response)
+
+    def search_tags(self, tags: List[str], **params) -> List[T]:
+        """
+        Search resources by tags.
+
+        Args:
+            tags: List of tags to search for
+            **params: Optional query parameters
+
+        Returns:
+            List of matching resources
+        """
+        path = f"{self._path}/search_tags"
+        response = self._make_request("POST", path, json=tags, params=params)
+        return self._parse_response(response)
+
+    def get_docs(self, resource_id: int) -> Dict[str, Any]:
+        """
+        Get documentation entries for a resource.
+
+        Args:
+            resource_id: Resource ID
+
+        Returns:
+            Docs payload
+        """
+        path = f"{self._path}/{resource_id}/docs"
+        return self._make_request("GET", path)
+
+    def set_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Replace documentation entries for a resource.
+
+        Args:
+            resource_id: Resource ID
+            docs: Docs payload
+
+        Returns:
+            Updated docs payload
+        """
+        path = f"{self._path}/{resource_id}/docs"
+        return self._make_request("POST", path, json=docs)
+
+    def add_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Add documentation entries for a resource.
+
+        Args:
+            resource_id: Resource ID
+            docs: Docs payload to add
+
+        Returns:
+            Updated docs payload
+        """
+        path = f"{self._path}/{resource_id}/docs"
+        return self._make_request("PUT", path, json=docs)
+
+    def remove_docs(
+        self, resource_id: int, docs: Optional[List[Dict[str, Any]]] = None
+    ) -> Dict[str, Any]:
+        """
+        Remove documentation entries for a resource.
+
+        Args:
+            resource_id: Resource ID
+            docs: Docs payload to remove (optional)
+
+        Returns:
+            Updated docs payload
+        """
+        path = f"{self._path}/{resource_id}/docs"
+        return self._make_request("DELETE", path, json=docs or [])
+
+    def get_referenced_by(self, resource_id: int) -> Dict[str, Any]:
+        """
+        Get resources that reference this resource.
+
+        Args:
+            resource_id: Resource ID
+
+        Returns:
+            Referenced-by payload
+        """
+        path = f"{self._path}/{resource_id}/referenced_by"
+        return self._make_request("GET", path)
+
+    def get_control_event(self, resource_id: int, event: str) -> Dict[str, Any]:
+        """
+        Get control event info for a resource.
+
+        Args:
+            resource_id: Resource ID
+            event: Control event name
+
+        Returns:
+            Control event payload
+        """
+        path = f"{self._path}/{resource_id}/control/{event}"
+        return self._make_request("GET", path)
+
+    def get_tags(self, resource_id: int) -> List[str]:
+        """
+        Get tags for a resource.
+
+        Args:
+            resource_id: Resource ID
+
+        Returns:
+            List of tags
+        """
+        path = f"{self._path}/{resource_id}/tags"
+        return self._make_request("GET", path)
+
+    def set_tags(self, resource_id: int, tags: List[str]) -> List[str]:
+        """
+        Replace all tags for a resource.
+
+        Args:
+            resource_id: Resource ID
+            tags: Tags to set
+
+        Returns:
+            Updated list of tags
+        """
+        path = f"{self._path}/{resource_id}/tags"
+        return self._make_request("POST", path, json=tags)
+
+    def add_tags(self, resource_id: int, tags: List[str]) -> List[str]:
+        """
+        Add tags to a resource.
+
+        Args:
+            resource_id: Resource ID
+            tags: Tags to add
+
+        Returns:
+            Updated list of tags
+        """
+        path = f"{self._path}/{resource_id}/tags"
+        return self._make_request("PUT", path, json=tags)
+
+    def remove_tags(self, resource_id: int, tags: List[str]) -> List[str]:
+        """
+        Remove tags from a resource.
+
+        Args:
+            resource_id: Resource ID
+            tags: Tags to remove
+
+        Returns:
+            Updated list of tags
+        """
+        path = f"{self._path}/{resource_id}/tags"
+        return self._make_request("DELETE", path, json=tags)
+
     def get_audit_log(
         self,
         resource_id: int,

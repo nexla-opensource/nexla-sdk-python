@@ -1,0 +1,77 @@
+---
+id: nexla_sdk.models.catalog_refs
+title: nexla_sdk.models.catalog_refs
+slug: /api/python/modules/nexla_sdk/models/catalog_refs
+description: API for nexla_sdk.models.catalog_refs
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### CatalogRef
+
+Defined in `nexla_sdk/models/catalog_refs/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `data_set_id`: `Optional`
+- `status`: `Optional`
+- `reference_id`: `Optional`
+- `link`: `Optional`
+- `error_msg`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+- `catalog_config`: `Optional`
+
+### CatalogRefCreate
+
+Defined in `nexla_sdk/models/catalog_refs/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_set_id`: `int`
+- `catalog_config_id`: `int`
+- `reference_id`: `Optional`
+- `link`: `Optional`
+
+### CatalogRefUpdate
+
+Defined in `nexla_sdk/models/catalog_refs/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `reference_id`: `Optional`
+- `link`: `Optional`
+- `status`: `Optional`
+

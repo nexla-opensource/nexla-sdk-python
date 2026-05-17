@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional
 
+from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.teams.requests import TeamCreate, TeamMemberList, TeamUpdate
 from nexla_sdk.models.teams.responses import Team, TeamMember
 from nexla_sdk.resources.base_resource import BaseResource
@@ -150,3 +151,8 @@ class TeamsResource(BaseResource):
         data = members.to_dict() if members else None
         response = self._make_request("DELETE", path, json=data)
         return [TeamMember(**member) for member in response]
+
+    def get_audit_log(self, team_id: int, **params) -> List[LogEntry]:
+        path = f"{self._path}/{team_id}/audit_log"
+        response = self._make_request("GET", path, params=params)
+        return [LogEntry.model_validate(item) for item in (response or [])]

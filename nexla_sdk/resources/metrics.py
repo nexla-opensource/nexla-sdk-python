@@ -118,6 +118,10 @@ class MetricsResource(BaseResource):
         path = "/limits"
         return self._make_request("GET", path)
 
+    def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Publish raw metrics (super user only)."""
+        return self._make_request("POST", "/metrics/raw", json=payload)
+
     def get_resource_flow_metrics(
         self,
         resource_type: Union[ResourceType, str],
@@ -164,11 +168,11 @@ class MetricsResource(BaseResource):
         resource_type: Union[ResourceType, str],
         resource_id: int,
         from_date: str,
-        to_date: str = None,
-        groupby: str = None,
-        orderby: str = None,
-        page: int = None,
-        per_page: int = None,
+        to_date: Optional[str] = None,
+        groupby: Optional[str] = None,
+        orderby: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Union[ResourceFlowMetricsResponse, Dict[str, Any]]:
         """
         Get flow metrics for a flow node keyed by resource ID.
@@ -219,9 +223,9 @@ class MetricsResource(BaseResource):
         resource_id: int,
         run_id: int,
         from_ts: int,
-        to_ts: int = None,
-        page: int = None,
-        per_page: int = None,
+        to_ts: Optional[int] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Union[ResourceFlowLogsResponse, Dict[str, Any]]:
         """
         Get flow logs for a flow run keyed by resource ID.

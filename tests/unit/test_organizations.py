@@ -1,6 +1,11 @@
 """Unit tests for the Organizations resource."""
 
+from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.metrics.enums import ResourceType
+from nexla_sdk.models.organizations.custodians import (
+    OrgCustodianRef,
+    OrgCustodiansPayload,
+)
 from nexla_sdk.models.organizations.requests import (
     OrganizationCreate,
     OrgMemberActivateDeactivateRequest,
@@ -274,6 +279,120 @@ class TestOrganizationsResource:
         assert f"/orgs/{org_id}/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
 
+    def test_get_org_flow_account_metrics_basic(self, mock_client):
+        """Test getting org flow account metrics with basic params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/account_metrics", {"data": []}
+        )
+
+        # Act
+        mock_client.organizations.get_org_flow_account_metrics(
+            org_id=org_id, from_date="2024-01-01"
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/flows/account_metrics" in last_request["url"]
+        assert last_request["params"] == {"from": "2024-01-01"}
+
+    def test_get_org_flow_account_metrics_with_aggregate(self, mock_client):
+        """Test getting org flow account metrics with all params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/account_metrics", {"data": []}
+        )
+
+        # Act
+        mock_client.organizations.get_org_flow_account_metrics(
+            org_id=org_id,
+            from_date="2024-01-01",
+            to_date="2024-01-31",
+            aggregate="daily",
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-01-31",
+            "aggregate": "daily",
+        }
+
+    def test_get_audit_log_with_explicit_params(self, mock_client):
+        """Test getting audit log with all explicit parameters."""
+        # Arrange
+        org_id = 123
+        mock_log = [
+            MockResponseBuilder.audit_log_entry(),
+            MockResponseBuilder.audit_log_entry(),
+        ]
+        mock_client.http_client.add_response(f"/orgs/{org_id}/audit_log", mock_log)
+
+        # Act
+        audit_log = mock_client.organizations.get_audit_log(
+            org_id=org_id,
+            from_date="2024-01-01",
+            to_date="2024-12-31",
+            event_filter="create",
+            change_filter="attribute",
+            page=1,
+            per_page=50,
+        )
+
+        # Assert
+        assert len(audit_log) == 2
+        assert all(isinstance(entry, LogEntry) for entry in audit_log)
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "to": "2024-12-31",
+            "event_filter": "create",
+            "change_filter": "attribute",
+            "page": 1,
+            "per_page": 50,
+        }
+
+    def test_get_flow_status_metrics_basic(self, mock_client):
+        """Test getting flow status metrics with basic params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"data": []}
+        )
+
+        # Act
+        mock_client.organizations.get_flow_status_metrics(org_id=org_id)
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/flows/status_metrics" in last_request["url"]
+
+    def test_get_flow_status_metrics_with_params(self, mock_client):
+        """Test getting flow status metrics with all params."""
+        # Arrange
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"data": []}
+        )
+
+        # Act
+        mock_client.organizations.get_flow_status_metrics(
+            org_id=org_id, from_date="2024-01-01", page=2, per_page=25
+        )
+
+        # Assert
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2024-01-01",
+            "page": 2,
+            "per_page": 25,
+        }
+
     def test_get_resource_audit_log(self, mock_client):
         """Test getting audit logs for a canonical resource type."""
         org_id = 123
@@ -291,3 +410,48 @@ class TestOrganizationsResource:
         assert last_request["method"] == "GET"
         assert f"/orgs/{org_id}/data_sources/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
+
+    def test_add_custodians_uses_post(self, mock_client):
+        """add_custodians must use POST per OpenAPI spec (add_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(
+            custodians=[OrgCustodianRef(email="custodian@example.com")]
+        )
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", [{"id": 1, "email": "custodian@example.com"}]
+        )
+
+        result = mock_client.organizations.add_custodians(org_id, payload)
+
+        assert len(result) == 1
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "POST"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]
+
+    def test_update_custodians_uses_put(self, mock_client):
+        """update_custodians must use PUT per OpenAPI spec (update_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", [{"id": 42, "email": "x@y.com"}]
+        )
+
+        mock_client.organizations.update_custodians(org_id, payload)
+
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "PUT"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]
+
+    def test_remove_custodians_uses_delete(self, mock_client):
+        """remove_custodians must use DELETE per OpenAPI spec (remove_org_custodians)."""
+        org_id = 7
+        payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", {"status": "ok"}
+        )
+
+        mock_client.organizations.remove_custodians(org_id, payload)
+
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "DELETE"
+        assert f"/orgs/{org_id}/custodians" in last_request["url"]

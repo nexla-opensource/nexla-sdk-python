@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
 from nexla_sdk.models.flows.requests import FlowCopyOptions
-from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.flows.responses import (
     DocsRecommendation,
     FlowLogsResponse,
@@ -13,6 +12,7 @@ from nexla_sdk.models.flows.responses import (
     FlowResponse,
 )
 from nexla_sdk.models.metrics.enums import ResourceType
+from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -398,6 +398,163 @@ class FlowsResource(BaseResource):
         response = self._make_request("PUT", path, params=params)
         return self._parse_response(response)
 
+    def update_by_resource(
+        self, resource_type: str, resource_id: int, payload: Dict[str, Any]
+    ) -> FlowResponse:
+        path = f"/{resource_type}/{resource_id}/flow"
+        response = self._make_request("PUT", path, json=payload)
+        return self._parse_response(response)
+
+    def copy_by_resource(
+        self,
+        resource_type: str,
+        resource_id: int,
+        payload: Optional[Dict[str, Any]] = None,
+    ) -> FlowResponse:
+        path = f"/{resource_type}/{resource_id}/flow/copy"
+        response = self._make_request("POST", path, json=payload or {})
+        return self._parse_response(response)
+
+    def accessors_by_resource(
+        self,
+        resource_type: str,
+        resource_id: int,
+        mode: str = "list",
+        payload: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        path = f"/{resource_type}/{resource_id}/flow/accessors"
+        method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
+        method = method_map.get(mode, "GET")
+        return self._make_request(method, path, json=payload or {})
+
+    def docs_by_resource(
+        self,
+        resource_type: str,
+        resource_id: int,
+        mode: str = "list",
+        payload: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        path = f"/{resource_type}/{resource_id}/flow/docs"
+        method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
+        method = method_map.get(mode, "GET")
+        return self._make_request(method, path, json=payload or [])
+
+    def run_status_by_resource(
+        self, resource_type: str, resource_id: int
+    ) -> Dict[str, Any]:
+        path = f"/{resource_type}/{resource_id}/flow/run_status"
+        return self._make_request("GET", path)
+
+    def run_profiles_activate(
+        self, flow_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/run_profiles/activate"
+        return self._make_request("POST", path, json=payload)
+
+    def run_now(self, flow_id: int, method: str = "POST") -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/run_now"
+        return self._make_request(method.upper(), path)
+
+    def flow_logs(self, flow_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/logs"
+        return self._make_request("GET", path, params=params)
+
+    def flow_logs_v2(
+        self, flow_id: int, payload: Dict[str, Any], **params
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/logs_v2"
+        return self._make_request("POST", path, json=payload, params=params)
+
+    def flow_metrics(self, flow_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/metrics"
+        return self._make_request("GET", path, params=params)
+
+    def list_linked_flows(self, flow_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/links"
+        return self._make_request("GET", path)
+
+    def create_linked_flows(
+        self, flow_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/links"
+        return self._make_request("POST", path, json=payload)
+
+    def update_linked_flows(
+        self, flow_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/links"
+        return self._make_request("PUT", path, json=payload)
+
+    def delete_linked_flows(
+        self, flow_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/links"
+        return self._make_request("DELETE", path, json=payload)
+
+    def delete_all_linked_flows(self, flow_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/links/all"
+        return self._make_request("DELETE", path)
+
+    def insert_flow_node(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/insert_flow_node"
+        return self._make_request("POST", path, json=payload)
+
+    def remove_flow_node(
+        self, flow_id: int, payload: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/remove_flow_node"
+        return self._make_request("POST", path, json=payload or {})
+
+    def update_samples(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/samples"
+        return self._make_request("PUT", path, json=payload)
+
+    def publish_rag(self, flow_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/rag/publish"
+        return self._make_request("PUT", path)
+
+    def update_archival_status(
+        self, flow_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/archival/status"
+        return self._make_request("POST", path, json=payload)
+
+    def restore_archival(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/archival/restore"
+        return self._make_request("POST", path, json=payload)
+
+    def run_status(self, flow_id: int, run_id: Optional[int] = None) -> Dict[str, Any]:
+        path = f"{self._path}/{flow_id}/run_status"
+        if run_id is not None:
+            path = f"{path}/{run_id}"
+        return self._make_request("GET", path)
+
+    def search(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", f"{self._path}/search", json=payload)
+
+    def bulk_assign_project(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("PUT", f"{self._path}/project", json=payload)
+
+    def import_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", f"{self._path}/import", json=payload)
+
+    def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", f"{self._path}/raw", json=payload)
+
+    def daily_metrics(self, **params) -> Dict[str, Any]:
+        return self._make_request("GET", "/data_flows/metrics/daily", params=params)
+
+    def total_metrics(self, **params) -> Dict[str, Any]:
+        return self._make_request("GET", "/data_flows/metrics/total", params=params)
+
+    def active_flows_metrics(self, **params) -> Dict[str, Any]:
+        return self._make_request(
+            "GET", "/data_flows/metrics/active_flows_metrics", params=params
+        )
+
+    def get_resources_access(self, flow_id: int) -> Dict[str, Any]:
+        return self._make_request("GET", f"{self._path}/{flow_id}/resources_access")
+
     def docs_recommendation(
         self, flow_id: int
     ) -> Union[DocsRecommendation, Dict[str, Any]]:
@@ -694,9 +851,9 @@ class FlowsResource(BaseResource):
         resource_id: int,
         run_id: int,
         from_ts: int,
-        to_ts: int = None,
-        page: int = None,
-        per_page: int = None,
+        to_ts: Optional[int] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Union[FlowLogsResponse, Dict[str, Any]]:
         """Get flow execution logs for a specific run id of a flow.
 
@@ -745,11 +902,11 @@ class FlowsResource(BaseResource):
         resource_type: Union[ResourceType, str],
         resource_id: int,
         from_date: str,
-        to_date: str = None,
-        groupby: str = None,
-        orderby: str = None,
-        page: int = None,
-        per_page: int = None,
+        to_date: Optional[str] = None,
+        groupby: Optional[str] = None,
+        orderby: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Union[FlowMetricsApiResponse, Dict[str, Any]]:
         """Get flow metrics for a flow node keyed by resource id.
 

@@ -17,11 +17,28 @@ Resource for managing approval requests.
 Methods:
 
 - `approve(self, request_id: int) -> nexla_sdk.models.approval_requests.responses.ApprovalRequest`
-  - Source: `nexla_sdk/resources/approval_requests.py:25`
+  - Source: `nexla_sdk/resources/approval_requests.py:60`
+- `cancel(self, request_id: int) -> nexla_sdk.models.approval_requests.responses.ApprovalRequest`
+  - Source: `nexla_sdk/resources/approval_requests.py:71`
+- `get(self, request_id: int) -> nexla_sdk.models.approval_requests.responses.ApprovalRequest`
+  - Source: `nexla_sdk/resources/approval_requests.py:50`
+  - Get single resource by ID.
+- `list_access_pending(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:35`
+- `list_access_requested(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:30`
+- `list_assigned(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:20`
+- `list_listings_pending(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:45`
+- `list_listings_requested(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:40`
 - `list_pending(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
   - Source: `nexla_sdk/resources/approval_requests.py:15`
 - `list_requested(self) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
-  - Source: `nexla_sdk/resources/approval_requests.py:20`
+  - Source: `nexla_sdk/resources/approval_requests.py:25`
 - `reject(self, request_id: int, reason: str = '') -> nexla_sdk.models.approval_requests.responses.ApprovalRequest`
-  - Source: `nexla_sdk/resources/approval_requests.py:30`
+  - Source: `nexla_sdk/resources/approval_requests.py:65`
+- `show_data_set(self, data_set_id: int) -> List[nexla_sdk.models.approval_requests.responses.ApprovalRequest]`
+  - Source: `nexla_sdk/resources/approval_requests.py:55`
 

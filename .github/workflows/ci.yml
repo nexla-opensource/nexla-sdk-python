@@ -3,8 +3,26 @@ name: CI
 on:
   push:
     branches: [ main ]
+    paths:
+      - "nexla_sdk/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "README.md"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main ]
+    paths:
+      - "nexla_sdk/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "README.md"
+      - ".github/workflows/ci.yml"
 
 jobs:
   build-test:
@@ -30,9 +48,12 @@ jobs:
           pip install ruff
           ruff check nexla_sdk
 
+      - name: Check Generated Operation Map Sync
+        run: |
+          python scripts/parity/check_operation_map_sync.py
+
       - name: Run unit tests
         env:
           PYTHONWARNINGS: default
         run: |
           pytest -m unit --maxfail=1 -q
-

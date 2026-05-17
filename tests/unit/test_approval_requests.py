@@ -32,3 +32,11 @@ class TestApprovalRequestsResource:
         )
         rj = client.approval_requests.reject(2, reason="not needed")
         assert rj.id == 2
+        mock_http_client.assert_request_made("DELETE", "/approval_requests/2/reject")
+
+        mock_http_client.clear_responses()
+        mock_http_client.add_response(
+            "/approval_requests/2/cancel", {"id": 2, "status": "cancelled"}
+        )
+        cn = client.approval_requests.cancel(2)
+        assert cn.id == 2

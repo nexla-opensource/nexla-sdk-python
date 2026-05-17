@@ -1,0 +1,77 @@
+---
+id: nexla_sdk.models.clusters.responses
+title: nexla_sdk.models.clusters.responses
+slug: /api/python/modules/nexla_sdk/models/clusters/responses
+description: API for nexla_sdk.models.clusters.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+Cluster response models.
+
+## Classes
+
+### Cluster
+
+Defined in `nexla_sdk/models/clusters/responses.py:24`
+
+Cluster response model.
+
+Clusters define infrastructure endpoints for processing data flows.
+They contain multiple endpoints for different services.
+
+Fields:
+
+- `id`: `int`
+- `org_id`: `Optional`
+- `uid`: `Optional`
+- `is_default`: `Optional`
+- `is_private`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `region`: `Optional`
+- `provider`: `Optional`
+- `org`: `Optional`
+- `endpoints`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### ClusterEndpoint
+
+Defined in `nexla_sdk/models/clusters/responses.py:47`
+
+Cluster endpoint response model.
+
+Endpoints define individual service connections within a cluster.
+
+Fields:
+
+- `id`: `int`
+- `cluster_id`: `Optional`
+- `org_id`: `Optional`
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+- `org`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### ClusterEndpointRef
+
+Defined in `nexla_sdk/models/clusters/responses.py:12`
+
+Cluster endpoint reference for cluster response.
+
+Fields:
+
+- `id`: `int`
+- `service`: `Optional`
+- `protocol`: `Optional`
+- `host`: `Optional`
+- `port`: `Optional`
+- `context`: `Optional`
+- `header_host`: `Optional`
+

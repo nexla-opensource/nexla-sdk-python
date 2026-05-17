@@ -74,10 +74,22 @@ class GenAIResource(BaseResource):
         )
         return GenAiOrgSetting.model_validate(response)
 
+    def update_org_setting(
+        self, gen_ai_org_setting_id: int, payload: GenAiOrgSettingPayload
+    ) -> GenAiOrgSetting:
+        data = self._serialize_data(payload)
+        response = self._make_request(
+            "PUT", f"/gen_ai_org_settings/{gen_ai_org_setting_id}", json=data
+        )
+        return GenAiOrgSetting.model_validate(response)
+
     def delete_org_setting(self, gen_ai_org_setting_id: int) -> Dict[str, Any]:
         return self._make_request(
             "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
         )
+
+    def delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("DELETE", "/gen_ai_org_settings", json=payload)
 
     def show_active_config(self, gen_ai_usage: str) -> ActiveConfigView:
         response = self._make_request(

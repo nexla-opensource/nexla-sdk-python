@@ -5,6 +5,7 @@ from pydantic import Field, field_validator
 
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import Connector, Organization, Owner
+from nexla_sdk.models.flexible_enums import FlexibleCredentialType
 
 
 class Credential(BaseModel):
@@ -12,7 +13,7 @@ class Credential(BaseModel):
 
     id: int
     name: str
-    credentials_type: str
+    credentials_type: FlexibleCredentialType
     owner: Optional[Owner] = None
     org: Optional[Organization] = None
     access_roles: Optional[List[str]] = None

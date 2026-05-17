@@ -1,0 +1,68 @@
+---
+id: nexla_sdk.resources.validators
+title: nexla_sdk.resources.validators
+slug: /api/python/modules/nexla_sdk/resources/validators
+description: API for nexla_sdk.resources.validators
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing validators (data validation rules).
+
+## Classes
+
+### ValidatorsResource
+
+Defined in `nexla_sdk/resources/validators.py:14`
+
+Resource for managing validators (data validation rules).
+
+Validators are code containers used to validate data within flows.
+They support various code types including Python, JavaScript, and Jolt.
+
+Examples:
+    # List validators
+    validators = client.validators.list()
+
+    # Get a specific validator
+    validator = client.validators.get(123)
+
+    # Create a Python validator
+    validator = client.validators.create(ValidatorCreate(
+        name="My Validator",
+        code_type="python",
+        code="def validate(record): return record['value'] > 0"
+    ))
+
+    # List public validators
+    public_validators = client.validators.list_public()
+
+Methods:
+
+- `copy(self, validator_id: int, options: Union[nexla_sdk.models.validators.requests.ValidatorCopyOptions, Dict[str, Any], NoneType] = None) -> nexla_sdk.models.validators.responses.Validator`
+  - Source: `nexla_sdk/resources/validators.py:145`
+  - Copy a validator.
+- `create(self, data: Union[nexla_sdk.models.validators.requests.ValidatorCreate, Dict[str, Any]]) -> nexla_sdk.models.validators.responses.Validator`
+  - Source: `nexla_sdk/resources/validators.py:109`
+  - Create a new validator.
+- `delete(self, validator_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/validators.py:134`
+  - Delete a validator.
+- `get(self, validator_id: int, expand: bool = False) -> nexla_sdk.models.validators.responses.Validator`
+  - Source: `nexla_sdk/resources/validators.py:97`
+  - Get validator by ID.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, expand: bool = False, **kwargs) -> List[nexla_sdk.models.validators.responses.Validator]`
+  - Source: `nexla_sdk/resources/validators.py:48`
+  - List validators with optional filters.
+- `list_public(self, page: Optional[int] = None, per_page: Optional[int] = None) -> List[nexla_sdk.models.validators.responses.Validator]`
+  - Source: `nexla_sdk/resources/validators.py:74`
+  - List publicly available validators.
+- `search(self, filters: Dict[str, Any]) -> List[nexla_sdk.models.validators.responses.Validator]`
+  - Source: `nexla_sdk/resources/validators.py:174`
+  - Search validators (alias to search_tags endpoint).
+- `search_tags(self, tags: List[str]) -> List[nexla_sdk.models.validators.responses.Validator]`
+  - Source: `nexla_sdk/resources/validators.py:161`
+  - Search validators by tags.
+- `update(self, validator_id: int, data: Union[nexla_sdk.models.validators.requests.ValidatorUpdate, Dict[str, Any]]) -> nexla_sdk.models.validators.responses.Validator`
+  - Source: `nexla_sdk/resources/validators.py:120`
+  - Update a validator.
+

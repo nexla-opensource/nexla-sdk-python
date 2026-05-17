@@ -25,15 +25,28 @@ Methods:
 - `delete(self, code_container_id: int) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/code_containers.py:63`
   - Delete a code container by ID.
+- `error_functions(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/code_containers.py:84`
 - `get(self, code_container_id: int, expand: bool = False) -> nexla_sdk.models.code_containers.responses.CodeContainer`
   - Source: `nexla_sdk/resources/code_containers.py:37`
   - Get a code container by ID.
 - `list(self, **kwargs) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
   - Source: `nexla_sdk/resources/code_containers.py:19`
   - List code containers with optional filters.
+- `list_accessible(self, **params) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
+  - Source: `nexla_sdk/resources/code_containers.py:77`
+  - List resources accessible to the current user (access_insights).
 - `list_public(self) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
   - Source: `nexla_sdk/resources/code_containers.py:71`
   - List publicly shared code containers.
+- `repo(self, code_container_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/code_containers.py:80`
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
+  - Source: `nexla_sdk/resources/code_containers.py:87`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.code_containers.responses.CodeContainer]`
+  - Source: `nexla_sdk/resources/code_containers.py:90`
+  - Search resources by tags.
 - `update(self, code_container_id: int, data: nexla_sdk.models.code_containers.requests.CodeContainerUpdate) -> nexla_sdk.models.code_containers.responses.CodeContainer`
   - Source: `nexla_sdk/resources/code_containers.py:53`
   - Update an existing code container.

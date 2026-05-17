@@ -59,3 +59,13 @@ class AttributeTransformsResource(BaseResource):
         path = f"{self._path}/public"
         response = self._make_request("GET", path)
         return self._parse_response(response)
+
+    def copy(self, attribute_transform_id: int) -> AttributeTransform:
+        """Copy an attribute transform."""
+        return super().copy(attribute_transform_id)
+
+    def search(self, filters: Dict[str, Any], **params) -> List[AttributeTransform]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[AttributeTransform]:
+        return super().search_tags(tags, **params)

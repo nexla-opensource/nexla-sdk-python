@@ -1,0 +1,56 @@
+---
+id: nexla_sdk.models.auth_templates.requests
+title: nexla_sdk.models.auth_templates.requests
+slug: /api/python/modules/nexla_sdk/models/auth_templates/requests
+description: API for nexla_sdk.models.auth_templates.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Auth template request models.
+
+## Classes
+
+### AuthParameterCreate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:8`
+
+Auth parameter for template creation.
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `param_type`: `Optional`
+- `required`: `Optional`
+- `default_value`: `Optional`
+- `config`: `Optional`
+
+### AuthTemplateCreate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:20`
+
+Request model for creating an auth template (super user only).
+
+Fields:
+
+- `name`: `str`
+- `vendor_id`: `int`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `auth_parameters`: `Optional`
+
+### AuthTemplateUpdate
+
+Defined in `nexla_sdk/models/auth_templates/requests.py:31`
+
+Request model for updating an auth template (super user only).
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+

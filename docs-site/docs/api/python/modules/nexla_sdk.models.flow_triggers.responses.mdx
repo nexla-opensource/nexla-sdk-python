@@ -1,0 +1,40 @@
+---
+id: nexla_sdk.models.flow_triggers.responses
+title: nexla_sdk.models.flow_triggers.responses
+slug: /api/python/modules/nexla_sdk/models/flow_triggers/responses
+description: API for nexla_sdk.models.flow_triggers.responses
+keywords: [Nexla, SDK, Python, API]
+---
+
+Flow trigger response models.
+
+## Classes
+
+### FlowTrigger
+
+Defined in `nexla_sdk/models/flow_triggers/responses.py:10`
+
+Flow trigger response model.
+
+Flow triggers define orchestration events that trigger one flow
+based on events from another flow. For example, triggering a
+data source read when a data sink write completes.
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `status`: `str`
+- `triggering_event_type`: `str`
+- `triggering_origin_node_id`: `Optional`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggered_event_type`: `str`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
