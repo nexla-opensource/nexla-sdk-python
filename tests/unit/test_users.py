@@ -234,3 +234,46 @@ class TestUsersUnitTests:
 
         assert len(user.org_memberships) == 2
         assert user.org_memberships[0].api_key is not None
+
+    def test_get_flow_status_metrics_defaults(self, mock_client):
+        """Defaults send no query params and hit /users/<id>/flows/status_metrics."""
+        client = mock_client
+        user_id = 123
+        client.http_client.add_response(
+            f"/users/{user_id}/flows/status_metrics", {"total": 0}
+        )
+
+        result = client.users.get_flow_status_metrics(user_id)
+
+        assert result == {"total": 0}
+        last_request = client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/users/{user_id}/flows/status_metrics" in last_request["url"]
+        assert last_request["params"] == {}
+
+    def test_get_flow_status_metrics_with_access_role_and_kwargs(self, mock_client):
+        """access_role and **kwargs are forwarded as query params."""
+        client = mock_client
+        user_id = 123
+        client.http_client.add_response(
+            f"/users/{user_id}/flows/status_metrics", {"total": 5}
+        )
+
+        result = client.users.get_flow_status_metrics(
+            user_id,
+            from_date="2026-01-01",
+            page=1,
+            per_page=20,
+            access_role="collaborator",
+            org_id=42,
+        )
+
+        assert result == {"total": 5}
+        last_request = client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2026-01-01",
+            "page": 1,
+            "per_page": 20,
+            "access_role": "collaborator",
+            "org_id": 42,
+        }

@@ -293,6 +293,8 @@ class UsersResource(BaseResource):
         from_date: str = None,
         page: int = None,
         per_page: int = None,
+        access_role: str = None,
+        **kwargs,
     ) -> Dict[str, Any]:
         """
         Get flow status metrics for a user.
@@ -302,12 +304,19 @@ class UsersResource(BaseResource):
             from_date: Start date filter (YYYY-MM-DD)
             page: Page number for pagination
             per_page: Items per page
+            access_role: owner|collaborator|admin|member. When omitted
+                admin-api applies its default (`owner`), which scopes
+                to the user's own flows. Pass `collaborator` to widen
+                to the user's default org.
+            **kwargs: Additional query params forwarded to admin-api.
 
         Returns:
             Flow status metrics
         """
         path = f"{self._path}/{user_id}/flows/status_metrics"
-        params = {}
+        params = dict(kwargs)
+        if access_role is not None:
+            params["access_role"] = access_role
         if from_date is not None:
             params["from"] = from_date
         if page is not None:
