@@ -88,7 +88,16 @@ def source_create_dict(draw):
         "source_type": draw(
             st.sampled_from(["s3", "postgres", "mysql", "api_push", "ftp", "gcs"])
         ),
-        "description": draw(st.one_of(st.none(), st.text(max_size=1000))),
+        # Avoid whitespace/control chars to match the model's str_strip_whitespace
+        "description": draw(
+            st.one_of(
+                st.none(),
+                st.text(
+                    alphabet=st.characters(min_codepoint=33, max_codepoint=126),
+                    max_size=1000,
+                ),
+            )
+        ),
         # Required field must be int
         "data_credentials_id": draw(st.integers(min_value=1, max_value=999999)),
         "ingest_method": draw(
@@ -410,7 +419,15 @@ class TestSourceModelEdgeCases:
         assert source.access_roles == roles
         assert len(source.access_roles) >= 1  # Should have at least one role
 
-    @given(st.one_of(st.none(), st.text(max_size=2000)))
+    @given(
+        st.one_of(
+            st.none(),
+            st.text(
+                alphabet=st.characters(min_codepoint=33, max_codepoint=126),
+                max_size=2000,
+            ),
+        )
+    )
     def test_description_length_handling(self, description):
         """Test handling descriptions of various lengths including None."""
         # Act

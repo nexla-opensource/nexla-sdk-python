@@ -267,7 +267,13 @@ class OrganizationsResource(BaseResource):
         return [LogEntry.model_validate(item) for item in response]
 
     def get_flow_status_metrics(
-        self, org_id: int, from_date: str = None, page: int = None, per_page: int = None
+        self,
+        org_id: int,
+        from_date: str = None,
+        page: int = None,
+        per_page: int = None,
+        access_role: str = None,
+        **kwargs,
     ) -> Dict[str, Any]:
         """
         Get flow status metrics for an organization.
@@ -277,12 +283,20 @@ class OrganizationsResource(BaseResource):
             from_date: Start date filter (YYYY-MM-DD)
             page: Page number for pagination
             per_page: Items per page
+            access_role: owner|collaborator|admin|member. When omitted
+                admin-api applies its default (`owner`), which scopes
+                the response to the org's designated owner rather than
+                the org as a whole. Pass `collaborator` for org-wide
+                metrics.
+            **kwargs: Additional query params forwarded to admin-api.
 
         Returns:
             Flow status metrics
         """
         path = f"{self._path}/{org_id}/flows/status_metrics"
-        params = {}
+        params = dict(kwargs)
+        if access_role is not None:
+            params["access_role"] = access_role
         if from_date is not None:
             params["from"] = from_date
         if page is not None:

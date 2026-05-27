@@ -291,3 +291,44 @@ class TestOrganizationsResource:
         assert last_request["method"] == "GET"
         assert f"/orgs/{org_id}/data_sources/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
+
+    def test_get_flow_status_metrics_defaults(self, mock_client):
+        """Defaults send no query params and hit /orgs/<id>/flows/status_metrics."""
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"total": 0}
+        )
+
+        result = mock_client.organizations.get_flow_status_metrics(org_id)
+
+        assert result == {"total": 0}
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "GET"
+        assert f"/orgs/{org_id}/flows/status_metrics" in last_request["url"]
+        assert last_request["params"] == {}
+
+    def test_get_flow_status_metrics_with_access_role_and_kwargs(self, mock_client):
+        """access_role and **kwargs are forwarded as query params."""
+        org_id = 123
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/flows/status_metrics", {"total": 7}
+        )
+
+        result = mock_client.organizations.get_flow_status_metrics(
+            org_id,
+            from_date="2026-01-01",
+            page=2,
+            per_page=50,
+            access_role="collaborator",
+            owner_id=99,
+        )
+
+        assert result == {"total": 7}
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["params"] == {
+            "from": "2026-01-01",
+            "page": 2,
+            "per_page": 50,
+            "access_role": "collaborator",
+            "owner_id": 99,
+        }
