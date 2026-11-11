@@ -23,7 +23,9 @@ Methods:
 - `delete_config(self, gen_ai_config_id: int) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/genai.py:49`
 - `delete_org_setting(self, gen_ai_org_setting_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/genai.py:77`
+  - Source: `nexla_sdk/resources/genai.py:86`
+- `delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/genai.py:91`
 - `get_config(self, gen_ai_config_id: int) -> nexla_sdk.models.genai.responses.GenAiConfig`
   - Source: `nexla_sdk/resources/genai.py:34`
 - `get_org_setting(self, gen_ai_org_setting_id: int) -> nexla_sdk.models.genai.responses.GenAiOrgSetting`
@@ -33,7 +35,9 @@ Methods:
 - `list_org_settings(self, org_id: int = None, all: bool = False) -> List[nexla_sdk.models.genai.responses.GenAiOrgSetting]`
   - Source: `nexla_sdk/resources/genai.py:55`
 - `show_active_config(self, gen_ai_usage: str) -> nexla_sdk.models.genai.responses.ActiveConfigView`
-  - Source: `nexla_sdk/resources/genai.py:82`
+  - Source: `nexla_sdk/resources/genai.py:94`
 - `update_config(self, gen_ai_config_id: int, payload: nexla_sdk.models.genai.requests.GenAiConfigPayload) -> nexla_sdk.models.genai.responses.GenAiConfig`
   - Source: `nexla_sdk/resources/genai.py:40`
+- `update_org_setting(self, gen_ai_org_setting_id: int, payload: nexla_sdk.models.genai.requests.GenAiOrgSettingPayload) -> nexla_sdk.models.genai.responses.GenAiOrgSetting`
+  - Source: `nexla_sdk/resources/genai.py:77`
 

@@ -12,7 +12,7 @@ Nexla API client
 
 ### NexlaClient
 
-Defined in `nexla_sdk/client.py:52`
+Defined in `nexla_sdk/client.py:82`
 
 Client for the Nexla API
 
@@ -45,18 +45,18 @@ Note:
 Methods:
 
 - `create_webhook_client(self, api_key: str) -> nexla_sdk.resources.webhooks.WebhooksResource`
-  - Source: `nexla_sdk/client.py:243`
+  - Source: `nexla_sdk/client.py:311`
   - Create a webhook client for sending data to Nexla webhooks.
 - `get_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:193`
+  - Source: `nexla_sdk/client.py:261`
   - Get a valid access token.
 - `logout(self) -> None`
-  - Source: `nexla_sdk/client.py:235`
+  - Source: `nexla_sdk/client.py:303`
   - Logout current session and invalidate token.
 - `refresh_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:215`
+  - Source: `nexla_sdk/client.py:283`
   - Obtain a fresh token and return it.
 - `request(self, method: str, path: str, **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/client.py:316`
+  - Source: `nexla_sdk/client.py:384`
   - Send a request to the Nexla API
 

@@ -56,6 +56,34 @@ class CredentialsResource(BaseResource):
 
         return super().list(**params)
 
+    def list_all(self, **params) -> List[Credential]:
+        """List all credentials (admin only)."""
+        response = self._make_request("GET", f"{self._path}/all", params=params)
+        return self._parse_response(response)
+
+    def list_public(self, **params) -> List[Credential]:
+        response = self._make_request("GET", f"{self._path}/public", params=params)
+        return self._parse_response(response)
+
+    def list_accessible(self, **params) -> List[Credential]:
+        return super().list_accessible(**params)
+
+    def credentials_schema(self, source_type: Optional[str] = None) -> Dict[str, Any]:
+        path = f"{self._path}/format"
+        if source_type:
+            path = f"{path}/{source_type}"
+        return self._make_request("GET", path)
+
+    def db_data_types(self, source_type: str) -> Dict[str, Any]:
+        path = f"{self._path}/db_data_types/{source_type}"
+        return self._make_request("GET", path)
+
+    def search(self, filters: Dict[str, Any], **params) -> List[Credential]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[Credential]:
+        return super().search_tags(tags, **params)
+
     def get(self, credential_id: int, expand: bool = False) -> Credential:
         """
         Get single credential by ID.
@@ -152,6 +180,56 @@ class CredentialsResource(BaseResource):
         else:
             return response
 
+    def probe_list_buckets(self, credential_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/list"
+        return self._make_request("GET", path)
+
+    def probe_summary(self, credential_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/summary"
+        return self._make_request("GET", path)
+
+    def probe_list_files(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/buckets"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_tree_request(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/tree"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_read_file(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/files"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_detect_schemas(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/schemas"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_read_sample(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/sample"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_file_download(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/file/download"
+        return self._make_request("POST", path, json=payload)
+
+    def probe_search_path(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/probe/search_path"
+        return self._make_request("POST", path, json=payload)
+
     def probe_tree(
         self,
         credential_id: int,
@@ -207,3 +285,23 @@ class CredentialsResource(BaseResource):
             "POST", path, json=request.to_dict(), params=params
         )
         return ProbeSampleResponse(**response)
+
+    def refresh(self, credential_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/refresh"
+        return self._make_request("PUT", path)
+
+    def usage(self, credential_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/usage"
+        return self._make_request("GET", path)
+
+    def intent(
+        self, credential_id: int, payload: Dict[str, Any], method: str = "PUT"
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/intent"
+        return self._make_request(method.upper(), path, json=payload)
+
+    def migrate_iceberg(
+        self, credential_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{credential_id}/migrate/iceberg"
+        return self._make_request("POST", path, json=payload)

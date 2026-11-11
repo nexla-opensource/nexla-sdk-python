@@ -10,20 +10,43 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DocContainer
 
-Defined in `nexla_sdk/models/doc_containers/responses.py:6`
+Defined in `nexla_sdk/models/doc_containers/responses.py:10`
 
-Base model class with Pydantic functionality and Nexla API compatibility.
-
-Features:
-- Automatically ignores unknown fields from API responses
-- Supports both camelCase and snake_case field names
-- Handles datetime parsing automatically
-- Provides JSON serialization methods
-- Validates data types automatically
-- Easy logging and printing support
+Documentation container attached to a Nexla resource (e.g. a nexset).
 
 Fields:
 
 - `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
 - `name`: `Optional`
+- `description`: `Optional`
+- `doc_type`: `Optional`
+- `public`: `Optional`
+- `repo_type`: `Optional`
+- `repo_config`: `Optional`
+- `text`: `Optional`
+- `access_roles`: `List`
+- `tags`: `List`
+- `copied_from_id`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### DocContainerInput
+
+Defined in `nexla_sdk/models/doc_containers/requests.py:10`
+
+Writable fields for creating or replacing a documentation entry.
+
+Server-owned and read-only fields (``id``, ``owner``, ``org``,
+``public``, ``tags``, ``created_at`` etc.) are silently ignored on
+construction so a full ``DocContainer`` response can be round-tripped
+through this model to drop fields the API does not accept on input.
+
+Fields:
+
+- `name`: `str`
+- `description`: `Optional`
+- `doc_type`: `str`
+- `text`: `str`
 

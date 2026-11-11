@@ -1,0 +1,70 @@
+---
+id: nexla_sdk.models.flow_triggers
+title: nexla_sdk.models.flow_triggers
+slug: /api/python/modules/nexla_sdk/models/flow_triggers
+description: API for nexla_sdk.models.flow_triggers
+keywords: [Nexla, SDK, Python, API]
+---
+
+Flow triggers models.
+
+## Classes
+
+### FlowTrigger
+
+Defined in `nexla_sdk/models/flow_triggers/responses.py:10`
+
+Flow trigger response model.
+
+Flow triggers define orchestration events that trigger one flow
+based on events from another flow. For example, triggering a
+data source read when a data sink write completes.
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `status`: `str`
+- `triggering_event_type`: `str`
+- `triggering_origin_node_id`: `Optional`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggered_event_type`: `str`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+### FlowTriggerCreate
+
+Defined in `nexla_sdk/models/flow_triggers/requests.py:8`
+
+Request model for creating a flow trigger.
+
+Flow triggers define when one flow should trigger based on events
+from another flow. The triggering and triggered resources must be
+specified, along with the event types.
+
+Event Types:
+    - DATA_SINK_WRITE_DONE: Triggered when a data sink finishes writing
+    - DATA_SOURCE_READ_START: Triggered when a data source starts reading
+    - DATA_SOURCE_READ_DONE: Triggered when a data source finishes reading
+
+Fields:
+
+- `triggering_event_type`: `str`
+- `triggered_event_type`: `str`
+- `triggering_flow_node_id`: `Optional`
+- `triggering_resource_id`: `Optional`
+- `triggering_resource_type`: `Optional`
+- `data_sink_id`: `Optional`
+- `triggered_origin_node_id`: `Optional`
+- `triggered_resource_id`: `Optional`
+- `triggered_resource_type`: `Optional`
+- `data_source_id`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+

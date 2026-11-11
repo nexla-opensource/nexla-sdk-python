@@ -1,0 +1,62 @@
+---
+id: nexla_sdk.models.users.credits
+title: nexla_sdk.models.users.credits
+slug: /api/python/modules/nexla_sdk/models/users/credits
+description: API for nexla_sdk.models.users.credits
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### UserCredit
+
+Defined in `nexla_sdk/models/users/credits.py:7`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `grant_type`: `Optional`
+- `credits_available`: `Optional`
+- `credits`: `Optional`
+- `credits_used`: `Optional`
+- `credits_monthly`: `Optional`
+- `credits_used_in_month`: `Optional`
+- `granted_at`: `Optional`
+- `refreshed_at`: `Optional`
+- `expires_at`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+### UserCreditCreate
+
+Defined in `nexla_sdk/models/users/credits.py:24`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `grant_type`: `Optional`
+- `credits`: `Optional`
+- `credits_monthly`: `Optional`
+- `expires_at`: `Optional`
+

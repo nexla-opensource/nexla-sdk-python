@@ -10,13 +10,47 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataSchemasResource
 
-Defined in `nexla_sdk/resources/data_schemas.py:7`
+Defined in `nexla_sdk/resources/data_schemas.py:8`
 
-Resource for data schemas (accessors + audit log only).
+Resource for data schemas.
 
 Methods:
 
+- `copy(self, schema_id: int, payload: Optional[Dict[str, Any]] = None) -> nexla_sdk.models.data_schemas.responses.DataSchema`
+  - Source: `nexla_sdk/resources/data_schemas.py:56`
+  - Copy resource.
+- `create(self, data: Dict[str, Any]) -> nexla_sdk.models.data_schemas.responses.DataSchema`
+  - Source: `nexla_sdk/resources/data_schemas.py:33`
+  - Create new resource.
+- `delete(self, schema_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_schemas.py:39`
+  - Delete resource.
+- `get(self, schema_id: int, expand: bool = False) -> nexla_sdk.models.data_schemas.responses.DataSchema`
+  - Source: `nexla_sdk/resources/data_schemas.py:30`
+  - Get single resource by ID.
 - `get_audit_log(self, schema_id: int, **params) -> List[nexla_sdk.models.common.LogEntry]`
-  - Source: `nexla_sdk/resources/data_schemas.py:15`
+  - Source: `nexla_sdk/resources/data_schemas.py:61`
   - Get audit log for resource.
+- `get_metrics(self, schema_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_schemas.py:42`
+- `list(self, **kwargs) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:16`
+  - List resources with optional filters.
+- `list_accessible(self, **params) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:27`
+  - List resources accessible to the current user (access_insights).
+- `list_all(self, **params) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:19`
+- `list_public(self, **params) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:23`
+  - List publicly available resources for this type.
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:50`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.data_schemas.responses.DataSchema]`
+  - Source: `nexla_sdk/resources/data_schemas.py:53`
+  - Search resources by tags.
+- `update(self, schema_id: int, data: Dict[str, Any]) -> nexla_sdk.models.data_schemas.responses.DataSchema`
+  - Source: `nexla_sdk/resources/data_schemas.py:36`
+  - Update resource.
 

@@ -215,7 +215,7 @@ class TestNexsetsResource:
         # Verify parameters
         request = mock_client.http_client.get_last_request()
         assert request["params"].get("count") == 5
-        assert request["params"].get("include_metadata") == True
+        assert request["params"].get("include_metadata")
 
     def test_get_samples_with_live_option(self, mock_client):
         """Test getting live samples."""
@@ -235,7 +235,7 @@ class TestNexsetsResource:
             "GET", f"/data_sets/{nexset_id}/samples"
         )
         request = mock_client.http_client.get_last_request()
-        assert request["params"].get("live") == True
+        assert request["params"].get("live")
 
     def test_copy_nexset(self, mock_client):
         """Test copying nexset."""
@@ -372,9 +372,7 @@ class TestNexsetsResource:
         """Test listing docs without the expand flag."""
         # Arrange
         nexset_id = 419706
-        mock_client.http_client.add_response(
-            f"/data_sets/{nexset_id}/docs", []
-        )
+        mock_client.http_client.add_response(f"/data_sets/{nexset_id}/docs", [])
 
         # Act
         docs = mock_client.nexsets.list_docs(nexset_id, expand=False)
@@ -426,9 +424,7 @@ class TestNexsetsResource:
         """Test update_docs accepts plain dicts (e.g. from MCP layer)."""
         # Arrange
         nexset_id = 419706
-        mock_client.http_client.add_response(
-            f"/data_sets/{nexset_id}/docs", []
-        )
+        mock_client.http_client.add_response(f"/data_sets/{nexset_id}/docs", [])
 
         # Act — pass a plain dict, not a DocContainerInput
         mock_client.nexsets.update_docs(
@@ -469,12 +465,8 @@ class TestNexsetsResource:
             )
         ]
 
-        mock_client.http_client.add_response(
-            f"/data_sets/{src_id}/docs", source_docs
-        )
-        mock_client.http_client.add_response(
-            f"/data_sets/{dst_id}/docs", dest_docs
-        )
+        mock_client.http_client.add_response(f"/data_sets/{src_id}/docs", source_docs)
+        mock_client.http_client.add_response(f"/data_sets/{dst_id}/docs", dest_docs)
 
         # Act
         result = mock_client.nexsets.copy_docs(src_id, dst_id)
@@ -527,9 +519,7 @@ class TestNexsetsResource:
         # Arrange
         src_id = 419706
         dst_id = 419800
-        mock_client.http_client.add_response(
-            f"/data_sets/{src_id}/docs", []
-        )
+        mock_client.http_client.add_response(f"/data_sets/{src_id}/docs", [])
 
         # Act
         result = mock_client.nexsets.copy_docs(src_id, dst_id)

@@ -20,8 +20,14 @@ Methods:
   - Source: `nexla_sdk/resources/base_resource.py:289`
   - Activate resource.
 - `add_accessors(self, resource_id: int, accessors: List[Union[nexla_sdk.models.access.requests.UserAccessorRequest, nexla_sdk.models.access.requests.TeamAccessorRequest, nexla_sdk.models.access.requests.OrgAccessorRequest]]) -> List[Union[nexla_sdk.models.access.responses.UserAccessorResponse, nexla_sdk.models.access.responses.TeamAccessorResponse, nexla_sdk.models.access.responses.OrgAccessorResponse]]`
-  - Source: `nexla_sdk/resources/base_resource.py:398`
+  - Source: `nexla_sdk/resources/base_resource.py:636`
   - Add access control rules.
+- `add_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:465`
+  - Add documentation entries for a resource.
+- `add_tags(self, resource_id: int, tags: List[str]) -> List[str]`
+  - Source: `nexla_sdk/resources/base_resource.py:549`
+  - Add tags to a resource.
 - `copy(self, resource_id: int, options: Union[Dict[str, Any], Any, NoneType] = None) -> ~T`
   - Source: `nexla_sdk/resources/base_resource.py:321`
   - Copy resource.
@@ -32,29 +38,71 @@ Methods:
   - Source: `nexla_sdk/resources/base_resource.py:274`
   - Delete resource.
 - `delete_accessors(self, resource_id: int, accessors: Optional[List[Union[nexla_sdk.models.access.requests.UserAccessorRequest, nexla_sdk.models.access.requests.TeamAccessorRequest, nexla_sdk.models.access.requests.OrgAccessorRequest]]] = None) -> List[Union[nexla_sdk.models.access.responses.UserAccessorResponse, nexla_sdk.models.access.responses.TeamAccessorResponse, nexla_sdk.models.access.responses.OrgAccessorResponse]]`
-  - Source: `nexla_sdk/resources/base_resource.py:450`
+  - Source: `nexla_sdk/resources/base_resource.py:688`
   - Delete access control rules.
 - `get(self, resource_id: int, expand: bool = False) -> ~T`
   - Source: `nexla_sdk/resources/base_resource.py:199`
   - Get single resource by ID.
-- `get_accessors(self, resource_id: int) -> List[Union[nexla_sdk.models.access.responses.UserAccessorResponse, nexla_sdk.models.access.responses.TeamAccessorResponse, nexla_sdk.models.access.responses.OrgAccessorResponse]]`
+- `get_access_insights(self, resource_id: int, **params) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/base_resource.py:380`
+  - Explain why the current user can access a resource.
+- `get_accessors(self, resource_id: int) -> List[Union[nexla_sdk.models.access.responses.UserAccessorResponse, nexla_sdk.models.access.responses.TeamAccessorResponse, nexla_sdk.models.access.responses.OrgAccessorResponse]]`
+  - Source: `nexla_sdk/resources/base_resource.py:618`
   - Get access control rules for resource.
 - `get_audit_log(self, resource_id: int, from_date: Optional[str] = None, to_date: Optional[str] = None, event_filter: Optional[str] = None, change_filter: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/base_resource.py:339`
+  - Source: `nexla_sdk/resources/base_resource.py:577`
   - Get audit log for resource.
+- `get_control_event(self, resource_id: int, event: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:508`
+  - Get control event info for a resource.
+- `get_docs(self, resource_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:438`
+  - Get documentation entries for a resource.
+- `get_referenced_by(self, resource_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:495`
+  - Get resources that reference this resource.
+- `get_tags(self, resource_id: int) -> List[str]`
+  - Source: `nexla_sdk/resources/base_resource.py:522`
+  - Get tags for a resource.
+- `get_users_access_insights(self, resource_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:394`
+  - Get access insights for all users with access to a resource.
 - `list(self, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **params) -> List[~T]`
   - Source: `nexla_sdk/resources/base_resource.py:130`
   - List resources with optional filters.
+- `list_accessible(self, **params) -> List[~T]`
+  - Source: `nexla_sdk/resources/base_resource.py:366`
+  - List resources accessible to the current user (access_insights).
+- `list_public(self, page: Optional[int] = None, per_page: Optional[int] = None, **params) -> List[~T]`
+  - Source: `nexla_sdk/resources/base_resource.py:339`
+  - List publicly available resources for this type.
 - `paginate(self, per_page: int = 20, access_role: Optional[str] = None, **params) -> nexla_sdk.utils.pagination.Paginator[~T]`
   - Source: `nexla_sdk/resources/base_resource.py:181`
   - Get paginator for iterating through resources.
 - `pause(self, resource_id: int) -> ~T`
   - Source: `nexla_sdk/resources/base_resource.py:305`
   - Pause resource.
+- `remove_docs(self, resource_id: int, docs: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:479`
+  - Remove documentation entries for a resource.
+- `remove_tags(self, resource_id: int, tags: List[str]) -> List[str]`
+  - Source: `nexla_sdk/resources/base_resource.py:563`
+  - Remove tags from a resource.
 - `replace_accessors(self, resource_id: int, accessors: List[Union[nexla_sdk.models.access.requests.UserAccessorRequest, nexla_sdk.models.access.requests.TeamAccessorRequest, nexla_sdk.models.access.requests.OrgAccessorRequest]]) -> List[Union[nexla_sdk.models.access.responses.UserAccessorResponse, nexla_sdk.models.access.responses.TeamAccessorResponse, nexla_sdk.models.access.responses.OrgAccessorResponse]]`
-  - Source: `nexla_sdk/resources/base_resource.py:424`
+  - Source: `nexla_sdk/resources/base_resource.py:662`
   - Replace all access control rules.
+- `search(self, filters: Dict[str, Any], **params) -> List[~T]`
+  - Source: `nexla_sdk/resources/base_resource.py:408`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params) -> List[~T]`
+  - Source: `nexla_sdk/resources/base_resource.py:423`
+  - Search resources by tags.
+- `set_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/base_resource.py:451`
+  - Replace documentation entries for a resource.
+- `set_tags(self, resource_id: int, tags: List[str]) -> List[str]`
+  - Source: `nexla_sdk/resources/base_resource.py:535`
+  - Replace all tags for a resource.
 - `update(self, resource_id: int, data: Union[Dict[str, Any], Any]) -> ~T`
   - Source: `nexla_sdk/resources/base_resource.py:252`
   - Update resource.

@@ -1,0 +1,70 @@
+---
+id: nexla_sdk.resources.api_keys
+title: nexla_sdk.resources.api_keys
+slug: /api/python/modules/nexla_sdk/resources/api_keys
+description: API for nexla_sdk.resources.api_keys
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing API keys (read-only).
+
+## Classes
+
+### ApiKeysResource
+
+Defined in `nexla_sdk/resources/api_keys.py:9`
+
+Resource for API keys (read-only access).
+
+API keys provide programmatic access to specific resources like
+datasets, data sources, data sinks, and users.
+
+Note:
+    This resource only supports ``list()``, ``list_grouped()``,
+    ``get()``, and ``search()``. Write operations inherited from
+    ``BaseResource`` (e.g. ``create``, ``update``, ``delete``) are
+    not supported by the backend and will raise ``NotImplementedError``.
+
+Examples:
+    # List all API keys (grouped by type)
+    all_keys = client.api_keys.list_grouped()
+
+    # Get a specific API key
+    key = client.api_keys.get(123)
+
+    # Search API keys
+    keys = client.api_keys.search(\{"scope": "read"\})
+
+Methods:
+
+- `activate(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:149`
+  - Activate resource.
+- `copy(self, resource_id=None, options=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:146`
+  - Copy resource.
+- `create(self, data=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:137`
+  - Create new resource.
+- `delete(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:143`
+  - Delete resource.
+- `get(self, api_key_id: Union[int, str]) -> nexla_sdk.models.api_keys.responses.ApiKey`
+  - Source: `nexla_sdk/resources/api_keys.py:99`
+  - Get API key by ID or key value.
+- `list(self, access_role: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.api_keys.responses.ApiKey]`
+  - Source: `nexla_sdk/resources/api_keys.py:47`
+  - List API keys.
+- `list_grouped(self, page: Optional[int] = None, per_page: Optional[int] = None) -> nexla_sdk.models.api_keys.responses.ApiKeysIndex`
+  - Source: `nexla_sdk/resources/api_keys.py:74`
+  - List API keys grouped by resource type.
+- `pause(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:152`
+  - Pause resource.
+- `search(self, filters: Dict[str, Any], page: Optional[int] = None, per_page: Optional[int] = None) -> List[nexla_sdk.models.api_keys.responses.ApiKey]`
+  - Source: `nexla_sdk/resources/api_keys.py:112`
+  - Search API keys with filters.
+- `update(self, resource_id=None, data=None)`
+  - Source: `nexla_sdk/resources/api_keys.py:140`
+  - Update resource.
+

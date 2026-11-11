@@ -10,7 +10,7 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataMapInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:25`
+Defined in `nexla_sdk/models/destinations/responses.py:28`
 
 Basic data map information for destination.
 
@@ -27,7 +27,7 @@ Fields:
 
 ### DataSetInfo
 
-Defined in `nexla_sdk/models/destinations/responses.py:12`
+Defined in `nexla_sdk/models/destinations/responses.py:15`
 
 Basic dataset information for destination.
 
@@ -44,7 +44,7 @@ Fields:
 
 ### Destination
 
-Defined in `nexla_sdk/models/destinations/responses.py:38`
+Defined in `nexla_sdk/models/destinations/responses.py:41`
 
 Destination (data sink) response model.
 
@@ -53,7 +53,7 @@ Fields:
 - `id`: `int`
 - `name`: `str`
 - `status`: `str`
-- `sink_type`: `str`
+- `sink_type`: `Union`
 - `connector_type`: `Optional`
 - `owner`: `Optional`
 - `org`: `Optional`

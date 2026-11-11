@@ -56,3 +56,19 @@ class TransformsResource(BaseResource):
         path = f"{self._path}/public"
         response = self._make_request("GET", path)
         return self._parse_response(response)
+
+    def search(self, filters: Dict[str, Any], **params) -> List[Transform]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[Transform]:
+        return super().search_tags(tags, **params)
+
+    def transform(self, transform_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{transform_id}/transform"
+        return self._make_request("POST", path, json=payload)
+
+    def transform_features(self) -> Dict[str, Any]:
+        return self._make_request("GET", "/transform/features")
+
+    def transform_data(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", "/transform", json=payload)

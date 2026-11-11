@@ -1,0 +1,34 @@
+---
+id: nexla_sdk.resources.resource_parameters
+title: nexla_sdk.resources.resource_parameters
+slug: /api/python/modules/nexla_sdk/resources/resource_parameters
+description: API for nexla_sdk.resources.resource_parameters
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### ResourceParametersResource
+
+Defined in `nexla_sdk/resources/resource_parameters.py:11`
+
+Resource for managing resource parameters.
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.resource_parameters.requests.ResourceParameterCreate, Dict[str, Any]]) -> nexla_sdk.models.resource_parameters.responses.ResourceParameter`
+  - Source: `nexla_sdk/resources/resource_parameters.py:25`
+  - Create new resource.
+- `delete(self, resource_parameter_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/resource_parameters.py:37`
+  - Delete resource.
+- `get(self, resource_parameter_id: int) -> nexla_sdk.models.resource_parameters.responses.ResourceParameter`
+  - Source: `nexla_sdk/resources/resource_parameters.py:22`
+  - Get single resource by ID.
+- `list(self, **kwargs) -> List[nexla_sdk.models.resource_parameters.responses.ResourceParameter]`
+  - Source: `nexla_sdk/resources/resource_parameters.py:19`
+  - List resources with optional filters.
+- `update(self, resource_parameter_id: int, data: Union[nexla_sdk.models.resource_parameters.requests.ResourceParameterUpdate, Dict[str, Any]]) -> nexla_sdk.models.resource_parameters.responses.ResourceParameter`
+  - Source: `nexla_sdk/resources/resource_parameters.py:30`
+  - Update resource.
+

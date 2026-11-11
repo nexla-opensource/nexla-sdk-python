@@ -17,29 +17,45 @@ Resource for marketplace domains and items.
 Methods:
 
 - `add_domain_custodians(self, domain_id: int, payload: nexla_sdk.models.marketplace.requests.CustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/marketplace.py:91`
+  - Source: `nexla_sdk/resources/marketplace.py:136`
 - `create_domain(self, data: nexla_sdk.models.marketplace.requests.MarketplaceDomainCreate) -> nexla_sdk.models.marketplace.responses.MarketplaceDomain`
   - Source: `nexla_sdk/resources/marketplace.py:53`
 - `create_domain_item(self, domain_id: int, data: nexla_sdk.models.marketplace.requests.MarketplaceDomainsItemCreate) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem]`
-  - Source: `nexla_sdk/resources/marketplace.py:66`
+  - Source: `nexla_sdk/resources/marketplace.py:71`
 - `create_domains(self, data: nexla_sdk.models.marketplace.requests.MarketplaceDomainCreate) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomain]`
   - Source: `nexla_sdk/resources/marketplace.py:29`
 - `delete_domain(self, domain_id: int) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/marketplace.py:58`
+- `delist_domain_item(self, domain_id: int, item_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/marketplace.py:94`
 - `get_domain(self, domain_id: int) -> nexla_sdk.models.marketplace.responses.MarketplaceDomain`
   - Source: `nexla_sdk/resources/marketplace.py:40`
+- `get_domain_audit_log(self, domain_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/marketplace.py:61`
+- `get_domain_item(self, domain_id: int, item_id: int) -> nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem`
+  - Source: `nexla_sdk/resources/marketplace.py:80`
 - `get_domains_for_org(self, org_id: int) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomain]`
   - Source: `nexla_sdk/resources/marketplace.py:34`
+- `get_item(self, item_id: int) -> nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem`
+  - Source: `nexla_sdk/resources/marketplace.py:110`
 - `list_domain_custodians(self, domain_id: int) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/marketplace.py:76`
+  - Source: `nexla_sdk/resources/marketplace.py:121`
 - `list_domain_items(self, domain_id: int) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem]`
-  - Source: `nexla_sdk/resources/marketplace.py:62`
+  - Source: `nexla_sdk/resources/marketplace.py:67`
 - `list_domains(self) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomain]`
   - Source: `nexla_sdk/resources/marketplace.py:25`
+- `list_items(self) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem]`
+  - Source: `nexla_sdk/resources/marketplace.py:106`
 - `remove_domain_custodians(self, domain_id: int, payload: nexla_sdk.models.marketplace.requests.CustodiansPayload) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/marketplace.py:100`
+  - Source: `nexla_sdk/resources/marketplace.py:145`
+- `request_item_access(self, domain_id: int, item_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/marketplace.py:99`
+- `search_domain_items(self, domain_id: int, payload: Dict[str, Any]) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem]`
+  - Source: `nexla_sdk/resources/marketplace.py:86`
+- `search_items(self, payload: Dict[str, Any]) -> List[nexla_sdk.models.marketplace.responses.MarketplaceDomainsItem]`
+  - Source: `nexla_sdk/resources/marketplace.py:114`
 - `update_domain(self, domain_id: int, data: nexla_sdk.models.marketplace.requests.MarketplaceDomainCreate) -> nexla_sdk.models.marketplace.responses.MarketplaceDomain`
   - Source: `nexla_sdk/resources/marketplace.py:44`
 - `update_domain_custodians(self, domain_id: int, payload: nexla_sdk.models.marketplace.requests.CustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/marketplace.py:82`
+  - Source: `nexla_sdk/resources/marketplace.py:127`
 

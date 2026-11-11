@@ -1,0 +1,69 @@
+---
+id: nexla_sdk.resources.clusters
+title: nexla_sdk.resources.clusters
+slug: /api/python/modules/nexla_sdk/resources/clusters
+description: API for nexla_sdk.resources.clusters
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing clusters.
+
+## Classes
+
+### ClustersResource
+
+Defined in `nexla_sdk/resources/clusters.py:10`
+
+Resource for managing clusters.
+
+Clusters define infrastructure endpoints for processing data flows.
+This resource requires super user access for most operations.
+
+Examples:
+    # List clusters
+    clusters = client.clusters.list()
+
+    # Get a specific cluster
+    cluster = client.clusters.get(123)
+
+    # Create a cluster
+    cluster = client.clusters.create(ClusterCreate(
+        org_id=1,
+        name="Production Cluster",
+        region="us-west-2",
+        provider="aws"
+    ))
+
+    # Activate a cluster
+    client.clusters.activate(cluster.id)
+
+    # Set as default cluster
+    client.clusters.set_default(cluster.id)
+
+Methods:
+
+- `activate(self, cluster_id: int) -> nexla_sdk.models.clusters.responses.Cluster`
+  - Source: `nexla_sdk/resources/clusters.py:117`
+  - Activate a cluster.
+- `create(self, data: Union[nexla_sdk.models.clusters.requests.ClusterCreate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.Cluster`
+  - Source: `nexla_sdk/resources/clusters.py:81`
+  - Create a new cluster.
+- `delete(self, cluster_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/clusters.py:106`
+  - Delete a cluster.
+- `delete_endpoint(self, cluster_id: int, endpoint_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/clusters.py:144`
+  - Delete an endpoint from a cluster.
+- `get(self, cluster_id: int, expand: bool = False) -> nexla_sdk.models.clusters.responses.Cluster`
+  - Source: `nexla_sdk/resources/clusters.py:69`
+  - Get cluster by ID.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **kwargs) -> List[nexla_sdk.models.clusters.responses.Cluster]`
+  - Source: `nexla_sdk/resources/clusters.py:48`
+  - List clusters.
+- `set_default(self, cluster_id: int) -> nexla_sdk.models.clusters.responses.Cluster`
+  - Source: `nexla_sdk/resources/clusters.py:128`
+  - Set a cluster as the default.
+- `update(self, cluster_id: int, data: Union[nexla_sdk.models.clusters.requests.ClusterUpdate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.Cluster`
+  - Source: `nexla_sdk/resources/clusters.py:92`
+  - Update a cluster.
+

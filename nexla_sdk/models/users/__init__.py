@@ -1,3 +1,4 @@
+from nexla_sdk.models.users.credits import UserCredit, UserCreditCreate
 from nexla_sdk.models.users.requests import UserCreate, UserUpdate
 from nexla_sdk.models.users.responses import (
     AccountSummary,
@@ -16,6 +17,8 @@ __all__ = [
     "DefaultOrg",
     "OrgMembership",
     "AccountSummary",
+    "UserCredit",
+    "UserCreditCreate",
     # Requests
     "UserCreate",
     "UserUpdate",

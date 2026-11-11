@@ -8,26 +8,9 @@ keywords: [Nexla, SDK, Python, API]
 
 ## Classes
 
-### DataSetBrief
-
-Defined in `nexla_sdk/models/sources/responses.py:11`
-
-Brief dataset information.
-
-Fields:
-
-- `id`: `int`
-- `owner_id`: `int`
-- `org_id`: `int`
-- `name`: `Optional`
-- `description`: `Optional`
-- `version`: `Optional`
-- `created_at`: `Optional`
-- `updated_at`: `Optional`
-
 ### FlowType
 
-Defined in `nexla_sdk/models/sources/enums.py:72`
+Defined in `nexla_sdk/models/sources/enums.py:108`
 
 Flow processing types.
 
@@ -39,7 +22,7 @@ Members:
 
 ### IngestMethod
 
-Defined in `nexla_sdk/models/sources/enums.py:62`
+Defined in `nexla_sdk/models/sources/enums.py:98`
 
 Data ingestion methods.
 
@@ -50,86 +33,6 @@ Members:
 - `REAL_TIME` = `REAL_TIME`
 - `SCHEDULED` = `SCHEDULED`
 - `POLL` = `POLL`
-
-### RunInfo
-
-Defined in `nexla_sdk/models/sources/responses.py:24`
-
-Run information.
-
-Fields:
-
-- `id`: `int`
-- `created_at`: `datetime`
-
-### Source
-
-Defined in `nexla_sdk/models/sources/responses.py:31`
-
-Data source response model.
-
-Fields:
-
-- `id`: `int`
-- `name`: `str`
-- `status`: `str`
-- `source_type`: `str`
-- `connector_type`: `Optional`
-- `owner`: `Optional`
-- `org`: `Optional`
-- `access_roles`: `Optional`
-- `managed`: `Optional`
-- `auto_generated`: `Optional`
-- `connector`: `Optional`
-- `description`: `Optional`
-- `ingest_method`: `Optional`
-- `source_format`: `Optional`
-- `source_config`: `Optional`
-- `poll_schedule`: `Optional`
-- `code_container_id`: `Optional`
-- `data_credentials_id`: `Optional`
-- `data_credentials`: `Optional`
-- `data_sets`: `List`
-- `api_keys`: `List`
-- `run_ids`: `List`
-- `copied_from_id`: `Optional`
-- `flow_type`: `Optional`
-- `has_template`: `Optional`
-- `vendor_endpoint`: `Optional`
-- `vendor`: `Optional`
-- `tags`: `List`
-- `created_at`: `Optional`
-- `updated_at`: `Optional`
-
-### SourceCopyOptions
-
-Defined in `nexla_sdk/models/sources/requests.py:34`
-
-Options for copying a source.
-
-Fields:
-
-- `reuse_data_credentials`: `bool`
-- `copy_access_controls`: `bool`
-- `owner_id`: `Optional`
-- `org_id`: `Optional`
-
-### SourceCreate
-
-Defined in `nexla_sdk/models/sources/requests.py:8`
-
-Request model for creating a source.
-
-Fields:
-
-- `name`: `str`
-- `source_type`: `str`
-- `data_credentials_id`: `Optional`
-- `description`: `Optional`
-- `source_config`: `Optional`
-- `vendor_endpoint_id`: `Optional`
-- `ingest_method`: `Optional`
-- `template_config`: `Optional`
 
 ### SourceStatus
 
@@ -156,42 +59,57 @@ Members:
 - `S3` = `s3`
 - `GCS` = `gcs`
 - `AZURE_BLB` = `azure_blb`
+- `AZURE_DATA_LAKE` = `azure_data_lake`
 - `FTP` = `ftp`
 - `DROPBOX` = `dropbox`
 - `BOX` = `box`
 - `GDRIVE` = `gdrive`
 - `SHAREPOINT` = `sharepoint`
+- `MIN_IO_S3` = `min_io_s3`
+- `WEBDAV` = `webdav`
 - `MYSQL` = `mysql`
 - `POSTGRES` = `postgres`
+- `SUPABASE` = `supabase`
 - `SQLSERVER` = `sqlserver`
 - `ORACLE` = `oracle`
+- `ORACLE_AUTONOMOUS` = `oracle_autonomous`
+- `AS400` = `as400`
+- `DB2` = `db2`
+- `SYBASE` = `sybase`
+- `HANA_JDBC` = `hana_jdbc`
+- `NETSUITE_JDBC` = `netsuite_jdbc`
 - `REDSHIFT` = `redshift`
 - `SNOWFLAKE` = `snowflake`
+- `SNOWFLAKE_DCR` = `snowflake_dcr`
 - `BIGQUERY` = `bigquery`
 - `DATABRICKS` = `databricks`
+- `AWS_ATHENA` = `aws_athena`
+- `AZURE_SYNAPSE` = `azure_synapse`
+- `FIREBOLT` = `firebolt`
+- `TERADATA` = `teradata`
+- `HIVE` = `hive`
+- `CLOUDSQL_MYSQL` = `cloudsql_mysql`
+- `CLOUDSQL_POSTGRES` = `cloudsql_postgres`
+- `CLOUDSQL_SQLSERVER` = `cloudsql_sqlserver`
+- `GCP_ALLOYDB` = `gcp_alloydb`
+- `GCP_SPANNER` = `gcp_spanner`
+- `DELTA_LAKE_AZURE_BLB` = `delta_lake_azure_blb`
+- `DELTA_LAKE_AZURE_DATA_LAKE` = `delta_lake_azure_data_lake`
+- `DELTA_LAKE_S3` = `delta_lake_s3`
+- `S3_ICEBERG` = `s3_iceberg`
 - `MONGO` = `mongo`
 - `DYNAMODB` = `dynamodb`
 - `FIREBASE` = `firebase`
 - `KAFKA` = `kafka`
 - `CONFLUENT_KAFKA` = `confluent_kafka`
 - `GOOGLE_PUBSUB` = `google_pubsub`
+- `JMS` = `jms`
+- `TIBCO` = `tibco`
 - `REST` = `rest`
 - `SOAP` = `soap`
 - `NEXLA_REST` = `nexla_rest`
 - `FILE_UPLOAD` = `file_upload`
 - `EMAIL` = `email`
 - `NEXLA_MONITOR` = `nexla_monitor`
-
-### SourceUpdate
-
-Defined in `nexla_sdk/models/sources/requests.py:25`
-
-Request model for updating a source.
-
-Fields:
-
-- `name`: `Optional`
-- `description`: `Optional`
-- `source_config`: `Optional`
-- `data_credentials_id`: `Optional`
+- `PINECONE` = `pinecone`
 

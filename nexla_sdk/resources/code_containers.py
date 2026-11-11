@@ -73,3 +73,19 @@ class CodeContainersResource(BaseResource):
         path = f"{self._path}/public"
         response = self._make_request("GET", path)
         return self._parse_response(response)
+
+    def list_accessible(self, **params) -> List[CodeContainer]:
+        return super().list_accessible(**params)
+
+    def repo(self, code_container_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{code_container_id}/repo"
+        return self._make_request("GET", path)
+
+    def error_functions(self) -> Dict[str, Any]:
+        return self._make_request("GET", "/error_functions")
+
+    def search(self, filters: Dict[str, Any], **params) -> List[CodeContainer]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[CodeContainer]:
+        return super().search_tags(tags, **params)

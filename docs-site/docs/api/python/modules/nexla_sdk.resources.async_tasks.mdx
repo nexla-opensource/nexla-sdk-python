@@ -31,12 +31,12 @@ Methods:
 - `get(self, task_id: int) -> nexla_sdk.models.async_tasks.responses.AsyncTask`
   - Source: `nexla_sdk/resources/async_tasks.py:45`
   - Get single resource by ID.
-- `list(self) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
+- `list(self, **params) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
   - Source: `nexla_sdk/resources/async_tasks.py:16`
   - List asynchronous tasks.
 - `list_by_status(self, status: str) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
   - Source: `nexla_sdk/resources/async_tasks.py:32`
-- `list_of_type(self, task_type: str) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
+- `list_of_type(self, task_type: str, **params) -> List[nexla_sdk.models.async_tasks.responses.AsyncTask]`
   - Source: `nexla_sdk/resources/async_tasks.py:27`
 - `rerun(self, task_id: int) -> nexla_sdk.models.async_tasks.responses.AsyncTask`
   - Source: `nexla_sdk/resources/async_tasks.py:54`

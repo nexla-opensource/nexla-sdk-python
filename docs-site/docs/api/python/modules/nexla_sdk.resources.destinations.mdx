@@ -17,27 +17,132 @@ Resource for managing destinations (data sinks).
 Methods:
 
 - `activate(self, sink_id: int) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:94`
+  - Source: `nexla_sdk/resources/destinations.py:173`
   - Activate destination.
+- `activate_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:354`
 - `copy(self, sink_id: int, options: Optional[nexla_sdk.models.destinations.requests.DestinationCopyOptions] = None) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:118`
+  - Source: `nexla_sdk/resources/destinations.py:197`
   - Copy a destination.
 - `create(self, data: nexla_sdk.models.destinations.requests.DestinationCreate) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:54`
+  - Source: `nexla_sdk/resources/destinations.py:86`
   - Create new destination.
+- `create_api_key(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:340`
+- `create_dashboard_transforms(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:273`
+- `create_quarantine_settings(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:253`
 - `delete(self, sink_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/destinations.py:82`
+  - Source: `nexla_sdk/resources/destinations.py:114`
   - Delete destination.
+- `delete_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:366`
+- `delete_dashboard_transforms(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:285`
+- `delete_quarantine_settings(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:265`
+- `edit_flow_triggers(self, sink_id: int, payload: Dict[str, Any], mode: str, all_triggers: bool = False) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/destinations.py:309`
 - `get(self, sink_id: int, expand: bool = False) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:38`
+  - Source: `nexla_sdk/resources/destinations.py:70`
   - Get single destination by ID.
+- `get_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:336`
+- `get_dashboard_transforms(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:269`
+- `get_flow(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:126`
+- `get_flow_dashboard(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:129`
+- `get_flow_logs(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:144`
+- `get_flow_metrics(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:139`
+- `get_flow_status_metrics(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:134`
+- `get_metrics(self, sink_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:149`
+- `get_offset(self, sink_id: int, data_set_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:165`
+- `get_quarantine_aggregation(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:376`
+- `get_quarantine_offset(self, sink_id: int, data_set_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:157`
+- `get_quarantine_settings(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:249`
 - `list(self, **kwargs) -> List[nexla_sdk.models.destinations.responses.Destination]`
   - Source: `nexla_sdk/resources/destinations.py:20`
   - List destinations with optional filters.
+- `list_accessible(self, **params) -> List[nexla_sdk.models.destinations.responses.Destination]`
+  - Source: `nexla_sdk/resources/destinations.py:60`
+  - List resources accessible to the current user (access_insights).
+- `list_all(self, **params) -> List[nexla_sdk.models.destinations.responses.Destination]`
+  - Source: `nexla_sdk/resources/destinations.py:44`
+- `list_all_by_data_set(self, **params) -> List[nexla_sdk.models.destinations.responses.Destination]`
+  - Source: `nexla_sdk/resources/destinations.py:54`
+- `list_all_condensed(self, **params) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/destinations.py:48`
+- `list_all_ids(self, **params) -> List[int]`
+  - Source: `nexla_sdk/resources/destinations.py:51`
+- `list_api_keys(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:326`
+- `list_flow_triggers(self, sink_id: int) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/destinations.py:305`
 - `pause(self, sink_id: int) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:106`
+  - Source: `nexla_sdk/resources/destinations.py:185`
   - Pause destination.
+- `pause_all_api_keys(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:362`
+- `pause_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:358`
+- `probe_authenticate(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:221`
+- `probe_detect_schemas(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:237`
+- `probe_list_buckets(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:213`
+- `probe_list_files(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:225`
+- `probe_quarantine_sample(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:243`
+- `probe_read_file(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:233`
+- `probe_summary(self, sink_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:217`
+- `probe_tree(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:229`
+- `rotate_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:350`
+- `run_analysis(self, sink_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:301`
+- `run_status(self, sink_id: int, run_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:295`
+- `script_sink_config(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:63`
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.destinations.responses.Destination]`
+  - Source: `nexla_sdk/resources/destinations.py:38`
+  - Search resources using filter criteria.
+- `search_api_keys(self, sink_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:330`
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.destinations.responses.Destination]`
+  - Source: `nexla_sdk/resources/destinations.py:41`
+  - Search resources by tags.
+- `test_config(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:292`
+- `trigger_quarantine_aggregation(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:370`
 - `update(self, sink_id: int, data: nexla_sdk.models.destinations.requests.DestinationUpdate) -> nexla_sdk.models.destinations.responses.Destination`
-  - Source: `nexla_sdk/resources/destinations.py:69`
+  - Source: `nexla_sdk/resources/destinations.py:101`
   - Update destination.
+- `update_api_key(self, sink_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:344`
+- `update_dashboard_transforms(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:279`
+- `update_quarantine_settings(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:259`
+- `update_runtime_status(self, sink_id: int, status: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:66`
+- `validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/destinations.py:289`
 

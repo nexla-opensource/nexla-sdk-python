@@ -1,0 +1,32 @@
+---
+id: nexla_sdk.resources.flow_nodes
+title: nexla_sdk.resources.flow_nodes
+slug: /api/python/modules/nexla_sdk/resources/flow_nodes
+description: API for nexla_sdk.resources.flow_nodes
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### FlowNodesResource
+
+Defined in `nexla_sdk/resources/flow_nodes.py:7`
+
+Resource for flow nodes.
+
+Methods:
+
+- `get(self, flow_node_id: int) -> nexla_sdk.models.common.FlowNode`
+  - Source: `nexla_sdk/resources/flow_nodes.py:15`
+  - Get single resource by ID.
+- `get_access_insights(self, flow_node_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flow_nodes.py:27`
+  - Explain why the current user can access a resource.
+- `list_flows_minimal(self, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flow_nodes.py:24`
+- `list_origin_nodes_condensed(self, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flow_nodes.py:21`
+- `update(self, flow_node_id: int, data: Dict[str, Any]) -> nexla_sdk.models.common.FlowNode`
+  - Source: `nexla_sdk/resources/flow_nodes.py:18`
+  - Update resource.
+

@@ -27,8 +27,9 @@ class SelfSignupResource(BaseResource):
         return [SelfSignupRequest.model_validate(item) for item in (response or [])]
 
     def approve_request(self, request_id: str) -> SelfSignupRequest:
+        # Backend routes use POST; OpenAPI may advertise PUT in some versions.
         response = self._make_request(
-            "PUT", f"/self_signup_requests/{request_id}/approve"
+            "POST", f"/self_signup_requests/{request_id}/approve"
         )
         return SelfSignupRequest.model_validate(response)
 

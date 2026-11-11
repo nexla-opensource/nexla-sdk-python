@@ -37,6 +37,13 @@ class LookupsResource(BaseResource):
         """
         return super().list(**kwargs)
 
+    def list_public(self, **params) -> List[Lookup]:
+        response = self._make_request("GET", f"{self._path}/public", params=params)
+        return self._parse_response(response)
+
+    def list_accessible(self, **params) -> List[Lookup]:
+        return super().list_accessible(**params)
+
     def get(self, data_map_id: int, expand: bool = False) -> Lookup:
         """
         Get single lookup by ID.
@@ -93,6 +100,21 @@ class LookupsResource(BaseResource):
         """
         return super().delete(data_map_id)
 
+    def search(self, filters: Dict[str, Any], **params) -> List[Lookup]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[Lookup]:
+        return super().search_tags(tags, **params)
+
+    def validate(self, data_map_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{data_map_id}/validate"
+        return self._make_request("GET", path)
+
+    def download_map(self, data_map_id: int) -> str:
+        path = f"{self._path}/{data_map_id}/download_map"
+        response = self._make_request("GET", path)
+        return response  # plain text response
+
     def upsert_entries(
         self, data_map_id: int, entries: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
@@ -134,6 +156,12 @@ class LookupsResource(BaseResource):
         path = f"/data_maps/{data_map_id}/entries/{keys_str}"
         return self._make_request("GET", path)
 
+    def get_entries_by_body(
+        self, data_map_id: int, payload: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{data_map_id}/get_entries"
+        return self._make_request("POST", path, json=payload)
+
     def delete_entries(
         self, data_map_id: int, entry_keys: Union[str, List[str]]
     ) -> Dict[str, Any]:
@@ -154,3 +182,13 @@ class LookupsResource(BaseResource):
 
         path = f"/data_maps/{data_map_id}/entries/{keys_str}"
         return self._make_request("DELETE", path)
+
+    def delete_entries_by_body(
+        self, data_map_id: int, entry_keys: List[str]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{data_map_id}/entries"
+        return self._make_request("DELETE", path, json=entry_keys)
+
+    def probe_sample(self, data_map_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{data_map_id}/probe/sample"
+        return self._make_request("POST", path, json=payload)

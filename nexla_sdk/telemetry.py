@@ -41,9 +41,7 @@ class _NoOpSpan:
 
 
 class _NoOpTracer:
-    def start_as_current_span(
-        self, *args: Any, **kwargs: Any
-    ) -> _NoOpSpan:  # noqa: D401
+    def start_as_current_span(self, *args: Any, **kwargs: Any) -> _NoOpSpan:  # noqa: D401
         return _NoOpSpan()
 
     def start_span(self, *args: Any, **kwargs: Any) -> _NoOpSpan:  # noqa: D401

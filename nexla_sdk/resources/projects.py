@@ -96,6 +96,20 @@ class ProjectsResource(BaseResource):
         """
         return super().delete(project_id)
 
+    def copy(
+        self, project_id: int, payload: Optional[Dict[str, Any]] = None
+    ) -> Project:
+        return super().copy(project_id, payload)
+
+    def search(self, filters: Dict[str, Any], **params) -> List[Project]:
+        return super().search(filters, **params)
+
+    def search_tags(self, tags: List[str], **params) -> List[Project]:
+        return super().search_tags(tags, **params)
+
+    def get_resources_access(self, project_id: int) -> Dict[str, Any]:
+        return self._make_request("GET", f"{self._path}/{project_id}/resources_access")
+
     def get_flows(self, project_id: int) -> FlowResponse:
         """
         Get flows in project.
@@ -108,7 +122,7 @@ class ProjectsResource(BaseResource):
         """
         path = f"{self._path}/{project_id}/flows"
         response = self._make_request("GET", path)
-        return FlowResponse(**response)
+        return FlowResponse.model_validate(response)
 
     def add_flows(
         self, project_id: int, flows: ProjectFlowList
@@ -177,6 +191,17 @@ class ProjectsResource(BaseResource):
         """
         return self.add_flows(project_id, flows)
 
+    def get_data_flows_legacy(self, project_id: int) -> List[ProjectDataFlow]:
+        """
+        Legacy project flow listing endpoint.
+
+        This calls '/projects/{id}/data_flows', which the backend still supports
+        for backward compatibility.
+        """
+        path = f"{self._path}/{project_id}/data_flows"
+        response = self._make_request("GET", path)
+        return [ProjectDataFlow.model_validate(item) for item in response]
+
     def replace_data_flows(
         self, project_id: int, flows: ProjectFlowList
     ) -> List[ProjectDataFlow]:
@@ -187,6 +212,24 @@ class ProjectsResource(BaseResource):
         """
         return self.replace_flows(project_id, flows)
 
+    def add_data_flows_legacy(
+        self, project_id: int, flows: ProjectFlowList
+    ) -> List[ProjectDataFlow]:
+        """Legacy add endpoint: '/projects/{id}/data_flows'."""
+        path = f"{self._path}/{project_id}/data_flows"
+        payload = self._serialize_data(flows)
+        response = self._make_request("PUT", path, json=payload)
+        return [ProjectDataFlow.model_validate(item) for item in response]
+
+    def replace_data_flows_legacy(
+        self, project_id: int, flows: ProjectFlowList
+    ) -> List[ProjectDataFlow]:
+        """Legacy replace endpoint: '/projects/{id}/data_flows'."""
+        path = f"{self._path}/{project_id}/data_flows"
+        payload = self._serialize_data(flows)
+        response = self._make_request("POST", path, json=payload)
+        return [ProjectDataFlow.model_validate(item) for item in response]
+
     def remove_data_flows(
         self, project_id: int, flows: Optional[ProjectFlowList] = None
     ) -> List[ProjectDataFlow]:
@@ -196,6 +239,15 @@ class ProjectsResource(BaseResource):
         Uses the updated endpoint '/flows'.
         """
         return self.remove_flows(project_id, flows)
+
+    def remove_data_flows_legacy(
+        self, project_id: int, flows: Optional[ProjectFlowList] = None
+    ) -> List[ProjectDataFlow]:
+        """Legacy remove endpoint: '/projects/{id}/data_flows'."""
+        path = f"{self._path}/{project_id}/data_flows"
+        data = self._serialize_data(flows) if flows else None
+        response = self._make_request("DELETE", path, json=data)
+        return [ProjectDataFlow.model_validate(item) for item in response]
 
     def search_flows(
         self, project_id: int, filters: List[Dict[str, Any]]
@@ -213,4 +265,4 @@ class ProjectsResource(BaseResource):
         path = f"{self._path}/{project_id}/flows/search"
         payload = {"filters": filters}
         response = self._make_request("POST", path, json=payload)
-        return FlowResponse(**response)
+        return FlowResponse.model_validate(response)

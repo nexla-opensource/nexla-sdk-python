@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.metrics.enums import UserMetricResourceType
+from nexla_sdk.models.users.credits import UserCredit, UserCreditCreate
 from nexla_sdk.models.users.requests import UserCreate, UserUpdate
 from nexla_sdk.models.users.responses import User, UserExpanded, UserSettings
 from nexla_sdk.resources.base_resource import BaseResource
@@ -39,6 +40,9 @@ class UsersResource(BaseResource):
             return [UserExpanded(**item) for item in response]
 
         return super().list(**kwargs)
+
+    def list_sso_options(self) -> Dict[str, Any]:
+        return self._make_request("GET", "/users/sso_options")
 
     def get(self, user_id: int, expand: bool = False) -> User:
         """
@@ -102,6 +106,40 @@ class UsersResource(BaseResource):
         """
         return super().delete(user_id)
 
+    # Account summary methods
+    def get_account_summary(self) -> Dict[str, Any]:
+        """Get current user's account summary."""
+        return self._make_request("GET", "/users/account_summary")
+
+    def get_user_account_summary(self, user_id: int) -> Dict[str, Any]:
+        """Get account summary for a specific user."""
+        path = f"{self._path}/{user_id}/account_summary"
+        return self._make_request("GET", path)
+
+    # Password and authentication methods
+    def reset_password(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", "/reset_password", json=payload)
+
+    def set_password(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", "/set_password", json=payload)
+
+    def password_entropy(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", "/password_entropy", json=payload)
+
+    def send_invite(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._make_request("POST", "/users/send_invite", json=payload)
+
+    def change_password(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/change_password"
+        return self._make_request("PUT", path, json=payload)
+
+    def get_sso_options(self, email: Optional[str] = None) -> Dict[str, Any]:
+        params = {}
+        if email:
+            params["email"] = email
+        return self._make_request("GET", "/users/sso_options", params=params)
+
+    # User settings and current user
     def get_settings(self) -> List[UserSettings]:
         """
         Get current user's settings.
@@ -118,6 +156,40 @@ class UsersResource(BaseResource):
         path = "/users/current"
         return self._make_request("GET", path)
 
+    # Audit and history methods
+    def get_audit_history(self, user_id: int, **params) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{user_id}/audit_history"
+        return self._make_request("GET", path, params=params) or []
+
+    def get_login_history(self, user_id: int, **params) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{user_id}/login_history"
+        return self._make_request("GET", path, params=params) or []
+
+    def get_api_key_events(self, user_id: int, **params) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{user_id}/api_keys/events"
+        return self._make_request("GET", path, params=params) or []
+
+    def get_resource_audit_log(
+        self, user_id: int, resource_type: str, **params
+    ) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{user_id}/{resource_type}/audit_log"
+        response = self._make_request("GET", path, params=params)
+        return response or []
+
+    # Metrics methods
+    def get_metrics(
+        self, user_id: int, metrics_name: Optional[str] = None, **params
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/metrics"
+        if metrics_name:
+            path = f"{path}/{metrics_name}"
+        return self._make_request("GET", path, params=params)
+
+    def get_orgs(self, user_id: int, **params) -> List[Dict[str, Any]]:
+        path = f"{self._path}/{user_id}/orgs"
+        return self._make_request("GET", path, params=params) or []
+
+    # Quarantine settings
     def get_quarantine_settings(self, user_id: int) -> Dict[str, Any]:
         """
         Get quarantine data export settings for user.
@@ -178,6 +250,11 @@ class UsersResource(BaseResource):
         path = f"{self._path}/{user_id}/quarantine_settings"
         return self._make_request("DELETE", path)
 
+    # Dashboard transforms
+    def get_dashboard_transforms(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/dashboard_transforms"
+        return self._make_request("GET", path)
+
     def get_audit_log(
         self,
         user_id: int,
@@ -222,6 +299,63 @@ class UsersResource(BaseResource):
             return response
         return []
 
+    def create_dashboard_transforms(
+        self, user_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/dashboard_transforms"
+        return self._make_request("POST", path, json=payload)
+
+    def update_dashboard_transforms(
+        self, user_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/dashboard_transforms"
+        return self._make_request("PUT", path, json=payload)
+
+    def delete_dashboard_transforms(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/dashboard_transforms"
+        return self._make_request("DELETE", path)
+
+    # Flows dashboard and metrics
+    def get_flows_dashboard(self, user_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/flows/dashboard"
+        return self._make_request("GET", path, params=params)
+
+    def get_flows_status_metrics(self, user_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/flows/status_metrics"
+        return self._make_request("GET", path, params=params)
+
+    def get_flows_account_metrics(self, user_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/flows/account_metrics"
+        return self._make_request("GET", path, params=params)
+
+    # Account activation and locking
+    def activate(self, user_id: int, activate: bool = True) -> Dict[str, Any]:
+        action = "activate" if activate else "deactivate"
+        path = f"{self._path}/{user_id}/{action}"
+        return self._make_request("PUT", path)
+
+    def lock_account(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/lock_account"
+        return self._make_request("PUT", path)
+
+    def unlock_account(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/unlock_account"
+        return self._make_request("PUT", path)
+
+    def activate_rate_limited_sources(
+        self, user_id: int, status: Optional[str] = None, activate: bool = True
+    ) -> Dict[str, Any]:
+        action = "source_activate" if activate else "source_pause"
+        path = f"{self._path}/{user_id}/{action}"
+        if status:
+            path = f"{path}/{status}"
+        return self._make_request("PUT", path)
+
+    def get_account_rate_limited(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/account_rate_limited"
+        return self._make_request("GET", path)
+
+    # Resource transfer
     def get_transferable_resources(self, user_id: int, org_id: int) -> Dict[str, Any]:
         """
         Get a list of resources owned by a user that can be transferred.
@@ -255,6 +389,93 @@ class UsersResource(BaseResource):
         data = {"org_id": org_id, "delegate_owner_id": delegate_owner_id}
         return self._make_request("PUT", path, json=data)
 
+    # User credits
+    def list_credits(self, user_id: int, **params) -> List[UserCredit]:
+        path = f"{self._path}/{user_id}/credits"
+        response = self._make_request("GET", path, params=params)
+        return [UserCredit.model_validate(item) for item in (response or [])]
+
+    def create_credit(self, user_id: int, payload: UserCreditCreate) -> UserCredit:
+        path = f"{self._path}/{user_id}/credits"
+        data = self._serialize_data(payload)
+        response = self._make_request("POST", path, json=data)
+        return UserCredit.model_validate(response)
+
+    def get_credit(self, user_id: int, credit_id: int) -> UserCredit:
+        path = f"{self._path}/{user_id}/credits/{credit_id}"
+        response = self._make_request("GET", path)
+        return UserCredit.model_validate(response)
+
+    def use_credits(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/credits/use"
+        return self._make_request("PUT", path, json=payload)
+
+    def use_credit(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Alias for use_credits."""
+        return self.use_credits(user_id, payload)
+
+    def refresh_credits(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/credits/refresh"
+        return self._make_request("PUT", path, json=payload)
+
+    def refresh_credit(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Alias for refresh_credits."""
+        return self.refresh_credits(user_id, payload)
+
+    def expire_credit(self, user_id: int, credit_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/credits/{credit_id}/expire"
+        return self._make_request("PUT", path)
+
+    def delete_credit(self, user_id: int, credit_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/credits/{credit_id}"
+        return self._make_request("DELETE", path)
+
+    # API keys
+    def list_api_keys(self, user_id: int, **params) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys"
+        return self._make_request("GET", path, params=params)
+
+    def search_api_keys(
+        self, user_id: int, filters: Dict[str, Any], **params
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/search"
+        return self._make_request("POST", path, json=filters, params=params)
+
+    def get_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}"
+        return self._make_request("GET", path)
+
+    def create_api_key(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys"
+        return self._make_request("POST", path, json=payload)
+
+    def update_api_key(
+        self, user_id: int, api_key_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}"
+        return self._make_request("PUT", path, json=payload)
+
+    def rotate_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}/rotate"
+        return self._make_request("PUT", path)
+
+    def activate_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}/activate"
+        return self._make_request("PUT", path)
+
+    def pause_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}/pause"
+        return self._make_request("PUT", path)
+
+    def pause_all_api_keys(self, user_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/pause"
+        return self._make_request("PUT", path)
+
+    def delete_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]:
+        path = f"{self._path}/{user_id}/api_keys/{api_key_id}"
+        return self._make_request("DELETE", path)
+
+    # Extended metrics
     def get_account_metrics(
         self,
         user_id: int,

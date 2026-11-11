@@ -1,0 +1,100 @@
+---
+id: nexla_sdk.models.connectors
+title: nexla_sdk.models.connectors
+slug: /api/python/modules/nexla_sdk/models/connectors
+description: API for nexla_sdk.models.connectors
+keywords: [Nexla, SDK, Python, API]
+---
+
+Connector models.
+
+## Classes
+
+### ConnectionType
+
+Defined in `nexla_sdk/models/connectors/enums.py:93`
+
+Connection type categories for connectors.
+
+Maps to the `connection_type` field in Connector responses.
+
+Members:
+
+- `FILE` = `file`
+- `DATABASE` = `database`
+- `NOSQL` = `nosql`
+- `STREAMING` = `streaming`
+- `API` = `api`
+- `VECTOR_DB` = `vector_db`
+- `SPECIAL` = `special`
+- `DATA_LAKE` = `data_lake`
+
+### ConnectorType
+
+Defined in `nexla_sdk/models/connectors/enums.py:6`
+
+All supported connector types.
+
+This is the comprehensive enum used by the /connectors endpoint.
+It includes all source and destination connector types.
+
+Members:
+
+- `S3` = `s3`
+- `GCS` = `gcs`
+- `AZURE_BLB` = `azure_blb`
+- `AZURE_DATA_LAKE` = `azure_data_lake`
+- `FTP` = `ftp`
+- `DROPBOX` = `dropbox`
+- `BOX` = `box`
+- `GDRIVE` = `gdrive`
+- `SHAREPOINT` = `sharepoint`
+- `MIN_IO_S3` = `min_io_s3`
+- `WEBDAV` = `webdav`
+- `MYSQL` = `mysql`
+- `POSTGRES` = `postgres`
+- `SUPABASE` = `supabase`
+- `SQLSERVER` = `sqlserver`
+- `ORACLE` = `oracle`
+- `ORACLE_AUTONOMOUS` = `oracle_autonomous`
+- `AS400` = `as400`
+- `DB2` = `db2`
+- `SYBASE` = `sybase`
+- `HANA_JDBC` = `hana_jdbc`
+- `NETSUITE_JDBC` = `netsuite_jdbc`
+- `REDSHIFT` = `redshift`
+- `SNOWFLAKE` = `snowflake`
+- `SNOWFLAKE_DCR` = `snowflake_dcr`
+- `BIGQUERY` = `bigquery`
+- `DATABRICKS` = `databricks`
+- `AWS_ATHENA` = `aws_athena`
+- `AZURE_SYNAPSE` = `azure_synapse`
+- `FIREBOLT` = `firebolt`
+- `TERADATA` = `teradata`
+- `HIVE` = `hive`
+- `CLOUDSQL_MYSQL` = `cloudsql_mysql`
+- `CLOUDSQL_POSTGRES` = `cloudsql_postgres`
+- `CLOUDSQL_SQLSERVER` = `cloudsql_sqlserver`
+- `GCP_ALLOYDB` = `gcp_alloydb`
+- `GCP_SPANNER` = `gcp_spanner`
+- `DELTA_LAKE_AZURE_BLB` = `delta_lake_azure_blb`
+- `DELTA_LAKE_AZURE_DATA_LAKE` = `delta_lake_azure_data_lake`
+- `DELTA_LAKE_S3` = `delta_lake_s3`
+- `S3_ICEBERG` = `s3_iceberg`
+- `MONGO` = `mongo`
+- `DYNAMODB` = `dynamodb`
+- `FIREBASE` = `firebase`
+- `KAFKA` = `kafka`
+- `CONFLUENT_KAFKA` = `confluent_kafka`
+- `GOOGLE_PUBSUB` = `google_pubsub`
+- `JMS` = `jms`
+- `TIBCO` = `tibco`
+- `REST` = `rest`
+- `SOAP` = `soap`
+- `NEXLA_REST` = `nexla_rest`
+- `FILE_UPLOAD` = `file_upload`
+- `EMAIL` = `email`
+- `NEXLA_MONITOR` = `nexla_monitor`
+- `DATA_MAP` = `data_map`
+- `PINECONE` = `pinecone`
+

@@ -17,27 +17,140 @@ Resource for managing data sources.
 Methods:
 
 - `activate(self, source_id: int) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:98`
+  - Source: `nexla_sdk/resources/sources.py:171`
   - Activate source.
+- `activate_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:374`
 - `copy(self, source_id: int, options: Optional[nexla_sdk.models.sources.requests.SourceCopyOptions] = None) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:122`
+  - Source: `nexla_sdk/resources/sources.py:195`
   - Copy a source.
 - `create(self, data: nexla_sdk.models.sources.requests.SourceCreate) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:58`
+  - Source: `nexla_sdk/resources/sources.py:84`
   - Create new source.
+- `create_api_key(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:360`
+- `create_dashboard_transforms(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:287`
+- `create_quarantine_settings(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:267`
 - `delete(self, source_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/sources.py:86`
+  - Source: `nexla_sdk/resources/sources.py:112`
   - Delete source.
+- `delete_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:386`
+- `delete_dashboard_transforms(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:299`
+- `delete_quarantine_settings(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:279`
+- `edit_flow_triggers(self, source_id: int, payload: Dict[str, Any], mode: str, all_triggers: bool = False) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/sources.py:329`
 - `get(self, source_id: int, expand: bool = False) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:42`
+  - Source: `nexla_sdk/resources/sources.py:68`
   - Get single source by ID.
+- `get_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:356`
+- `get_dashboard_transforms(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:283`
+- `get_flow(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:124`
+- `get_flow_dashboard(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:127`
+- `get_flow_logs(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:142`
+- `get_flow_metrics(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:137`
+- `get_flow_status_metrics(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:132`
+- `get_metrics(self, source_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:147`
+- `get_offset(self, source_id: int, data_set_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:163`
+- `get_quarantine_aggregation(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:396`
+- `get_quarantine_offset(self, source_id: int, data_set_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:155`
+- `get_quarantine_settings(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:263`
+- `get_reingested_files(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:255`
 - `list(self, **kwargs) -> List[nexla_sdk.models.sources.responses.Source]`
   - Source: `nexla_sdk/resources/sources.py:20`
   - List sources with optional filters.
+- `list_accessible(self, **params) -> List[nexla_sdk.models.sources.responses.Source]`
+  - Source: `nexla_sdk/resources/sources.py:58`
+  - List resources accessible to the current user (access_insights).
+- `list_all(self, **params) -> List[nexla_sdk.models.sources.responses.Source]`
+  - Source: `nexla_sdk/resources/sources.py:48`
+- `list_all_condensed(self, **params) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/sources.py:52`
+- `list_all_ids(self, **params) -> List[int]`
+  - Source: `nexla_sdk/resources/sources.py:55`
+- `list_api_keys(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:346`
+- `list_data_sinks(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:309`
+- `list_flow_triggers(self, source_id: int) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/sources.py:325`
+- `list_runs(self, source_id: int, **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:321`
 - `pause(self, source_id: int) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:110`
+  - Source: `nexla_sdk/resources/sources.py:183`
   - Pause source.
+- `pause_all_api_keys(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:382`
+- `pause_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:378`
+- `probe_authenticate(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:219`
+- `probe_detect_schemas(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:239`
+- `probe_list_buckets(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:211`
+- `probe_list_files(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:223`
+- `probe_quarantine_sample(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:245`
+- `probe_read_file(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:233`
+- `probe_sample(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:251`
+- `probe_summary(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:215`
+- `probe_tree(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:229`
+- `ready(self, source_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:317`
+- `reingest_files(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:259`
+- `rotate_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:370`
+- `run_now(self, source_id: int, method: str = 'POST') -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:313`
+- `script_source_config(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:61`
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.sources.responses.Source]`
+  - Source: `nexla_sdk/resources/sources.py:42`
+  - Search resources using filter criteria.
+- `search_api_keys(self, source_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:350`
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.sources.responses.Source]`
+  - Source: `nexla_sdk/resources/sources.py:45`
+  - Search resources by tags.
+- `test_config(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:306`
+- `trigger_quarantine_aggregation(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:390`
 - `update(self, source_id: int, data: nexla_sdk.models.sources.requests.SourceUpdate) -> nexla_sdk.models.sources.responses.Source`
-  - Source: `nexla_sdk/resources/sources.py:73`
+  - Source: `nexla_sdk/resources/sources.py:99`
   - Update source.
+- `update_api_key(self, source_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:364`
+- `update_dashboard_transforms(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:293`
+- `update_quarantine_settings(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:273`
+- `update_runtime_status(self, source_id: int, status: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:64`
+- `validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/sources.py:303`
 

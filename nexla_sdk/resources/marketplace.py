@@ -58,6 +58,11 @@ class MarketplaceResource(BaseResource):
     def delete_domain(self, domain_id: int) -> Dict[str, Any]:
         return self._make_request("DELETE", f"{self._path}/domains/{domain_id}")
 
+    def get_domain_audit_log(self, domain_id: int, **params) -> Dict[str, Any]:
+        return self._make_request(
+            "GET", f"{self._path}/domains/{domain_id}/audit_log", params=params
+        )
+
     # Items
     def list_domain_items(self, domain_id: int) -> List[MarketplaceDomainsItem]:
         response = self._make_request("GET", f"{self._path}/domains/{domain_id}/items")
@@ -69,6 +74,46 @@ class MarketplaceResource(BaseResource):
         payload = self._serialize_data(data)
         response = self._make_request(
             "POST", f"{self._path}/domains/{domain_id}/items", json=payload
+        )
+        return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
+
+    def get_domain_item(self, domain_id: int, item_id: int) -> MarketplaceDomainsItem:
+        response = self._make_request(
+            "GET", f"{self._path}/domains/{domain_id}/items/{item_id}"
+        )
+        return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
+
+    def search_domain_items(
+        self, domain_id: int, payload: Dict[str, Any]
+    ) -> List[MarketplaceDomainsItem]:
+        response = self._make_request(
+            "POST", f"{self._path}/domains/{domain_id}/items/search", json=payload
+        )
+        return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
+
+    def delist_domain_item(self, domain_id: int, item_id: int) -> Dict[str, Any]:
+        return self._make_request(
+            "DELETE", f"{self._path}/domains/{domain_id}/items/{item_id}"
+        )
+
+    def request_item_access(self, domain_id: int, item_id: int) -> Dict[str, Any]:
+        return self._make_request(
+            "POST",
+            f"{self._path}/domains/{domain_id}/items/{item_id}/request_access",
+        )
+
+    # Global items
+    def list_items(self) -> List[MarketplaceDomainsItem]:
+        response = self._make_request("GET", f"{self._path}/items")
+        return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
+
+    def get_item(self, item_id: int) -> MarketplaceDomainsItem:
+        response = self._make_request("GET", f"{self._path}/items/{item_id}")
+        return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
+
+    def search_items(self, payload: Dict[str, Any]) -> List[MarketplaceDomainsItem]:
+        response = self._make_request(
+            "POST", f"{self._path}/items/search", json=payload
         )
         return self._parse_response(response, MarketplaceDomainsItem)  # type: ignore[arg-type]
 

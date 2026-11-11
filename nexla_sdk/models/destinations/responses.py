@@ -6,7 +6,10 @@ from pydantic import Field
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import Connector, Organization, Owner
 from nexla_sdk.models.credentials.responses import Credential
-from nexla_sdk.models.destinations.enums import DestinationFormat
+from nexla_sdk.models.flexible_enums import (
+    FlexibleDestinationFormat,
+    FlexibleDestinationType,
+)
 
 
 class DataSetInfo(BaseModel):
@@ -41,8 +44,8 @@ class Destination(BaseModel):
     id: int
     name: str
     status: str
-    sink_type: str
-    connector_type: Optional[str] = None
+    sink_type: FlexibleDestinationType
+    connector_type: Optional[FlexibleDestinationType] = None
     owner: Optional[Owner] = None
     org: Optional[Organization] = None
     access_roles: Optional[List[str]] = None
@@ -53,7 +56,7 @@ class Destination(BaseModel):
     data_set_id: Optional[int] = None
     data_map_id: Optional[int] = None
     data_source_id: Optional[int] = None
-    sink_format: Optional[DestinationFormat] = None
+    sink_format: Optional[FlexibleDestinationFormat] = None
     sink_config: Optional[Dict[str, Any]] = None
     sink_schedule: Optional[str] = None
     in_memory: bool = False

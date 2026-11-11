@@ -1,0 +1,34 @@
+---
+id: nexla_sdk.resources.notification_channel_settings
+title: nexla_sdk.resources.notification_channel_settings
+slug: /api/python/modules/nexla_sdk/resources/notification_channel_settings
+description: API for nexla_sdk.resources.notification_channel_settings
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### NotificationChannelSettingsResource
+
+Defined in `nexla_sdk/resources/notification_channel_settings.py:13`
+
+Resource for managing notification channel settings.
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.notification_channel_settings.requests.NotificationChannelSettingCreate, Dict[str, Any]]) -> nexla_sdk.models.notification_channel_settings.responses.NotificationChannelSetting`
+  - Source: `nexla_sdk/resources/notification_channel_settings.py:27`
+  - Create new resource.
+- `delete(self, setting_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/notification_channel_settings.py:39`
+  - Delete resource.
+- `get(self, setting_id: int) -> nexla_sdk.models.notification_channel_settings.responses.NotificationChannelSetting`
+  - Source: `nexla_sdk/resources/notification_channel_settings.py:24`
+  - Get single resource by ID.
+- `list(self, **kwargs) -> List[nexla_sdk.models.notification_channel_settings.responses.NotificationChannelSetting]`
+  - Source: `nexla_sdk/resources/notification_channel_settings.py:21`
+  - List resources with optional filters.
+- `update(self, setting_id: int, data: Union[nexla_sdk.models.notification_channel_settings.requests.NotificationChannelSettingUpdate, Dict[str, Any]]) -> nexla_sdk.models.notification_channel_settings.responses.NotificationChannelSetting`
+  - Source: `nexla_sdk/resources/notification_channel_settings.py:32`
+  - Update resource.
+

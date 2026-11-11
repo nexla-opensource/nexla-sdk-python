@@ -1,0 +1,97 @@
+---
+id: nexla_sdk.models.auth_parameters
+title: nexla_sdk.models.auth_parameters
+slug: /api/python/modules/nexla_sdk/models/auth_parameters
+description: API for nexla_sdk.models.auth_parameters
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### AuthParameter
+
+Defined in `nexla_sdk/models/auth_parameters/responses.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `vendor`: `Optional`
+- `auth_template`: `Optional`
+- `allowed_values`: `Optional`
+- `updated_at`: `Optional`
+- `created_at`: `Optional`
+
+### AuthParameterCreate
+
+Defined in `nexla_sdk/models/auth_parameters/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `auth_template_id`: `Optional`
+- `vendor_id`: `Optional`
+- `allowed_values`: `Optional`
+
+### AuthParameterUpdate
+
+Defined in `nexla_sdk/models/auth_parameters/requests.py:20`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `data_type`: `Optional`
+- `order`: `Optional`
+- `config`: `Optional`
+- `secured`: `Optional`
+- `global_param`: `Optional`
+- `auth_template_id`: `Optional`
+- `vendor_id`: `Optional`
+- `allowed_values`: `Optional`
+

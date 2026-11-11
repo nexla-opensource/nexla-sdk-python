@@ -9,6 +9,7 @@ from nexla_sdk.models.notifications.responses import (
     NotificationChannelSetting,
     NotificationCount,
     NotificationSetting,
+    NotificationSettingBrief,
     NotificationType,
 )
 
@@ -18,6 +19,7 @@ __all__ = [
     "NotificationType",
     "NotificationChannelSetting",
     "NotificationSetting",
+    "NotificationSettingBrief",
     "NotificationCount",
     # Requests
     "NotificationChannelSettingCreate",

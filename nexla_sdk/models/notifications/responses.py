@@ -74,3 +74,15 @@ class NotificationCount(BaseModel):
     """Notification count response."""
 
     count: int
+
+
+class NotificationSettingBrief(BaseModel):
+    """Brief Notification Setting response model for list views."""
+
+    id: int
+    notification_type_id: int
+    channel: str
+    priority: int = 0
+    status: str = "ENABLED"
+    resource_type: Optional[str] = None
+    resource_id: Optional[int] = None

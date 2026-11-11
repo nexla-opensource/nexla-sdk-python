@@ -1,0 +1,52 @@
+---
+id: nexla_sdk.models.quarantine_settings.requests
+title: nexla_sdk.models.quarantine_settings.requests
+slug: /api/python/modules/nexla_sdk/models/quarantine_settings/requests
+description: API for nexla_sdk.models.quarantine_settings.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### QuarantineSettingCreate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `int`
+- `config`: `Dict`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+
+### QuarantineSettingUpdate
+
+Defined in `nexla_sdk/models/quarantine_settings/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `data_credentials_id`: `Optional`
+- `config`: `Optional`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+

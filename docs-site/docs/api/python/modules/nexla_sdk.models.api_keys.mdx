@@ -1,0 +1,98 @@
+---
+id: nexla_sdk.models.api_keys
+title: nexla_sdk.models.api_keys
+slug: /api/python/modules/nexla_sdk/models/api_keys
+description: API for nexla_sdk.models.api_keys
+keywords: [Nexla, SDK, Python, API]
+---
+
+API Keys models.
+
+## Classes
+
+### ApiKey
+
+Defined in `nexla_sdk/models/api_keys/responses.py:9`
+
+API key response model.
+
+API keys are used for programmatic access to specific resources
+like datasets, data sources, data sinks, and users.
+
+Fields:
+
+- `id`: `int`
+- `owner_id`: `Optional`
+- `org_id`: `Optional`
+- `data_set_id`: `Optional`
+- `data_source_id`: `Optional`
+- `data_sink_id`: `Optional`
+- `user_id`: `Optional`
+- `cluster_id`: `Optional`
+- `cluster_uid`: `Optional`
+- `name`: `Optional`
+- `description`: `Optional`
+- `status`: `Optional`
+- `scope`: `Optional`
+- `api_key`: `Optional`
+- `url`: `Optional`
+- `last_rotated_key`: `Optional`
+- `last_rotated_at`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### ApiKeyCreate
+
+Defined in `nexla_sdk/models/api_keys/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `scope`: `Optional`
+- `expires_at`: `Optional`
+
+### ApiKeyUpdate
+
+Defined in `nexla_sdk/models/api_keys/requests.py:13`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `name`: `Optional`
+- `description`: `Optional`
+- `scope`: `Optional`
+- `expires_at`: `Optional`
+
+### ApiKeysIndex
+
+Defined in `nexla_sdk/models/api_keys/responses.py:37`
+
+Response model for API keys index (grouped by type).
+
+Fields:
+
+- `data_sets`: `Optional`
+- `data_sinks`: `Optional`
+- `data_sources`: `Optional`
+- `users`: `Optional`
+

@@ -1,0 +1,81 @@
+---
+id: nexla_sdk.resources.notification_settings
+title: nexla_sdk.resources.notification_settings
+slug: /api/python/modules/nexla_sdk/resources/notification_settings
+description: API for nexla_sdk.resources.notification_settings
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing notification settings.
+
+## Classes
+
+### NotificationSettingsResource
+
+Defined in `nexla_sdk/resources/notification_settings.py:13`
+
+Resource for managing notification settings.
+
+Notification settings control how and when users receive notifications
+for different events and resources.
+
+Examples:
+    # List notification settings
+    settings = client.notification_settings.list()
+
+    # Get a specific setting
+    setting = client.notification_settings.get(123)
+
+    # Create a new notification setting
+    setting = client.notification_settings.create(NotificationSettingCreate(
+        notification_type_id=1,
+        channel="email",
+        priority=5
+    ))
+
+    # Update a setting
+    setting = client.notification_settings.update(123, NotificationSettingUpdate(
+        priority=10
+    ))
+
+Methods:
+
+- `create(self, data: Union[nexla_sdk.models.notification_settings.requests.NotificationSettingCreate, Dict[str, Any]]) -> nexla_sdk.models.notification_settings.responses.NotificationSetting`
+  - Source: `nexla_sdk/resources/notification_settings.py:137`
+  - Create a new notification setting.
+- `delete(self, setting_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/notification_settings.py:166`
+  - Delete a notification setting.
+- `get(self, setting_id: int, expand: bool = False) -> nexla_sdk.models.notification_settings.responses.NotificationSetting`
+  - Source: `nexla_sdk/resources/notification_settings.py:125`
+  - Get notification setting by ID.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, notification_resource_type: Optional[str] = None, resource_id: Optional[int] = None, sort_by: Optional[str] = None, sort_order: Optional[str] = None, **kwargs) -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:49`
+  - List notification settings for the current user.
+- `list_all(self, page: Optional[int] = None, per_page: Optional[int] = None, resource_type: Optional[str] = None, event_type: Optional[str] = None, status: Optional[str] = None) -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:90`
+  - List all notification settings (super user only).
+- `list_by(self, payload: Dict[str, Any], method: str = 'POST') -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:247`
+- `org_create(self, org_id: int, data: Union[nexla_sdk.models.notification_settings.requests.NotificationSettingCreate, Dict[str, Any]]) -> nexla_sdk.models.notification_settings.responses.NotificationSetting`
+  - Source: `nexla_sdk/resources/notification_settings.py:288`
+  - Create a notification setting for an organization.
+- `org_delete(self, org_id: int, notification_settings_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/notification_settings.py:326`
+  - Delete an organization notification setting.
+- `org_index(self, org_id: int, page: Optional[int] = None, per_page: Optional[int] = None, sort_by: Optional[str] = None, sort_order: Optional[str] = None) -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:254`
+  - List notification settings for an organization.
+- `org_update(self, org_id: int, notification_settings_id: int, data: Union[nexla_sdk.models.notification_settings.requests.NotificationSettingUpdate, Dict[str, Any]]) -> nexla_sdk.models.notification_settings.responses.NotificationSetting`
+  - Source: `nexla_sdk/resources/notification_settings.py:305`
+  - Update an organization notification setting.
+- `show_resource_settings(self, resource_type: str, resource_id: int, notification_type_id: Optional[int] = None, page: Optional[int] = None, per_page: Optional[int] = None, filter_overridden_settings: bool = False) -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:177`
+  - Get notification settings for a specific resource.
+- `show_type_settings(self, notification_type_id: int, page: Optional[int] = None, per_page: Optional[int] = None, sort_by: Optional[str] = None, sort_order: Optional[str] = None) -> List[nexla_sdk.models.notification_settings.responses.NotificationSetting]`
+  - Source: `nexla_sdk/resources/notification_settings.py:213`
+  - Get notification settings for a specific notification type.
+- `update(self, setting_id: int, data: Union[nexla_sdk.models.notification_settings.requests.NotificationSettingUpdate, Dict[str, Any]]) -> nexla_sdk.models.notification_settings.responses.NotificationSetting`
+  - Source: `nexla_sdk/resources/notification_settings.py:150`
+  - Update a notification setting.
+

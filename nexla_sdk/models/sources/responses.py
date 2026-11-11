@@ -6,6 +6,7 @@ from pydantic import Field, field_validator
 from nexla_sdk.models.base import BaseModel
 from nexla_sdk.models.common import Connector, Organization, Owner
 from nexla_sdk.models.credentials.responses import Credential
+from nexla_sdk.models.flexible_enums import FlexibleSourceType
 
 
 class DataSetBrief(BaseModel):
@@ -34,8 +35,8 @@ class Source(BaseModel):
     id: int
     name: str
     status: str
-    source_type: str
-    connector_type: Optional[str] = None
+    source_type: FlexibleSourceType
+    connector_type: Optional[FlexibleSourceType] = None
     owner: Optional[Owner] = None
     org: Optional[Organization] = None
     access_roles: Optional[List[str]] = None

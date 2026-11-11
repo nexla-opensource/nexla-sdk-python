@@ -2,6 +2,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from nexla_sdk.models.base import BaseModel
+from nexla_sdk.models.flexible_enums import (
+    FlexibleConnectionType,
+    FlexibleConnectorType,
+)
 
 
 class Owner(BaseModel):
@@ -35,8 +39,8 @@ class Connector(BaseModel):
     """Connector information."""
 
     id: int
-    type: str
-    connection_type: str
+    type: FlexibleConnectorType
+    connection_type: FlexibleConnectionType
     name: str
     description: str
     nexset_api_compatible: bool

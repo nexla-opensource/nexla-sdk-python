@@ -1,0 +1,47 @@
+---
+id: nexla_sdk.models.flexible_enums
+title: nexla_sdk.models.flexible_enums
+slug: /api/python/modules/nexla_sdk/models/flexible_enums
+description: API for nexla_sdk.models.flexible_enums
+keywords: [Nexla, SDK, Python, API]
+---
+
+Helper utilities for flexible enum handling in Pydantic models.
+
+These utilities allow enums to gracefully accept unknown values from API responses
+without raising validation errors. Unknown values are preserved as strings.
+
+## Functions
+
+### `FlexibleEnum(enum_cls: Type[~E]) -> Type[Union[~E, str]]`
+
+Source: `nexla_sdk/models/flexible_enums.py:49`
+
+Create a flexible enum type annotation for Pydantic models.
+
+This creates an Annotated type that accepts either a valid enum value
+or any string. Known values are returned as enum members; unknown values
+are returned as raw strings.
+
+Usage:
+    sink_type: Optional[FlexibleEnum(DestinationType)] = None
+
+Args:
+    enum_cls: The enum class to create a flexible version of
+
+Returns:
+    An Annotated type suitable for Pydantic model fields
+
+### `flexible_enum_validator(enum_cls: Type[~E])`
+
+Source: `nexla_sdk/models/flexible_enums.py:22`
+
+Create a validator that accepts enum values or unknown strings.
+
+Args:
+    enum_cls: The enum class to validate against
+
+Returns:
+    A validator function that returns the enum member for known values,
+    or the raw string for unknown values.
+

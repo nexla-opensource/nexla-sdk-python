@@ -1,0 +1,75 @@
+---
+id: nexla_sdk.resources.connectors
+title: nexla_sdk.resources.connectors
+slug: /api/python/modules/nexla_sdk/resources/connectors
+description: API for nexla_sdk.resources.connectors
+keywords: [Nexla, SDK, Python, API]
+---
+
+Resource for managing connectors.
+
+## Classes
+
+### ConnectorsResource
+
+Defined in `nexla_sdk/resources/connectors.py:10`
+
+Resource for managing connectors.
+
+Connectors define connection types for data sources and destinations.
+The backend only supports list, get, and update operations.
+
+Read access requires Nexla admin org membership.
+Update operations require super user access.
+
+Note:
+    This resource only supports ``list()``, ``get()``, and ``update()``.
+    Other write operations inherited from ``BaseResource`` (e.g.
+    ``create``, ``delete``, ``copy``) are not supported by the backend
+    and will raise ``NotImplementedError``.
+
+Examples:
+    # List all connectors
+    connectors = client.connectors.list()
+
+    # Filter by API compatibility
+    nexset_connectors = client.connectors.list(nexset_api_compatible=True)
+
+    # Get a specific connector by ID
+    connector = client.connectors.get(123)
+
+    # Get a connector by type
+    connector = client.connectors.get("s3")
+
+    # Update a connector (super user only)
+    connector = client.connectors.update(123, ConnectorUpdate(
+        description="Updated description"
+    ))
+
+Methods:
+
+- `activate(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/connectors.py:135`
+  - Activate resource.
+- `copy(self, resource_id=None, options=None)`
+  - Source: `nexla_sdk/resources/connectors.py:132`
+  - Copy resource.
+- `create(self, data=None)`
+  - Source: `nexla_sdk/resources/connectors.py:126`
+  - Create new resource.
+- `delete(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/connectors.py:129`
+  - Delete resource.
+- `get(self, connector_id: Union[int, str]) -> nexla_sdk.models.connectors.responses.Connector`
+  - Source: `nexla_sdk/resources/connectors.py:94`
+  - Get connector by ID or type.
+- `list(self, access_role: Optional[str] = None, nexset_api_compatible: Optional[bool] = None, sync_api_compatible: Optional[bool] = None, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.connectors.responses.Connector]`
+  - Source: `nexla_sdk/resources/connectors.py:59`
+  - List connectors.
+- `pause(self, resource_id=None)`
+  - Source: `nexla_sdk/resources/connectors.py:138`
+  - Pause resource.
+- `update(self, connector_id: Union[int, str], data: Union[nexla_sdk.models.connectors.requests.ConnectorUpdate, Dict[str, Any]]) -> nexla_sdk.models.connectors.responses.Connector`
+  - Source: `nexla_sdk/resources/connectors.py:107`
+  - Update a connector (super user only).
+

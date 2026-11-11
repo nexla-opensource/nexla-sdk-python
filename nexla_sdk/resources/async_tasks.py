@@ -13,9 +13,9 @@ class AsyncTasksResource(BaseResource):
         self._path = "/async_tasks"
         self._model_class = AsyncTask
 
-    def list(self) -> List[AsyncTask]:
+    def list(self, **params) -> List[AsyncTask]:
         """List asynchronous tasks."""
-        response = self._make_request("GET", self._path)
+        response = self._make_request("GET", self._path, params=params)
         return self._parse_response(response)
 
     def create(self, payload: AsyncTaskCreate) -> AsyncTask:
@@ -24,9 +24,9 @@ class AsyncTasksResource(BaseResource):
         response = self._make_request("POST", self._path, json=serialized)
         return self._parse_response(response)
 
-    def list_of_type(self, task_type: str) -> List[AsyncTask]:
+    def list_of_type(self, task_type: str, **params) -> List[AsyncTask]:
         path = f"{self._path}/of_type/{task_type}"
-        response = self._make_request("GET", path)
+        response = self._make_request("GET", path, params=params)
         return self._parse_response(response)
 
     def list_by_status(self, status: str) -> List[AsyncTask]:

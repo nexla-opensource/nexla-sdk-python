@@ -3,15 +3,40 @@ name: CI
 on:
   push:
     branches: [ main ]
+    paths:
+      - "nexla_sdk/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "README.md"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main ]
+    paths:
+      - "nexla_sdk/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "README.md"
+      - ".github/workflows/ci.yml"
 
 jobs:
   build-test:
-    runs-on: ubuntu-latest
+    # ubuntu-latest (26.04) has no setup-python builds for 3.8 or 3.9.
+    runs-on: ${{ matrix.runner || 'ubuntu-latest' }}
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        include:
+          - python-version: "3.8"
+            runner: ubuntu-24.04
+          - python-version: "3.9"
+            runner: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -27,12 +52,15 @@ jobs:
 
       - name: Lint
         run: |
-          pip install ruff
+          pip install "ruff==0.6.8"  # keep in sync with .pre-commit-config.yaml
           ruff check nexla_sdk
+
+      - name: Check Generated Operation Map Sync
+        run: |
+          python scripts/parity/check_operation_map_sync.py
 
       - name: Run unit tests
         env:
           PYTHONWARNINGS: default
         run: |
           pytest -m unit --maxfail=1 -q
-

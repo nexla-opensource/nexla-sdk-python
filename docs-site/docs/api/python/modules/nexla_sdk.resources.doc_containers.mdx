@@ -10,13 +10,37 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DocContainersResource
 
-Defined in `nexla_sdk/resources/doc_containers.py:7`
+Defined in `nexla_sdk/resources/doc_containers.py:8`
 
-Resource for document containers accessors and audit logs.
+Resource for document containers.
 
 Methods:
 
+- `copy(self, doc_container_id: int, payload: Optional[Dict[str, Any]] = None) -> nexla_sdk.models.doc_containers.responses.DocContainer`
+  - Source: `nexla_sdk/resources/doc_containers.py:31`
+  - Copy resource.
+- `create(self, data: Dict[str, Any]) -> nexla_sdk.models.doc_containers.responses.DocContainer`
+  - Source: `nexla_sdk/resources/doc_containers.py:22`
+  - Create new resource.
+- `delete(self, doc_container_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/doc_containers.py:28`
+  - Delete resource.
+- `get(self, doc_container_id: int, expand: bool = False) -> nexla_sdk.models.doc_containers.responses.DocContainer`
+  - Source: `nexla_sdk/resources/doc_containers.py:19`
+  - Get single resource by ID.
 - `get_audit_log(self, doc_container_id: int, **params) -> List[nexla_sdk.models.common.LogEntry]`
-  - Source: `nexla_sdk/resources/doc_containers.py:15`
+  - Source: `nexla_sdk/resources/doc_containers.py:42`
   - Get audit log for resource.
+- `list(self, **kwargs) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
+  - Source: `nexla_sdk/resources/doc_containers.py:16`
+  - List resources with optional filters.
+- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
+  - Source: `nexla_sdk/resources/doc_containers.py:36`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
+  - Source: `nexla_sdk/resources/doc_containers.py:39`
+  - Search resources by tags.
+- `update(self, doc_container_id: int, data: Dict[str, Any]) -> nexla_sdk.models.doc_containers.responses.DocContainer`
+  - Source: `nexla_sdk/resources/doc_containers.py:25`
+  - Update resource.
 

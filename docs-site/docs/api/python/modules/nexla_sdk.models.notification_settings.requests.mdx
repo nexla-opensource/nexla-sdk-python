@@ -1,0 +1,41 @@
+---
+id: nexla_sdk.models.notification_settings.requests
+title: nexla_sdk.models.notification_settings.requests
+slug: /api/python/modules/nexla_sdk/models/notification_settings/requests
+description: API for nexla_sdk.models.notification_settings.requests
+keywords: [Nexla, SDK, Python, API]
+---
+
+Notification Setting request models.
+
+## Classes
+
+### NotificationSettingCreate
+
+Defined in `nexla_sdk/models/notification_settings/requests.py:10`
+
+Notification Setting creation request model.
+
+Fields:
+
+- `notification_type_id`: `int`
+- `resource_id`: `Optional`
+- `resource_type`: `Optional`
+- `channel`: `str` — Notification channel (e.g., email, slack)
+- `priority`: `int` — Priority level
+- `status`: `str` — Status (ENABLED, DISABLED)
+- `payload`: `Optional`
+
+### NotificationSettingUpdate
+
+Defined in `nexla_sdk/models/notification_settings/requests.py:27`
+
+Notification Setting update request model.
+
+Fields:
+
+- `channel`: `Optional`
+- `priority`: `Optional`
+- `status`: `Optional`
+- `payload`: `Optional`
+

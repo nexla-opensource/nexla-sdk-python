@@ -1,0 +1,69 @@
+---
+id: nexla_sdk.models.dashboard_transforms
+title: nexla_sdk.models.dashboard_transforms
+slug: /api/python/modules/nexla_sdk/models/dashboard_transforms
+description: API for nexla_sdk.models.dashboard_transforms
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### DashboardTransform
+
+Defined in `nexla_sdk/models/dashboard_transforms/responses.py:8`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `id`: `int`
+- `owner`: `Optional`
+- `org`: `Optional`
+- `resource_type`: `Optional`
+- `resource_id`: `Optional`
+- `error_transform`: `Optional`
+
+### DashboardTransformCreate
+
+Defined in `nexla_sdk/models/dashboard_transforms/requests.py:6`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `code_container_id`: `int`
+
+### DashboardTransformUpdate
+
+Defined in `nexla_sdk/models/dashboard_transforms/requests.py:10`
+
+Base model class with Pydantic functionality and Nexla API compatibility.
+
+Features:
+- Automatically ignores unknown fields from API responses
+- Supports both camelCase and snake_case field names
+- Handles datetime parsing automatically
+- Provides JSON serialization methods
+- Validates data types automatically
+- Easy logging and printing support
+
+Fields:
+
+- `code_container_id`: `Optional`
+

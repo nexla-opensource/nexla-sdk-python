@@ -1,0 +1,79 @@
+---
+id: nexla_sdk.models.vendors
+title: nexla_sdk.models.vendors
+slug: /api/python/modules/nexla_sdk/models/vendors
+description: API for nexla_sdk.models.vendors
+keywords: [Nexla, SDK, Python, API]
+---
+
+Vendor models.
+
+## Classes
+
+### Vendor
+
+Defined in `nexla_sdk/models/vendors/responses.py:19`
+
+Vendor response model.
+
+Vendors represent third-party service providers that can be
+connected via auth templates and endpoints.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
+- `connection_type`: `Optional`
+- `auth_templates`: `Optional`
+- `vendor_endpoints`: `Optional`
+- `created_at`: `Optional`
+- `updated_at`: `Optional`
+
+### VendorCreate
+
+Defined in `nexla_sdk/models/vendors/requests.py:8`
+
+Request model for creating a vendor (super user only).
+
+Fields:
+
+- `name`: `str`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
+- `connector_id`: `Optional`
+
+### VendorRef
+
+Defined in `nexla_sdk/models/vendors/responses.py:11`
+
+Minimal vendor reference.
+
+Fields:
+
+- `id`: `int`
+- `name`: `Optional`
+- `display_name`: `Optional`
+
+### VendorUpdate
+
+Defined in `nexla_sdk/models/vendors/requests.py:20`
+
+Request model for updating a vendor (super user only).
+
+Fields:
+
+- `name`: `Optional`
+- `display_name`: `Optional`
+- `description`: `Optional`
+- `config`: `Optional`
+- `small_logo`: `Optional`
+- `logo`: `Optional`
+
