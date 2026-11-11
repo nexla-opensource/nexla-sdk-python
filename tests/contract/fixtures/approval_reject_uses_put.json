@@ -9,7 +9,7 @@
     "access_token": "tok-1",
     "max_retries": 3
   },
-  "description": "Reject is PUT /approval_requests/{id}/reject.",
+  "description": "Reject is PUT /approval_requests/{id}/reject. The backend returns JSON null (routes/_core.py reject_request: return None).",
   "exchanges": [
     {
       "request": {
@@ -17,19 +17,13 @@
         "path": "/approval_requests/5/reject"
       },
       "response": {
-        "body": {
-          "id": 5,
-          "status": "rejected"
-        },
+        "body": null,
         "status": 200
       }
     }
   ],
   "expect": {
-    "result": {
-      "id": 5,
-      "status": "rejected"
-    }
+    "result": null
   },
   "name": "approval_reject_uses_put"
 }

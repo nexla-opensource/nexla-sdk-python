@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from nexla_sdk.models.approval_requests.responses import ApprovalRequest
 from nexla_sdk.resources.base_resource import BaseResource
@@ -62,13 +62,15 @@ class ApprovalRequestsResource(BaseResource):
         response = self._make_request("PUT", path)
         return self._parse_response(response)
 
-    def reject(self, request_id: int, reason: str = "") -> ApprovalRequest:
+    def reject(self, request_id: int, reason: str = "") -> Optional[ApprovalRequest]:
+        """Reject a request. The API replies with JSON null, so this returns None."""
         path = f"{self._path}/{request_id}/reject"
         body = {"reason": reason} if reason else {}
         response = self._make_request("PUT", path, json=body)
         return self._parse_response(response)
 
-    def cancel(self, request_id: int) -> ApprovalRequest:
+    def cancel(self, request_id: int) -> Optional[ApprovalRequest]:
+        """Cancel a request. The API replies with JSON null, so this returns None."""
         path = f"{self._path}/{request_id}/cancel"
         response = self._make_request("PUT", path)
         return self._parse_response(response)
