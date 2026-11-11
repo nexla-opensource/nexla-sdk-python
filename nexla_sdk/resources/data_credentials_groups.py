@@ -52,3 +52,19 @@ class DataCredentialsGroupsResource(BaseResource):
         path = f"{self._path}/{group_id}/data_credentials"
         data = self._serialize_data(payload)
         return self._make_request("DELETE", path, json=data)
+
+    def data_credentials_groups_update_data_credentials_group(
+        self, group_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Partially update a data credentials group (PATCH).
+
+        Args:
+            group_id: Group ID
+            data: Fields to update
+
+        Returns:
+            Updated group as a dict
+        """
+        path = f"{self._path}/{group_id}"
+        return self._make_request("PATCH", path, json=data)
