@@ -78,3 +78,35 @@ class CustomDataFlowsResource(BaseResource):
 
     def search_tags(self, tags: List[str], **params) -> List[CustomDataFlow]:
         return super().search_tags(tags, **params)
+
+    def custom_data_flows_update_custom_data_flow(
+        self, custom_data_flow_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Partially update a custom data flow (PATCH).
+
+        Args:
+            custom_data_flow_id: Custom data flow ID
+            data: Fields to update. The backend reads this as a JSON body.
+
+        Returns:
+            Updated custom data flow as a dict
+        """
+        path = f"{self._path}/{custom_data_flow_id}"
+        return self._make_request("PATCH", path, json=data)
+
+    def get_custom_data_flow_metrics_by_name(
+        self, custom_data_flow_id: int, metrics_name: str
+    ) -> Dict[str, Any]:
+        """
+        Get one named metrics group for a custom data flow.
+
+        Args:
+            custom_data_flow_id: Custom data flow ID
+            metrics_name: Metrics name, for example "summary"
+
+        Returns:
+            Metrics response
+        """
+        path = f"{self._path}/{custom_data_flow_id}/metrics/{metrics_name}"
+        return self._make_request("GET", path)
