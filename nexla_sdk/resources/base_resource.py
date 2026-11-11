@@ -179,21 +179,28 @@ class BaseResource:
         return self._parse_response(response)
 
     def paginate(
-        self, per_page: int = 20, access_role: Optional[str] = None, **params
+        self, per_page: int = 100, access_role: Optional[str] = None, **params
     ) -> Paginator[T]:
         """
         Get paginator for iterating through resources.
 
+        Each request sends per_page explicitly. Pages continue by the X-* headers
+        and the Link rel="Next" header (spec section 6).
+
         Args:
-            per_page: Items per page
+            per_page: Items per page (default 100)
             access_role: Filter by access role
             **params: Additional query parameters
 
         Returns:
-            Paginator instance
+            Paginator instance. Use iter_items() for items or iter_pages() for pages.
         """
         return Paginator(
-            fetch_func=self.list, page_size=per_page, access_role=access_role, **params
+            fetch_func=self.list,
+            page_size=per_page,
+            headers_func=lambda: getattr(self.client, "last_response_headers", {}),
+            access_role=access_role,
+            **params,
         )
 
     def get(self, resource_id: int, expand: bool = False) -> T:

@@ -6,7 +6,7 @@ import base64
 import logging
 import threading
 import time
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 from pydantic import ValidationError as PydanticValidationError
 
@@ -291,7 +291,22 @@ class TokenAuthHandler:
         self, method: str, url: str, headers: Dict[str, str], **kwargs
     ) -> Union[Dict[str, Any], None]:
         """
-        Execute a request with authentication handling
+        Execute a request with authentication handling. Return the body only.
+
+        Raises:
+            AuthenticationError: If authentication fails
+            ServerError: If the API returns an error
+        """
+        body, _ = self.execute_authenticated_request_with_headers(
+            method, url, headers, **kwargs
+        )
+        return body
+
+    def execute_authenticated_request_with_headers(
+        self, method: str, url: str, headers: Dict[str, str], **kwargs
+    ) -> Tuple[Union[Dict[str, Any], None], Any]:
+        """
+        Execute a request with authentication handling. Return (body, response headers).
 
         On 401 with a refreshable mode, one new token is obtained and the request
         is retried once. Threads that saw the same stale token share that refresh.
@@ -303,7 +318,7 @@ class TokenAuthHandler:
             **kwargs: Additional arguments to pass to the HTTP client
 
         Returns:
-            API response as a dictionary or None for 204 No Content responses
+            (body, headers). The body is None for 204 No Content.
 
         Raises:
             AuthenticationError: If authentication fails
@@ -313,7 +328,9 @@ class TokenAuthHandler:
         headers["Authorization"] = f"Bearer {access_token}"
 
         try:
-            return self.http_client.request(method, url, headers=headers, **kwargs)
+            return self.http_client.request_with_headers(
+                method, url, headers=headers, **kwargs
+            )
 
         except HttpClientError as e:
             if getattr(e, "status_code", None) != 401 or self._using_direct_token:
@@ -327,4 +344,6 @@ class TokenAuthHandler:
                     self.obtain_session_token()
                 new_token = self._access_token
             headers["Authorization"] = f"Bearer {new_token}"
-            return self.http_client.request(method, url, headers=headers, **kwargs)
+            return self.http_client.request_with_headers(
+                method, url, headers=headers, **kwargs
+            )

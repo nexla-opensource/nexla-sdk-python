@@ -109,6 +109,17 @@ class HttpClientInterface(ABC):
     This allows for different HTTP client implementations or mocks for testing.
     """
 
+    def request_with_headers(
+        self, method: str, url: str, headers: Dict[str, str], **kwargs
+    ) -> Tuple[Union[Dict[str, Any], None], Any]:
+        """
+        Send an HTTP request and also return the response headers.
+
+        The default has no headers. Transports that can read headers
+        (RequestsHttpClient) override this method.
+        """
+        return self.request(method, url, headers, **kwargs), {}
+
     @abstractmethod
     def request(
         self, method: str, url: str, headers: Dict[str, str], **kwargs
@@ -248,6 +259,13 @@ class RequestsHttpClient(HttpClientInterface):
         self, method: str, url: str, headers: Dict[str, str], **kwargs
     ) -> Union[Dict[str, Any], None]:
         """Send an HTTP request using a session with sane defaults."""
+        body, _ = self.request_with_headers(method, url, headers, **kwargs)
+        return body
+
+    def request_with_headers(
+        self, method: str, url: str, headers: Dict[str, str], **kwargs
+    ) -> Tuple[Union[Dict[str, Any], None], Any]:
+        """Send an HTTP request. Return (body, response headers)."""
         span_name = f"Nexla API {method.upper()}"
         kind = (
             SpanKind.CLIENT
@@ -311,22 +329,25 @@ class RequestsHttpClient(HttpClientInterface):
 
                 # Return None for 204 No Content or empty responses
                 if response.status_code == 204 or not response.content:
-                    return None
+                    return None, response.headers
 
                 # Check if response content type indicates JSON
                 content_type = response.headers.get("content-type", "").lower()
                 if "application/json" in content_type or "text/json" in content_type:
-                    return response.json()
+                    return response.json(), response.headers
 
                 # Try to parse as JSON anyway, but handle cases where it's not JSON
                 try:
-                    return response.json()
+                    return response.json(), response.headers
                 except (ValueError, requests.exceptions.JSONDecodeError):
                     # If it's not JSON, return the response as text in a dict
-                    return {
-                        "raw_text": response.text,
-                        "status_code": response.status_code,
-                    }
+                    return (
+                        {
+                            "raw_text": response.text,
+                            "status_code": response.status_code,
+                        },
+                        response.headers,
+                    )
 
             except requests.exceptions.HTTPError as e:
                 # Record exception on span

@@ -4,7 +4,19 @@ Nexla API client
 
 import logging
 import os
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Type, TypeVar, Union
+import threading
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from pydantic import ValidationError as PydanticValidationError
 
@@ -221,6 +233,7 @@ class NexlaClient:
             self._trace_enabled = True
 
         self.tracer = telemetry.get_tracer(self._trace_enabled)
+        self._response_state = threading.local()
 
         # Initialize HTTP client (instrumented if tracer provided)
         self.http_client = http_client or RequestsHttpClient(
@@ -452,6 +465,15 @@ class NexlaClient:
                 f"Failed to convert API response to {model_class.__name__}: {e}"
             )
 
+    @property
+    def last_response_headers(self) -> Mapping[str, Any]:
+        """
+        Headers of the last response received on the calling thread.
+
+        paginate() reads this after each list() call. Empty before any request.
+        """
+        return getattr(self._response_state, "headers", None) or {}
+
     def request(self, method: str, path: str, **kwargs) -> Union[Dict[str, Any], None]:
         """
         Send a request to the Nexla API
@@ -468,6 +490,22 @@ class NexlaClient:
             AuthenticationError: If authentication fails
             ServerError: If the API returns an error
         """
+        body, _ = self.request_with_headers(method, path, **kwargs)
+        return body
+
+    def request_with_headers(
+        self, method: str, path: str, **kwargs
+    ) -> Tuple[Union[Dict[str, Any], None], Any]:
+        """
+        Send a request to the Nexla API and return (body, response headers).
+
+        The headers are also stored for last_response_headers.
+
+        Raises:
+            AuthenticationError: If authentication fails
+            ServerError: If the API returns an error
+        """
+        self._response_state.headers = {}
         url = f"{self.api_url}{path}"
         headers = {
             "Accept": "application/json",
@@ -480,9 +518,13 @@ class NexlaClient:
 
         try:
             # Let auth handler manage getting a valid token and handling auth retries
-            return self.auth_handler.execute_authenticated_request(
-                method=method, url=url, headers=headers, **kwargs
+            body, response_headers = (
+                self.auth_handler.execute_authenticated_request_with_headers(
+                    method=method, url=url, headers=headers, **kwargs
+                )
             )
+            self._response_state.headers = response_headers
+            return body, response_headers
         except HttpClientError as e:
             # Map HTTP client errors to appropriate Nexla exceptions
             self._handle_http_error(e, method, path, url, kwargs)
