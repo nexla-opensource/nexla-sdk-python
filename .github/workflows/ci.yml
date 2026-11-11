@@ -26,10 +26,17 @@ on:
 
 jobs:
   build-test:
-    runs-on: ubuntu-latest
+    # ubuntu-latest (26.04) has no setup-python builds for 3.8 or 3.9.
+    runs-on: ${{ matrix.runner || 'ubuntu-latest' }}
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        include:
+          - python-version: "3.8"
+            runner: ubuntu-24.04
+          - python-version: "3.9"
+            runner: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
