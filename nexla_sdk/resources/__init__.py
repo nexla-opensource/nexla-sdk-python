@@ -25,6 +25,7 @@ from nexla_sdk.resources.flows import FlowsResource
 from nexla_sdk.resources.genai import GenAIResource
 from nexla_sdk.resources.lookups import LookupsResource
 from nexla_sdk.resources.marketplace import MarketplaceResource
+from nexla_sdk.resources.mcp_sessions import McpSessionsResource
 from nexla_sdk.resources.metrics import MetricsResource
 from nexla_sdk.resources.nexsets import NexsetsResource
 from nexla_sdk.resources.notification_channel_settings import (
@@ -107,6 +108,7 @@ __all__ = [
     "ToolSetsResource",
     "ToolsResource",
     "SdkApplicationsResource",
+    "McpSessionsResource",
     "SearchHealthResource",
     "CubeJsResource",
     # Phase 1 resources

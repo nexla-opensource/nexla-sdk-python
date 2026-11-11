@@ -63,6 +63,7 @@ from .resources.flows import FlowsResource
 from .resources.genai import GenAIResource
 from .resources.lookups import LookupsResource
 from .resources.marketplace import MarketplaceResource
+from .resources.mcp_sessions import McpSessionsResource
 from .resources.metrics import MetricsResource
 from .resources.nexsets import NexsetsResource
 from .resources.notification_channel_settings import NotificationChannelSettingsResource
@@ -311,6 +312,7 @@ class NexlaClient:
         self.tools = ToolsResource(self)
         self.tool_sets = ToolSetsResource(self)
         self.sdk_applications = SdkApplicationsResource(self)
+        self.mcp_sessions = McpSessionsResource(self)
         self.search_health = SearchHealthResource(self)
         self.cubejs = CubeJsResource(self)
 

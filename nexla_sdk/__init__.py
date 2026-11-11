@@ -71,6 +71,7 @@ from nexla_sdk.resources import (
     GenAIResource,
     LookupsResource,
     MarketplaceResource,
+    McpSessionsResource,
     MetricsResource,
     NexsetsResource,
     NotificationsResource,
@@ -120,6 +121,7 @@ __all__ = [
     "ToolSetsResource",
     "ToolsResource",
     "SdkApplicationsResource",
+    "McpSessionsResource",
     # Models
     "BaseModel",
     "Owner",
