@@ -106,7 +106,11 @@ class GenAIResource(BaseResource):
             "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
         )
 
-    @missing_route("DELETE", "/gen_ai_org_settings")
+    @missing_route(
+        "DELETE",
+        "/gen_ai_org_settings",
+        use="delete_org_setting(gen_ai_org_setting_id)",
+    )
     def delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("DELETE", "/gen_ai_org_settings", json=payload)
 

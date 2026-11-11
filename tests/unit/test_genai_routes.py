@@ -34,3 +34,17 @@ def test_genai_route_sends_expected_request(
     assert last["params"] == params
     if json_body is not None:
         assert last["json"] == json_body
+
+
+def test_delete_org_settings_warning_names_working_replacement(
+    mock_client, mock_http_client
+):
+    # DELETE /gen_ai_org_settings does not exist. The warning must name the
+    # route-backed method that deletes one setting.
+    mock_http_client.add_response("/gen_ai_org_settings", [])
+
+    with pytest.warns(
+        DeprecationWarning,
+        match=r"Use delete_org_setting\(gen_ai_org_setting_id\) instead",
+    ):
+        mock_client.genai.delete_org_settings({"x": 1})
