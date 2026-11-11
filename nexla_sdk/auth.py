@@ -6,8 +6,20 @@ import logging
 import time
 from typing import Any, Dict, Optional, Union
 
-from .exceptions import AuthenticationError, NexlaError
-from .http_client import HttpClientError, HttpClientInterface, RequestsHttpClient
+from .exceptions import (
+    AuthenticationError,
+    NexlaConnectionError,
+    NexlaError,
+    NexlaTimeoutError,
+    error_from_response,
+)
+from .http_client import (
+    HttpClientError,
+    HttpClientInterface,
+    HttpConnectionError,
+    HttpTimeoutError,
+    RequestsHttpClient,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -117,24 +129,20 @@ class TokenAuthHandler:
             logger.debug("Session token obtained successfully")
 
         except HttpClientError as e:
-            if getattr(e, "status_code", None) == 401:
-                raise AuthenticationError(
-                    "Authentication failed. Check your service key."
+            if isinstance(e, HttpTimeoutError):
+                raise NexlaTimeoutError(f"Failed to obtain session token: {e}") from e
+            if isinstance(e, HttpConnectionError):
+                raise NexlaConnectionError(
+                    f"Failed to obtain session token: {e}"
                 ) from e
-
-            error_msg = f"Failed to obtain session token: {e}"
-            error_data = getattr(e, "response", {})
-
-            if error_data:
-                if "message" in error_data:
-                    error_msg = f"Authentication error: {error_data['message']}"
-                elif "error" in error_data:
-                    error_msg = f"Authentication error: {error_data['error']}"
-
-            raise NexlaError(
-                error_msg,
-                status_code=getattr(e, "status_code", None),
-                response=error_data,
+            body = e.body if e.body is not None else (e.response or None)
+            raise error_from_response(
+                getattr(e, "status_code", None),
+                body,
+                headers=e.headers,
+                method="POST",
+                url=url,
+                operation="authentication",
             ) from e
 
         except Exception as e:
@@ -239,10 +247,8 @@ class TokenAuthHandler:
                     return self.http_client.request(
                         method, url, headers=headers, **kwargs
                     )
-                # Direct token cannot be refreshed
-                raise AuthenticationError(
-                    "Authentication failed (access token invalid or expired)"
-                ) from e
+                # Direct token cannot be refreshed: the client maps the 401
+                raise
 
             # For other errors, let the caller handle them
             raise

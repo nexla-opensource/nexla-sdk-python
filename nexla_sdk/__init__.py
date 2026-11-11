@@ -17,11 +17,14 @@ from nexla_sdk.client import NexlaClient
 
 # Import exceptions
 from nexla_sdk.exceptions import (
+    AccountLockedError,
     AuthenticationError,
     AuthorizationError,
     CredentialError,
     FlowError,
+    NexlaConnectionError,
     NexlaError,
+    NexlaTimeoutError,
     NotFoundError,
     RateLimitError,
     ResourceConflictError,
@@ -121,11 +124,14 @@ __all__ = [
     # Exceptions
     "NexlaError",
     "AuthenticationError",
+    "AccountLockedError",
     "AuthorizationError",
     "NotFoundError",
     "ValidationError",
     "RateLimitError",
     "ServerError",
+    "NexlaTimeoutError",
+    "NexlaConnectionError",
     "ResourceConflictError",
     "CredentialError",
     "FlowError",

@@ -125,7 +125,8 @@ class TestAuthenticationErrors:
             mock_client.sources.list()
 
         # The exception should be raised (status_code may not be set due to retry logic)
-        assert "Authentication failed" in str(exc_info.value)
+        # Message comes from the response body (spec section 5); status is 401.
+        assert exc_info.value.status_code == 401
 
     def test_authentication_error_missing_token(self, mock_client, mock_http_client):
         """Test 401 handling when authorization header is missing."""
@@ -143,7 +144,8 @@ class TestAuthenticationErrors:
         with pytest.raises(AuthenticationError) as exc_info:
             mock_client.credentials.list()
 
-        assert "Authentication failed" in str(exc_info.value)
+        # Message comes from the response body (spec section 5); status is 401.
+        assert exc_info.value.status_code == 401
 
     def test_authentication_error_on_get_request(self, mock_client, mock_http_client):
         """Test 401 handling for GET request with invalid credentials."""
@@ -162,7 +164,8 @@ class TestAuthenticationErrors:
         with pytest.raises(AuthenticationError) as exc_info:
             mock_client.users.get(resource_id)
 
-        assert "Authentication failed" in str(exc_info.value)
+        # Message comes from the response body (spec section 5); status is 401.
+        assert exc_info.value.status_code == 401
 
     def test_authentication_error_revoked_service_key(
         self, mock_client, mock_http_client
@@ -186,7 +189,8 @@ class TestAuthenticationErrors:
         with pytest.raises(AuthenticationError) as exc_info:
             mock_client.sources.list()
 
-        assert "Authentication failed" in str(exc_info.value)
+        # Message comes from the response body (spec section 5); status is 401.
+        assert exc_info.value.status_code == 401
 
 
 @pytest.mark.unit
@@ -321,7 +325,7 @@ class TestNotFoundErrors:
         with pytest.raises(NotFoundError) as exc_info:
             mock_client.credentials.get(deleted_id)
 
-        assert "not found" in str(exc_info.value).lower()
+        assert "Resource has been deleted" in str(exc_info.value)
 
     def test_not_found_error_nested_resource(self, mock_client, mock_http_client):
         """Test 404 for nested resource not found."""

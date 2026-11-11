@@ -72,11 +72,32 @@ class HttpClientError(Exception):
         status_code: Optional[int] = None,
         response: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, Any]] = None,
+        body: Any = None,
     ):
         super().__init__(message)
         self.status_code = status_code
         self.response = response or {}
         self.headers = headers or {}
+        # Parsed JSON, trimmed text, or None for an empty body.
+        self.body = body
+
+
+class HttpTimeoutError(HttpClientError):
+    """The request timed out (connect or read)."""
+
+
+class HttpConnectionError(HttpClientError):
+    """The connection failed before a response was received."""
+
+
+def _parse_error_body(resp: Any) -> Any:
+    """Return the JSON body, else the trimmed text, else None when empty."""
+    if resp is None or not getattr(resp, "content", None):
+        return None
+    try:
+        return resp.json()
+    except ValueError:
+        return (resp.text or "").strip() or None
 
 
 class RequestsHttpClient(HttpClientInterface):
@@ -215,24 +236,14 @@ class RequestsHttpClient(HttpClientInterface):
                 except Exception:
                     pass
 
-                # Create standardized error with status code and response data
-                error_data: Dict[str, Any] = {}
-                if "response" in e.__dict__:
-                    resp = e.response
-                else:
-                    resp = response  # type: ignore[name-defined]
-
-                if resp is not None and getattr(resp, "content", None):
-                    try:
-                        error_data = resp.json()
-                    except ValueError:
-                        error_data = {"raw_text": resp.text}
-
+                resp = getattr(e, "response", None)
+                body = _parse_error_body(resp)
                 raise HttpClientError(
                     message=str(e),
                     status_code=getattr(resp, "status_code", None),
-                    response=error_data,
+                    response=body if isinstance(body, dict) else {},
                     headers=dict(getattr(resp, "headers", {}) or {}),
+                    body=body,
                 ) from e
 
             except requests.exceptions.RequestException as e:
@@ -250,5 +261,9 @@ class RequestsHttpClient(HttpClientInterface):
                 except Exception:
                     pass
 
-                # Handle general request exceptions (network errors, etc.)
+                # Timeout is checked first: ConnectTimeout is also a ConnectionError.
+                if isinstance(e, requests.exceptions.Timeout):
+                    raise HttpTimeoutError(message=str(e)) from e
+                if isinstance(e, requests.exceptions.ConnectionError):
+                    raise HttpConnectionError(message=str(e)) from e
                 raise HttpClientError(message=str(e)) from e

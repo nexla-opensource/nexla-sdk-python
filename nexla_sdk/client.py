@@ -11,13 +11,19 @@ from pydantic import ValidationError as PydanticValidationError
 from . import telemetry
 from .auth import TokenAuthHandler
 from .exceptions import (
-    AuthenticationError,
+    NexlaConnectionError,
     NexlaError,
-    NotFoundError,
-    ServerError,
+    NexlaTimeoutError,
     ValidationError,
+    error_from_response,
 )
-from .http_client import HttpClientError, HttpClientInterface, RequestsHttpClient
+from .http_client import (
+    HttpClientError,
+    HttpClientInterface,
+    HttpConnectionError,
+    HttpTimeoutError,
+    RequestsHttpClient,
+)
 from .raw_operations import RawOperationsClient
 from .resources.api_keys import ApiKeysResource
 from .resources.approval_requests import ApprovalRequestsResource
@@ -437,30 +443,17 @@ class NexlaClient:
         self, error: HttpClientError, method: str, path: str, url: str, kwargs: dict
     ):
         """
-        Handle HTTP client errors by mapping them to appropriate Nexla exceptions
+        Map an HTTP client error to a typed NexlaError.
 
-        Args:
-            error: The HTTP client error
-            method: HTTP method that failed
-            path: API path that failed
-            url: Full URL that failed
-            kwargs: Request parameters
+        Status code and body shape choose the class (see exceptions.error_from_response).
+        Timeouts map to NexlaTimeoutError and connection failures to NexlaConnectionError.
 
         Raises:
-            AuthenticationError: If authentication fails (401)
-            NotFoundError: If resource not found (404)
-            ServerError: For other API errors
+            NexlaTimeoutError: The request timed out
+            NexlaConnectionError: The connection failed
+            NexlaError: A typed subclass for the HTTP status
         """
-        status_code = getattr(error, "status_code", None)
-        error_data = getattr(error, "response", {})
-
-        error_msg = f"API request failed: {error}"
-
-        if error_data:
-            if "message" in error_data:
-                error_msg = f"API error: {error_data['message']}"
-            elif "error" in error_data:
-                error_msg = f"API error: {error_data['error']}"
+        error_data = getattr(error, "response", {}) or {}
 
         # Extract resource information (prefer server-provided fields, fallback to path)
         resource_type = None
@@ -476,114 +469,42 @@ class NexlaClient:
                     resource_type = path_parts[0]
                 if not resource_id and len(path_parts) >= 2 and path_parts[1].isdigit():
                     resource_id = path_parts[1]
-        # Final defaults
         if not resource_type:
             resource_type = "unknown"
 
-        # Build context
         context = {
             "method": method,
             "path": path,
             "url": url,
-            "status_code": status_code,
+            "status_code": getattr(error, "status_code", None),
             "api_response": error_data,
             "request_params": {
                 k: v for k, v in kwargs.items() if k not in ["json", "data"]
             },
         }
+        common: Dict[str, Any] = {
+            "operation": f"{method.lower()}_request",
+            "resource_type": resource_type,
+            "resource_id": resource_id,
+            "context": context,
+            "original_error": error,
+        }
 
-        # Map status codes to specific exceptions
-        if status_code in (400, 422):
-            raise ValidationError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
+        if isinstance(error, HttpTimeoutError):
+            raise NexlaTimeoutError(
+                f"Request timed out: {error}", method=method, url=url, **common
             ) from error
-        elif status_code == 401:
-            raise AuthenticationError(
-                "Authentication failed. Check your service key.",
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
+        if isinstance(error, HttpConnectionError):
+            raise NexlaConnectionError(
+                f"Connection failed: {error}", method=method, url=url, **common
             ) from error
-        elif status_code == 403:
-            from .exceptions import AuthorizationError
 
-            raise AuthorizationError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 404:
-            raise NotFoundError(
-                f"Resource not found: {resource_type}/{resource_id or 'unknown'}",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                operation=f"{method.lower()}_request",
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 409:
-            from .exceptions import ResourceConflictError
-
-            raise ResourceConflictError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 429:
-            from .exceptions import RateLimitError
-
-            retry_after = None
-            # Try to parse retry-after from headers or body
-            headers = getattr(error, "headers", {}) or {}
-            if headers:
-                retry_after_hdr = headers.get("Retry-After") or headers.get(
-                    "retry-after"
-                )
-                if retry_after_hdr:
-                    try:
-                        retry_after = int(retry_after_hdr)
-                    except Exception:
-                        retry_after = None
-            if not retry_after and isinstance(error_data, dict):
-                retry_after = error_data.get("retry_after")
-            raise RateLimitError(
-                error_msg,
-                retry_after=retry_after,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        else:
-            raise ServerError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
+        body = error.body if error.body is not None else (error_data or None)
+        raise error_from_response(
+            getattr(error, "status_code", None),
+            body,
+            headers=getattr(error, "headers", {}),
+            method=method,
+            url=url,
+            **common,
+        ) from error

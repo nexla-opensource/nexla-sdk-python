@@ -1,4 +1,5 @@
-from typing import Any, Dict, Optional
+import http
+from typing import Any, Dict, Optional, Tuple, Type
 
 
 class NexlaError(Exception):
@@ -16,6 +17,11 @@ class NexlaError(Exception):
         original_error: Optional[Exception] = None,
         status_code: Optional[int] = None,
         response: Optional[Dict[str, Any]] = None,
+        error_code: Optional[str] = None,
+        body: Any = None,
+        request_id: Optional[str] = None,
+        method: Optional[str] = None,
+        url: Optional[str] = None,
     ):
         super().__init__(message)
         self.message = message
@@ -28,6 +34,16 @@ class NexlaError(Exception):
         self.original_error = original_error
         self.status_code = status_code
         self.response = response
+        self.error_code = error_code
+        self.body = body
+        self.request_id = request_id
+        self.method = method
+        self.url = url
+
+    @property
+    def status(self) -> Optional[int]:
+        """HTTP status code. Same value as ``status_code``."""
+        return self.status_code
 
     def __str__(self):
         """Provide detailed error information."""
@@ -79,6 +95,12 @@ class AuthenticationError(NexlaError):
         super().__init__(message, **kwargs)
 
 
+class AccountLockedError(AuthenticationError):
+    """Raised on HTTP 423: the account is locked."""
+
+    pass
+
+
 class AuthorizationError(NexlaError):
     """Raised when user lacks permission."""
 
@@ -106,7 +128,19 @@ class RateLimitError(NexlaError):
 
 
 class ServerError(NexlaError):
-    """Raised when server returns 5xx error."""
+    """Raised when server returns 5xx error or any other non-2xx status not mapped above."""
+
+    pass
+
+
+class NexlaTimeoutError(ServerError):
+    """Raised when a request times out. Subclasses ServerError for compatibility."""
+
+    pass
+
+
+class NexlaConnectionError(ServerError):
+    """Raised when the connection fails. Subclasses ServerError for compatibility."""
 
     pass
 
@@ -159,3 +193,111 @@ class TransformError(NexlaError):
         if transform_id:
             kwargs.setdefault("resource_id", transform_id)
         super().__init__(message, **kwargs)
+
+
+def _message_from_body(body: Any) -> Tuple[Optional[str], Optional[str], Optional[int]]:
+    """Return (message, error_code, retry_after) from an error body.
+
+    The first matching shape wins. See spec section 5, body shapes 1-6.
+    """
+    if isinstance(body, str):
+        text = body.strip()
+        return (text or None, None, None)
+    if not isinstance(body, dict):
+        return (None, None, None)
+
+    message = body.get("message")
+    if isinstance(message, str) and message.strip():
+        code = body.get("error_code")
+        return (message, code if isinstance(code, str) else None, None)
+
+    error = body.get("error")
+    if isinstance(error, dict):
+        detail = error.get("detail")
+        if isinstance(detail, str) and detail.strip():
+            code = error.get("type")
+            retry_after = error.get("retry_after")
+            return (
+                detail,
+                code if isinstance(code, str) else None,
+                retry_after if isinstance(retry_after, int) else None,
+            )
+    if isinstance(error, str) and error.strip():
+        return (error, None, None)
+
+    detail = body.get("detail")
+    if isinstance(detail, str) and detail.strip():
+        return (detail, None, None)
+    return (None, None, None)
+
+
+_STATUS_CLASSES: Dict[int, Type[NexlaError]] = {
+    400: ValidationError,
+    401: AuthenticationError,
+    403: AuthorizationError,
+    404: NotFoundError,
+    409: ResourceConflictError,
+    422: ValidationError,
+    423: AccountLockedError,
+    429: RateLimitError,
+}
+
+
+def _header(headers: Optional[Dict[str, Any]], name: str) -> Optional[str]:
+    """Case-insensitive header lookup."""
+    for key, value in (headers or {}).items():
+        if key.lower() == name.lower():
+            return value
+    return None
+
+
+def error_from_response(
+    status_code: Optional[int],
+    body: Any,
+    headers: Optional[Dict[str, Any]] = None,
+    method: Optional[str] = None,
+    url: Optional[str] = None,
+    **kwargs: Any,
+) -> NexlaError:
+    """Build the typed NexlaError for an HTTP error response.
+
+    Args:
+        status_code: HTTP status code.
+        body: Parsed JSON, trimmed text, or None for an empty body.
+        headers: Response headers. ``X-Request-Id`` is read case-insensitively.
+        method: HTTP method of the failed request.
+        url: Full URL of the failed request.
+        **kwargs: Passed to the exception constructor (for example ``operation``).
+
+    Returns:
+        A NexlaError subclass chosen by status code. Its message is never empty.
+    """
+    message, error_code, retry_after = _message_from_body(body)
+    if not message:
+        try:
+            reason = http.HTTPStatus(status_code).phrase  # type: ignore[arg-type]
+        except (ValueError, TypeError):
+            reason = "HTTP error"
+        message = f"{status_code} {reason}"
+
+    cls: Type[NexlaError] = _STATUS_CLASSES.get(status_code, ServerError)  # type: ignore[arg-type]
+
+    if cls is RateLimitError:
+        if retry_after is None:
+            hdr = _header(headers, "Retry-After")
+            if hdr and str(hdr).strip().isdigit():
+                retry_after = int(str(hdr).strip())
+        kwargs.setdefault("retry_after", retry_after)
+
+    response = body if isinstance(body, dict) else {}
+    return cls(
+        message,
+        status_code=status_code,
+        response=response,
+        error_code=error_code,
+        body=body,
+        request_id=_header(headers, "X-Request-Id"),
+        method=method,
+        url=url,
+        **kwargs,
+    )
