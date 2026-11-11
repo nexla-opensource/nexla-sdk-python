@@ -35,6 +35,7 @@ from nexla_sdk.resources.notification_settings import NotificationSettingsResour
 from nexla_sdk.resources.notification_types import NotificationTypesResource
 from nexla_sdk.resources.notifications import NotificationsResource
 from nexla_sdk.resources.org_auth_configs import OrgAuthConfigsResource
+from nexla_sdk.resources.oauth import OAuthResource
 from nexla_sdk.resources.org_tiers import OrgTiersResource
 from nexla_sdk.resources.organizations import OrganizationsResource
 from nexla_sdk.resources.projects import ProjectsResource
@@ -85,6 +86,7 @@ __all__ = [
     "RuntimesResource",
     "MarketplaceResource",
     "OrgAuthConfigsResource",
+    "OAuthResource",
     "OrgTiersResource",
     "AuthParametersResource",
     "ResourceParametersResource",

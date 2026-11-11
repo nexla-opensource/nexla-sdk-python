@@ -71,6 +71,7 @@ from .resources.notification_settings import NotificationSettingsResource
 from .resources.notification_types import NotificationTypesResource
 from .resources.notifications import NotificationsResource
 from .resources.org_auth_configs import OrgAuthConfigsResource
+from .resources.oauth import OAuthResource
 from .resources.org_tiers import OrgTiersResource
 from .resources.organizations import OrganizationsResource
 from .resources.projects import ProjectsResource
@@ -298,6 +299,7 @@ class NexlaClient:
         self.runtimes = RuntimesResource(self)
         self.marketplace = MarketplaceResource(self)
         self.org_auth_configs = OrgAuthConfigsResource(self)
+        self.oauth = OAuthResource(self)
         self.org_tiers = OrgTiersResource(self)
         self.auth_parameters = AuthParametersResource(self)
         self.resource_parameters = ResourceParametersResource(self)
