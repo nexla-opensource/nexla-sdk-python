@@ -70,5 +70,14 @@ class TransformsResource(BaseResource):
     def transform_features(self) -> Dict[str, Any]:
         return self._make_request("GET", "/transform/features")
 
+    def transform_accessible_resources(self) -> List[Dict[str, Any]]:
+        """
+        List transforms accessible to the current user with their role.
+
+        Returns:
+            Accessible transform entries
+        """
+        return self._make_request("GET", "/transform/accessible")
+
     def transform_data(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("POST", "/transform", json=payload)
