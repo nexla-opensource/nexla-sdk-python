@@ -742,6 +742,108 @@ class TestFlowsUnit:
         assert last_request["params"]["page"] == 1
         assert last_request["params"]["per_page"] == 50
 
+    def test_get_flow_logs_uses_flat_logs_path(self, mock_client, mock_http_client):
+        """get_flow_logs hits /flows/:id/logs (not /flow/logs) and unix-encodes dates."""
+        flow_id = 591210
+        mock_http_client.add_response(
+            f"/flows/{flow_id}/logs", {"status": 200, "logs": []}
+        )
+
+        mock_client.flows.get_flow_logs(
+            flow_id=flow_id,
+            from_date="2026-05-09",
+            to_date="2026-05-10",
+            severity="ERROR",
+            run_id=42,
+        )
+
+        req = mock_http_client.get_last_request()
+        assert req["method"] == "GET"
+        assert req["url"].endswith(f"/flows/{flow_id}/logs")
+        assert "/flow/logs" not in req["url"]
+        assert req["params"]["severity"] == "ERROR"
+        assert req["params"]["run_id"] == 42
+        # 2026-05-09 00:00:00 UTC → 1778284800; 2026-05-10 → 1778371200
+        assert req["params"]["from"] == 1778284800
+        assert req["params"]["to"] == 1778371200
+
+    def test_get_flow_logs_passes_through_unix_timestamps(
+        self, mock_client, mock_http_client
+    ):
+        """get_flow_logs leaves unix-timestamp inputs unchanged."""
+        mock_http_client.add_response("/flows/1/logs", {"status": 200, "logs": []})
+        mock_client.flows.get_flow_logs(flow_id=1, from_date=1704067200, to_date="1704153600")
+        req = mock_http_client.get_last_request()
+        assert req["params"]["from"] == 1704067200
+        assert req["params"]["to"] == 1704153600
+
+    def test_search_flow_logs_uses_post_with_body(self, mock_client, mock_http_client):
+        """search_flow_logs POSTs body params and unix-encodes from/to."""
+        flow_id = 591210
+        mock_http_client.add_response(
+            f"/flows/{flow_id}/logs_v2", {"status": 200, "logs": []}
+        )
+
+        mock_client.flows.search_flow_logs(
+            flow_id=flow_id,
+            run_ids=[1778284990535, 1778284990536],
+            severity="ERROR",
+            log_type=["execution"],
+            search_string="schema mismatch",
+            from_date="2026-05-09",
+            to_date="2026-05-09",
+            size=100,
+            facets=True,
+        )
+
+        req = mock_http_client.get_last_request()
+        assert req["method"] == "POST"
+        assert req["url"].endswith(f"/flows/{flow_id}/logs_v2")
+        # body
+        assert req["json"]["run_ids"] == [1778284990535, 1778284990536]
+        assert req["json"]["severity"] == ["ERROR"]
+        assert req["json"]["log_type"] == ["execution"]
+        assert req["json"]["search_string"] == "schema mismatch"
+        # query
+        assert req["params"]["from"] == 1778284800
+        assert req["params"]["to"] == 1778284800
+        assert req["params"]["size"] == 100
+        assert req["params"]["facets"] is True
+        # body fields must NOT leak into the query string
+        assert "severity" not in req["params"]
+        assert "run_ids" not in req["params"]
+        assert "search_string" not in req["params"]
+
+    def test_search_flow_logs_accepts_run_ids_string(
+        self, mock_client, mock_http_client
+    ):
+        """Comma-separated run_ids string is split into a list of ints."""
+        mock_http_client.add_response("/flows/1/logs_v2", {"status": 200, "logs": []})
+        mock_client.flows.search_flow_logs(flow_id=1, run_ids="10,20,30")
+        req = mock_http_client.get_last_request()
+        assert req["json"]["run_ids"] == [10, 20, 30]
+
+    def test_get_active_flows_metrics_uses_data_flows_metrics_path(
+        self, mock_client, mock_http_client
+    ):
+        """admin-api defines the route as /data_flows/metrics/active_flows_metrics.
+        Calling /flows/active_flows_metrics 404s in production."""
+        mock_http_client.add_response(
+            "/data_flows/metrics/active_flows_metrics", {"metrics": []}
+        )
+
+        mock_client.flows.get_active_flows_metrics(
+            from_date="2026-05-01", to_date="2026-05-13", org_id=484
+        )
+
+        req = mock_http_client.get_last_request()
+        assert req["method"] == "GET"
+        assert req["url"].endswith("/data_flows/metrics/active_flows_metrics")
+        assert "/flows/active_flows_metrics" not in req["url"]
+        assert req["params"]["from"] == "2026-05-01"
+        assert req["params"]["to"] == "2026-05-13"
+        assert req["params"]["org_id"] == 484
+
     def test_get_metrics_success(self, mock_client, mock_http_client):
         """Test get_metrics returns FlowMetricsApiResponse model."""
         # Arrange
@@ -1222,93 +1324,6 @@ class TestFlowsUnit:
         assert isinstance(result, FlowResponse)
         project_requests = mock_http_client.get_requests_by_url_pattern("/projects/")
         assert len(project_requests) == 0
-
-    def test_get_flow_logs_basic(self, mock_client, mock_http_client):
-        """Test get_flow_logs with only flow_id."""
-        mock_http_client.add_response(
-            "/flows/100/flow/logs", {"status": "ok", "data": []}
-        )
-
-        mock_client.flows.get_flow_logs(flow_id=100)
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["method"] == "GET"
-        assert "/flows/100/flow/logs" in last_request["url"]
-        assert last_request["params"] == {}
-
-    def test_get_flow_logs_with_all_params(self, mock_client, mock_http_client):
-        """Test get_flow_logs with all parameters."""
-        mock_http_client.add_response(
-            "/flows/100/flow/logs", {"status": "ok", "data": []}
-        )
-
-        mock_client.flows.get_flow_logs(
-            flow_id=100,
-            from_date="2024-01-01",
-            to_date="2024-01-31",
-            severity="ERROR",
-            run_id=123,
-            page=1,
-            per_page=50,
-        )
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["params"] == {
-            "from": "2024-01-01",
-            "to": "2024-01-31",
-            "severity": "ERROR",
-            "run_id": 123,
-            "page": 1,
-            "per_page": 50,
-        }
-
-    def test_search_flow_logs_basic(self, mock_client, mock_http_client):
-        """Test search_flow_logs with only flow_id."""
-        mock_http_client.add_response(
-            "/flows/100/logs_v2", {"status": "ok", "data": []}
-        )
-
-        mock_client.flows.search_flow_logs(flow_id=100)
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["method"] == "GET"
-        assert "/flows/100/logs_v2" in last_request["url"]
-
-    def test_search_flow_logs_with_all_params(self, mock_client, mock_http_client):
-        """Test search_flow_logs with all parameters."""
-        mock_http_client.add_response(
-            "/flows/100/logs_v2", {"status": "ok", "data": []}
-        )
-
-        mock_client.flows.search_flow_logs(
-            flow_id=100,
-            run_ids="1,2,3",
-            severity="ERROR",
-            search_string="timeout",
-            from_date="2024-01-01",
-            to_date="2024-01-31",
-        )
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["params"] == {
-            "run_ids": "1,2,3",
-            "severity": "ERROR",
-            "search_string": "timeout",
-            "from": "2024-01-01",
-            "to": "2024-01-31",
-        }
-
-    def test_get_active_flows_metrics_basic(self, mock_client, mock_http_client):
-        """Test get_active_flows_metrics with no params."""
-        mock_http_client.add_response(
-            "/flows/active_flows_metrics", {"status": "ok", "data": []}
-        )
-
-        mock_client.flows.get_active_flows_metrics()
-
-        last_request = mock_http_client.get_last_request()
-        assert last_request["method"] == "GET"
-        assert "/flows/active_flows_metrics" in last_request["url"]
 
     def test_get_active_flows_metrics_with_params(self, mock_client, mock_http_client):
         """Test get_active_flows_metrics with all parameters."""
