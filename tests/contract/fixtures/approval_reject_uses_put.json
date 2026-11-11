@@ -1,0 +1,35 @@
+{
+  "call": {
+    "args": {
+      "request_id": 5
+    },
+    "op": "reject_approval"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "Reject is PUT /approval_requests/{id}/reject.",
+  "exchanges": [
+    {
+      "request": {
+        "method": "PUT",
+        "path": "/approval_requests/5/reject"
+      },
+      "response": {
+        "body": {
+          "id": 5,
+          "status": "rejected"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": {
+      "id": 5,
+      "status": "rejected"
+    }
+  },
+  "name": "approval_reject_uses_put"
+}

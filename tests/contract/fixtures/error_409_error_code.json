@@ -1,0 +1,41 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "error_code": "duplicate_name",
+          "message": "Name taken"
+        },
+        "headers": {},
+        "status": 409
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "ResourceConflictError",
+      "error_code": "duplicate_name",
+      "message": "Name taken",
+      "status": 409
+    }
+  },
+  "name": "error_409_error_code"
+}

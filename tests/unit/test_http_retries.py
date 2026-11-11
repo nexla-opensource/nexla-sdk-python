@@ -4,17 +4,12 @@ Scripted wire: urllib3's socket-level request is replaced, so urllib3's Retry
 and requests still run. time.sleep is recorded, not slept.
 """
 
-import io
-import json
-import time
 from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
 
 import pytest
 import requests
-from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import NewConnectionError, ReadTimeoutError
-from urllib3.response import HTTPResponse
 
 from nexla_sdk import (
     NexlaClient,
@@ -23,44 +18,11 @@ from nexla_sdk import (
     ServerError,
 )
 from nexla_sdk.exceptions import AuthenticationError
+from tests.utils.scripted_transport import ScriptedWire
 
 pytestmark = pytest.mark.unit
 
 BASE = "https://api.test/nexla-api"
-
-
-class ScriptedWire:
-    """Serves scripted responses at the urllib3 connection layer and records sleeps."""
-
-    def __init__(self, monkeypatch, steps):
-        self.steps = list(steps)
-        self.calls = []
-        self.sleeps = []
-        monkeypatch.setattr(HTTPConnectionPool, "_make_request", self._make_request)
-        monkeypatch.setattr(time, "sleep", self.sleeps.append)
-
-    def _make_request(self, conn, method, url, body=None, headers=None, **kwargs):
-        self.calls.append({"method": method, "url": url, "body": body})
-        step = self.steps.pop(0)
-        if isinstance(step, BaseException):
-            raise step
-        status, hdrs, payload = step
-        if payload is None:
-            data = b""
-        elif isinstance(payload, str):
-            data = payload.encode()
-        else:
-            data = json.dumps(payload).encode()
-        return HTTPResponse(
-            body=io.BytesIO(data),
-            headers=hdrs,
-            status=status,
-            preload_content=False,
-            decode_content=False,
-            original_response=None,
-            request_method=method,
-            request_url=url,
-        )
 
 
 def _client(**kwargs):

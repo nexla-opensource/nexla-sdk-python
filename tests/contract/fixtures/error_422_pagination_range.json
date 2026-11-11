@@ -1,0 +1,40 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "detail": "per_page",
+          "message": "Pagination value is out of range"
+        },
+        "headers": {},
+        "status": 422
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "ValidationError",
+      "message": "Pagination value is out of range",
+      "status": 422
+    }
+  },
+  "name": "error_422_pagination_range"
+}

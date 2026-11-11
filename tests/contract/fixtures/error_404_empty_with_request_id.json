@@ -1,0 +1,39 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "headers": {
+          "X-Request-Id": "req-123"
+        },
+        "status": 404,
+        "text": ""
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "NotFoundError",
+      "request_id": "req-123",
+      "status": 404
+    }
+  },
+  "name": "error_404_empty_with_request_id"
+}

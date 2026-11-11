@@ -1,0 +1,40 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "detail": "Not authorized to manage this Org",
+          "message": "Forbidden"
+        },
+        "headers": {},
+        "status": 403
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "AuthorizationError",
+      "message": "Forbidden",
+      "status": 403
+    }
+  },
+  "name": "error_403_message_detail"
+}

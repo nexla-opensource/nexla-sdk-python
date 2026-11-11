@@ -1,0 +1,51 @@
+{
+  "call": {
+    "args": {
+      "custodians": [
+        {
+          "id": 7
+        }
+      ],
+      "org_id": 3
+    },
+    "op": "reset_custodians"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "POST replaces the whole custodian list.",
+  "exchanges": [
+    {
+      "request": {
+        "body": {
+          "custodians": [
+            {
+              "id": 7
+            }
+          ]
+        },
+        "method": "POST",
+        "path": "/orgs/3/custodians"
+      },
+      "response": {
+        "body": [
+          {
+            "email": "dev@example.com",
+            "id": 7
+          }
+        ],
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": [
+      {
+        "email": "dev@example.com",
+        "id": 7
+      }
+    ]
+  },
+  "name": "custodians_reset_uses_post"
+}

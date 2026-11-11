@@ -1,0 +1,96 @@
+{
+  "call": {
+    "args": {
+      "per_page": 2
+    },
+    "op": "list_sources_all"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "No X-*-Page headers: continue while Link has rel=\"Next\".",
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "1",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 1,
+            "name": "src-1",
+            "status": "ACTIVE"
+          },
+          {
+            "id": 2,
+            "name": "src-2",
+            "status": "ACTIVE"
+          }
+        ],
+        "headers": {
+          "Link": "<https://x/data_sources?page=2&per_page=2>; rel=\"Next\""
+        },
+        "status": 200
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "2",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 3,
+            "name": "src-3",
+            "status": "ACTIVE"
+          },
+          {
+            "id": 4,
+            "name": "src-4",
+            "status": "ACTIVE"
+          }
+        ],
+        "headers": {
+          "Link": "<https://x/data_sources?page=1&per_page=2>; rel=\"Previous\""
+        },
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": [
+      {
+        "id": 1,
+        "name": "src-1",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 2,
+        "name": "src-2",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 3,
+        "name": "src-3",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 4,
+        "name": "src-4",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "name": "paginate_by_link_header"
+}

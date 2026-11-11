@@ -1,0 +1,39 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 0
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "status": 429,
+        "text": "Retry later\n"
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "RateLimitError",
+      "message": "Retry later",
+      "status": 429
+    }
+  },
+  "name": "error_429_text_plain"
+}
