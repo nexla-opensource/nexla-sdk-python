@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class CubeJsResource(BaseResource):
@@ -11,5 +12,6 @@ class CubeJsResource(BaseResource):
         self._path = "/cubejs"
         self._model_class = None
 
+    @missing_route("POST", "/cubejs/query")
     def query(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("POST", f"{self._path}/query", json=payload)

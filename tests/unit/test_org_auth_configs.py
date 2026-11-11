@@ -21,10 +21,12 @@ class TestOrgAuthConfigsResource:
         mock_http_client.assert_request_made("GET", "/api_auth_configs")
 
         mock_http_client.clear_responses()
-        mock_http_client.add_response("/api_auth_configs/all", resp)
+        mock_http_client.add_response("/api_auth_configs", resp)
         all_items = client.org_auth_configs.list_all()
         assert isinstance(all_items, list) and isinstance(all_items[0], AuthConfig)
-        mock_http_client.assert_request_made("GET", "/api_auth_configs/all")
+        # Backend has no /api_auth_configs/all route (api_auth_configs/routes/_crud.py:51)
+        last = mock_http_client.get_last_request()
+        assert last["method"] == "GET" and last["url"].endswith("/api_auth_configs")
 
         mock_http_client.clear_responses()
         mock_http_client.add_response("/api_auth_configs/1", resp[0])

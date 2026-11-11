@@ -9,6 +9,7 @@ from nexla_sdk.models.nexsets.requests import (
 )
 from nexla_sdk.models.nexsets.responses import Nexset, NexsetSample
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class NexsetsResource(BaseResource):
@@ -258,6 +259,7 @@ class NexsetsResource(BaseResource):
             path = f"{path}/{metrics_name}"
         return self._make_request("GET", path, params=params)
 
+    @missing_route("POST", "/data_sets/{set_id}/catalog")
     def catalog_add(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/catalog"
         return self._make_request("POST", path, json=payload)

@@ -20,7 +20,7 @@ class OrgAuthConfigsResource(BaseResource):
 
     def list_all(self) -> List[AuthConfig]:
         """List all authentication configurations (admin only)."""
-        response = self._make_request("GET", f"{self._path}/all")
+        response = self._make_request("GET", self._path)
         return self._parse_response(response)
 
     def list_sign_on_options(self) -> Dict[str, Any]:

@@ -17,6 +17,8 @@ from nexla_sdk.models.organizations.responses import (
     OrgMember,
 )
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import warn_deprecated
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class OrganizationsResource(BaseResource):
@@ -236,11 +238,13 @@ class OrganizationsResource(BaseResource):
     def activate_rate_limited_sources(
         self, org_id: int, status: Optional[str] = None, activate: bool = True
     ) -> Dict[str, Any]:
-        action = "source_activate" if activate else "source_pause"
-        path = f"{self._path}/{org_id}/{action}"
+        """Activate or pause rate-limited sources (PUT /orgs/{id}, body action)."""
+        data: Dict[str, Any] = {
+            "action": "source_activate" if activate else "source_pause"
+        }
         if status:
-            path = f"{path}/{status}"
-        return self._make_request("PUT", path)
+            data["status"] = status
+        return self._make_request("PUT", f"{self._path}/{org_id}", json=data)
 
     def activate_org(self, org_id: int, activate: bool = True) -> Dict[str, Any]:
         path = (
@@ -463,6 +467,7 @@ class OrganizationsResource(BaseResource):
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in response]
 
+    @missing_route("GET", "/orgs/{org_id}/auth_settings")
     def get_auth_settings(self, org_id: int) -> List[Dict[str, Any]]:
         """
         Get authentication settings for organization.
@@ -476,6 +481,7 @@ class OrganizationsResource(BaseResource):
         path = f"{self._path}/{org_id}/auth_settings"
         return self._make_request("GET", path)
 
+    @missing_route("PUT", "/orgs/{org_id}/auth_settings/{auth_setting_id}")
     def update_auth_setting(
         self, org_id: int, auth_setting_id: int, enabled: bool
     ) -> Dict[str, Any]:
@@ -502,9 +508,10 @@ class OrganizationsResource(BaseResource):
             return [CustodianUser.model_validate(item) for item in response]
         return []
 
-    def update_custodians(
+    def add_custodians(
         self, org_id: int, payload: OrgCustodiansPayload
     ) -> List[CustodianUser]:
+        """Add custodians. Backend PUT adds; POST replaces the whole list."""
         path = f"{self._path}/{org_id}/custodians"
         data = self._serialize_data(payload)
         response = self._make_request("PUT", path, json=data)
@@ -512,15 +519,23 @@ class OrganizationsResource(BaseResource):
             return [CustodianUser.model_validate(item) for item in response]
         return []
 
-    def add_custodians(
+    def reset_custodians(
         self, org_id: int, payload: OrgCustodiansPayload
     ) -> List[CustodianUser]:
+        """Replace all custodians. Backend POST resets the list."""
         path = f"{self._path}/{org_id}/custodians"
         data = self._serialize_data(payload)
         response = self._make_request("POST", path, json=data)
         if isinstance(response, list):
             return [CustodianUser.model_validate(item) for item in response]
         return []
+
+    def update_custodians(
+        self, org_id: int, payload: OrgCustodiansPayload
+    ) -> List[CustodianUser]:
+        """Deprecated alias of add_custodians (the old PUT was an add)."""
+        warn_deprecated("update_custodians", "add_custodians")
+        return self.add_custodians(org_id, payload)
 
     def remove_custodians(
         self, org_id: int, payload: OrgCustodiansPayload

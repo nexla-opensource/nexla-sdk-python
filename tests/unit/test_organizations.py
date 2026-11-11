@@ -1,5 +1,7 @@
 """Unit tests for the Organizations resource."""
 
+import pytest
+
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.organizations.custodians import (
@@ -411,8 +413,8 @@ class TestOrganizationsResource:
         assert f"/orgs/{org_id}/data_sources/audit_log" in last_request["url"]
         assert last_request["params"] == {"per_page": 10}
 
-    def test_add_custodians_uses_post(self, mock_client):
-        """add_custodians must use POST per OpenAPI spec (add_org_custodians)."""
+    def test_add_custodians_uses_put(self, mock_client):
+        """add_custodians must use PUT: backend PUT adds, POST resets (_custodians.py:61,78)."""
         org_id = 7
         payload = OrgCustodiansPayload(
             custodians=[OrgCustodianRef(email="custodian@example.com")]
@@ -425,22 +427,59 @@ class TestOrganizationsResource:
 
         assert len(result) == 1
         last_request = mock_client.http_client.get_last_request()
-        assert last_request["method"] == "POST"
+        assert last_request["method"] == "PUT"
         assert f"/orgs/{org_id}/custodians" in last_request["url"]
 
-    def test_update_custodians_uses_put(self, mock_client):
-        """update_custodians must use PUT per OpenAPI spec (update_org_custodians)."""
+    def test_reset_custodians_uses_post(self, mock_client):
+        """reset_custodians replaces the whole list: POST (_custodians.py:61)."""
         org_id = 7
         payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
         mock_client.http_client.add_response(
             f"/orgs/{org_id}/custodians", [{"id": 42, "email": "x@y.com"}]
         )
 
-        mock_client.organizations.update_custodians(org_id, payload)
+        result = mock_client.organizations.reset_custodians(org_id, payload)
+
+        assert result[0].id == 42
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "POST"
+        assert last_request["url"].endswith(f"/orgs/{org_id}/custodians")
+
+    def test_update_custodians_is_deprecated_alias_of_add(self, mock_client):
+        """update_custodians sent PUT (= add). It now warns and calls add_custodians."""
+        org_id = 7
+        payload = OrgCustodiansPayload(custodians=[OrgCustodianRef(id=42)])
+        mock_client.http_client.add_response(
+            f"/orgs/{org_id}/custodians", [{"id": 42, "email": "x@y.com"}]
+        )
+
+        with pytest.warns(DeprecationWarning, match="add_custodians"):
+            mock_client.organizations.update_custodians(org_id, payload)
 
         last_request = mock_client.http_client.get_last_request()
         assert last_request["method"] == "PUT"
-        assert f"/orgs/{org_id}/custodians" in last_request["url"]
+        assert last_request["url"].endswith(f"/orgs/{org_id}/custodians")
+
+    def test_activate_rate_limited_sources_uses_org_update_action(self, mock_client):
+        """Backend has no /orgs/{id}/source_activate route. The action is a PUT /orgs/{id} body field."""
+        mock_client.http_client.add_response("/orgs/7", {"id": 7})
+
+        mock_client.organizations.activate_rate_limited_sources(7)
+
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "PUT"
+        assert last_request["url"].endswith("/orgs/7")
+        assert last_request["json"] == {"action": "source_activate"}
+
+        mock_client.organizations.activate_rate_limited_sources(
+            7, status="RATE_LIMITED", activate=False
+        )
+        last_request = mock_client.http_client.get_last_request()
+        assert last_request["method"] == "PUT"
+        assert last_request["json"] == {
+            "action": "source_pause",
+            "status": "RATE_LIMITED",
+        }
 
     def test_remove_custodians_uses_delete(self, mock_client):
         """remove_custodians must use DELETE per OpenAPI spec (remove_org_custodians)."""
