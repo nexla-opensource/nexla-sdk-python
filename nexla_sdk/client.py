@@ -4,7 +4,7 @@ Nexla API client
 
 import logging
 import os
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Type, TypeVar, Union
 
 from pydantic import ValidationError as PydanticValidationError
 
@@ -125,6 +125,10 @@ class NexlaClient:
         token_refresh_margin: int = 3600,
         http_client: Optional[HttpClientInterface] = None,
         trace_enabled: Optional[bool] = None,
+        timeout: Union[float, Tuple[float, float]] = (10.0, 60.0),
+        max_retries: int = 3,
+        retry_methods: Optional[Iterable[str]] = None,
+        retry_on_status: Optional[Iterable[int]] = None,
     ):
         """
         Initialize the Nexla client
@@ -138,6 +142,12 @@ class NexlaClient:
             http_client: HTTP client implementation (defaults to RequestsHttpClient)
             trace_enabled: Explicitly enable/disable OpenTelemetry tracing. If None,
                            tracing auto-enables when a global OTEL config is detected.
+            timeout: Seconds as (connect, read), or one number for both. Default (10, 60).
+                     Ignored when http_client is given.
+            max_retries: Maximum retries per request. Default 3. Ignored when http_client is given.
+            retry_methods: Methods retried on read errors and 502/503/504.
+                           Default: GET, HEAD, OPTIONS, PUT, DELETE.
+            retry_on_status: Status codes retried for retry_methods. Default: 502, 503, 504.
 
         Raises:
             NexlaError: If neither or both authentication methods are provided
@@ -188,7 +198,13 @@ class NexlaClient:
         self.tracer = telemetry.get_tracer(self._trace_enabled)
 
         # Initialize HTTP client (instrumented if tracer provided)
-        self.http_client = http_client or RequestsHttpClient(tracer=self.tracer)
+        self.http_client = http_client or RequestsHttpClient(
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_methods=retry_methods,
+            retry_on_status=retry_on_status,
+            tracer=self.tracer,
+        )
 
         # Initialize authentication handler
         self.auth_handler = TokenAuthHandler(

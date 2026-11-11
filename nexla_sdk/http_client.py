@@ -2,16 +2,22 @@
 HTTP client interface and implementations for Nexla SDK
 """
 
+import email.utils
+import random
+import time
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Union
+from datetime import datetime, timezone
+from typing import Any, Dict, Iterable, Optional, Tuple, Union
 
 import requests
 from requests.adapters import HTTPAdapter
 
 try:  # urllib3 Retry API
+    from urllib3.exceptions import TimeoutError as Urllib3TimeoutError
     from urllib3.util.retry import Retry
 except Exception:  # pragma: no cover
     Retry = None
+    Urllib3TimeoutError = ()  # type: ignore[assignment,misc]
 
 try:
     from importlib.metadata import version  # Python 3.8+
@@ -33,6 +39,68 @@ except Exception:  # pragma: no cover
 
     def inject(carrier: Dict[str, str]) -> None:  # type: ignore[no-redef]
         return None
+
+
+DEFAULT_TIMEOUT: Tuple[float, float] = (10.0, 60.0)  # (connect, read) seconds
+IDEMPOTENT_METHODS: Tuple[str, ...] = ("GET", "HEAD", "OPTIONS", "PUT", "DELETE")
+DEFAULT_RETRY_STATUS: Tuple[int, ...] = (502, 503, 504)
+BACKOFF_CAP_SECONDS = 8.0
+RATE_LIMIT_MAX_WAIT_SECONDS = 60.0
+
+
+def _as_timeout_pair(value: Any) -> Tuple[float, float]:
+    """A single number sets both connect and read. A pair is (connect, read)."""
+    if isinstance(value, (int, float)):
+        return (float(value), float(value))
+    connect, read = value
+    return (float(connect), float(read))
+
+
+def _backoff(attempt: int, backoff_factor: float) -> float:
+    """Seconds to wait before retry `attempt` (1-based): min(8, f * 2^(n-1)) plus 0-100 ms."""
+    base = min(BACKOFF_CAP_SECONDS, backoff_factor * (2 ** (attempt - 1)))
+    return base + random.uniform(0, 0.1)
+
+
+class _SdkRetry(Retry):  # type: ignore[misc,valid-type]
+    """urllib3 Retry that uses the SDK backoff.
+
+    urllib3 waits 0 s before the first retry. The SDK waits 0.5 s.
+    Retry-After is not read here: 429 is handled by RequestsHttpClient.
+    """
+
+    def get_backoff_time(self) -> float:
+        n = len(self.history)
+        return _backoff(n, self.backoff_factor) if n else 0.0
+
+
+def _rate_limit_wait(response: Any, attempt: int, backoff_factor: float) -> float:
+    """Seconds to wait after a 429. First match wins.
+
+    1. body error.retry_after (the backend sends no header)
+    2. Retry-After header as seconds
+    3. Retry-After header as an HTTP date
+    4. exponential backoff
+    """
+    body = _parse_error_body(response)
+    if isinstance(body, dict) and isinstance(body.get("error"), dict):
+        retry_after = body["error"].get("retry_after")
+        if isinstance(retry_after, (int, float)) and not isinstance(retry_after, bool):
+            return float(retry_after)
+
+    header = (response.headers.get("Retry-After") or "").strip()
+    if header.isdigit():
+        return float(header)
+    if header:
+        try:
+            when = email.utils.parsedate_to_datetime(header)
+        except (TypeError, ValueError):
+            when = None
+        if when is not None:
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=timezone.utc)
+            return max(0.0, (when - datetime.now(timezone.utc)).total_seconds())
+    return _backoff(attempt, backoff_factor)
 
 
 class HttpClientInterface(ABC):
@@ -90,6 +158,17 @@ class HttpConnectionError(HttpClientError):
     """The connection failed before a response was received."""
 
 
+def _is_timeout(exc: BaseException) -> bool:
+    """True for a requests timeout, or a retry-exhausted urllib3 timeout.
+
+    requests reports exhausted read retries as ConnectionError(MaxRetryError(reason=timeout)).
+    """
+    if isinstance(exc, requests.exceptions.Timeout):
+        return True
+    reason = getattr(exc.args[0], "reason", None) if exc.args else None
+    return isinstance(reason, Urllib3TimeoutError)
+
+
 def _parse_error_body(resp: Any) -> Any:
     """Return the JSON body, else the trimmed text, else None when empty."""
     if resp is None or not getattr(resp, "content", None):
@@ -101,41 +180,69 @@ def _parse_error_body(resp: Any) -> Any:
 
 
 class RequestsHttpClient(HttpClientInterface):
-    """HTTP client implementation using the requests library with retries and timeouts."""
+    """HTTP client implementation using the requests library with retries and timeouts.
+
+    Retries (spec section 4):
+    - Connect errors: every method.
+    - Read errors and 502/503/504: idempotent methods only (``retry_methods``).
+    - 429: every method. The wait comes from the body ``error.retry_after``,
+      then ``Retry-After``. A wait over 60 s is not retried.
+    """
 
     def __init__(
         self,
-        timeout: float = 10.0,
+        timeout: Union[float, Tuple[float, float]] = DEFAULT_TIMEOUT,
         max_retries: int = 3,
         backoff_factor: float = 0.5,
         tracer: Optional[object] = None,
+        retry_methods: Optional[Iterable[str]] = None,
+        retry_on_status: Optional[Iterable[int]] = None,
     ):
-        self.timeout = timeout
+        self.timeout = _as_timeout_pair(timeout)
+        self.max_retries = max_retries
+        self.backoff_factor = backoff_factor
+        self.retry_methods = tuple(
+            m.upper() for m in (retry_methods or IDEMPOTENT_METHODS)
+        )
+        self.retry_on_status = tuple(retry_on_status or DEFAULT_RETRY_STATUS)
         self.session = requests.Session()
         self.tracer = tracer if tracer is not None else telemetry.get_tracer(False)
 
-        # Configure retries if available
+        # Configure retries if available. 429 is owned by _send_with_rate_limit_retries.
         if Retry is not None:
-            retry = Retry(
+            retry = _SdkRetry(
                 total=max_retries,
-                read=max_retries,
-                connect=max_retries,
                 backoff_factor=backoff_factor,
-                status_forcelist=[429, 502, 503, 504],
-                allowed_methods=[
-                    "HEAD",
-                    "GET",
-                    "POST",
-                    "PUT",
-                    "DELETE",
-                    "PATCH",
-                    "OPTIONS",
-                ],
+                status_forcelist=[s for s in self.retry_on_status if s != 429],
+                allowed_methods=frozenset(self.retry_methods),
                 raise_on_status=False,
+                respect_retry_after_header=False,
             )
             adapter = HTTPAdapter(max_retries=retry)
             self.session.mount("http://", adapter)
             self.session.mount("https://", adapter)
+
+    def _send_with_rate_limit_retries(
+        self,
+        method: str,
+        url: str,
+        headers: Dict[str, str],
+        timeout: Tuple[float, float],
+        kwargs: Dict[str, Any],
+    ) -> requests.Response:
+        """Send the request. Retry 429 with the server's wait. The body is resent unchanged."""
+        attempt = 0
+        while True:
+            response = self.session.request(
+                method, url, headers=headers, timeout=timeout, **kwargs
+            )
+            if response.status_code != 429 or attempt >= self.max_retries:
+                return response
+            wait = _rate_limit_wait(response, attempt + 1, self.backoff_factor)
+            if wait > RATE_LIMIT_MAX_WAIT_SECONDS:
+                return response  # raise_for_status turns this into RateLimitError
+            attempt += 1
+            time.sleep(wait)
 
     def request(
         self, method: str, url: str, headers: Dict[str, str], **kwargs
@@ -162,7 +269,7 @@ class RequestsHttpClient(HttpClientInterface):
                 span = None
 
             try:
-                timeout = kwargs.pop("timeout", self.timeout)
+                timeout = _as_timeout_pair(kwargs.pop("timeout", self.timeout))
                 # Default headers
                 merged_headers = {
                     "User-Agent": f"nexla-sdk/{_SDK_VERSION}",
@@ -190,8 +297,8 @@ class RequestsHttpClient(HttpClientInterface):
                 except Exception:
                     pass
 
-                response = self.session.request(
-                    method, url, headers=merged_headers, timeout=timeout, **kwargs
+                response = self._send_with_rate_limit_retries(
+                    method, url, merged_headers, timeout, kwargs
                 )
                 response.raise_for_status()
 
@@ -262,7 +369,7 @@ class RequestsHttpClient(HttpClientInterface):
                     pass
 
                 # Timeout is checked first: ConnectTimeout is also a ConnectionError.
-                if isinstance(e, requests.exceptions.Timeout):
+                if _is_timeout(e):
                     raise HttpTimeoutError(message=str(e)) from e
                 if isinstance(e, requests.exceptions.ConnectionError):
                     raise HttpConnectionError(message=str(e)) from e

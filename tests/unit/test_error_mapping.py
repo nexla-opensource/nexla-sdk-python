@@ -43,7 +43,7 @@ def _error_response(status, body=None, text=None, headers=None):
 
 
 def _client_returning(resp):
-    http = RequestsHttpClient()
+    http = RequestsHttpClient(max_retries=0)  # no backoff sleeps in these tests
     client = NexlaClient(
         access_token="tok-1", base_url="https://api.test/nexla-api", http_client=http
     )
