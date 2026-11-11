@@ -49,6 +49,7 @@ from nexla_sdk.resources.service_keys import ServiceKeysResource
 from nexla_sdk.resources.sources import SourcesResource
 from nexla_sdk.resources.teams import TeamsResource
 from nexla_sdk.resources.tokens import TokensResource
+from nexla_sdk.resources.tool_sets import ToolSetsResource
 from nexla_sdk.resources.tools import ToolsResource
 from nexla_sdk.resources.transforms import TransformsResource
 from nexla_sdk.resources.user_settings import UserSettingsResource
@@ -102,6 +103,7 @@ __all__ = [
     "UserSettingsResource",
     "UserTiersResource",
     "TokensResource",
+    "ToolSetsResource",
     "ToolsResource",
     "SearchHealthResource",
     "CubeJsResource",
