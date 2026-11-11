@@ -83,6 +83,7 @@ from .resources.service_keys import ServiceKeysResource
 from .resources.sources import SourcesResource
 from .resources.teams import TeamsResource
 from .resources.tokens import TokensResource
+from .resources.tools import ToolsResource
 from .resources.transforms import TransformsResource
 from .resources.user_settings import UserSettingsResource
 from .resources.user_tiers import UserTiersResource
@@ -305,6 +306,7 @@ class NexlaClient:
         self.doc_containers = DocContainersResource(self)
         self.data_schemas = DataSchemasResource(self)
         self.tokens = TokensResource(self)
+        self.tools = ToolsResource(self)
         self.search_health = SearchHealthResource(self)
         self.cubejs = CubeJsResource(self)
 

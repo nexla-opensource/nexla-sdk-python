@@ -102,6 +102,5 @@ def test_create_webhook_client_shares_http_client():
 
 def test_client_does_not_expose_removed_mcp_resources():
     client = NexlaClient(service_key="test_service_key")
-    assert not hasattr(client, "tools")
     assert not hasattr(client, "tool_sets")
     assert not hasattr(client, "mcp_sessions")

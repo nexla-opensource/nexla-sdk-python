@@ -81,6 +81,7 @@ from nexla_sdk.resources import (
     SelfSignupResource,
     SourcesResource,
     TeamsResource,
+    ToolsResource,
     TransformsResource,
     UsersResource,
 )
@@ -114,6 +115,7 @@ __all__ = [
     "SelfSignupResource",
     "DocContainersResource",
     "DataSchemasResource",
+    "ToolsResource",
     # Models
     "BaseModel",
     "Owner",
