@@ -7,9 +7,15 @@ from nexla_sdk.models.access import (
     AccessorResponse,
     AccessorResponseList,
 )
+from nexla_sdk.models.enums import AccessRole, ResourceStatus
 from nexla_sdk.utils.pagination import Paginator
 
 T = TypeVar("T")
+
+
+def _wire_value(value: Any) -> Any:
+    """Enum members send their value. Other values pass through."""
+    return value.value if isinstance(value, Enum) else value
 
 
 class BaseResource:
@@ -131,24 +137,48 @@ class BaseResource:
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        access_role: Optional[str] = None,
+        access_role: Optional[Union[str, AccessRole]] = None,
+        expand: Optional[Union[bool, int, str]] = None,
+        sort_by: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        status: Optional[Union[str, ResourceStatus]] = None,
+        tags: Optional[Union[str, List[str]]] = None,
+        name: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        org_id: Optional[Union[int, str]] = None,
         **params,
     ) -> List[T]:
         """
         List resources with optional filters.
 
-        Common filters available across most resources:
-        - page: Page number (1-based)
-        - per_page: Items per page
-        - access_role: owner, collaborator, operator, admin
+        Typed common parameters (sent under the wire names in parentheses):
+        - page, per_page: Pagination
+        - access_role (access_role): AccessRole member or string
+        - expand (expand): True sends 1. Unset or False is not sent.
+        - sort_by (sort_by), sort_order (sort_order): asc or desc
+        - status (status)
+        - tags (tags): list joined with commas, or a string as is
+        - name (name)
+        - from_date (from), to_date (to): Python names for the wire names from and to
+        - org_id (org_id)
 
-        Any resource-specific filters can be passed via keyword arguments
-        (for example, `credentials_type` for credentials, `expand` for users/projects).
+        Any other parameter goes through **params unchanged. Resource-specific
+        filters (for example, `credentials_type` for credentials) use this path.
 
         Args:
             page: Page number (1-based)
             per_page: Items per page
-            access_role: Filter by access role (owner, collaborator, operator, admin)
+            access_role: Filter by access role
+            expand: Include expanded references
+            sort_by: Sort field
+            sort_order: asc or desc
+            status: Filter by status
+            tags: Filter by tags
+            name: Filter by name
+            from_date: Start of the date range (wire name `from`)
+            to_date: End of the date range (wire name `to`)
+            org_id: Org ID filter
             **params: Resource-specific query parameters
 
         Returns:
@@ -164,13 +194,33 @@ class BaseResource:
             # With a resource-specific filter
             client.credentials.list(credentials_type="s3")
         """
-        query_params = {}
+        query_params: Dict[str, Any] = {}
         if page is not None:
             query_params["page"] = page
         if per_page is not None:
             query_params["per_page"] = per_page
         if access_role is not None:
-            query_params["access_role"] = access_role
+            query_params["access_role"] = _wire_value(access_role)
+        if expand is not None and expand is not False:
+            query_params["expand"] = 1 if expand is True else expand
+        if sort_by is not None:
+            query_params["sort_by"] = _wire_value(sort_by)
+        if sort_order is not None:
+            query_params["sort_order"] = _wire_value(sort_order)
+        if status is not None:
+            query_params["status"] = _wire_value(status)
+        if tags is not None:
+            query_params["tags"] = (
+                ",".join(tags) if isinstance(tags, (list, tuple, set)) else tags
+            )
+        if name is not None:
+            query_params["name"] = name
+        if from_date is not None:
+            query_params["from"] = from_date
+        if to_date is not None:
+            query_params["to"] = to_date
+        if org_id is not None:
+            query_params["org_id"] = org_id
         query_params.update(params)
 
         response = self._make_request(
