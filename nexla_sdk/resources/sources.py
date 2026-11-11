@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.sources.requests import (
     SourceCopyOptions,
@@ -398,3 +398,433 @@ class SourcesResource(BaseResource):
     def get_quarantine_aggregation(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_aggregation"
         return self._make_request("GET", path)
+
+    def data_sources_update_data_source(
+        self,
+        data_source_id: int,
+        data: Dict[str, Any],
+        force: Optional[bool] = None,
+        run_now: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Partially update a data source (PATCH).
+
+        Args:
+            data_source_id: Data source ID
+            data: Fields to update
+            force: Force the update
+            run_now: Run the data source after the update
+
+        Returns:
+            Updated data source
+        """
+        params = {"force": force, "run_now": run_now}
+        path = f"{self._path}/{data_source_id}"
+        return self._make_request(
+            "PATCH",
+            path,
+            params={k: v for k, v in params.items() if v is not None},
+            json=data,
+        )
+
+    def validate_data_source_config(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Validate the configuration of a data source.
+
+        Args:
+            data_source_id: Data source ID
+            data: Configuration to validate
+
+        Returns:
+            Validation result
+        """
+        path = f"{self._path}/{data_source_id}/config/validate"
+        return self._make_request("POST", path, json=data)
+
+    def get_external_file_status_alias(
+        self,
+        data_source_id: int,
+        source: Optional[str] = None,
+        status: Optional[str] = None,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+        sortBy: Optional[str] = None,
+        sortOrder: Optional[str] = None,
+        fileId: Optional[str] = None,
+        filePath: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get external file ingestion status (alias of get_external_file_status).
+
+        Args:
+            data_source_id: Data source ID
+            source: Source filter (EXTERNAL, CLOUD, REINGEST, all)
+            status: Status filter (NEW, STARTED, DONE, and others)
+            page: Page number
+            size: Page size
+            sortBy: Sort field
+            sortOrder: Sort order
+            fileId: File ID filter
+            filePath: File path filter
+
+        Returns:
+            External file status payload
+        """
+        params = {
+            "source": source,
+            "status": status,
+            "page": page,
+            "size": size,
+            "sortBy": sortBy,
+            "sortOrder": sortOrder,
+            "fileId": fileId,
+            "filePath": filePath,
+        }
+        path = f"{self._path}/{data_source_id}/file/external/status"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def get_external_file_status(
+        self,
+        data_source_id: int,
+        source: Optional[str] = None,
+        status: Optional[str] = None,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+        sortBy: Optional[str] = None,
+        sortOrder: Optional[str] = None,
+        fileId: Optional[str] = None,
+        filePath: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get external file ingestion status.
+
+        Args:
+            data_source_id: Data source ID
+            source: Source filter (EXTERNAL, CLOUD, REINGEST, all)
+            status: Status filter (NEW, STARTED, DONE, and others)
+            page: Page number
+            size: Page size
+            sortBy: Sort field
+            sortOrder: Sort order
+            fileId: File ID filter
+            filePath: File path filter
+
+        Returns:
+            External file status payload
+        """
+        params = {
+            "source": source,
+            "status": status,
+            "page": page,
+            "size": size,
+            "sortBy": sortBy,
+            "sortOrder": sortOrder,
+            "fileId": fileId,
+            "filePath": filePath,
+        }
+        path = f"{self._path}/{data_source_id}/file/status"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def dequeue_external_file(
+        self,
+        data_source_id: int,
+        file_id: str,
+        filePath: Optional[str] = None,
+        file_path: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Remove an external file from the ingestion queue.
+
+        Args:
+            data_source_id: Data source ID
+            file_id: File ID
+            filePath: File path (camelCase query name)
+            file_path: File path (snake_case query name)
+
+        Returns:
+            Dequeue result
+        """
+        params = {"filePath": filePath, "file_path": file_path}
+        path = f"{self._path}/{data_source_id}/file/external/{file_id}"
+        return self._make_request(
+            "DELETE", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sources_flow_audit_log(
+        self,
+        resource_id: int,
+        interval: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        event_filter: Optional[str] = None,
+        change_filter: Optional[str] = None,
+        page: Optional[str] = None,
+        per_page: Optional[str] = None,
+        expand: Optional[str] = None,
+        access_role: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get the audit log for the flow of a data source.
+
+        Args:
+            resource_id: Data source ID
+            interval: Time interval filter
+            from_date: Start date (wire name from)
+            to_date: End date (wire name to)
+            event_filter: Event type filter
+            change_filter: Change type filter
+            page: Page number
+            per_page: Items per page
+            expand: Expand references
+            access_role: Access role filter
+
+        Returns:
+            Flow audit log entries
+        """
+        params = {
+            "interval": interval,
+            "from": from_date,
+            "to": to_date,
+            "event_filter": event_filter,
+            "change_filter": change_filter,
+            "page": page,
+            "per_page": per_page,
+            "expand": expand,
+            "access_role": access_role,
+        }
+        path = f"{self._path}/{resource_id}/flow/audit_log"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def activate_flow_via_data_source(
+        self,
+        resource_id: int,
+        all: Optional[bool] = None,
+        full_tree: Optional[bool] = None,
+        run_now: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Activate the flow of a data source.
+
+        Args:
+            resource_id: Data source ID
+            all: Activate the entire flow tree
+            full_tree: Include the full tree in the response
+            run_now: Run value passed to the backend
+
+        Returns:
+            Flow response
+        """
+        params = {"all": all, "full_tree": full_tree, "run_now": run_now}
+        path = f"{self._path}/{resource_id}/flow/activate"
+        return self._make_request(
+            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def pause_flow_via_data_source(
+        self,
+        resource_id: int,
+        all: Optional[bool] = None,
+        full_tree: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Pause the flow of a data source.
+
+        Args:
+            resource_id: Data source ID
+            all: Pause the entire flow tree
+            full_tree: Include the full tree in the response
+
+        Returns:
+            Flow response
+        """
+        params = {"all": all, "full_tree": full_tree}
+        path = f"{self._path}/{resource_id}/flow/pause"
+        return self._make_request(
+            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def auto_create_nexset(
+        self,
+        data_source_id: int,
+        include_samples: Optional[bool] = None,
+        include_nexset_api_config: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Probe a data source and create its first nexset.
+
+        Args:
+            data_source_id: Data source ID
+            include_samples: Include data samples in the response
+            include_nexset_api_config: Include the nexset API config
+
+        Returns:
+            Created nexset payload
+        """
+        params = {
+            "include_samples": include_samples,
+            "include_nexset_api_config": include_nexset_api_config,
+        }
+        path = f"{self._path}/{data_source_id}/nexset"
+        return self._make_request(
+            "POST", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sources_get_data_source_offset(
+        self, data_source_id: int, data_set_id: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """
+        Get the offset of a data source, optionally for one nexset.
+
+        Args:
+            data_source_id: Data source ID
+            data_set_id: Nexset ID filter
+
+        Returns:
+            Offset payload
+        """
+        params = {}
+        if data_set_id is not None:
+            params["data_set_id"] = data_set_id
+        path = f"{self._path}/{data_source_id}/offset"
+        return self._make_request("GET", path, params=params)
+
+    def data_sources_get_data_source_quarantine_offset(
+        self, data_source_id: int, data_set_id: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """
+        Get the quarantine offset of a data source, optionally for one nexset.
+
+        Args:
+            data_source_id: Data source ID
+            data_set_id: Nexset ID filter
+
+        Returns:
+            Quarantine offset payload
+        """
+        params = {}
+        if data_set_id is not None:
+            params["data_set_id"] = data_set_id
+        path = f"{self._path}/{data_source_id}/quarantine/offset"
+        return self._make_request("GET", path, params=params)
+
+    def data_sources_probe_list_files_data_source(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        List files in a bucket or path (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_source_id}/probe/buckets"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sources_probe_read_file_data_source(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Read a file from the data source (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_source_id}/probe/files"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sources_probe_read_quarantine_data_source(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Read a quarantine sample from the data source (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_source_id}/probe/quarantine/sample"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sources_probe_read_sample_data_source(
+        self,
+        data_source_id: int,
+        data: Optional[Dict[str, Any]] = None,
+        return_original_response_status: Optional[bool] = None,
+        page: Optional[Union[str, int]] = None,
+        per_page: Optional[Union[str, int]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Read a data sample from the data source (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+            return_original_response_status: Return the original response status
+            page: Page number
+            per_page: Items per page
+
+        Returns:
+            Probe result
+        """
+        params = {
+            "return_original_response_status": return_original_response_status,
+            "page": page,
+            "per_page": per_page,
+        }
+        path = f"{self._path}/{data_source_id}/probe/sample"
+        return self._make_request(
+            "PUT",
+            path,
+            params={k: v for k, v in params.items() if v is not None},
+            json=data,
+        )
+
+    def data_sources_probe_detect_schemas_data_source(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Detect schemas of the data source (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_source_id}/probe/schemas"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sources_probe_list_tree_data_source(
+        self, data_source_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        List the tree of the data source (PUT).
+
+        Args:
+            data_source_id: Data source ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_source_id}/probe/tree"
+        return self._make_request("PUT", path, json=data)
