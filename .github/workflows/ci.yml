@@ -52,7 +52,7 @@ jobs:
 
       - name: Lint
         run: |
-          pip install ruff
+          pip install "ruff==0.6.8"  # keep in sync with .pre-commit-config.yaml
           ruff check nexla_sdk
 
       - name: Check Generated Operation Map Sync
