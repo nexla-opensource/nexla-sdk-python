@@ -571,3 +571,413 @@ class NexsetsResource(BaseResource):
             for doc in source_docs
         ]
         return self.update_docs(dst_id, payload)
+
+    def data_sets_update_data_set(
+        self, data_set_id: int, data: Dict[str, Any], expand: bool = False
+    ) -> Dict[str, Any]:
+        """Partially update a data set (PATCH).
+
+        Args:
+            data_set_id: Data set ID.
+            data: Fields to update.
+            expand: Include expanded references in the response.
+
+        Returns:
+            Updated data set.
+        """
+        params = {"expand": 1} if expand else {}
+        path = f"{self._path}/{data_set_id}"
+        return self._make_request("PATCH", path, json=data, params=params)
+
+    def list_sync_api_compatible(
+        self,
+        status: Optional[str] = None,
+        access_role: Optional[str] = None,
+        page: Optional[Union[str, int]] = None,
+        per_page: Optional[Union[str, int]] = None,
+    ) -> Any:
+        """List sync API compatible data sets.
+
+        Args:
+            status: Data set status, or "all".
+            access_role: Access role filter.
+            page: Page number.
+            per_page: Items per page.
+
+        Returns:
+            Parsed response body.
+        """
+        params = {
+            "status": status,
+            "access_role": access_role,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self._make_request(
+            "GET",
+            f"{self._path}/sync_api_compatible",
+            params={k: v for k, v in params.items() if v is not None},
+        )
+
+    def data_sets_update_catalog_ref_collection(
+        self, ref_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Partially update a catalog ref by ID (collection route).
+
+        Args:
+            ref_id: Catalog ref ID.
+            data: Fields to update.
+
+        Returns:
+            Updated catalog ref.
+        """
+        path = f"{self._path}/catalog_refs/{ref_id}"
+        return self._make_request("PATCH", path, json=data)
+
+    def list_catalog_refs_for_set(
+        self,
+        data_set_id: int,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Dict[str, Any]]:
+        """List catalog refs of one data set.
+
+        Args:
+            data_set_id: Data set ID.
+            page: Page number.
+            per_page: Items per page.
+
+        Returns:
+            Catalog refs.
+        """
+        params = {"page": page, "per_page": per_page}
+        path = f"{self._path}/{data_set_id}/catalog_refs"
+        return self._make_request(
+            "GET",
+            path,
+            params={k: v for k, v in params.items() if v is not None},
+        )
+
+    def get_catalog_ref_for_set(self, data_set_id: int, ref_id: int) -> Dict[str, Any]:
+        """Get one catalog ref of a data set.
+
+        Args:
+            data_set_id: Data set ID.
+            ref_id: Catalog ref ID.
+
+        Returns:
+            Catalog ref.
+        """
+        path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
+        return self._make_request("GET", path)
+
+    def data_sets_update_catalog_ref(
+        self, data_set_id: int, ref_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Partially update a catalog ref of a data set (PATCH).
+
+        Args:
+            data_set_id: Data set ID.
+            ref_id: Catalog ref ID.
+            data: Fields to update.
+
+        Returns:
+            Updated catalog ref.
+        """
+        path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
+        return self._make_request("PATCH", path, json=data)
+
+    def data_sets_update_catalog_ref_put(
+        self, data_set_id: int, ref_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Replace a catalog ref of a data set (PUT).
+
+        Args:
+            data_set_id: Data set ID.
+            ref_id: Catalog ref ID.
+            data: Catalog ref fields.
+
+        Returns:
+            Updated catalog ref.
+        """
+        path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
+        return self._make_request("PUT", path, json=data)
+
+    def delete_catalog_ref_for_set(
+        self, data_set_id: int, ref_id: int, hard_delete: bool = False
+    ) -> Any:
+        """Delete a catalog ref of a data set.
+
+        Args:
+            data_set_id: Data set ID.
+            ref_id: Catalog ref ID.
+            hard_delete: Remove the ref permanently.
+
+        Returns:
+            Parsed response body, empty on success.
+        """
+        params = {"hard_delete": 1} if hard_delete else {}
+        path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
+        return self._make_request("DELETE", path, params=params)
+
+    def list_flow_accessors_via_data_set(
+        self, resource_id: int
+    ) -> List[Dict[str, Any]]:
+        """List accessors of the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+
+        Returns:
+            Flow accessors.
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("GET", path)
+
+    def reset_flow_accessors_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """Replace all accessors of the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with an "accessors" list.
+
+        Returns:
+            Flow accessors.
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("POST", path, json=data)
+
+    def add_flow_accessors_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """Add accessors to the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with an "accessors" list.
+
+        Returns:
+            Flow accessors.
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("PUT", path, json=data)
+
+    def remove_flow_accessors_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """Remove accessors from the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with an "accessors" list.
+
+        Returns:
+            Flow accessors.
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("DELETE", path, json=data)
+
+    def activate_flow_via_data_set(
+        self,
+        resource_id: int,
+        all: bool = False,
+        full_tree: bool = False,
+        run_now: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Activate the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            all: Activate the whole flow.
+            full_tree: Alias for all.
+            run_now: Run value passed to the backend.
+
+        Returns:
+            Flow tree.
+        """
+        params: Dict[str, Any] = {}
+        if all:
+            params["all"] = 1
+        if full_tree:
+            params["full_tree"] = 1
+        if run_now is not None:
+            params["run_now"] = run_now
+        path = f"{self._path}/{resource_id}/flow/activate"
+        return self._make_request("PUT", path, params=params)
+
+    def pause_flow_via_data_set(
+        self, resource_id: int, all: bool = False, full_tree: bool = False
+    ) -> Dict[str, Any]:
+        """Pause the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            all: Pause the whole flow.
+            full_tree: Alias for all.
+
+        Returns:
+            Flow tree.
+        """
+        params: Dict[str, Any] = {}
+        if all:
+            params["all"] = 1
+        if full_tree:
+            params["full_tree"] = 1
+        path = f"{self._path}/{resource_id}/flow/pause"
+        return self._make_request("PUT", path, params=params)
+
+    def data_sets_flow_audit_log(
+        self,
+        resource_id: int,
+        interval: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        event_filter: Optional[str] = None,
+        change_filter: Optional[str] = None,
+        page: Optional[str] = None,
+        per_page: Optional[str] = None,
+        expand: Optional[str] = None,
+        access_role: Optional[str] = None,
+    ) -> Any:
+        """Get the audit log of the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            interval: Time interval filter.
+            from_date: Start date (wire name from).
+            to_date: End date (wire name to).
+            event_filter: Event type filter.
+            change_filter: Change type filter.
+            page: Page number.
+            per_page: Items per page.
+            expand: Expand references.
+            access_role: Access role filter.
+
+        Returns:
+            Parsed response body.
+        """
+        params = {
+            "interval": interval,
+            "from": from_date,
+            "to": to_date,
+            "event_filter": event_filter,
+            "change_filter": change_filter,
+            "page": page,
+            "per_page": per_page,
+            "expand": expand,
+            "access_role": access_role,
+        }
+        path = f"{self._path}/{resource_id}/flow/audit_log"
+        return self._make_request(
+            "GET",
+            path,
+            params={k: v for k, v in params.items() if v is not None},
+        )
+
+    def list_flow_docs_via_data_set(self, resource_id: int) -> Any:
+        """List docs of the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+
+        Returns:
+            Parsed response body.
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("GET", path)
+
+    def reset_flow_docs_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """Replace all docs of the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with a "docs" list.
+
+        Returns:
+            Parsed response body.
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("POST", path, json=data)
+
+    def add_flow_docs_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """Add docs to the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with a "docs" list.
+
+        Returns:
+            Parsed response body.
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("PUT", path, json=data)
+
+    def remove_flow_docs_via_data_set(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """Remove docs from the flow of a data set.
+
+        Args:
+            resource_id: Data set ID.
+            data: Body with a "docs" list of IDs or objects with "id".
+
+        Returns:
+            Parsed response body.
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("DELETE", path, json=data)
+
+    def data_sets_probe_read_quarantine_data_set(
+        self, data_set_id: int, data: Dict[str, Any]
+    ) -> Any:
+        """Read a quarantine sample of a data set (PUT).
+
+        Args:
+            data_set_id: Data set ID.
+            data: Probe request body. The backend rejects an empty body.
+
+        Returns:
+            Parsed response body.
+        """
+        path = f"{self._path}/{data_set_id}/probe/quarantine/sample"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sets_apply_transformation(
+        self,
+        data_set_id: int,
+        transform_id: Optional[int] = None,
+        extract_schemas: bool = False,
+        accumulate_schema: bool = False,
+        suppress_errors: Optional[str] = None,
+        data: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """Apply a transformation to a data set (PUT).
+
+        Args:
+            data_set_id: Data set ID.
+            transform_id: Transform ID to apply.
+            extract_schemas: Extract schemas from the output.
+            accumulate_schema: Accumulate schemas.
+            suppress_errors: Suppress transformation errors.
+            data: Optional body, such as {"spec": ...}.
+
+        Returns:
+            Parsed response body.
+        """
+        params: Dict[str, Any] = {}
+        if transform_id is not None:
+            params["transform_id"] = transform_id
+        if extract_schemas:
+            params["extract_schemas"] = 1
+        if accumulate_schema:
+            params["accumulate_schema"] = 1
+        if suppress_errors is not None:
+            params["suppress_errors"] = suppress_errors
+        path = f"{self._path}/{data_set_id}/transform"
+        return self._make_request("PUT", path, params=params, json=data)
