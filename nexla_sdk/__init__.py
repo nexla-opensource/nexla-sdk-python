@@ -78,6 +78,7 @@ from nexla_sdk.resources import (
     OrgAuthConfigsResource,
     ProjectsResource,
     RuntimesResource,
+    SdkApplicationsResource,
     SelfSignupResource,
     SourcesResource,
     TeamsResource,
@@ -118,6 +119,7 @@ __all__ = [
     "DataSchemasResource",
     "ToolSetsResource",
     "ToolsResource",
+    "SdkApplicationsResource",
     # Models
     "BaseModel",
     "Owner",

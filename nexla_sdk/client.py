@@ -76,6 +76,7 @@ from .resources.projects import ProjectsResource
 from .resources.quarantine_settings import QuarantineSettingsResource
 from .resources.resource_parameters import ResourceParametersResource
 from .resources.runtimes import RuntimesResource
+from .resources.sdk_applications import SdkApplicationsResource
 from .resources.search_health import SearchHealthResource
 from .resources.self_signup import SelfSignupResource
 from .resources.self_signup_blocked_domains import SelfSignupBlockedDomainsResource
@@ -309,6 +310,7 @@ class NexlaClient:
         self.tokens = TokensResource(self)
         self.tools = ToolsResource(self)
         self.tool_sets = ToolSetsResource(self)
+        self.sdk_applications = SdkApplicationsResource(self)
         self.search_health = SearchHealthResource(self)
         self.cubejs = CubeJsResource(self)
 

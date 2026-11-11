@@ -40,6 +40,7 @@ from nexla_sdk.resources.projects import ProjectsResource
 from nexla_sdk.resources.quarantine_settings import QuarantineSettingsResource
 from nexla_sdk.resources.resource_parameters import ResourceParametersResource
 from nexla_sdk.resources.runtimes import RuntimesResource
+from nexla_sdk.resources.sdk_applications import SdkApplicationsResource
 from nexla_sdk.resources.search_health import SearchHealthResource
 from nexla_sdk.resources.self_signup import SelfSignupResource
 from nexla_sdk.resources.self_signup_blocked_domains import (
@@ -105,6 +106,7 @@ __all__ = [
     "TokensResource",
     "ToolSetsResource",
     "ToolsResource",
+    "SdkApplicationsResource",
     "SearchHealthResource",
     "CubeJsResource",
     # Phase 1 resources
