@@ -1,6 +1,6 @@
 """Lookups resource implementation."""
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.lookups.requests import (
     LookupCreate,
@@ -192,3 +192,45 @@ class LookupsResource(BaseResource):
     def probe_sample(self, data_map_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{data_map_id}/probe/sample"
         return self._make_request("POST", path, json=payload)
+
+    def data_maps_update_data_map(
+        self, data_map_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Partially update a lookup.
+
+        Args:
+            data_map_id: Lookup ID
+            data: Fields to update
+
+        Returns:
+            Updated lookup as a dict
+        """
+        return self._make_request("PATCH", f"{self._path}/{data_map_id}", json=data)
+
+    def data_maps_read_data_map_sample(
+        self,
+        data_map_id: int,
+        data: Optional[Dict[str, Any]] = None,
+        page: Optional[Union[int, str]] = None,
+        per_page: Optional[Union[int, str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Read a sample of entries from a lookup (PUT variant of probe_sample).
+
+        Args:
+            data_map_id: Lookup ID
+            data: Optional probe body
+            page: Page number
+            per_page: Items per page
+
+        Returns:
+            Sample payload
+        """
+        params = {"page": page, "per_page": per_page}
+        return self._make_request(
+            "PUT",
+            f"{self._path}/{data_map_id}/probe/sample",
+            params={k: v for k, v in params.items() if v is not None},
+            json=data or {},
+        )
