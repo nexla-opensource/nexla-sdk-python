@@ -197,6 +197,9 @@ class TestNewMetricsMethods:
     def test_publish_raw(self, client, mock_http_client):
         """Test publish_raw sends POST to /metrics/raw."""
         mock_http_client.clear_responses()
+        mock_http_client.add_response(
+            "/token", {"access_token": "tk-1", "expires_in": 86400}
+        )
         mock_http_client.add_response("/metrics/raw", {"status": "ok"})
 
         result = client.metrics.publish_raw({"event": "test"})
@@ -207,6 +210,9 @@ class TestNewMetricsMethods:
     def test_get_flow_metrics_summary(self, client, mock_http_client):
         """Test get_flow_metrics_summary with a period."""
         mock_http_client.clear_responses()
+        mock_http_client.add_response(
+            "/token", {"access_token": "tk-1", "expires_in": 86400}
+        )
         mock_http_client.add_response("/data_flows/metrics/daily", {"status": "ok"})
 
         result = client.metrics.get_flow_metrics_summary(period="daily")

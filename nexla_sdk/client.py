@@ -78,6 +78,7 @@ from .resources.users import UsersResource
 from .resources.validators import ValidatorsResource
 from .resources.vendor_endpoints import VendorEndpointsResource
 from .resources.vendors import VendorsResource
+from .models.tokens.responses import TokenResponse
 from .resources.webhooks import WebhooksResource
 
 logger = logging.getLogger(__name__)
@@ -98,6 +99,10 @@ class NexlaClient:
 
     2. **Direct Access Token Authentication**:
        Use a pre-obtained access token directly. These tokens are not refreshed by the SDK.
+
+    Other modes: ``api_key`` (Basic, sent as is) and ``email``/``password``
+    (Basic ``email:password[:org_id]``). Both obtain session tokens with POST /token.
+    Use ``switch_org(org_id)`` to change the org of the current session.
 
     Examples:
         # Method 1: Using service key (recommended for automation)
@@ -129,6 +134,11 @@ class NexlaClient:
         max_retries: int = 3,
         retry_methods: Optional[Iterable[str]] = None,
         retry_on_status: Optional[Iterable[int]] = None,
+        api_key: Optional[str] = None,
+        email: Optional[str] = None,
+        password: Optional[str] = None,
+        org_id: Optional[int] = None,
+        dataplane: Optional[str] = None,
     ):
         """
         Initialize the Nexla client
@@ -157,13 +167,32 @@ class NexlaClient:
             NEXLA_ACCESS_TOKEN: Access token (used if no authentication parameters are provided and NEXLA_SERVICE_KEY is not set)
             NEXLA_API_URL: Base URL for the Nexla API (used if base_url parameter is not provided)
         """
-        # Check environment variables only if neither parameter is provided
-        if not service_key and not access_token:
-            # First check for service_key in environment
-            service_key = os.getenv("NEXLA_SERVICE_KEY")
-            # Only check for access_token if service_key is not available
+        # Credential modes: service key, API key, email/password, or access token.
+        # Exactly one. Explicit options win; env vars are read only when none is passed.
+        has_password = bool(email or password)
+        if has_password and not (email and password):
+            raise NexlaError("email and password must be provided together")
+        explicit = [
+            name
+            for name, value in (
+                ("service_key", service_key),
+                ("api_key", api_key),
+                ("access_token", access_token),
+                ("email/password", has_password),
+            )
+            if value
+        ]
+        if len(explicit) > 1:
+            raise NexlaError(
+                "Cannot provide more than one of service_key, api_key, access_token, "
+                "or email/password. Choose one authentication method."
+            )
+        if not explicit:
+            service_key = os.getenv("NEXLA_SERVICE_KEY") or None
             if not service_key:
-                access_token = os.getenv("NEXLA_ACCESS_TOKEN")
+                api_key = os.getenv("NEXLA_API_KEY") or None
+            if not service_key and not api_key:
+                access_token = os.getenv("NEXLA_ACCESS_TOKEN") or None
 
         # Check for base_url in environment if not provided as parameter
         if not base_url:
@@ -171,15 +200,11 @@ class NexlaClient:
             if not base_url:
                 base_url = "https://dataops.nexla.io/nexla-api"
 
-        # Validate authentication parameters
-        if not service_key and not access_token:
+        if not (service_key or api_key or access_token or has_password):
             raise NexlaError(
-                "Either service_key or access_token must be provided either as parameters "
-                "or via NEXLA_SERVICE_KEY/NEXLA_ACCESS_TOKEN environment variables"
-            )
-        if service_key and access_token:
-            raise NexlaError(
-                "Cannot provide both service_key and access_token. Choose one authentication method."
+                "Either service_key, api_key, access_token, or email and password must be "
+                "provided as parameters or via NEXLA_SERVICE_KEY, NEXLA_API_KEY, or "
+                "NEXLA_ACCESS_TOKEN environment variables"
             )
 
         self.api_url = base_url.rstrip("/")
@@ -214,6 +239,11 @@ class NexlaClient:
             api_version=api_version,
             token_refresh_margin=token_refresh_margin,
             http_client=self.http_client,
+            api_key=api_key,
+            email=email,
+            password=password,
+            org_id=org_id,
+            dataplane=dataplane,
         )
 
         # Full operation-level API access (OpenAPI operation_id based)
@@ -322,6 +352,25 @@ class NexlaClient:
         self.auth_handler.refresh_session_token()
         return self.auth_handler.get_access_token()
 
+    def switch_org(self, org_id: int) -> TokenResponse:
+        """
+        Switch the session to another org (POST /token/refresh?org_id=).
+
+        The switch lasts until the SDK obtains a new token. When the SDK
+        re-obtains a token (service key, API key, or password mode), the
+        session returns to the credential's default org.
+
+        Args:
+            org_id: Org ID to switch to
+
+        Returns:
+            The new token response
+
+        Examples:
+            token = client.switch_org(42)
+        """
+        return self.auth_handler.switch_org(org_id)
+
     def logout(self) -> None:
         """
         Logout current session and invalidate token.
@@ -421,7 +470,7 @@ class NexlaClient:
         """
         url = f"{self.api_url}{path}"
         headers = {
-            "Accept": f"application/vnd.nexla.api.{self.api_version}+json",
+            "Accept": "application/json",
             "Content-Type": "application/json",
         }
 
