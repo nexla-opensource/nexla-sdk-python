@@ -17,14 +17,9 @@ from .exceptions import (
     NexlaTimeoutError,
     error_from_response,
 )
-from .http_client import (
-    HttpClientError,
-    HttpClientInterface,
-    HttpConnectionError,
-    HttpTimeoutError,
-    RequestsHttpClient,
-)
+from .http_client import HttpClientInterface, RequestsHttpClient
 from .models.tokens.responses import TokenResponse
+from .transport_core import HttpClientError, HttpConnectionError, HttpTimeoutError
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,6 @@ Nexla API client
 """
 
 import logging
-import os
 import threading
 from typing import (
     Any,
@@ -25,19 +24,10 @@ from pydantic import ValidationError as PydanticValidationError
 from . import telemetry
 from .auth import TokenAuthHandler
 from .exceptions import (
-    NexlaConnectionError,
     NexlaError,
-    NexlaTimeoutError,
     ValidationError,
-    error_from_response,
 )
-from .http_client import (
-    HttpClientError,
-    HttpClientInterface,
-    HttpConnectionError,
-    HttpTimeoutError,
-    RequestsHttpClient,
-)
+from .http_client import HttpClientInterface, RequestsHttpClient
 from .models.tokens.responses import TokenResponse
 from .raw_operations import RawOperationsClient
 from .resources.api_keys import ApiKeysResource
@@ -99,6 +89,13 @@ from .resources.validators import ValidatorsResource
 from .resources.vendor_endpoints import VendorEndpointsResource
 from .resources.vendors import VendorsResource
 from .resources.webhooks import WebhooksResource
+from .transport_core import (
+    HttpClientError,
+    map_http_error,
+    resolve_base_url,
+    resolve_credentials,
+    unexpected_request_error,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -188,43 +185,10 @@ class NexlaClient:
         """
         # Credential modes: service key, API key, email/password, or access token.
         # Exactly one. Explicit options win; env vars are read only when none is passed.
-        has_password = bool(email or password)
-        if has_password and not (email and password):
-            raise NexlaError("email and password must be provided together")
-        explicit = [
-            name
-            for name, value in (
-                ("service_key", service_key),
-                ("api_key", api_key),
-                ("access_token", access_token),
-                ("email/password", has_password),
-            )
-            if value
-        ]
-        if len(explicit) > 1:
-            raise NexlaError(
-                "Cannot provide more than one of service_key, api_key, access_token, "
-                "or email/password. Choose one authentication method."
-            )
-        if not explicit:
-            service_key = os.getenv("NEXLA_SERVICE_KEY") or None
-            if not service_key:
-                api_key = os.getenv("NEXLA_API_KEY") or None
-            if not service_key and not api_key:
-                access_token = os.getenv("NEXLA_ACCESS_TOKEN") or None
-
-        # Check for base_url in environment if not provided as parameter
-        if not base_url:
-            base_url = os.getenv("NEXLA_API_URL")
-            if not base_url:
-                base_url = "https://dataops.nexla.io/nexla-api"
-
-        if not (service_key or api_key or access_token or has_password):
-            raise NexlaError(
-                "Either service_key, api_key, access_token, or email and password must be "
-                "provided as parameters or via NEXLA_SERVICE_KEY, NEXLA_API_KEY, or "
-                "NEXLA_ACCESS_TOKEN environment variables"
-            )
+        service_key, api_key, access_token = resolve_credentials(
+            service_key, api_key, access_token, email, password
+        )
+        base_url = resolve_base_url(base_url)
 
         self.api_url = base_url.rstrip("/")
         self.api_version = api_version
@@ -546,19 +510,7 @@ class NexlaClient:
             # Preserve explicit NexlaError subclasses (e.g., AuthenticationError)
             raise
         except Exception as e:
-            raise NexlaError(
-                message=f"Request failed: {e}",
-                operation=f"{method.lower()}_request",
-                context={
-                    "method": method,
-                    "path": path,
-                    "url": url,
-                    "kwargs": {
-                        k: v for k, v in kwargs.items() if k not in ["json", "data"]
-                    },
-                },
-                original_error=e,
-            ) from e
+            raise unexpected_request_error(e, method, path, url, kwargs) from e
 
     def _handle_http_error(
         self,
@@ -571,66 +523,11 @@ class NexlaClient:
         """
         Map an HTTP client error to a typed NexlaError.
 
-        Status code and body shape choose the class (see exceptions.error_from_response).
-        Timeouts map to NexlaTimeoutError and connection failures to NexlaConnectionError.
+        The mapping is shared with the async client (transport_core.map_http_error).
 
         Raises:
             NexlaTimeoutError: The request timed out
             NexlaConnectionError: The connection failed
             NexlaError: A typed subclass for the HTTP status
         """
-        error_data = getattr(error, "response", {}) or {}
-
-        # Extract resource information (prefer server-provided fields, fallback to path)
-        resource_type = None
-        resource_id = None
-        if isinstance(error_data, dict):
-            resource_type = error_data.get("resource_type") or None
-            resource_id = error_data.get("resource_id") or None
-        if not resource_type or not resource_id:
-            # Fallback to parsing the path
-            if path:
-                path_parts = path.strip("/").split("/")
-                if not resource_type and len(path_parts) >= 1:
-                    resource_type = path_parts[0]
-                if not resource_id and len(path_parts) >= 2 and path_parts[1].isdigit():
-                    resource_id = path_parts[1]
-        if not resource_type:
-            resource_type = "unknown"
-
-        context = {
-            "method": method,
-            "path": path,
-            "url": url,
-            "status_code": getattr(error, "status_code", None),
-            "api_response": error_data,
-            "request_params": {
-                k: v for k, v in kwargs.items() if k not in ["json", "data"]
-            },
-        }
-        common: Dict[str, Any] = {
-            "operation": f"{method.lower()}_request",
-            "resource_type": resource_type,
-            "resource_id": resource_id,
-            "context": context,
-            "original_error": error,
-        }
-
-        if isinstance(error, HttpTimeoutError):
-            raise NexlaTimeoutError(
-                f"Request timed out: {error}", method=method, url=url, **common
-            ) from error
-        if isinstance(error, HttpConnectionError):
-            raise NexlaConnectionError(
-                f"Connection failed: {error}", method=method, url=url, **common
-            ) from error
-
-        body = error.body if error.body is not None else (error_data or None)
-        raise error_from_response(
-            getattr(error, "status_code", None),
-            body,
-            headers=getattr(error, "headers", {}),
-            method=method,
-            url=url,
-            **common,
-        ) from error
+        raise map_http_error(error, method, path, url, kwargs) from error
