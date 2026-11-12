@@ -98,22 +98,7 @@ indent-style = "space"
 python_version = "3.8"
 strict = true
 plugins = ["pydantic.mypy"]
-# Strict scope is widened module by module. Resource modules are not yet clean:
-# follow_imports="silent" keeps their errors out of the run until they are added.
-follow_imports = "silent"
-files = [
-    "nexla_sdk/__init__.py",
-    "nexla_sdk/client.py",
-    "nexla_sdk/http_client.py",
-    "nexla_sdk/auth.py",
-    "nexla_sdk/exceptions.py",
-    "nexla_sdk/telemetry.py",
-    "nexla_sdk/raw_operations.py",
-    "nexla_sdk/generated",
-    "nexla_sdk/utils",
-    "nexla_sdk/models",
-    "nexla_sdk/resources/base_resource.py",
-]
+files = ["nexla_sdk"]
 
 [tool.pytest.ini_options]
 # Replaces the former pytest.ini. Single config file for pytest and coverage.
