@@ -380,6 +380,13 @@ SOURCES_ROUTE_CALLS = [
         {"json": {"x": 1}},
         id="sources.data_sources_probe_list_tree_data_source",
     ),
+    pytest.param(
+        lambda c: c.sources.register_external_files(1, {"files": [{"path": "/a"}]}),
+        "POST",
+        "/data_sources/1/file/external",
+        {"json": {"files": [{"path": "/a"}]}},
+        id="sources.register_external_files",
+    ),
 ]
 
 

@@ -828,3 +828,21 @@ class SourcesResource(BaseResource):
         """
         path = f"{self._path}/{data_source_id}/probe/tree"
         return self._make_request("PUT", path, json=data)
+
+    def register_external_files(
+        self, data_source_id: int, payload: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Register external files for a data source and activate it on success.
+
+        The backend forwards the body to the dataplane unchanged.
+
+        Args:
+            data_source_id: Data source ID
+            payload: External file listing to register
+
+        Returns:
+            Dataplane result with status and output
+        """
+        path = f"{self._path}/{data_source_id}/file/external"
+        return self._make_request("POST", path, json=payload)
