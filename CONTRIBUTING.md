@@ -8,16 +8,29 @@ Setup
 - Install dev deps: `pip install -e .[dev]`
 - Run unit tests: `pytest -m unit`
 - CI fails when unit coverage of `nexla_sdk` drops below 85%.
+- Run the CI gates before you push:
+  ```bash
+  ruff check . && ruff format --check .
+  mypy
+  pytest -m unit --cov=nexla_sdk --cov-fail-under=85
+  ```
 
 Coding standards
 - Pydantic v2 models.
 - Keep public API stable; deprecate before breaking.
 - Run pre-commit: `pre-commit install` then commit.
+- Add a line under `## [Unreleased]` in `CHANGELOG.md` for each user-facing change.
+- HTTP methods, retries, timeouts, error classes, and pagination must match `docs-site/docs/behavior-spec.md`.
 
 Testing
 - Prefer unit tests with mocks.
 - Avoid network in unit tests.
 - Add integration tests only when necessary.
+
+Skill bundle (`nexla.skill`)
+- `skills/nexla/` is the only source. Do not edit `nexla.skill` by hand.
+- After you change `skills/nexla/`, run `python scripts/build_skill.py` and commit `nexla.skill`.
+- The `skill-bundle` CI job runs `python scripts/build_skill.py --check`. It fails when the committed archive is stale.
 
 Release
 ------
@@ -30,7 +43,7 @@ Versions are derived from Git tags by `setuptools_scm` (no manual version bumps)
 
 **Pre-release checklist:**
 1. Ensure CI passes on `main` (ruff lint + unit tests across Python 3.8–3.12).
-2. Update `docs-site/docs/changelog.md` with user-facing changes under a new version heading.
+2. Move the entries under `## [Unreleased]` in `CHANGELOG.md` to a new `## [<version>] - <date>` heading. Add the compare link at the bottom of the file. The docs-site changelog page points to `CHANGELOG.md` and needs no edit.
 3. Verify the version `setuptools_scm` will produce matches the tag you intend to create:
    ```bash
    pip install setuptools_scm && python -c "import setuptools_scm; print(setuptools_scm.get_version())"
