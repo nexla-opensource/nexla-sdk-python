@@ -1,13 +1,16 @@
 """Resource for managing service keys."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.service_keys.requests import ServiceKeyCreate, ServiceKeyUpdate
 from nexla_sdk.models.service_keys.responses import ServiceKey
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ServiceKeysResource(BaseResource):
+
+class ServiceKeysResource(BaseResource[ServiceKey]):
     """Resource for managing service keys.
 
     Service keys are long-lived credentials for programmatic API access.
@@ -34,7 +37,7 @@ class ServiceKeysResource(BaseResource):
         client.service_keys.pause(key.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the service keys resource.
 
         Args:
@@ -44,13 +47,13 @@ class ServiceKeysResource(BaseResource):
         self._path = "/service_keys"
         self._model_class = ServiceKey
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         access_role: Optional[str] = None,
         all_keys: bool = False,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[ServiceKey]:
         """List service keys.
 
@@ -74,9 +77,9 @@ class ServiceKeysResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(List[ServiceKey], self._parse_response(response))
 
-    def get(self, key_id: Union[int, str]) -> ServiceKey:
+    def get(self, key_id: Union[int, str]) -> ServiceKey:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """Get service key by ID or key value.
 
         Args:
@@ -87,7 +90,7 @@ class ServiceKeysResource(BaseResource):
         """
         path = f"{self._path}/{key_id}"
         response = self._make_request("GET", path)
-        return self._parse_response(response)
+        return cast(ServiceKey, self._parse_response(response))
 
     def create(self, data: Union[ServiceKeyCreate, Dict[str, Any]]) -> ServiceKey:
         """Create a new service key.
@@ -115,7 +118,7 @@ class ServiceKeysResource(BaseResource):
         path = f"{self._path}/{key_id}"
         serialized_data = self._serialize_data(data)
         response = self._make_request("PUT", path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(ServiceKey, self._parse_response(response))
 
     def delete(self, key_id: Union[int, str]) -> Dict[str, Any]:
         """Delete a service key.
@@ -130,7 +133,7 @@ class ServiceKeysResource(BaseResource):
             Response with status
         """
         path = f"{self._path}/{key_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def rotate(self, key_id: Union[int, str]) -> ServiceKey:
         """Rotate a service key to generate a new key value.
@@ -146,7 +149,7 @@ class ServiceKeysResource(BaseResource):
         """
         path = f"{self._path}/{key_id}/rotate"
         response = self._make_request("PUT", path)
-        return self._parse_response(response)
+        return cast(ServiceKey, self._parse_response(response))
 
     def activate(self, key_id: Union[int, str]) -> ServiceKey:
         """Activate a paused service key.
@@ -159,7 +162,7 @@ class ServiceKeysResource(BaseResource):
         """
         path = f"{self._path}/{key_id}/activate"
         response = self._make_request("PUT", path)
-        return self._parse_response(response)
+        return cast(ServiceKey, self._parse_response(response))
 
     def pause(self, key_id: Union[int, str]) -> ServiceKey:
         """Pause a service key (temporarily disable).
@@ -174,4 +177,4 @@ class ServiceKeysResource(BaseResource):
         """
         path = f"{self._path}/{key_id}/pause"
         response = self._make_request("PUT", path)
-        return self._parse_response(response)
+        return cast(ServiceKey, self._parse_response(response))

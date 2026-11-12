@@ -1,6 +1,6 @@
 """Resource for managing cluster endpoints."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.clusters.requests import (
     ClusterEndpointCreate,
@@ -9,8 +9,11 @@ from nexla_sdk.models.clusters.requests import (
 from nexla_sdk.models.clusters.responses import ClusterEndpoint
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ClusterEndpointsResource(BaseResource):
+
+class ClusterEndpointsResource(BaseResource[ClusterEndpoint]):
     """Resource for managing cluster endpoints.
 
     Cluster endpoints define individual service connections within a cluster.
@@ -41,7 +44,7 @@ class ClusterEndpointsResource(BaseResource):
         audit_log = client.cluster_endpoints.get_audit_log(123)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the cluster endpoints resource.
 
         Args:
@@ -51,11 +54,11 @@ class ClusterEndpointsResource(BaseResource):
         self._path = "/cluster_endpoints"
         self._model_class = ClusterEndpoint
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[ClusterEndpoint]:
         """List cluster endpoints.
 
@@ -68,7 +71,7 @@ class ClusterEndpointsResource(BaseResource):
         """
         return super().list(page=page, per_page=per_page, **kwargs)
 
-    def get(self, endpoint_id: int) -> ClusterEndpoint:
+    def get(self, endpoint_id: int) -> ClusterEndpoint:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """Get cluster endpoint by ID.
 
         Args:
@@ -79,7 +82,7 @@ class ClusterEndpointsResource(BaseResource):
         """
         path = f"{self._path}/{endpoint_id}"
         response = self._make_request("GET", path)
-        return self._parse_response(response)
+        return cast(ClusterEndpoint, self._parse_response(response))
 
     def create(
         self, data: Union[ClusterEndpointCreate, Dict[str, Any]]
@@ -94,7 +97,7 @@ class ClusterEndpointsResource(BaseResource):
         """
         serialized_data = self._serialize_data(data)
         response = self._make_request("POST", self._path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(ClusterEndpoint, self._parse_response(response))
 
     def update(
         self, endpoint_id: int, data: Union[ClusterEndpointUpdate, Dict[str, Any]]
@@ -111,9 +114,9 @@ class ClusterEndpointsResource(BaseResource):
         path = f"{self._path}/{endpoint_id}"
         serialized_data = self._serialize_data(data)
         response = self._make_request("PUT", path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(ClusterEndpoint, self._parse_response(response))
 
-    def get_audit_log(
+    def get_audit_log(  # type: ignore[override]  # keeps public signature; base get_audit_log() takes typed filters
         self,
         endpoint_id: int,
         page: Optional[int] = None,
@@ -135,7 +138,9 @@ class ClusterEndpointsResource(BaseResource):
             params["page"] = page
         if per_page is not None:
             params["per_page"] = per_page
-        return self._make_request("GET", path, params=params)
+        return cast(
+            List[Dict[str, Any]], self._make_request("GET", path, params=params)
+        )
 
     def get_schema(self, method: str = "get") -> Dict[str, Any]:
         """
@@ -147,6 +152,9 @@ class ClusterEndpointsResource(BaseResource):
         Returns:
             JSON schema
         """
-        return self._make_request(
-            "GET", f"{self._path}/schema", params={"method": method}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/schema", params={"method": method}
+            ),
         )

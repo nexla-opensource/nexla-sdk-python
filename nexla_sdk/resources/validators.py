@@ -1,6 +1,6 @@
 """Resource for managing validators (data validation rules)."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.validators.requests import (
     ValidatorCopyOptions,
@@ -10,8 +10,11 @@ from nexla_sdk.models.validators.requests import (
 from nexla_sdk.models.validators.responses import Validator
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ValidatorsResource(BaseResource):
+
+class ValidatorsResource(BaseResource[Validator]):
     """Resource for managing validators (data validation rules).
 
     Validators are code containers used to validate data within flows.
@@ -35,7 +38,7 @@ class ValidatorsResource(BaseResource):
         public_validators = client.validators.list_public()
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the validators resource.
 
         Args:
@@ -45,13 +48,13 @@ class ValidatorsResource(BaseResource):
         self._path = "/validators"
         self._model_class = Validator
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
         access_role: Optional[str] = None,
         expand: bool = False,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[Validator]:
         """List validators with optional filters.
 
@@ -71,7 +74,7 @@ class ValidatorsResource(BaseResource):
             page=page, per_page=per_page, access_role=access_role, **kwargs
         )
 
-    def list_public(
+    def list_public(  # type: ignore[override]  # keeps public list_public() signature; base also takes positional page
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
@@ -92,7 +95,7 @@ class ValidatorsResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[Validator], self._parse_response(response))
 
     def get(self, validator_id: int, expand: bool = False) -> Validator:
         """Get validator by ID.
@@ -158,7 +161,7 @@ class ValidatorsResource(BaseResource):
         """
         return super().copy(validator_id, options)
 
-    def search_tags(self, tags: List[str]) -> List[Validator]:
+    def search_tags(self, tags: List[str]) -> List[Validator]:  # type: ignore[override]  # keeps public search_tags() signature; base also takes query params
         """Search validators by tags.
 
         Args:
@@ -169,13 +172,13 @@ class ValidatorsResource(BaseResource):
         """
         path = f"{self._path}/search_tags"
         response = self._make_request("POST", path, json=tags)
-        return self._parse_response(response)
+        return cast(List[Validator], self._parse_response(response))
 
-    def search(self, filters: Dict[str, Any]) -> List[Validator]:
+    def search(self, filters: Dict[str, Any]) -> List[Validator]:  # type: ignore[override]  # returns the raw search payload, not a model list
         """Search validators (alias to search_tags endpoint)."""
         path = f"{self._path}/search"
         response = self._make_request("POST", path, json=filters)
-        return self._parse_response(response)
+        return cast(List[Validator], self._parse_response(response))
 
     def get_schema(self, method: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -189,4 +192,7 @@ class ValidatorsResource(BaseResource):
             JSON schema
         """
         params = {"method": method} if method is not None else {}
-        return self._make_request("GET", f"{self._path}/schema", params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/schema", params=params),
+        )

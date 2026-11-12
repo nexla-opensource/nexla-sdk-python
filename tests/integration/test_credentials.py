@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from nexla_sdk.exceptions import AuthenticationError, NotFoundError
+from nexla_sdk.exceptions import AuthenticationError, NexlaError, NotFoundError
 from nexla_sdk.models.credentials.requests import (
     CredentialCreate,
     CredentialUpdate,
@@ -295,8 +295,8 @@ class TestCredentialsErrorHandling:
         }
 
         # Act & Assert
-        # This might raise ValidationError or APIError depending on validation
-        with pytest.raises(Exception):  # Broad exception for now
+        # Server may return a validation or API error; both derive from NexlaError
+        with pytest.raises(NexlaError):
             integration_client.credentials.create(invalid_data)
 
 

@@ -45,7 +45,7 @@ def lookup_data_defaults_strategy(draw):
     defaults = {primary_key: "default_key"}
 
     # Add some additional default fields
-    for i in range(draw(st.integers(0, 3))):
+    for _ in range(draw(st.integers(0, 3))):
         field_name = draw(
             st.text(min_size=1, max_size=20).filter(lambda x: x.isidentifier())
         )

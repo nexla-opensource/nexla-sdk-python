@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.custom_data_flows.requests import (
     CustomDataFlowCreate,
@@ -7,19 +7,22 @@ from nexla_sdk.models.custom_data_flows.requests import (
 from nexla_sdk.models.custom_data_flows.responses import CustomDataFlow
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class CustomDataFlowsResource(BaseResource):
+
+class CustomDataFlowsResource(BaseResource[CustomDataFlow]):
     """Resource for managing custom data flows."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/custom_data_flows"
         self._model_class = CustomDataFlow
 
-    def list(self, **kwargs) -> List[CustomDataFlow]:
+    def list(self, **kwargs: Any) -> List[CustomDataFlow]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
-    def list_accessible(self, **params) -> List[CustomDataFlow]:
+    def list_accessible(self, **params: Any) -> List[CustomDataFlow]:
         return super().list_accessible(**params)
 
     def get(self, custom_data_flow_id: int, expand: bool = False) -> CustomDataFlow:
@@ -51,11 +54,11 @@ class CustomDataFlowsResource(BaseResource):
         action = "activate" if activate else "pause"
         path = f"{self._path}/{custom_data_flow_id}/{action}"
         response = self._make_request("PUT", path)
-        return self._parse_response(response)
+        return cast(CustomDataFlow, self._parse_response(response))
 
-    def get_metrics(self, custom_data_flow_id: int, **params) -> Dict[str, Any]:
+    def get_metrics(self, custom_data_flow_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{custom_data_flow_id}/metrics"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def edit_code_containers(
         self, custom_data_flow_id: int, payload: Dict[str, Any], mode: str
@@ -63,7 +66,7 @@ class CustomDataFlowsResource(BaseResource):
         path = f"{self._path}/{custom_data_flow_id}/code_containers"
         method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
         method = method_map.get(mode, "GET")
-        return self._make_request(method, path, json=payload)
+        return cast(Dict[str, Any], self._make_request(method, path, json=payload))
 
     def edit_data_credentials(
         self, custom_data_flow_id: int, payload: Dict[str, Any], mode: str
@@ -71,12 +74,12 @@ class CustomDataFlowsResource(BaseResource):
         path = f"{self._path}/{custom_data_flow_id}/data_credentials"
         method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
         method = method_map.get(mode, "GET")
-        return self._make_request(method, path, json=payload)
+        return cast(Dict[str, Any], self._make_request(method, path, json=payload))
 
-    def search(self, filters: Dict[str, Any], **params) -> List[CustomDataFlow]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[CustomDataFlow]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[CustomDataFlow]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[CustomDataFlow]:
         return super().search_tags(tags, **params)
 
     def custom_data_flows_update_custom_data_flow(
@@ -93,7 +96,7 @@ class CustomDataFlowsResource(BaseResource):
             Updated custom data flow as a dict
         """
         path = f"{self._path}/{custom_data_flow_id}"
-        return self._make_request("PATCH", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PATCH", path, json=data))
 
     def get_custom_data_flow_metrics_by_name(
         self, custom_data_flow_id: int, metrics_name: str
@@ -109,4 +112,4 @@ class CustomDataFlowsResource(BaseResource):
             Metrics response
         """
         path = f"{self._path}/{custom_data_flow_id}/metrics/{metrics_name}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))

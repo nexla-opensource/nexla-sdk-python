@@ -1,13 +1,16 @@
 """Resource for managing clusters."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.clusters.requests import ClusterCreate, ClusterUpdate
 from nexla_sdk.models.clusters.responses import Cluster
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ClustersResource(BaseResource):
+
+class ClustersResource(BaseResource[Cluster]):
     """Resource for managing clusters.
 
     Clusters define infrastructure endpoints for processing data flows.
@@ -35,7 +38,7 @@ class ClustersResource(BaseResource):
         client.clusters.set_default(cluster.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the clusters resource.
 
         Args:
@@ -45,12 +48,12 @@ class ClustersResource(BaseResource):
         self._path = "/clusters"
         self._model_class = Cluster
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
         access_role: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[Cluster]:
         """List clusters.
 
@@ -139,7 +142,7 @@ class ClustersResource(BaseResource):
         """
         path = f"{self._path}/default/{cluster_id}"
         response = self._make_request("PUT", path)
-        return self._parse_response(response)
+        return cast(Cluster, self._parse_response(response))
 
     def delete_endpoint(self, cluster_id: int, endpoint_id: int) -> Dict[str, Any]:
         """Delete an endpoint from a cluster.
@@ -152,4 +155,4 @@ class ClustersResource(BaseResource):
             Response with status
         """
         path = f"{self._path}/{cluster_id}/endpoints/{endpoint_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))

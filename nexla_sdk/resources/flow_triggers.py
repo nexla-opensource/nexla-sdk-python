@@ -1,13 +1,16 @@
 """Resource for managing flow triggers."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, NoReturn, Optional, Union, cast
 
 from nexla_sdk.models.flow_triggers.requests import FlowTriggerCreate
 from nexla_sdk.models.flow_triggers.responses import FlowTrigger
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class FlowTriggersResource(BaseResource):
+
+class FlowTriggersResource(BaseResource[FlowTrigger]):
     """Resource for managing flow triggers (orchestration events).
 
     Flow triggers define when one flow should trigger based on events
@@ -39,7 +42,7 @@ class FlowTriggersResource(BaseResource):
         client.flow_triggers.delete(trigger.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the flow triggers resource.
 
         Args:
@@ -49,12 +52,12 @@ class FlowTriggersResource(BaseResource):
         self._path = "/flow_triggers"
         self._model_class = FlowTrigger
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
         access_role: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[FlowTrigger]:
         """List flow triggers accessible by current user.
 
@@ -94,7 +97,7 @@ class FlowTriggersResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[FlowTrigger], self._parse_response(response))
 
     def get(self, trigger_id: int, expand: bool = False) -> FlowTrigger:
         """Get flow trigger by ID.
@@ -158,7 +161,7 @@ class FlowTriggersResource(BaseResource):
         """
         return super().pause(trigger_id)
 
-    def update(self, resource_id=None, data=None):
+    def update(self, resource_id: Any = None, data: Any = None) -> NoReturn:
         """Flow triggers are immutable. To change a trigger, delete and recreate it."""
         raise NotImplementedError(
             "Flow triggers are immutable once created. "

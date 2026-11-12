@@ -1,6 +1,6 @@
 """Resource for managing auth templates."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.auth_templates.requests import (
     AuthTemplateCreate,
@@ -9,8 +9,11 @@ from nexla_sdk.models.auth_templates.requests import (
 from nexla_sdk.models.auth_templates.responses import AuthTemplate
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class AuthTemplatesResource(BaseResource):
+
+class AuthTemplatesResource(BaseResource[AuthTemplate]):
     """Resource for managing auth templates.
 
     Auth templates define authentication configurations for vendors.
@@ -42,7 +45,7 @@ class AuthTemplatesResource(BaseResource):
         client.auth_templates.delete(123)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the auth templates resource.
 
         Args:
@@ -52,12 +55,12 @@ class AuthTemplatesResource(BaseResource):
         self._path = "/auth_templates"
         self._model_class = AuthTemplate
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
         access_role: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[AuthTemplate]:
         """List auth templates.
 
@@ -96,7 +99,7 @@ class AuthTemplatesResource(BaseResource):
         """
         params = {"auth_template_name": auth_template_name}
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(AuthTemplate, self._parse_response(response))
 
     def create(self, data: Union[AuthTemplateCreate, Dict[str, Any]]) -> AuthTemplate:
         """Create a new auth template (super user only).
@@ -140,7 +143,7 @@ class AuthTemplatesResource(BaseResource):
         response = self._make_request(
             "PUT", self._path, json=serialized_data, params=params
         )
-        return self._parse_response(response)
+        return cast(AuthTemplate, self._parse_response(response))
 
     def delete(self, auth_template_id: int) -> Dict[str, Any]:
         """Delete an auth template (super user only).
@@ -163,12 +166,16 @@ class AuthTemplatesResource(BaseResource):
             Response with status
         """
         params = {"auth_template_name": auth_template_name}
-        return self._make_request("DELETE", self._path, params=params)
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", self._path, params=params)
+        )
 
     def update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Update auth templates via collection endpoint."""
-        return self._make_request("PUT", self._path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", self._path, json=payload))
 
     def delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Delete auth templates via collection endpoint."""
-        return self._make_request("DELETE", self._path, json=payload or {})
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", self._path, json=payload or {})
+        )

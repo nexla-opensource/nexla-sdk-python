@@ -42,7 +42,7 @@ class FlowLogEntry(BaseModel):
 
     @field_validator("timestamp", mode="before")
     @classmethod
-    def coerce_ms_timestamp(cls, value):
+    def coerce_ms_timestamp(cls, value: Any) -> Any:
         """Convert live API millisecond timestamps to datetimes explicitly."""
         # Unix epoch seconds will not reach 1e10 until year 2286; larger values are ms.
         if isinstance(value, (int, float)) and abs(value) > 1e10:
@@ -96,7 +96,7 @@ class FlowLogsResponse(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def normalize_live_logs_shape(cls, data):
+    def normalize_live_logs_shape(cls, data: Any) -> Any:
         """Flatten live API logs.data/logs.meta into the SDK response model."""
         if not isinstance(data, dict) or not isinstance(data.get("logs"), dict):
             return data

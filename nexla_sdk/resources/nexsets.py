@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.catalog_refs.responses import CatalogRef
 from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
@@ -11,16 +11,19 @@ from nexla_sdk.models.nexsets.responses import Nexset, NexsetSample
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class NexsetsResource(BaseResource):
+
+class NexsetsResource(BaseResource[Nexset]):
     """Resource for managing nexsets (data sets)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_sets"
         self._model_class = Nexset
 
-    def list(self, **kwargs) -> List[Nexset]:
+    def list(self, **kwargs: Any) -> List[Nexset]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List nexsets with optional filters.
 
@@ -38,55 +41,66 @@ class NexsetsResource(BaseResource):
         """
         return super().list(**kwargs)
 
-    def list_all(self, **params) -> List[Nexset]:
+    def list_all(self, **params: Any) -> List[Nexset]:
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[Nexset], self._parse_response(response))
 
-    def list_all_condensed(self, **params) -> List[Dict[str, Any]]:
-        return self._make_request("GET", f"{self._path}/all/condensed", params=params)
-
-    def list_all_ids(self, **params) -> List[int]:
-        return self._make_request("GET", f"{self._path}/all/ids", params=params)
-
-    def list_available(self, **params) -> List[Nexset]:
-        response = self._make_request("GET", f"{self._path}/available", params=params)
-        return self._parse_response(response)
-
-    def search_available(self, filters: Dict[str, Any], **params) -> List[Nexset]:
-        path = f"{self._path}/available/search"
-        response = self._make_request("POST", path, json=filters, params=params)
-        return self._parse_response(response)
-
-    def list_shared(self, **params) -> List[Nexset]:
-        response = self._make_request("GET", f"{self._path}/shared", params=params)
-        return self._parse_response(response)
-
-    def list_public(self, **params) -> List[Nexset]:
-        response = self._make_request("GET", f"{self._path}/public", params=params)
-        return self._parse_response(response)
-
-    def search_public_tags(self, tags: List[str], **params) -> List[Nexset]:
-        path = f"{self._path}/public/search_tags"
-        response = self._make_request("POST", path, json=tags, params=params)
-        return self._parse_response(response)
-
-    def list_characteristics_search(self, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/characteristics/search", params=params
+    def list_all_condensed(self, **params: Any) -> List[Dict[str, Any]]:
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("GET", f"{self._path}/all/condensed", params=params),
         )
 
-    def list_summary(self, **params) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/summary", params=params)
+    def list_all_ids(self, **params: Any) -> List[int]:
+        return cast(
+            List[int], self._make_request("GET", f"{self._path}/all/ids", params=params)
+        )
 
-    def list_nexset_api_compatible(self, **params) -> List[Nexset]:
+    def list_available(self, **params: Any) -> List[Nexset]:
+        response = self._make_request("GET", f"{self._path}/available", params=params)
+        return cast(List[Nexset], self._parse_response(response))
+
+    def search_available(self, filters: Dict[str, Any], **params: Any) -> List[Nexset]:
+        path = f"{self._path}/available/search"
+        response = self._make_request("POST", path, json=filters, params=params)
+        return cast(List[Nexset], self._parse_response(response))
+
+    def list_shared(self, **params: Any) -> List[Nexset]:
+        response = self._make_request("GET", f"{self._path}/shared", params=params)
+        return cast(List[Nexset], self._parse_response(response))
+
+    def list_public(self, **params: Any) -> List[Nexset]:  # type: ignore[override]  # keeps public list_public() signature; base also takes positional page
+        response = self._make_request("GET", f"{self._path}/public", params=params)
+        return cast(List[Nexset], self._parse_response(response))
+
+    def search_public_tags(self, tags: List[str], **params: Any) -> List[Nexset]:
+        path = f"{self._path}/public/search_tags"
+        response = self._make_request("POST", path, json=tags, params=params)
+        return cast(List[Nexset], self._parse_response(response))
+
+    def list_characteristics_search(self, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/characteristics/search", params=params
+            ),
+        )
+
+    def list_summary(self, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/summary", params=params),
+        )
+
+    def list_nexset_api_compatible(self, **params: Any) -> List[Nexset]:
         response = self._make_request(
             "GET", f"{self._path}/nexset_api_compatible", params=params
         )
-        return self._parse_response(response)
+        return cast(List[Nexset], self._parse_response(response))
 
     def update_runtime_status(self, set_id: int, status: str) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/runtime_status/{status}"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def get(self, set_id: int, expand: bool = False) -> Nexset:
         """
@@ -104,7 +118,7 @@ class NexsetsResource(BaseResource):
         """
         return super().get(set_id, expand)
 
-    def create(self, data: NexsetCreate) -> Nexset:
+    def create(self, data: Union[NexsetCreate, Dict[str, Any]]) -> Nexset:
         """
         Create new nexset.
 
@@ -119,7 +133,7 @@ class NexsetsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, set_id: int, data: NexsetUpdate) -> Nexset:
+    def update(self, set_id: int, data: Union[NexsetUpdate, Dict[str, Any]]) -> Nexset:
         """
         Update nexset.
 
@@ -195,7 +209,7 @@ class NexsetsResource(BaseResource):
         # Handle both response formats
         if isinstance(response, list):
             return [NexsetSample(**item) for item in response]
-        return response
+        return cast(List[NexsetSample], response)
 
     def update_samples(
         self, set_id: int, samples: Any, replace: bool = False
@@ -205,112 +219,117 @@ class NexsetsResource(BaseResource):
         response = self._make_request("PUT", path, json=samples, params=params)
         if isinstance(response, list):
             return [NexsetSample(**item) for item in response]
-        return response
+        return cast(List[NexsetSample], response)
 
     def add_samples(self, set_id: int, samples: Any) -> List[NexsetSample]:
         path = f"{self._path}/{set_id}/samples"
         response = self._make_request("POST", path, json=samples)
         if isinstance(response, list):
             return [NexsetSample(**item) for item in response]
-        return response
+        return cast(List[NexsetSample], response)
 
-    def copy(self, set_id: int, options: Optional[NexsetCopyOptions] = None) -> Nexset:
+    def copy(
+        self,
+        set_id: int,
+        options: Optional[Union[NexsetCopyOptions, Dict[str, Any]]] = None,
+    ) -> Nexset:
         """
         Copy a nexset.
 
         Args:
             set_id: Nexset ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied nexset
         """
-        data = options.to_dict() if options else {}
-        return super().copy(set_id, data)
+        return super().copy(set_id, options)
 
     def sync_with_catalog(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/sync_with_catalog"
-        return self._make_request("POST", path)
+        return cast(Dict[str, Any], self._make_request("POST", path))
 
     def get_flow(self, set_id: int) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/{set_id}/flow")
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"{self._path}/{set_id}/flow")
+        )
 
-    def get_flow_dashboard(self, set_id: int, **params) -> Dict[str, Any]:
+    def get_flow_dashboard(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/flow/dashboard"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
-    def get_flow_status_metrics(self, set_id: int, **params) -> Dict[str, Any]:
+    def get_flow_status_metrics(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/flow/status_metrics"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
-    def get_flow_metrics(self, set_id: int, **params) -> Dict[str, Any]:
+    def get_flow_metrics(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/flow/metrics"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
-    def get_flow_logs(self, set_id: int, **params) -> Dict[str, Any]:
+    def get_flow_logs(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/flow/logs"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def get_metrics(
-        self, set_id: int, metrics_name: Optional[str] = None, **params
+        self, set_id: int, metrics_name: Optional[str] = None, **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/metrics"
         if metrics_name:
             path = f"{path}/{metrics_name}"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     @missing_route("POST", "/data_sets/{set_id}/catalog")
     def catalog_add(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/catalog"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
-    def semantic_schemas(self, set_id: int, **params) -> Dict[str, Any]:
+    def semantic_schemas(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/semantic_schemas"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def transform(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/transform"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_settings(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_quarantine_settings(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_quarantine_settings(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_quarantine_settings(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_settings"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def get_dashboard_transforms(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_dashboard_transforms(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_dashboard_transforms(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_dashboard_transforms(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/dashboard_transforms"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def list_sharers(self, set_id: int) -> List[Dict[str, Any]]:
         path = f"{self._path}/{set_id}/sharers"
@@ -332,49 +351,49 @@ class NexsetsResource(BaseResource):
 
     def mark_shared(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/sharers/shared"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def probe_quarantine_sample(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/probe/quarantine/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_offset(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine/offset"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_offset(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/offset"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_data_update_time(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/data_update_time"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_characteristics(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/characteristics"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def summary(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/summary"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Nexset]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Nexset]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Nexset]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Nexset]:
         return super().search_tags(tags, **params)
 
     def vote(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/vote"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def unvote(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/unvote"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
-    def list_catalog_refs(self, **params) -> List[CatalogRef]:
+    def list_catalog_refs(self, **params: Any) -> List[CatalogRef]:
         path = f"{self._path}/catalog_refs"
         response = self._make_request("GET", path, params=params)
         return [CatalogRef.model_validate(item) for item in (response or [])]
@@ -396,69 +415,75 @@ class NexsetsResource(BaseResource):
 
     def delete_catalog_ref(self, ref_id: int) -> Dict[str, Any]:
         path = f"{self._path}/catalog_refs/{ref_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def bulk_update_catalog_refs(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("PUT", "/catalog_refs/bulk_update_refs", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PUT", "/catalog_refs/bulk_update_refs", json=payload),
+        )
 
-    def list_api_keys(self, set_id: int, **params) -> Dict[str, Any]:
+    def list_api_keys(self, set_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def search_api_keys(
-        self, set_id: int, filters: Dict[str, Any], **params
+        self, set_id: int, filters: Dict[str, Any], **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/search"
-        return self._make_request("POST", path, json=filters, params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", path, json=filters, params=params),
+        )
 
     def get_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_api_key(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_api_key(
         self, set_id: int, api_key_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def rotate_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}/rotate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def activate_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}/activate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_all_api_keys(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def delete_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/api_keys/{api_key_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def trigger_quarantine_aggregation(
         self, set_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/trigger_quarantine_aggregation"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_aggregation(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/quarantine_aggregation"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def docs_recommendation(self, set_id: int) -> Dict[str, Any]:
         """Generate AI suggestion for Nexset documentation."""
         path = f"{self._path}/{set_id}/docs/recommendation"
-        return self._make_request("POST", path)
+        return cast(Dict[str, Any], self._make_request("POST", path))
 
     def list_docs(self, set_id: int, expand: bool = True) -> List[DocContainer]:
         """List documentation entries attached to a nexset.
@@ -566,7 +591,7 @@ class NexsetsResource(BaseResource):
         source_docs = self.list_docs(src_id)
         if not source_docs:
             return []
-        payload = [
+        payload: List[Union[DocContainerInput, Dict[str, Any]]] = [
             DocContainerInput.model_validate(doc.model_dump(exclude_none=True))
             for doc in source_docs
         ]
@@ -587,7 +612,9 @@ class NexsetsResource(BaseResource):
         """
         params = {"expand": 1} if expand else {}
         path = f"{self._path}/{data_set_id}"
-        return self._make_request("PATCH", path, json=data, params=params)
+        return cast(
+            Dict[str, Any], self._make_request("PATCH", path, json=data, params=params)
+        )
 
     def list_sync_api_compatible(
         self,
@@ -632,7 +659,7 @@ class NexsetsResource(BaseResource):
             Updated catalog ref.
         """
         path = f"{self._path}/catalog_refs/{ref_id}"
-        return self._make_request("PATCH", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PATCH", path, json=data))
 
     def get_catalog_ref_for_set(self, data_set_id: int, ref_id: int) -> Dict[str, Any]:
         """Get one catalog ref of a data set.
@@ -645,7 +672,7 @@ class NexsetsResource(BaseResource):
             Catalog ref.
         """
         path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def data_sets_update_catalog_ref(
         self, data_set_id: int, ref_id: int, data: Dict[str, Any]
@@ -661,7 +688,7 @@ class NexsetsResource(BaseResource):
             Updated catalog ref.
         """
         path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
-        return self._make_request("PATCH", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PATCH", path, json=data))
 
     def data_sets_update_catalog_ref_put(
         self, data_set_id: int, ref_id: int, data: Dict[str, Any]
@@ -677,7 +704,7 @@ class NexsetsResource(BaseResource):
             Updated catalog ref.
         """
         path = f"{self._path}/{data_set_id}/catalog_refs/{ref_id}"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def delete_catalog_ref_for_set(
         self, data_set_id: int, ref_id: int, hard_delete: bool = False
@@ -708,7 +735,7 @@ class NexsetsResource(BaseResource):
             Flow accessors.
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("GET", path)
+        return cast(List[Dict[str, Any]], self._make_request("GET", path))
 
     def reset_flow_accessors_via_data_set(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -723,7 +750,7 @@ class NexsetsResource(BaseResource):
             Flow accessors.
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("POST", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("POST", path, json=data))
 
     def add_flow_accessors_via_data_set(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -738,7 +765,7 @@ class NexsetsResource(BaseResource):
             Flow accessors.
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("PUT", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("PUT", path, json=data))
 
     def remove_flow_accessors_via_data_set(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -753,7 +780,7 @@ class NexsetsResource(BaseResource):
             Flow accessors.
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("DELETE", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("DELETE", path, json=data))
 
     def activate_flow_via_data_set(
         self,
@@ -781,7 +808,7 @@ class NexsetsResource(BaseResource):
         if run_now is not None:
             params["run_now"] = run_now
         path = f"{self._path}/{resource_id}/flow/activate"
-        return self._make_request("PUT", path, params=params)
+        return cast(Dict[str, Any], self._make_request("PUT", path, params=params))
 
     def pause_flow_via_data_set(
         self, resource_id: int, all: bool = False, full_tree: bool = False
@@ -802,7 +829,7 @@ class NexsetsResource(BaseResource):
         if full_tree:
             params["full_tree"] = 1
         path = f"{self._path}/{resource_id}/flow/pause"
-        return self._make_request("PUT", path, params=params)
+        return cast(Dict[str, Any], self._make_request("PUT", path, params=params))
 
     def data_sets_flow_audit_log(
         self,
@@ -972,4 +999,4 @@ class NexsetsResource(BaseResource):
             Created catalog ref
         """
         path = f"{self._path}/{data_set_id}/catalog_refs"
-        return self._make_request("POST", path, json=ref_data)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=ref_data))

@@ -48,7 +48,7 @@ def list_credentials(client: NexlaClient) -> None:
     try:
         print("\n=== CREDENTIALS ===")
         credentials = client.credentials.list()
-        print("Total credentials: {}".format(len(credentials)))
+        print(f"Total credentials: {len(credentials)}")
 
         for cred in credentials[:3]:  # Show first 3
             print(
@@ -61,11 +61,11 @@ def list_credentials(client: NexlaClient) -> None:
         if credentials:
             first_cred = client.credentials.get(credentials[0].id)
             print("First credential details:")
-            print("  Name: {}".format(first_cred.name))
+            print(f"  Name: {first_cred.name}")
             print("  Created: {}".format(getattr(first_cred, "created_at", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching credentials: {}".format(e))
+        print(f"Error fetching credentials: {e}")
 
 
 def list_sources(client: NexlaClient) -> None:
@@ -73,7 +73,7 @@ def list_sources(client: NexlaClient) -> None:
     try:
         print("\n=== SOURCES ===")
         sources = client.sources.list()
-        print("Total sources: {}".format(len(sources)))
+        print(f"Total sources: {len(sources)}")
 
         for source in sources[:3]:  # Show first 3
             print(
@@ -86,11 +86,11 @@ def list_sources(client: NexlaClient) -> None:
         if sources:
             first_source = client.sources.get(sources[0].id)
             print("First source details:")
-            print("  Name: {}".format(first_source.name))
+            print(f"  Name: {first_source.name}")
             print("  Created: {}".format(getattr(first_source, "created_at", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching sources: {}".format(e))
+        print(f"Error fetching sources: {e}")
 
 
 def list_destinations(client: NexlaClient) -> None:
@@ -98,7 +98,7 @@ def list_destinations(client: NexlaClient) -> None:
     try:
         print("\n=== DESTINATIONS ===")
         destinations = client.destinations.list()
-        print("Total destinations: {}".format(len(destinations)))
+        print(f"Total destinations: {len(destinations)}")
 
         for dest in destinations[:3]:  # Show first 3
             print(
@@ -111,11 +111,11 @@ def list_destinations(client: NexlaClient) -> None:
         if destinations:
             first_dest = client.destinations.get(destinations[0].id)
             print("First destination details:")
-            print("  Name: {}".format(first_dest.name))
+            print(f"  Name: {first_dest.name}")
             print("  Created: {}".format(getattr(first_dest, "created_at", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching destinations: {}".format(e))
+        print(f"Error fetching destinations: {e}")
 
 
 def list_nexsets(client: NexlaClient) -> None:
@@ -123,7 +123,7 @@ def list_nexsets(client: NexlaClient) -> None:
     try:
         print("\n=== NEXSETS ===")
         nexsets = client.nexsets.list()
-        print("Total nexsets: {}".format(len(nexsets)))
+        print(f"Total nexsets: {len(nexsets)}")
 
         for nexset in nexsets[:3]:  # Show first 3
             print(
@@ -136,11 +136,11 @@ def list_nexsets(client: NexlaClient) -> None:
         if nexsets:
             first_nexset = client.nexsets.get(nexsets[0].id)
             print("First nexset details:")
-            print("  Name: {}".format(first_nexset.name))
+            print(f"  Name: {first_nexset.name}")
             print("  Schema: {}".format(getattr(first_nexset, "schema", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching nexsets: {}".format(e))
+        print(f"Error fetching nexsets: {e}")
 
 
 def list_flows(client: NexlaClient) -> None:
@@ -148,7 +148,7 @@ def list_flows(client: NexlaClient) -> None:
     try:
         print("\n=== FLOWS ===")
         flows = client.flows.list()
-        print("Total flows: {}".format(len(flows)))
+        print(f"Total flows: {len(flows)}")
 
         for flow in flows[:3]:  # Show first 3
             print(
@@ -167,7 +167,7 @@ def list_flows(client: NexlaClient) -> None:
             print("  Created: {}".format(getattr(first_flow, "created_at", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching flows: {}".format(e))
+        print(f"Error fetching flows: {e}")
 
 
 def list_lookups(client: NexlaClient) -> None:
@@ -175,7 +175,7 @@ def list_lookups(client: NexlaClient) -> None:
     try:
         print("\n=== LOOKUPS ===")
         lookups = client.lookups.list()
-        print("Total lookups: {}".format(len(lookups)))
+        print(f"Total lookups: {len(lookups)}")
 
         for lookup in lookups[:3]:  # Show first 3
             print(
@@ -188,11 +188,11 @@ def list_lookups(client: NexlaClient) -> None:
         if lookups:
             first_lookup = client.lookups.get(lookups[0].id)
             print("First lookup details:")
-            print("  Name: {}".format(first_lookup.name))
+            print(f"  Name: {first_lookup.name}")
             print("  Created: {}".format(getattr(first_lookup, "created_at", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching lookups: {}".format(e))
+        print(f"Error fetching lookups: {e}")
 
 
 def list_users(client: NexlaClient) -> None:
@@ -200,7 +200,7 @@ def list_users(client: NexlaClient) -> None:
     try:
         print("\n=== USERS ===")
         users = client.users.list()
-        print("Total users: {}".format(len(users)))
+        print(f"Total users: {len(users)}")
 
         for user in users[:3]:  # Show first 3
             print(
@@ -219,7 +219,7 @@ def list_users(client: NexlaClient) -> None:
             print("  Email: {}".format(getattr(first_user, "email", "N/A")))
 
     except NexlaError as e:
-        print("Error fetching users: {}".format(e))
+        print(f"Error fetching users: {e}")
 
 
 def demonstrate_pagination(client: NexlaClient) -> None:
@@ -238,26 +238,22 @@ def demonstrate_pagination(client: NexlaClient) -> None:
             page_items = len(page.items)
             total_items += page_items
 
-            print("Page {}: {} items".format(page_count, page_items))
+            print(f"Page {page_count}: {page_items} items")
 
             # Show first item from each page
             if page.items:
                 first_item = page.items[0]
-                print(
-                    "  First item: ID={}, Name={}".format(
-                        first_item.id, first_item.name
-                    )
-                )
+                print(f"  First item: ID={first_item.id}, Name={first_item.name}")
 
             # Only show first 3 pages for demo
             if page_count >= 3:
                 break
 
-        print("Total pages processed: {}".format(page_count))
-        print("Total items processed: {}".format(total_items))
+        print(f"Total pages processed: {page_count}")
+        print(f"Total items processed: {total_items}")
 
     except NexlaError as e:
-        print("Error with pagination: {}".format(e))
+        print(f"Error with pagination: {e}")
 
 
 def main():
@@ -283,12 +279,12 @@ def main():
         print("Successfully demonstrated listing and getting resources for all types!")
 
     except AuthenticationError as e:
-        print("Authentication failed: {}".format(e))
+        print(f"Authentication failed: {e}")
         print("Please check your NEXLA_SERVICE_KEY or NEXLA_ACCESS_TOKEN")
     except NexlaError as e:
-        print("Client configuration error: {}".format(e))
+        print(f"Client configuration error: {e}")
     except Exception as e:
-        print("Unexpected error: {}".format(e))
+        print(f"Unexpected error: {e}")
 
 
 if __name__ == "__main__":

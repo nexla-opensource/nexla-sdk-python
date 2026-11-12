@@ -90,7 +90,7 @@ def check_environment():
     required_files = [
         "tests/conftest.py",
         "tests/utils/__init__.py",
-        "pytest.ini",
+        "pyproject.toml",
         "requirements.txt",
     ]
 
@@ -105,7 +105,7 @@ def check_environment():
 
     # Check for test directories
     missing_dirs = []
-    for category, path in TEST_CATEGORIES.items():
+    for _category, path in TEST_CATEGORIES.items():
         if not Path(path).exists():
             missing_dirs.append(path)
 

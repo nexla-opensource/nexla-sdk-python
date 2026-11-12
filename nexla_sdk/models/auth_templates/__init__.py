@@ -7,8 +7,6 @@ from nexla_sdk.models.auth_templates.requests import (
 )
 from nexla_sdk.models.auth_templates.responses import (
     AuthParameter,  # Deprecated alias for backward compatibility
-)
-from nexla_sdk.models.auth_templates.responses import (
     AuthTemplate,
     AuthTemplateParameter,
 )

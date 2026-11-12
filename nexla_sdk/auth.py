@@ -94,6 +94,7 @@ class TokenAuthHandler:
         self._lock = threading.RLock()
 
         # Session token management
+        self._access_token: Optional[str] = None
         if access_token:
             self._using_direct_token = True
             self._access_token = access_token
@@ -238,7 +239,7 @@ class TokenAuthHandler:
             with self._lock:
                 if self._needs_refresh():
                     self.obtain_session_token()
-        return self._access_token  # type: ignore[return-value]
+        return self._access_token  # type: ignore[return-value]  # set by obtain_session_token above
 
     def switch_org(self, org_id: int) -> TokenResponse:
         """
@@ -288,7 +289,7 @@ class TokenAuthHandler:
             self.token_response = None
 
     def execute_authenticated_request(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Union[Dict[str, Any], None]:
         """
         Execute a request with authentication handling. Return the body only.
@@ -303,7 +304,7 @@ class TokenAuthHandler:
         return body
 
     def execute_authenticated_request_with_headers(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Tuple[Union[Dict[str, Any], None], Any]:
         """
         Execute a request with authentication handling. Return (body, response headers).

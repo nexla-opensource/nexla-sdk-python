@@ -1,7 +1,7 @@
 import logging
 import warnings
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
 from nexla_sdk.models.flows.requests import FlowCopyOptions
@@ -16,6 +16,9 @@ from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import warn_deprecated
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 logger = logging.getLogger(__name__)
 
@@ -42,20 +45,20 @@ def _iso_date_to_unix_seconds(value: Any) -> Any:
         return value
 
 
-class FlowsResource(BaseResource):
+class FlowsResource(BaseResource[FlowResponse]):
     """Resource for managing data flows."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/flows"
         self._model_class = FlowResponse
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         flows_only: bool = False,
         include_run_metrics: bool = False,
         access_role: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[FlowResponse]:
         """
         List flows with optional filters.
@@ -109,7 +112,7 @@ class FlowsResource(BaseResource):
         if include_run_metrics:
             params["include_run_metrics"] = 1
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def get_by_resource(
         self,
@@ -136,7 +139,7 @@ class FlowsResource(BaseResource):
         params = {"flows_only": 1} if flows_only else {}
 
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def activate(
         self, flow_id: int, all: bool = False, full_tree: bool = False
@@ -159,7 +162,7 @@ class FlowsResource(BaseResource):
             params["full_tree"] = 1
 
         response = self._make_request("PUT", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def pause(
         self,
@@ -190,10 +193,12 @@ class FlowsResource(BaseResource):
             params["async"] = 1
 
         response = self._make_request("PUT", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def copy(
-        self, flow_id: int, options: Optional[FlowCopyOptions] = None
+        self,
+        flow_id: int,
+        options: Optional[Union[FlowCopyOptions, Dict[str, Any]]] = None,
     ) -> FlowResponse:
         """
         Copy a flow.
@@ -333,7 +338,7 @@ class FlowsResource(BaseResource):
             ResourceType, resource_type, "resource_type"
         )
         path = f"/{resource_type_value}/{resource_id}/flow"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def activate_by_resource(
         self,
@@ -365,7 +370,7 @@ class FlowsResource(BaseResource):
             params["full_tree"] = 1
 
         response = self._make_request("PUT", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def pause_by_resource(
         self,
@@ -397,14 +402,14 @@ class FlowsResource(BaseResource):
             params["full_tree"] = 1
 
         response = self._make_request("PUT", path, params=params)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def update_by_resource(
         self, resource_type: str, resource_id: int, payload: Dict[str, Any]
     ) -> FlowResponse:
         path = f"/{resource_type}/{resource_id}/flow"
         response = self._make_request("PUT", path, json=payload)
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def copy_by_resource(
         self,
@@ -414,7 +419,7 @@ class FlowsResource(BaseResource):
     ) -> FlowResponse:
         path = f"/{resource_type}/{resource_id}/flow/copy"
         response = self._make_request("POST", path, json=payload or {})
-        return self._parse_response(response)
+        return cast(FlowResponse, self._parse_response(response))
 
     def accessors_by_resource(
         self,
@@ -426,7 +431,9 @@ class FlowsResource(BaseResource):
         path = f"/{resource_type}/{resource_id}/flow/accessors"
         method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
         method = method_map.get(mode, "GET")
-        return self._make_request(method, path, json=payload or {})
+        return cast(
+            Dict[str, Any], self._make_request(method, path, json=payload or {})
+        )
 
     def docs_by_resource(
         self,
@@ -438,123 +445,154 @@ class FlowsResource(BaseResource):
         path = f"/{resource_type}/{resource_id}/flow/docs"
         method_map = {"list": "GET", "reset": "POST", "add": "PUT", "remove": "DELETE"}
         method = method_map.get(mode, "GET")
-        return self._make_request(method, path, json=payload or [])
+        return cast(
+            Dict[str, Any], self._make_request(method, path, json=payload or [])
+        )
 
     def run_status_by_resource(
         self, resource_type: str, resource_id: int
     ) -> Dict[str, Any]:
         path = f"/{resource_type}/{resource_id}/flow/run_status"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def run_profiles_activate(
         self, flow_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/run_profiles/activate"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def run_now(self, flow_id: int, method: str = "POST") -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/run_now"
-        return self._make_request(method.upper(), path)
+        return cast(Dict[str, Any], self._make_request(method.upper(), path))
 
-    def flow_logs(self, flow_id: int, **params) -> Dict[str, Any]:
+    def flow_logs(self, flow_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/logs"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def flow_logs_v2(
-        self, flow_id: int, payload: Dict[str, Any], **params
+        self, flow_id: int, payload: Dict[str, Any], **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/logs_v2"
-        return self._make_request("POST", path, json=payload, params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", path, json=payload, params=params),
+        )
 
-    def flow_metrics(self, flow_id: int, **params) -> Dict[str, Any]:
+    def flow_metrics(self, flow_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/metrics"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def list_linked_flows(self, flow_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/links"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_linked_flows(
         self, flow_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/links"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_linked_flows(
         self, flow_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/links"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_linked_flows(
         self, flow_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/links"
-        return self._make_request("DELETE", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("DELETE", path, json=payload))
 
     def delete_all_linked_flows(self, flow_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/links/all"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def insert_flow_node(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/insert_flow_node"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def remove_flow_node(
         self, flow_id: int, payload: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/remove_flow_node"
-        return self._make_request("POST", path, json=payload or {})
+        return cast(
+            Dict[str, Any], self._make_request("POST", path, json=payload or {})
+        )
 
     def update_samples(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/samples"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def publish_rag(self, flow_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/rag/publish"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def update_archival_status(
         self, flow_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/archival/status"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def restore_archival(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/archival/restore"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def run_status(self, flow_id: int, run_id: Optional[int] = None) -> Dict[str, Any]:
         path = f"{self._path}/{flow_id}/run_status"
         if run_id is not None:
             path = f"{path}/{run_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
-    def search(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/search", json=payload)
+    def search(self, payload: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore[override]  # returns the raw search payload, not a model list
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/search", json=payload),
+        )
 
     def bulk_assign_project(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("PUT", f"{self._path}/project", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PUT", f"{self._path}/project", json=payload),
+        )
 
     def import_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/import", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/import", json=payload),
+        )
 
     def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/raw", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/raw", json=payload),
+        )
 
-    def daily_metrics(self, **params) -> Dict[str, Any]:
-        return self._make_request("GET", "/data_flows/metrics/daily", params=params)
+    def daily_metrics(self, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", "/data_flows/metrics/daily", params=params),
+        )
 
-    def total_metrics(self, **params) -> Dict[str, Any]:
-        return self._make_request("GET", "/data_flows/metrics/total", params=params)
+    def total_metrics(self, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", "/data_flows/metrics/total", params=params),
+        )
 
-    def active_flows_metrics(self, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", "/data_flows/metrics/active_flows_metrics", params=params
+    def active_flows_metrics(self, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", "/data_flows/metrics/active_flows_metrics", params=params
+            ),
         )
 
     def get_resources_access(self, flow_id: int) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/{flow_id}/resources_access")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{flow_id}/resources_access"),
+        )
 
     def docs_recommendation(
         self, flow_id: int
@@ -573,18 +611,18 @@ class FlowsResource(BaseResource):
         try:
             return DocsRecommendation.model_validate(response)
         except Exception:
-            return response
+            return cast(Union[DocsRecommendation, Dict[str, Any]], response)
 
     def get_flow_logs(
         self,
         flow_id: int,
-        from_date: str = None,
-        to_date: str = None,
-        severity: str = None,
-        run_id: int = None,
-        page: int = None,
-        per_page: int = None,
-        level: str = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        severity: Optional[str] = None,
+        run_id: Optional[int] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        level: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Get execution logs for a specific flow.
@@ -622,20 +660,20 @@ class FlowsResource(BaseResource):
             params["page"] = page
         if per_page is not None:
             params["per_page"] = per_page
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def search_flow_logs(
         self,
         flow_id: int,
-        run_ids: Union[str, List[int]] = None,
-        severity: Union[str, List[str]] = None,
-        log_type: Union[str, List[str]] = None,
-        search_string: str = None,
-        from_date: str = None,
-        to_date: str = None,
-        size: int = None,
-        sort: str = None,
-        facets: bool = None,
+        run_ids: Optional[Union[str, List[int]]] = None,
+        severity: Optional[Union[str, List[str]]] = None,
+        log_type: Optional[Union[str, List[str]]] = None,
+        search_string: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        size: Optional[int] = None,
+        sort: Optional[str] = None,
+        facets: Optional[bool] = None,
     ) -> Dict[str, Any]:
         """
         Advanced search for flow execution logs.
@@ -695,14 +733,16 @@ class FlowsResource(BaseResource):
         if facets is not None:
             params["facets"] = facets
 
-        return self._make_request("POST", path, params=params, json=body)
+        return cast(
+            Dict[str, Any], self._make_request("POST", path, params=params, json=body)
+        )
 
     def get_org_health_summary(
         self,
-        org_id: int = None,
-        owner_id: int = None,
-        from_date: str = None,
-        to_date: str = None,
+        org_id: Optional[int] = None,
+        owner_id: Optional[int] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Get the overall health snapshot for an org's flows.
@@ -729,19 +769,21 @@ class FlowsResource(BaseResource):
             params["from"] = from_date
         if to_date is not None:
             params["to"] = to_date
-        return self._make_request("GET", "/health/org/all", params=params)
+        return cast(
+            Dict[str, Any], self._make_request("GET", "/health/org/all", params=params)
+        )
 
     def get_org_health_flows(
         self,
-        org_id: int = None,
-        owner_id: int = None,
-        from_date: str = None,
-        to_date: str = None,
-        health_status: str = None,
-        page: int = None,
-        size: int = None,
-        sort_by: str = None,
-        sort_order: str = None,
+        org_id: Optional[int] = None,
+        owner_id: Optional[int] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        health_status: Optional[str] = None,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        sort_order: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         List per-flow health status across an org. Use this to answer
@@ -786,7 +828,10 @@ class FlowsResource(BaseResource):
             params["sort_by"] = sort_by
         if sort_order is not None:
             params["sort_order"] = sort_order
-        return self._make_request("GET", "/health/org/flows", params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", "/health/org/flows", params=params),
+        )
 
     def get_flow_health(self, flow_id: int) -> Dict[str, Any]:
         """
@@ -797,10 +842,15 @@ class FlowsResource(BaseResource):
         information; the inverse of :meth:`get_org_health_flows` for one
         specific flow.
         """
-        return self._make_request("GET", f"/health/flow/{flow_id}")
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"/health/flow/{flow_id}")
+        )
 
     def get_active_flows_metrics(
-        self, from_date: str = None, to_date: str = None, org_id: int = None
+        self,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        org_id: Optional[int] = None,
     ) -> Dict[str, Any]:
         """
         Get metrics for currently active flows.
@@ -817,14 +867,14 @@ class FlowsResource(BaseResource):
         # (config/routes.rb), not under /flows/. Calling /flows/active_flows_metrics
         # 404s.
         path = "/data_flows/metrics/active_flows_metrics"
-        params = {}
+        params: Dict[str, Any] = {}
         if from_date is not None:
             params["from"] = from_date
         if to_date is not None:
             params["to"] = to_date
         if org_id is not None:
             params["org_id"] = org_id
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def get_run_status(
         self,
@@ -845,7 +895,7 @@ class FlowsResource(BaseResource):
             raise TypeError("get_run_status() requires integer flow_id and run_id")
 
         path = f"{self._path}/{flow_id}/run_status/{run_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     @staticmethod
     def _warn_if_seconds_timestamp(value: int, param_name: str) -> None:
@@ -906,7 +956,7 @@ class FlowsResource(BaseResource):
             logger.debug(
                 "FlowLogsResponse validation failed, returning raw dict: %s", exc
             )
-            return response
+            return cast(Union[FlowLogsResponse, Dict[str, Any]], response)
 
     def get_metrics(
         self,
@@ -940,7 +990,7 @@ class FlowsResource(BaseResource):
             ResourceType, resource_type, "resource_type"
         )
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
-        params = {"from": from_date}
+        params: Dict[str, Any] = {"from": from_date}
         if to_date:
             params["to"] = to_date
         if groupby:
@@ -959,7 +1009,7 @@ class FlowsResource(BaseResource):
             logger.debug(
                 "FlowMetricsApiResponse validation failed, returning raw dict: %s", exc
             )
-            return response
+            return cast(Union[FlowMetricsApiResponse, Dict[str, Any]], response)
 
     def get_document_schema(self) -> Dict[str, Any]:
         """
@@ -968,7 +1018,9 @@ class FlowsResource(BaseResource):
         Returns:
             JSON Schema for the documents returned by get_document()
         """
-        return self._make_request("GET", f"{self._path}/document/schema")
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"{self._path}/document/schema")
+        )
 
     def get_document(self, flow_id: int) -> Dict[str, Any]:
         """
@@ -980,7 +1032,10 @@ class FlowsResource(BaseResource):
         Returns:
             Flow document
         """
-        return self._make_request("GET", f"{self._path}/{flow_id}/document")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{flow_id}/document"),
+        )
 
     def plan_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -992,7 +1047,10 @@ class FlowsResource(BaseResource):
         Returns:
             Planned changes
         """
-        return self._make_request("POST", f"{self._path}/plan", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/plan", json=payload),
+        )
 
     def get_daily_metrics(
         self,
@@ -1012,10 +1070,13 @@ class FlowsResource(BaseResource):
             Daily metrics
         """
         params = {"from": start_time, "to": end_time}
-        return self._make_request(
-            "GET",
-            f"{self._path}/{origin_node_id}/metrics/daily",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET",
+                f"{self._path}/{origin_node_id}/metrics/daily",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def list_runs(
@@ -1032,10 +1093,13 @@ class FlowsResource(BaseResource):
         Returns:
             Run summaries
         """
-        return self._make_request(
-            "GET",
-            f"{self._path}/{flow_id}/runs",
-            params={"limit": limit, "offset": offset},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{flow_id}/runs",
+                params={"limit": limit, "offset": offset},
+            ),
         )
 
     def get_run(self, flow_id: int, run_id: int) -> Dict[str, Any]:
@@ -1049,7 +1113,10 @@ class FlowsResource(BaseResource):
         Returns:
             Run details with flow-level execution timing
         """
-        return self._make_request("GET", f"{self._path}/{flow_id}/runs/{run_id}")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{flow_id}/runs/{run_id}"),
+        )
 
     def cancel_run(
         self, flow_id: int, run_id: Union[int, str], force: bool = False
@@ -1066,8 +1133,11 @@ class FlowsResource(BaseResource):
             Cancellation result
         """
         params = {"force": True} if force else {}
-        return self._make_request(
-            "POST", f"{self._path}/{flow_id}/runs/{run_id}/cancel", params=params
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST", f"{self._path}/{flow_id}/runs/{run_id}/cancel", params=params
+            ),
         )
 
     def retry_run(
@@ -1087,8 +1157,11 @@ class FlowsResource(BaseResource):
         Returns:
             Retry result
         """
-        return self._make_request(
-            "POST",
-            f"{self._path}/{flow_id}/runs/{run_id}/retry",
-            json=retry_config,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST",
+                f"{self._path}/{flow_id}/runs/{run_id}/retry",
+                json=retry_config,
+            ),
         )

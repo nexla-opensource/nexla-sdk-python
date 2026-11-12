@@ -5,7 +5,7 @@ without raising validation errors. Unknown values are preserved as strings.
 """
 
 from enum import Enum
-from typing import Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Callable, Type, TypeVar, Union
 
 from pydantic import BeforeValidator
 from typing_extensions import Annotated  # typing.Annotated only landed in 3.9
@@ -20,7 +20,7 @@ from nexla_sdk.models.sources.enums import SourceType
 E = TypeVar("E", bound=Enum)
 
 
-def flexible_enum_validator(enum_cls: Type[E]):
+def flexible_enum_validator(enum_cls: Type[E]) -> Callable[[Any], Any]:
     """Create a validator that accepts enum values or unknown strings.
 
     Args:
@@ -31,7 +31,7 @@ def flexible_enum_validator(enum_cls: Type[E]):
         or the raw string for unknown values.
     """
 
-    def validator(v):
+    def validator(v: Any) -> Any:
         if v is None:
             return None
         if isinstance(v, enum_cls):
@@ -47,7 +47,7 @@ def flexible_enum_validator(enum_cls: Type[E]):
     return validator
 
 
-def FlexibleEnum(enum_cls: Type[E]) -> Type[Union[E, str]]:
+def FlexibleEnum(enum_cls: Type[E]) -> Any:
     """Create a flexible enum type annotation for Pydantic models.
 
     This creates an Annotated type that accepts either a valid enum value
@@ -68,13 +68,23 @@ def FlexibleEnum(enum_cls: Type[E]) -> Type[Union[E, str]]:
     ]
 
 
-# Pre-defined flexible connector types for convenience
-FlexibleDestinationType = FlexibleEnum(DestinationType)
-FlexibleDestinationFormat = FlexibleEnum(DestinationFormat)
-FlexibleSourceType = FlexibleEnum(SourceType)
-FlexibleCredentialType = FlexibleEnum(CredentialType)
-FlexibleConnectorCategory = FlexibleEnum(ConnectorCategory)
+# Type checkers see plain unions. At runtime each alias is an Annotated type.
+if TYPE_CHECKING:
+    FlexibleDestinationType = Union[DestinationType, str]
+    FlexibleDestinationFormat = Union[DestinationFormat, str]
+    FlexibleSourceType = Union[SourceType, str]
+    FlexibleCredentialType = Union[CredentialType, str]
+    FlexibleConnectorCategory = Union[ConnectorCategory, str]
+    FlexibleConnectorType = Union[ConnectorType, str]
+    FlexibleConnectionType = Union[ConnectionType, str]
+else:
+    # Pre-defined flexible connector types for convenience
+    FlexibleDestinationType = FlexibleEnum(DestinationType)
+    FlexibleDestinationFormat = FlexibleEnum(DestinationFormat)
+    FlexibleSourceType = FlexibleEnum(SourceType)
+    FlexibleCredentialType = FlexibleEnum(CredentialType)
+    FlexibleConnectorCategory = FlexibleEnum(ConnectorCategory)
 
-# Flexible types for connectors resource
-FlexibleConnectorType = FlexibleEnum(ConnectorType)
-FlexibleConnectionType = FlexibleEnum(ConnectionType)
+    # Flexible types for connectors resource
+    FlexibleConnectorType = FlexibleEnum(ConnectorType)
+    FlexibleConnectionType = FlexibleEnum(ConnectionType)

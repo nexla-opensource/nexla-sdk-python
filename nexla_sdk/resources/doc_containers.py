@@ -1,19 +1,22 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.doc_containers.responses import DocContainer
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class DocContainersResource(BaseResource):
+
+class DocContainersResource(BaseResource[DocContainer]):
     """Resource for document containers."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/doc_containers"
         self._model_class = DocContainer
 
-    def list(self, **kwargs) -> List[DocContainer]:
+    def list(self, **kwargs: Any) -> List[DocContainer]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
     def get(self, doc_container_id: int, expand: bool = False) -> DocContainer:
@@ -33,13 +36,13 @@ class DocContainersResource(BaseResource):
     ) -> DocContainer:
         return super().copy(doc_container_id, payload)
 
-    def search(self, filters: Dict[str, Any], **params) -> List[DocContainer]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[DocContainer]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[DocContainer]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[DocContainer]:
         return super().search_tags(tags, **params)
 
-    def get_audit_log(self, doc_container_id: int, **params) -> List[LogEntry]:
+    def get_audit_log(self, doc_container_id: int, **params: Any) -> List[LogEntry]:  # type: ignore[override]  # keeps public signature; base get_audit_log() takes typed filters
         path = f"{self._path}/{doc_container_id}/audit_log"
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in (response or [])]

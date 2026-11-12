@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.flows.responses import FlowResponse
 from nexla_sdk.models.projects.requests import (
@@ -10,16 +10,19 @@ from nexla_sdk.models.projects.responses import Project, ProjectDataFlow
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ProjectsResource(BaseResource):
+
+class ProjectsResource(BaseResource[Project]):
     """Resource for managing projects."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/projects"
         self._model_class = Project
 
-    def list(self, expand: bool = False, **kwargs) -> List[Project]:
+    def list(self, expand: bool = False, **kwargs: Any) -> List[Project]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List projects with optional filters.
 
@@ -57,7 +60,7 @@ class ProjectsResource(BaseResource):
         """
         return super().get(project_id, expand)
 
-    def create(self, data: ProjectCreate) -> Project:
+    def create(self, data: Union[ProjectCreate, Dict[str, Any]]) -> Project:
         """
         Create new project.
 
@@ -72,7 +75,9 @@ class ProjectsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, project_id: int, data: ProjectUpdate) -> Project:
+    def update(
+        self, project_id: int, data: Union[ProjectUpdate, Dict[str, Any]]
+    ) -> Project:
         """
         Update project.
 
@@ -102,14 +107,17 @@ class ProjectsResource(BaseResource):
     ) -> Project:
         return super().copy(project_id, payload)
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Project]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Project]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Project]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Project]:
         return super().search_tags(tags, **params)
 
     def get_resources_access(self, project_id: int) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/{project_id}/resources_access")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{project_id}/resources_access"),
+        )
 
     def get_flows(self, project_id: int) -> FlowResponse:
         """

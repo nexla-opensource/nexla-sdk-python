@@ -36,12 +36,9 @@ jobs:
       run: |
         python -c "import setuptools_scm; print(f'Version: {setuptools_scm.get_version()}')"
 
-    # - name: Run tests
-    #   run: |
-    #     python -m pytest tests/ -v --tb=short
-    #   env:
-    #     # Skip integration tests in release workflow
-    #     PYTEST_ADDOPTS: "-m 'not integration'"
+    - name: Run unit tests
+      run: |
+        python -m pytest -m unit -q -p no:cacheprovider --cov=nexla_sdk --cov-fail-under=85
 
     - name: Build package
       run: |
@@ -53,6 +50,9 @@ jobs:
         ls -la dist/
         echo "=== Checking wheel contents ==="
         python -m zipfile -l dist/*.whl | head -20
+        # Fail the release if the license is missing from either artifact.
+        tar -tzf dist/*.tar.gz | grep -q "/LICENSE$"
+        python -m zipfile -l dist/*.whl | grep -q "licenses/LICENSE"
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1

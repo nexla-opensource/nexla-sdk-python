@@ -29,23 +29,23 @@ def assert_model_valid(
 ):
     """Assert that a model instance is valid and optionally check specific fields."""
     # Check that it's a valid model instance
-    assert isinstance(
-        model_instance, BaseModel
-    ), f"Expected BaseModel instance, got {type(model_instance)}"
+    assert isinstance(model_instance, BaseModel), (
+        f"Expected BaseModel instance, got {type(model_instance)}"
+    )
 
     # Check that required fields are present and have expected values
     if expected_fields:
         for field_name, expected_value in expected_fields.items():
             actual_value = getattr(model_instance, field_name, None)
-            assert (
-                actual_value == expected_value
-            ), f"Expected {field_name}={expected_value}, got {actual_value}"
+            assert actual_value == expected_value, (
+                f"Expected {field_name}={expected_value}, got {actual_value}"
+            )
 
     # Ensure the model can be serialized (no validation errors)
     try:
         model_instance.model_dump()
     except Exception as e:
-        raise AssertionError(f"Model serialization failed: {e}")
+        raise AssertionError(f"Model serialization failed: {e}") from e
 
 
 def assert_model_list_valid(model_list: List[BaseModel], model_class: Type[BaseModel]):
@@ -53,9 +53,9 @@ def assert_model_list_valid(model_list: List[BaseModel], model_class: Type[BaseM
     assert isinstance(model_list, list), f"Expected list, got {type(model_list)}"
 
     for i, item in enumerate(model_list):
-        assert isinstance(
-            item, model_class
-        ), f"Item {i} is not of type {model_class.__name__}: {type(item)}"
+        assert isinstance(item, model_class), (
+            f"Item {i} is not of type {model_class.__name__}: {type(item)}"
+        )
         assert_model_valid(item)
 
 
@@ -66,11 +66,13 @@ def assert_validation_error(func, error_message_contains: Optional[str] = None):
         raise AssertionError("Expected ValidationError to be raised")
     except ValidationError as e:
         if error_message_contains:
-            assert error_message_contains in str(
-                e
-            ), f"Error message should contain '{error_message_contains}': {e}"
+            assert error_message_contains in str(e), (
+                f"Error message should contain '{error_message_contains}': {e}"
+            )
     except Exception as e:
-        raise AssertionError(f"Expected ValidationError, got {type(e).__name__}: {e}")
+        raise AssertionError(
+            f"Expected ValidationError, got {type(e).__name__}: {e}"
+        ) from e
 
 
 def assert_credential_structure(credential_data: Dict[str, Any]):
@@ -89,9 +91,9 @@ def assert_credential_structure(credential_data: Dict[str, Any]):
     assert "id" in org and "name" in org, "Organization missing required fields"
 
     # Check access roles
-    assert isinstance(
-        credential_data["access_roles"], list
-    ), "access_roles should be a list"
+    assert isinstance(credential_data["access_roles"], list), (
+        "access_roles should be a list"
+    )
     assert len(credential_data["access_roles"]) > 0, "access_roles should not be empty"
 
 
@@ -104,9 +106,9 @@ def assert_source_structure(source_data: Dict[str, Any]):
 
     # Check valid status values
     valid_statuses = ["ACTIVE", "PAUSED", "DRAFT", "DELETED", "ERROR", "INIT"]
-    assert (
-        source_data["status"] in valid_statuses
-    ), f"Invalid status: {source_data['status']}"
+    assert source_data["status"] in valid_statuses, (
+        f"Invalid status: {source_data['status']}"
+    )
 
     # Check owner structure if present
     if "owner" in source_data and source_data["owner"]:
@@ -119,9 +121,9 @@ def assert_source_structure(source_data: Dict[str, Any]):
         assert "id" in org and "name" in org, "Organization missing required fields"
 
     # Check access roles
-    assert isinstance(
-        source_data["access_roles"], list
-    ), "access_roles should be a list"
+    assert isinstance(source_data["access_roles"], list), (
+        "access_roles should be a list"
+    )
 
     # Check data_sets if present
     if "data_sets" in source_data and source_data["data_sets"]:
@@ -143,9 +145,9 @@ def assert_destination_structure(destination_data: Dict[str, Any]):
 
     # Check valid status values
     valid_statuses = ["ACTIVE", "PAUSED", "DRAFT", "DELETED", "ERROR"]
-    assert (
-        destination_data["status"] in valid_statuses
-    ), f"Invalid status: {destination_data['status']}"
+    assert destination_data["status"] in valid_statuses, (
+        f"Invalid status: {destination_data['status']}"
+    )
 
     # Check owner structure if present
     if "owner" in destination_data and destination_data["owner"]:
@@ -172,9 +174,9 @@ def assert_nexset_structure(nexset_data: Dict[str, Any]):
 
     # Check data_sinks if present
     if "data_sinks" in nexset_data and nexset_data["data_sinks"]:
-        assert isinstance(
-            nexset_data["data_sinks"], list
-        ), "data_sinks should be a list"
+        assert isinstance(nexset_data["data_sinks"], list), (
+            "data_sinks should be a list"
+        )
 
 
 def assert_lookup_structure(lookup_data: Dict[str, Any]):
@@ -210,15 +212,15 @@ def assert_user_structure(user_data: Dict[str, Any]):
 
     # Check default_org structure
     default_org = user_data["default_org"]
-    assert (
-        "id" in default_org and "name" in default_org
-    ), "Default org missing required fields"
+    assert "id" in default_org and "name" in default_org, (
+        "Default org missing required fields"
+    )
 
     # Check org_memberships if present
     if "org_memberships" in user_data:
-        assert isinstance(
-            user_data["org_memberships"], list
-        ), "org_memberships should be a list"
+        assert isinstance(user_data["org_memberships"], list), (
+            "org_memberships should be a list"
+        )
 
 
 def assert_organization_structure(org_data: Dict[str, Any]):
@@ -258,9 +260,9 @@ def assert_project_structure(project_data: Dict[str, Any]):
 
     # Check data_flows if present
     if "data_flows" in project_data:
-        assert isinstance(
-            project_data["data_flows"], list
-        ), "data_flows should be a list"
+        assert isinstance(project_data["data_flows"], list), (
+            "data_flows should be a list"
+        )
 
     # Check flows if present
     if "flows" in project_data:
@@ -281,15 +283,15 @@ def assert_notification_structure(notification_data: Dict[str, Any]):
         "message",
     ]
     for field in required_fields:
-        assert (
-            field in notification_data
-        ), f"Notification missing required field: {field}"
+        assert field in notification_data, (
+            f"Notification missing required field: {field}"
+        )
 
     # Check valid levels
     valid_levels = ["DEBUG", "INFO", "WARN", "ERROR", "RECOVERED", "RESOLVED"]
-    assert (
-        notification_data["level"] in valid_levels
-    ), f"Invalid level: {notification_data['level']}"
+    assert notification_data["level"] in valid_levels, (
+        f"Invalid level: {notification_data['level']}"
+    )
 
 
 def assert_probe_response_structure(probe_data: Dict[str, Any]):
@@ -308,15 +310,15 @@ def assert_probe_response_structure(probe_data: Dict[str, Any]):
 def assert_error_response_structure(error_data: Dict[str, Any]):
     """Assert that error response has the expected structure."""
     # Should have either 'error' or 'message' field
-    assert (
-        "error" in error_data or "message" in error_data
-    ), "Error response missing error/message field"
+    assert "error" in error_data or "message" in error_data, (
+        "Error response missing error/message field"
+    )
 
     # Should have some indication of the error type or status
     if "status_code" in error_data:
-        assert isinstance(
-            error_data["status_code"], int
-        ), "status_code should be an integer"
+        assert isinstance(error_data["status_code"], int), (
+            "status_code should be an integer"
+        )
 
 
 def assert_paginated_response_structure(response_data: Dict[str, Any]):
@@ -328,9 +330,9 @@ def assert_paginated_response_structure(response_data: Dict[str, Any]):
         assert "pageCount" in meta, "Pagination meta missing pageCount"
 
     if "data" in response_data:
-        assert isinstance(
-            response_data["data"], list
-        ), "Paginated data should be a list"
+        assert isinstance(response_data["data"], list), (
+            "Paginated data should be a list"
+        )
 
 
 def assert_metrics_response_structure(metrics_data: Dict[str, Any]):
@@ -342,9 +344,9 @@ def assert_metrics_response_structure(metrics_data: Dict[str, Any]):
         metrics = metrics_data["metrics"]
         if isinstance(metrics, dict):
             # Single metrics object
-            assert (
-                "records" in metrics or "size" in metrics
-            ), "Metrics should have records or size"
+            assert "records" in metrics or "size" in metrics, (
+                "Metrics should have records or size"
+            )
         elif isinstance(metrics, list):
             # List of metrics (e.g., daily metrics)
             for metric in metrics:
@@ -386,9 +388,9 @@ def assert_list_field_valid(
         list_value = data[field_name]
         if list_value is not None:
             assert isinstance(list_value, list), f"{field_name} should be a list"
-            assert (
-                len(list_value) >= min_length
-            ), f"{field_name} should have at least {min_length} items"
+            assert len(list_value) >= min_length, (
+                f"{field_name} should have at least {min_length} items"
+            )
     elif required:
         raise AssertionError(f"Required list field {field_name} is missing")
 
@@ -569,9 +571,9 @@ class NexlaAssertions:
 
         # If metadata exists, validate it
         if hasattr(sample, "nexla_metadata") and sample.nexla_metadata:
-            assert isinstance(
-                sample.nexla_metadata, dict
-            ), "Sample nexla_metadata should be dict"
+            assert isinstance(sample.nexla_metadata, dict), (
+                "Sample nexla_metadata should be dict"
+            )
 
     def assert_data_set_info_response(
         self, response: DataSetInfo, expected_data: Dict[str, Any]

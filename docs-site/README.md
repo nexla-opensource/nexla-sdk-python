@@ -50,9 +50,9 @@ npm run docusaurus -- docs:version 0.1.8
 
 Add migration guides under `docs/migration/`.
 
-## Deployment (GitHub Pages)
+## CI
 
-The workflow `.github/workflows/docs.yml` builds on PR; deploy on pushes to `main` and tags `v*` (configurable). For a custom domain, add `static/CNAME`.
+The workflow `.github/workflows/docs.yml` builds the site on pull requests and on pushes to `main`. It is a build check only; the site is not deployed from this repository.
 
 ## Regenerating API Docs
 

@@ -1,6 +1,6 @@
 """Credentials resource implementation."""
 
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.credentials.requests import (
     CredentialCreate,
@@ -15,17 +15,20 @@ from nexla_sdk.models.credentials.responses import (
 )
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class CredentialsResource(BaseResource):
+
+class CredentialsResource(BaseResource[Credential]):
     """Resource for managing data credentials."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_credentials"
         self._model_class = Credential
 
-    def list(
-        self, credentials_type: Optional[str] = None, **kwargs
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
+        self, credentials_type: Optional[str] = None, **kwargs: Any
     ) -> List[Credential]:
         """
         List credentials with optional filters.
@@ -56,32 +59,32 @@ class CredentialsResource(BaseResource):
 
         return super().list(**params)
 
-    def list_all(self, **params) -> List[Credential]:
+    def list_all(self, **params: Any) -> List[Credential]:
         """List all credentials (admin only)."""
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[Credential], self._parse_response(response))
 
-    def list_public(self, **params) -> List[Credential]:
+    def list_public(self, **params: Any) -> List[Credential]:  # type: ignore[override]  # keeps public list_public() signature; base also takes positional page
         response = self._make_request("GET", f"{self._path}/public", params=params)
-        return self._parse_response(response)
+        return cast(List[Credential], self._parse_response(response))
 
-    def list_accessible(self, **params) -> List[Credential]:
+    def list_accessible(self, **params: Any) -> List[Credential]:
         return super().list_accessible(**params)
 
     def credentials_schema(self, source_type: Optional[str] = None) -> Dict[str, Any]:
         path = f"{self._path}/format"
         if source_type:
             path = f"{path}/{source_type}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def db_data_types(self, source_type: str) -> Dict[str, Any]:
         path = f"{self._path}/db_data_types/{source_type}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Credential]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Credential]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Credential]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Credential]:
         return super().search_tags(tags, **params)
 
     def get(self, credential_id: int, expand: bool = False) -> Credential:
@@ -100,7 +103,7 @@ class CredentialsResource(BaseResource):
         """
         return super().get(credential_id, expand)
 
-    def create(self, data: CredentialCreate) -> Credential:
+    def create(self, data: Union[CredentialCreate, Dict[str, Any]]) -> Credential:
         """
         Create new credential.
 
@@ -117,7 +120,9 @@ class CredentialsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, credential_id: int, data: CredentialUpdate) -> Credential:
+    def update(
+        self, credential_id: int, data: Union[CredentialUpdate, Dict[str, Any]]
+    ) -> Credential:
         """
         Update credential.
 
@@ -158,7 +163,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe"
-        params = {}
+        params: Dict[str, Any] = {}
         if async_mode:
             params["async"] = True
         if request_id is not None:
@@ -178,57 +183,57 @@ class CredentialsResource(BaseResource):
                 "status_code": response.get("status_code"),
             }
         else:
-            return response
+            return cast(Dict[str, Any], response)
 
     def probe_list_buckets(self, credential_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/list"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_summary(self, credential_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/summary"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_list_files(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/buckets"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_tree_request(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/tree"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_read_file(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/files"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_detect_schemas(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/schemas"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_read_sample(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_file_download(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/file/download"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_search_path(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/probe/search_path"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_tree(
         self,
@@ -248,7 +253,7 @@ class CredentialsResource(BaseResource):
             Storage structure response
         """
         path = f"{self._path}/{credential_id}/probe/tree"
-        params = {}
+        params: Dict[str, Any] = {}
         if async_mode:
             params["async"] = True
         if request_id is not None:
@@ -276,7 +281,7 @@ class CredentialsResource(BaseResource):
             Sample data response
         """
         path = f"{self._path}/{credential_id}/probe/sample"
-        params = {}
+        params: Dict[str, Any] = {}
         if async_mode:
             params["async"] = True
         if request_id is not None:
@@ -288,23 +293,25 @@ class CredentialsResource(BaseResource):
 
     def refresh(self, credential_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/refresh"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def usage(self, credential_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/usage"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def intent(
         self, credential_id: int, payload: Dict[str, Any], method: str = "PUT"
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/intent"
-        return self._make_request(method.upper(), path, json=payload)
+        return cast(
+            Dict[str, Any], self._make_request(method.upper(), path, json=payload)
+        )
 
     def migrate_iceberg(
         self, credential_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/migrate/iceberg"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def data_credentials_update_credentials(
         self, credentials_id: int, data: Dict[str, Any]
@@ -320,7 +327,7 @@ class CredentialsResource(BaseResource):
             Updated credential as a dict
         """
         path = f"{self._path}/{credentials_id}"
-        return self._make_request("PATCH", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PATCH", path, json=data))
 
     def iceberg_migration_status(
         self, credential_id: int, run_id: str
@@ -336,7 +343,7 @@ class CredentialsResource(BaseResource):
             Migration status
         """
         path = f"{self._path}/{credential_id}/migrate/iceberg/{run_id}/status"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def data_credentials_probe_credentials_get(
         self, credential_id: int, async_mode: Optional[bool] = None
@@ -355,7 +362,7 @@ class CredentialsResource(BaseResource):
         params = {}
         if async_mode is not None:
             params["async"] = async_mode
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def data_credentials_probe_list_files_in_bucket_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -371,7 +378,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/buckets"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def probe_database_metadata_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -387,7 +394,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/database/metadata"
-        return self._make_request("POST", path, json=data)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=data))
 
     def probe_database_query_usage_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -403,7 +410,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/database/query-usage"
-        return self._make_request("POST", path, json=data)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=data))
 
     def data_credentials_probe_file_download_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -419,7 +426,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/file/download"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_credentials_probe_read_file_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -435,7 +442,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/files"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_credentials_probe_detect_schemas_credentials(
         self, credential_id: int, data: Optional[Dict[str, Any]] = None
@@ -451,7 +458,7 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/schemas"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_credentials_probe_search_path_credentials(
         self,
@@ -473,9 +480,11 @@ class CredentialsResource(BaseResource):
             Probe response
         """
         path = f"{self._path}/{credential_id}/probe/search_path"
-        params = {}
+        params: Dict[str, Any] = {}
         if query is not None:
             params["query"] = query
         if keep_path is not None:
             params["keep_path"] = keep_path
-        return self._make_request("PUT", path, json=data, params=params)
+        return cast(
+            Dict[str, Any], self._make_request("PUT", path, json=data, params=params)
+        )

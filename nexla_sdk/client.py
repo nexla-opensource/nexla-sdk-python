@@ -11,6 +11,7 @@ from typing import (
     Iterable,
     List,
     Mapping,
+    NoReturn,
     Optional,
     Tuple,
     Type,
@@ -18,6 +19,7 @@ from typing import (
     Union,
 )
 
+from pydantic import BaseModel
 from pydantic import ValidationError as PydanticValidationError
 
 from . import telemetry
@@ -36,6 +38,7 @@ from .http_client import (
     HttpTimeoutError,
     RequestsHttpClient,
 )
+from .models.tokens.responses import TokenResponse
 from .raw_operations import RawOperationsClient
 from .resources.api_keys import ApiKeysResource
 from .resources.approval_requests import ApprovalRequestsResource
@@ -70,8 +73,8 @@ from .resources.notification_channel_settings import NotificationChannelSettings
 from .resources.notification_settings import NotificationSettingsResource
 from .resources.notification_types import NotificationTypesResource
 from .resources.notifications import NotificationsResource
-from .resources.org_auth_configs import OrgAuthConfigsResource
 from .resources.oauth import OAuthResource
+from .resources.org_auth_configs import OrgAuthConfigsResource
 from .resources.org_tiers import OrgTiersResource
 from .resources.organizations import OrganizationsResource
 from .resources.projects import ProjectsResource
@@ -95,12 +98,11 @@ from .resources.users import UsersResource
 from .resources.validators import ValidatorsResource
 from .resources.vendor_endpoints import VendorEndpointsResource
 from .resources.vendors import VendorsResource
-from .models.tokens.responses import TokenResponse
 from .resources.webhooks import WebhooksResource
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar("T")
+T = TypeVar("T", bound=BaseModel)
 
 
 class NexlaClient:
@@ -465,15 +467,15 @@ class NexlaClient:
                 logger.debug(f"Converted list result: {result}")
                 return result
 
-            result = model_class.model_validate(data)
-            logger.debug(f"Converted single result: {result}")
-            return result
+            single = model_class.model_validate(data)
+            logger.debug(f"Converted single result: {single}")
+            return single
         except PydanticValidationError as e:
             # Log the validation error details
             logger.error(f"Validation error converting to {model_class.__name__}: {e}")
             raise ValidationError(
                 f"Failed to convert API response to {model_class.__name__}: {e}"
-            )
+            ) from e
 
     @property
     def last_response_headers(self) -> Mapping[str, Any]:
@@ -484,7 +486,9 @@ class NexlaClient:
         """
         return getattr(self._response_state, "headers", None) or {}
 
-    def request(self, method: str, path: str, **kwargs) -> Union[Dict[str, Any], None]:
+    def request(
+        self, method: str, path: str, **kwargs: Any
+    ) -> Union[Dict[str, Any], None]:
         """
         Send a request to the Nexla API
 
@@ -504,7 +508,7 @@ class NexlaClient:
         return body
 
     def request_with_headers(
-        self, method: str, path: str, **kwargs
+        self, method: str, path: str, **kwargs: Any
     ) -> Tuple[Union[Dict[str, Any], None], Any]:
         """
         Send a request to the Nexla API and return (body, response headers).
@@ -557,8 +561,13 @@ class NexlaClient:
             ) from e
 
     def _handle_http_error(
-        self, error: HttpClientError, method: str, path: str, url: str, kwargs: dict
-    ):
+        self,
+        error: HttpClientError,
+        method: str,
+        path: str,
+        url: str,
+        kwargs: Dict[str, Any],
+    ) -> NoReturn:
         """
         Map an HTTP client error to a typed NexlaError.
 

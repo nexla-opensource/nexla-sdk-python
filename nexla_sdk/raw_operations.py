@@ -31,7 +31,7 @@ class OperationDefinition:
 class RawOperationsClient:
     """Low-level typed access to any OpenAPI operation."""
 
-    def __init__(self, client: "NexlaClient"):
+    def __init__(self, client: NexlaClient):
         self._client = client
 
     def list_operations(self) -> List[str]:

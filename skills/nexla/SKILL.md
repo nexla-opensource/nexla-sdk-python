@@ -3,7 +3,7 @@ name: "nexla-data-flows-operator"
 description: "Build, deploy, monitor, and troubleshoot production Nexla data pipelines via Python SDK or REST API. Use for flow setup, data transformation pipelines, schema management, access control, credential rotation, batch operations, error recovery, monitoring, CI/CD integration, and operational troubleshooting."
 ---
 
-**Requirements**: Python >= 3.8, nexla_sdk >= 2.0.0 | **License**: Apache-2.0
+**Requirements**: Python >= 3.8, nexla_sdk >= 2.0.0 | **License**: MIT
 
 ## What this skill is for
 - Build or modify Nexla pipelines end-to-end: credential → source → nexset → destination → flow.

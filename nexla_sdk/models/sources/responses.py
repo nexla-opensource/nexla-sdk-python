@@ -67,7 +67,7 @@ class Source(BaseModel):
 
     @field_validator("data_sets", mode="before")
     @classmethod
-    def validate_data_sets(cls, v):
+    def validate_data_sets(cls, v: Any) -> Any:
         """Handle None data_sets."""
         if v is None:
             return []
@@ -75,7 +75,7 @@ class Source(BaseModel):
 
     @field_validator("tags", mode="before")
     @classmethod
-    def validate_tags(cls, v):
+    def validate_tags(cls, v: Any) -> Any:
         """Handle None tags."""
         if v is None:
             return []

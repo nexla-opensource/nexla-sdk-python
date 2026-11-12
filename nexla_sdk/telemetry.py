@@ -8,15 +8,18 @@ or OpenTelemetry isn't available, a no-op tracer is provided.
 
 import os
 import threading
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
+
+if TYPE_CHECKING:
+    from opentelemetry.trace import Tracer
 
 # Guard against missing OpenTelemetry installation
 try:  # pragma: no cover - optional dependency
-    from opentelemetry import trace  # type: ignore
+    from opentelemetry import trace
 
     _opentelemetry_available = True
 except Exception:  # pragma: no cover
-    trace = None  # type: ignore
+    trace = None  # type: ignore[assignment]  # OpenTelemetry absent; flag guards use
     _opentelemetry_available = False
 
 
@@ -49,11 +52,11 @@ class _NoOpTracer:
 
 
 # Tracer cache
-_tracer: Optional["trace.Tracer"] = None  # type: ignore[name-defined]
+_tracer: Optional["Tracer"] = None
 _tracer_lock = threading.Lock()
 
 
-def get_tracer(trace_enabled: bool):
+def get_tracer(trace_enabled: bool) -> "Union[Tracer, _NoOpTracer]":
     """
     Return an OpenTelemetry tracer if available and enabled, otherwise a no-op tracer.
     """
@@ -74,8 +77,7 @@ def get_tracer(trace_enabled: bool):
                 except Exception:  # pragma: no cover
                     pkg_version = "unknown"
                 # Assign inside the lock
-                local_tracer = trace.get_tracer("nexla.sdk", pkg_version)  # type: ignore[union-attr]
-                globals()["_tracer"] = local_tracer
+                _tracer = trace.get_tracer("nexla.sdk", pkg_version)
     return _tracer
 
 
@@ -90,11 +92,11 @@ def is_tracing_configured() -> bool:
         return False
 
     try:
-        provider = trace.get_tracer_provider()  # type: ignore[union-attr]
+        provider = trace.get_tracer_provider()
         # If provider is not the default NoOpTracerProvider, assume configured
         if getattr(trace, "NoOpTracerProvider", None) and not isinstance(
             provider,
-            trace.NoOpTracerProvider,  # type: ignore[attr-defined]
+            trace.NoOpTracerProvider,
         ):
             return True
     except Exception:  # pragma: no cover

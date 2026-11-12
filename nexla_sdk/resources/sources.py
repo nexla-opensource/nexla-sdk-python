@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.sources.requests import (
     SourceCopyOptions,
@@ -9,16 +9,19 @@ from nexla_sdk.models.sources.responses import Source
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class SourcesResource(BaseResource):
+
+class SourcesResource(BaseResource[Source]):
     """Resource for managing data sources."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_sources"
         self._model_class = Source
 
-    def list(self, **kwargs) -> List[Source]:
+    def list(self, **kwargs: Any) -> List[Source]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List sources with optional filters.
 
@@ -40,31 +43,39 @@ class SourcesResource(BaseResource):
         """
         return super().list(**kwargs)
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Source]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Source]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Source]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Source]:
         return super().search_tags(tags, **params)
 
-    def list_all(self, **params) -> List[Source]:
+    def list_all(self, **params: Any) -> List[Source]:
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[Source], self._parse_response(response))
 
-    def list_all_condensed(self, **params) -> List[Dict[str, Any]]:
-        return self._make_request("GET", f"{self._path}/all/condensed", params=params)
+    def list_all_condensed(self, **params: Any) -> List[Dict[str, Any]]:
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("GET", f"{self._path}/all/condensed", params=params),
+        )
 
-    def list_all_ids(self, **params) -> List[int]:
-        return self._make_request("GET", f"{self._path}/all/ids", params=params)
+    def list_all_ids(self, **params: Any) -> List[int]:
+        return cast(
+            List[int], self._make_request("GET", f"{self._path}/all/ids", params=params)
+        )
 
-    def list_accessible(self, **params) -> List[Source]:
+    def list_accessible(self, **params: Any) -> List[Source]:
         return super().list_accessible(**params)
 
     def script_source_config(self) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/script_source_config")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/script_source_config"),
+        )
 
     def update_runtime_status(self, source_id: int, status: str) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/runtime_status/{status}"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def get(self, source_id: int, expand: bool = False) -> Source:
         """
@@ -82,7 +93,7 @@ class SourcesResource(BaseResource):
         """
         return super().get(source_id, expand)
 
-    def create(self, data: SourceCreate) -> Source:
+    def create(self, data: Union[SourceCreate, Dict[str, Any]]) -> Source:
         """
         Create new source.
 
@@ -97,7 +108,9 @@ class SourcesResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, source_id: int, data: SourceUpdate) -> Source:
+    def update(
+        self, source_id: int, data: Union[SourceUpdate, Dict[str, Any]]
+    ) -> Source:
         """
         Update source.
 
@@ -123,35 +136,49 @@ class SourcesResource(BaseResource):
         return super().delete(source_id)
 
     def get_flow(self, source_id: int) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/{source_id}/flow")
-
-    def get_flow_dashboard(self, source_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{source_id}/flow/dashboard", params=params
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"{self._path}/{source_id}/flow")
         )
 
-    def get_flow_status_metrics(self, source_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{source_id}/flow/status_metrics", params=params
+    def get_flow_dashboard(self, source_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{source_id}/flow/dashboard", params=params
+            ),
         )
 
-    def get_flow_metrics(self, source_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{source_id}/flow/metrics", params=params
+    def get_flow_status_metrics(self, source_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{source_id}/flow/status_metrics", params=params
+            ),
         )
 
-    def get_flow_logs(self, source_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{source_id}/flow/logs", params=params
+    def get_flow_metrics(self, source_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{source_id}/flow/metrics", params=params
+            ),
+        )
+
+    def get_flow_logs(self, source_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{source_id}/flow/logs", params=params
+            ),
         )
 
     def get_metrics(
-        self, source_id: int, metrics_name: Optional[str] = None, **params
+        self, source_id: int, metrics_name: Optional[str] = None, **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/metrics"
         if metrics_name:
             path = f"{path}/{metrics_name}"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def get_quarantine_offset(
         self, source_id: int, data_set_id: Optional[int] = None
@@ -159,7 +186,7 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/quarantine/offset"
         if data_set_id:
             path = f"{path}/{data_set_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_offset(
         self, source_id: int, data_set_id: Optional[int] = None
@@ -167,7 +194,7 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/offset"
         if data_set_id:
             path = f"{path}/{data_set_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def activate(self, source_id: int) -> Source:
         """
@@ -194,135 +221,142 @@ class SourcesResource(BaseResource):
         return super().pause(source_id)
 
     def copy(
-        self, source_id: int, options: Optional[SourceCopyOptions] = None
+        self,
+        source_id: int,
+        options: Optional[Union[SourceCopyOptions, Dict[str, Any]]] = None,
     ) -> Source:
         """
         Copy a source.
 
         Args:
             source_id: Source ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied source
         """
-        data = options.to_dict() if options else {}
-        return super().copy(source_id, data)
+        return super().copy(source_id, options)
 
     def probe_list_buckets(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_summary(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/summary"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_authenticate(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/authenticate"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_list_files(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/buckets"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_tree(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/tree"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_read_file(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/files"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_detect_schemas(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/schemas"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_quarantine_sample(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/quarantine/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_sample(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
-    def get_reingested_files(self, source_id: int, **params) -> Dict[str, Any]:
+    def get_reingested_files(self, source_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/file/ingest"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def reingest_files(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/file/ingest"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_settings(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_quarantine_settings(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_quarantine_settings(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_quarantine_settings(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_settings"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def get_dashboard_transforms(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_dashboard_transforms(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_dashboard_transforms(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_dashboard_transforms(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/dashboard_transforms"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     @missing_route("POST", "/data_sources/config/validate")
     def validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/config/validate", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/config/validate", json=payload),
+        )
 
     def test_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/test_config", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/test_config", json=payload),
+        )
 
-    def list_data_sinks(self, source_id: int, **params) -> Dict[str, Any]:
+    def list_data_sinks(self, source_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/data_sinks"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def run_now(self, source_id: int, method: str = "POST") -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/run_now"
-        return self._make_request(method.upper(), path)
+        return cast(Dict[str, Any], self._make_request(method.upper(), path))
 
     def ready(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/ready"
-        return self._make_request("POST", path)
+        return cast(Dict[str, Any], self._make_request("POST", path))
 
-    def list_runs(self, source_id: int, **params) -> Dict[str, Any]:
+    def list_runs(self, source_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/runs"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def list_flow_triggers(self, source_id: int) -> List[Dict[str, Any]]:
         path = f"{self._path}/{source_id}/flow_triggers"
@@ -345,59 +379,62 @@ class SourcesResource(BaseResource):
             method = "DELETE"
         return self._make_request(method, path, json=payload) or []
 
-    def list_api_keys(self, source_id: int, **params) -> Dict[str, Any]:
+    def list_api_keys(self, source_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def search_api_keys(
-        self, source_id: int, filters: Dict[str, Any], **params
+        self, source_id: int, filters: Dict[str, Any], **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/search"
-        return self._make_request("POST", path, json=filters, params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", path, json=filters, params=params),
+        )
 
     def get_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_api_key(self, source_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_api_key(
         self, source_id: int, api_key_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def rotate_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}/rotate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def activate_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}/activate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_all_api_keys(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def delete_api_key(self, source_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/api_keys/{api_key_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def trigger_quarantine_aggregation(
         self, source_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/trigger_quarantine_aggregation"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_aggregation(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/quarantine_aggregation"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def data_sources_update_data_source(
         self,
@@ -420,11 +457,14 @@ class SourcesResource(BaseResource):
         """
         params = {"force": force, "run_now": run_now}
         path = f"{self._path}/{data_source_id}"
-        return self._make_request(
-            "PATCH",
-            path,
-            params={k: v for k, v in params.items() if v is not None},
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PATCH",
+                path,
+                params={k: v for k, v in params.items() if v is not None},
+                json=data,
+            ),
         )
 
     def validate_data_source_config(
@@ -441,7 +481,7 @@ class SourcesResource(BaseResource):
             Validation result
         """
         path = f"{self._path}/{data_source_id}/config/validate"
-        return self._make_request("POST", path, json=data)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=data))
 
     def get_external_file_status_alias(
         self,
@@ -483,8 +523,11 @@ class SourcesResource(BaseResource):
             "filePath": filePath,
         }
         path = f"{self._path}/{data_source_id}/file/external/status"
-        return self._make_request(
-            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def get_external_file_status(
@@ -527,8 +570,11 @@ class SourcesResource(BaseResource):
             "filePath": filePath,
         }
         path = f"{self._path}/{data_source_id}/file/status"
-        return self._make_request(
-            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def dequeue_external_file(
@@ -552,8 +598,13 @@ class SourcesResource(BaseResource):
         """
         params = {"filePath": filePath, "file_path": file_path}
         path = f"{self._path}/{data_source_id}/file/external/{file_id}"
-        return self._make_request(
-            "DELETE", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "DELETE",
+                path,
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def data_sources_flow_audit_log(
@@ -599,8 +650,11 @@ class SourcesResource(BaseResource):
             "access_role": access_role,
         }
         path = f"{self._path}/{resource_id}/flow/audit_log"
-        return self._make_request(
-            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def activate_flow_via_data_source(
@@ -624,8 +678,11 @@ class SourcesResource(BaseResource):
         """
         params = {"all": all, "full_tree": full_tree, "run_now": run_now}
         path = f"{self._path}/{resource_id}/flow/activate"
-        return self._make_request(
-            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def pause_flow_via_data_source(
@@ -647,8 +704,11 @@ class SourcesResource(BaseResource):
         """
         params = {"all": all, "full_tree": full_tree}
         path = f"{self._path}/{resource_id}/flow/pause"
-        return self._make_request(
-            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def auto_create_nexset(
@@ -673,8 +733,11 @@ class SourcesResource(BaseResource):
             "include_nexset_api_config": include_nexset_api_config,
         }
         path = f"{self._path}/{data_source_id}/nexset"
-        return self._make_request(
-            "POST", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def data_sources_get_data_source_offset(
@@ -694,7 +757,7 @@ class SourcesResource(BaseResource):
         if data_set_id is not None:
             params["data_set_id"] = data_set_id
         path = f"{self._path}/{data_source_id}/offset"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def data_sources_get_data_source_quarantine_offset(
         self, data_source_id: int, data_set_id: Optional[int] = None
@@ -713,7 +776,7 @@ class SourcesResource(BaseResource):
         if data_set_id is not None:
             params["data_set_id"] = data_set_id
         path = f"{self._path}/{data_source_id}/quarantine/offset"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def data_sources_probe_list_files_data_source(
         self, data_source_id: int, data: Optional[Dict[str, Any]] = None
@@ -729,7 +792,7 @@ class SourcesResource(BaseResource):
             Probe result
         """
         path = f"{self._path}/{data_source_id}/probe/buckets"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_sources_probe_read_file_data_source(
         self, data_source_id: int, data: Optional[Dict[str, Any]] = None
@@ -745,7 +808,7 @@ class SourcesResource(BaseResource):
             Probe result
         """
         path = f"{self._path}/{data_source_id}/probe/files"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_sources_probe_read_quarantine_data_source(
         self, data_source_id: int, data: Optional[Dict[str, Any]] = None
@@ -761,7 +824,7 @@ class SourcesResource(BaseResource):
             Probe result
         """
         path = f"{self._path}/{data_source_id}/probe/quarantine/sample"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_sources_probe_read_sample_data_source(
         self,
@@ -790,11 +853,14 @@ class SourcesResource(BaseResource):
             "per_page": per_page,
         }
         path = f"{self._path}/{data_source_id}/probe/sample"
-        return self._make_request(
-            "PUT",
-            path,
-            params={k: v for k, v in params.items() if v is not None},
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT",
+                path,
+                params={k: v for k, v in params.items() if v is not None},
+                json=data,
+            ),
         )
 
     def data_sources_probe_detect_schemas_data_source(
@@ -811,7 +877,7 @@ class SourcesResource(BaseResource):
             Probe result
         """
         path = f"{self._path}/{data_source_id}/probe/schemas"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def data_sources_probe_list_tree_data_source(
         self, data_source_id: int, data: Optional[Dict[str, Any]] = None
@@ -827,7 +893,7 @@ class SourcesResource(BaseResource):
             Probe result
         """
         path = f"{self._path}/{data_source_id}/probe/tree"
-        return self._make_request("PUT", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=data))
 
     def register_external_files(
         self, data_source_id: int, payload: Dict[str, Any]
@@ -845,4 +911,4 @@ class SourcesResource(BaseResource):
             Dataplane result with status and output
         """
         path = f"{self._path}/{data_source_id}/file/external"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))

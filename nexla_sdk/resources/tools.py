@@ -1,17 +1,20 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ToolsResource(BaseResource):
+
+class ToolsResource(BaseResource[Any]):
     """Resource for tools, tool versions, and tool receipts."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/tools"
         self._model_class = None
 
-    def get(self, tool_id: str) -> Dict[str, Any]:
+    def get(self, tool_id: str) -> Dict[str, Any]:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """
         Get a tool by ID or key.
 
@@ -21,14 +24,19 @@ class ToolsResource(BaseResource):
         Returns:
             Tool as a dict
         """
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_id}",
-            resource_id=str(tool_id),
-            operation="get_resource",
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_id}",
+                resource_id=str(tool_id),
+                operation="get_resource",
+            ),
         )
 
-    def update(self, tool_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def update(
+        self, tool_id: Union[int, str, Dict[str, Any]], data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
         Update a tool.
 
@@ -39,15 +47,18 @@ class ToolsResource(BaseResource):
         Returns:
             Updated tool as a dict
         """
-        return self._make_request(
-            "PUT",
-            f"{self._path}/{tool_id}",
-            resource_id=str(tool_id),
-            operation="update_resource",
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT",
+                f"{self._path}/{tool_id}",
+                resource_id=str(tool_id),
+                operation="update_resource",
+                json=data,
+            ),
         )
 
-    def delete(self, tool_id: str) -> Optional[Dict[str, Any]]:
+    def delete(self, tool_id: Union[int, str]) -> Optional[Dict[str, Any]]:  # type: ignore[override]  # returns None for an empty body; base delete() returns a Dict
         """
         Delete a tool.
 
@@ -57,11 +68,14 @@ class ToolsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request(
-            "DELETE",
-            f"{self._path}/{tool_id}",
-            resource_id=str(tool_id),
-            operation="delete_resource",
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request(
+                "DELETE",
+                f"{self._path}/{tool_id}",
+                resource_id=str(tool_id),
+                operation="delete_resource",
+            ),
         )
 
     def tools_update_tool(self, tool_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -75,7 +89,10 @@ class ToolsResource(BaseResource):
         Returns:
             Updated tool as a dict
         """
-        return self._make_request("PATCH", f"{self._path}/{tool_id}", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PATCH", f"{self._path}/{tool_id}", json=data),
+        )
 
     def top_level_receipts_index(
         self,
@@ -102,10 +119,13 @@ class ToolsResource(BaseResource):
             "page": page,
             "per_page": per_page,
         }
-        return self._make_request(
-            "GET",
-            f"{self._path}/receipts",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/receipts",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def top_level_receipts_show(self, receipt_id: str) -> Dict[str, Any]:
@@ -118,7 +138,10 @@ class ToolsResource(BaseResource):
         Returns:
             Receipt as a dict
         """
-        return self._make_request("GET", f"{self._path}/receipts/{receipt_id}")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/receipts/{receipt_id}"),
+        )
 
     def tool_definition(self, tool_id: str) -> Dict[str, Any]:
         """
@@ -130,7 +153,10 @@ class ToolsResource(BaseResource):
         Returns:
             Tool definition as a dict
         """
-        return self._make_request("GET", f"{self._path}/{tool_id}/definition")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{tool_id}/definition"),
+        )
 
     def tool_receipts_index(
         self,
@@ -150,10 +176,13 @@ class ToolsResource(BaseResource):
             List of receipts
         """
         params = {"page": page, "per_page": per_page}
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_id}/receipts",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_id}/receipts",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def tool_receipts_show(self, tool_id: str, receipt_id: str) -> Dict[str, Any]:
@@ -167,8 +196,9 @@ class ToolsResource(BaseResource):
         Returns:
             Receipt as a dict
         """
-        return self._make_request(
-            "GET", f"{self._path}/{tool_id}/receipts/{receipt_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{tool_id}/receipts/{receipt_id}"),
         )
 
     def index_versions(
@@ -189,10 +219,13 @@ class ToolsResource(BaseResource):
             List of versions
         """
         params = {"page": page, "per_page": per_page}
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_id}/versions",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_id}/versions",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def create_version(self, tool_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -206,7 +239,10 @@ class ToolsResource(BaseResource):
         Returns:
             Created version as a dict
         """
-        return self._make_request("POST", f"{self._path}/{tool_id}/versions", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/{tool_id}/versions", json=data),
+        )
 
     def delete_version(self, tool_id: str, version_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -219,8 +255,11 @@ class ToolsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request(
-            "DELETE", f"{self._path}/{tool_id}/versions/{version_id}"
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request(
+                "DELETE", f"{self._path}/{tool_id}/versions/{version_id}"
+            ),
         )
 
     def show_version(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -234,8 +273,9 @@ class ToolsResource(BaseResource):
         Returns:
             Version as a dict
         """
-        return self._make_request(
-            "GET", f"{self._path}/{tool_id}/versions/{version_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/{tool_id}/versions/{version_id}"),
         )
 
     def version_definition(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -249,8 +289,11 @@ class ToolsResource(BaseResource):
         Returns:
             Version definition as a dict
         """
-        return self._make_request(
-            "GET", f"{self._path}/{tool_id}/versions/{version_id}/definition"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{tool_id}/versions/{version_id}/definition"
+            ),
         )
 
     def deprecate_version(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -264,8 +307,11 @@ class ToolsResource(BaseResource):
         Returns:
             Updated version as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_id}/versions/{version_id}/deprecate"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_id}/versions/{version_id}/deprecate"
+            ),
         )
 
     def draft_version(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -279,8 +325,11 @@ class ToolsResource(BaseResource):
         Returns:
             Updated version as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_id}/versions/{version_id}/draft"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_id}/versions/{version_id}/draft"
+            ),
         )
 
     def publish_version(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -294,8 +343,11 @@ class ToolsResource(BaseResource):
         Returns:
             Updated version as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_id}/versions/{version_id}/publish"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_id}/versions/{version_id}/publish"
+            ),
         )
 
     def retire_version(self, tool_id: str, version_id: str) -> Dict[str, Any]:
@@ -309,8 +361,11 @@ class ToolsResource(BaseResource):
         Returns:
             Updated version as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_id}/versions/{version_id}/retire"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_id}/versions/{version_id}/retire"
+            ),
         )
 
     def version_receipts_index(
@@ -333,10 +388,13 @@ class ToolsResource(BaseResource):
             List of receipts
         """
         params = {"page": page, "per_page": per_page}
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_id}/versions/{version_id}/receipts",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_id}/versions/{version_id}/receipts",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def version_receipts_create(
@@ -353,10 +411,13 @@ class ToolsResource(BaseResource):
         Returns:
             Created receipt as a dict
         """
-        return self._make_request(
-            "POST",
-            f"{self._path}/{tool_id}/versions/{version_id}/receipts",
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST",
+                f"{self._path}/{tool_id}/versions/{version_id}/receipts",
+                json=data,
+            ),
         )
 
     def version_receipts_show(
@@ -373,7 +434,10 @@ class ToolsResource(BaseResource):
         Returns:
             Receipt as a dict
         """
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_id}/versions/{version_id}/receipts/{receipt_id}",
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_id}/versions/{version_id}/receipts/{receipt_id}",
+            ),
         )

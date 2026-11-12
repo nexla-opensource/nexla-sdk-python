@@ -1,11 +1,14 @@
 """Resource for sending data to Nexla webhooks."""
 
 import base64
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 from nexla_sdk.exceptions import NexlaError
 from nexla_sdk.models.webhooks.requests import WebhookSendOptions
 from nexla_sdk.models.webhooks.responses import WebhookResponse
+
+if TYPE_CHECKING:
+    from nexla_sdk.http_client import HttpClientInterface
 
 
 class WebhooksResource:
@@ -39,7 +42,7 @@ class WebhooksResource:
         for convenience if you set the webhook API key.
     """
 
-    def __init__(self, api_key: str, http_client=None):
+    def __init__(self, api_key: str, http_client: Any = None):
         """Initialize the webhooks resource.
 
         Args:
@@ -47,9 +50,9 @@ class WebhooksResource:
             http_client: Optional HTTP client. If not provided, uses requests directly.
         """
         self.api_key = api_key
-        self._http_client = http_client
+        self._http_client: Optional[HttpClientInterface] = http_client
 
-    def _get_http_client(self):
+    def _get_http_client(self) -> "HttpClientInterface":
         """Get or create HTTP client."""
         if self._http_client:
             return self._http_client
@@ -114,7 +117,7 @@ class WebhooksResource:
                 params=params if params else None,
                 json=json,
             )
-            return response
+            return cast(Dict[str, Any], response)
         except Exception as e:
             raise NexlaError(
                 message=f"Webhook request failed: {e}",

@@ -1,13 +1,16 @@
 """Resource for managing connectors."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, NoReturn, Optional, Union, cast
 
 from nexla_sdk.models.connectors.requests import ConnectorUpdate
 from nexla_sdk.models.connectors.responses import Connector
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ConnectorsResource(BaseResource):
+
+class ConnectorsResource(BaseResource[Connector]):
     """Resource for managing connectors.
 
     Connectors define connection types for data sources and destinations.
@@ -46,7 +49,7 @@ class ConnectorsResource(BaseResource):
         "This method is not supported by the backend."
     )
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the connectors resource.
 
         Args:
@@ -56,14 +59,14 @@ class ConnectorsResource(BaseResource):
         self._path = "/connectors"
         self._model_class = Connector
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         access_role: Optional[str] = None,
         nexset_api_compatible: Optional[bool] = None,
         sync_api_compatible: Optional[bool] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[Connector]:
         """List connectors.
 
@@ -89,9 +92,9 @@ class ConnectorsResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(List[Connector], self._parse_response(response))
 
-    def get(self, connector_id: Union[int, str]) -> Connector:
+    def get(self, connector_id: Union[int, str]) -> Connector:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """Get connector by ID or type.
 
         Args:
@@ -102,7 +105,7 @@ class ConnectorsResource(BaseResource):
         """
         path = f"{self._path}/{connector_id}"
         response = self._make_request("GET", path)
-        return self._parse_response(response)
+        return cast(Connector, self._parse_response(response))
 
     def update(
         self,
@@ -121,19 +124,19 @@ class ConnectorsResource(BaseResource):
         path = f"{self._path}/{connector_id}"
         serialized_data = self._serialize_data(data)
         response = self._make_request("PUT", path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(Connector, self._parse_response(response))
 
-    def create(self, data=None):
+    def create(self, data: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def delete(self, resource_id=None):
+    def delete(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def copy(self, resource_id=None, options=None):
+    def copy(self, resource_id: Any = None, options: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def activate(self, resource_id=None):
+    def activate(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def pause(self, resource_id=None):
+    def pause(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)

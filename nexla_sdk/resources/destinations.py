@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.destinations.requests import (
     DestinationCopyOptions,
@@ -9,16 +9,19 @@ from nexla_sdk.models.destinations.responses import Destination
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class DestinationsResource(BaseResource):
+
+class DestinationsResource(BaseResource[Destination]):
     """Resource for managing destinations (data sinks)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_sinks"
         self._model_class = Destination
 
-    def list(self, **kwargs) -> List[Destination]:
+    def list(self, **kwargs: Any) -> List[Destination]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List destinations with optional filters.
 
@@ -36,37 +39,45 @@ class DestinationsResource(BaseResource):
         """
         return super().list(**kwargs)
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Destination]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Destination]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Destination]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Destination]:
         return super().search_tags(tags, **params)
 
-    def list_all(self, **params) -> List[Destination]:
+    def list_all(self, **params: Any) -> List[Destination]:
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[Destination], self._parse_response(response))
 
-    def list_all_condensed(self, **params) -> List[Dict[str, Any]]:
-        return self._make_request("GET", f"{self._path}/all/condensed", params=params)
+    def list_all_condensed(self, **params: Any) -> List[Dict[str, Any]]:
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("GET", f"{self._path}/all/condensed", params=params),
+        )
 
-    def list_all_ids(self, **params) -> List[int]:
-        return self._make_request("GET", f"{self._path}/all/ids", params=params)
+    def list_all_ids(self, **params: Any) -> List[int]:
+        return cast(
+            List[int], self._make_request("GET", f"{self._path}/all/ids", params=params)
+        )
 
-    def list_all_by_data_set(self, **params) -> List[Destination]:
+    def list_all_by_data_set(self, **params: Any) -> List[Destination]:
         response = self._make_request(
             "GET", f"{self._path}/all/data_set", params=params
         )
-        return self._parse_response(response)
+        return cast(List[Destination], self._parse_response(response))
 
-    def list_accessible(self, **params) -> List[Destination]:
+    def list_accessible(self, **params: Any) -> List[Destination]:
         return super().list_accessible(**params)
 
     def script_sink_config(self) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/script_sink_config")
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/script_sink_config"),
+        )
 
     def update_runtime_status(self, sink_id: int, status: str) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/runtime_status/{status}"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def get(self, sink_id: int, expand: bool = False) -> Destination:
         """
@@ -84,7 +95,7 @@ class DestinationsResource(BaseResource):
         """
         return super().get(sink_id, expand)
 
-    def create(self, data: DestinationCreate) -> Destination:
+    def create(self, data: Union[DestinationCreate, Dict[str, Any]]) -> Destination:
         """
         Create new destination.
 
@@ -99,7 +110,9 @@ class DestinationsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, sink_id: int, data: DestinationUpdate) -> Destination:
+    def update(
+        self, sink_id: int, data: Union[DestinationUpdate, Dict[str, Any]]
+    ) -> Destination:
         """
         Update destination.
 
@@ -125,35 +138,49 @@ class DestinationsResource(BaseResource):
         return super().delete(sink_id)
 
     def get_flow(self, sink_id: int) -> Dict[str, Any]:
-        return self._make_request("GET", f"{self._path}/{sink_id}/flow")
-
-    def get_flow_dashboard(self, sink_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{sink_id}/flow/dashboard", params=params
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"{self._path}/{sink_id}/flow")
         )
 
-    def get_flow_status_metrics(self, sink_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{sink_id}/flow/status_metrics", params=params
+    def get_flow_dashboard(self, sink_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{sink_id}/flow/dashboard", params=params
+            ),
         )
 
-    def get_flow_metrics(self, sink_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{sink_id}/flow/metrics", params=params
+    def get_flow_status_metrics(self, sink_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{sink_id}/flow/status_metrics", params=params
+            ),
         )
 
-    def get_flow_logs(self, sink_id: int, **params) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", f"{self._path}/{sink_id}/flow/logs", params=params
+    def get_flow_metrics(self, sink_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{sink_id}/flow/metrics", params=params
+            ),
+        )
+
+    def get_flow_logs(self, sink_id: int, **params: Any) -> Dict[str, Any]:
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{sink_id}/flow/logs", params=params
+            ),
         )
 
     def get_metrics(
-        self, sink_id: int, metrics_name: Optional[str] = None, **params
+        self, sink_id: int, metrics_name: Optional[str] = None, **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/metrics"
         if metrics_name:
             path = f"{path}/{metrics_name}"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def get_quarantine_offset(
         self, sink_id: int, data_set_id: Optional[int] = None
@@ -161,7 +188,7 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/quarantine/offset"
         if data_set_id:
             path = f"{path}/{data_set_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_offset(
         self, sink_id: int, data_set_id: Optional[int] = None
@@ -169,7 +196,7 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/offset"
         if data_set_id:
             path = f"{path}/{data_set_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def activate(self, sink_id: int) -> Destination:
         """
@@ -196,113 +223,120 @@ class DestinationsResource(BaseResource):
         return super().pause(sink_id)
 
     def copy(
-        self, sink_id: int, options: Optional[DestinationCopyOptions] = None
+        self,
+        sink_id: int,
+        options: Optional[Union[DestinationCopyOptions, Dict[str, Any]]] = None,
     ) -> Destination:
         """
         Copy a destination.
 
         Args:
             sink_id: Destination ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied destination
         """
-        data = options.to_dict() if options else {}
-        return super().copy(sink_id, data)
+        return super().copy(sink_id, options)
 
     def probe_list_buckets(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_summary(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/summary"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_authenticate(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/authenticate"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def probe_list_files(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/buckets"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_tree(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/tree"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_read_file(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/files"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_detect_schemas(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/schemas"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def probe_quarantine_sample(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe/quarantine/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_settings(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_quarantine_settings(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_quarantine_settings(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_quarantine_settings(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_settings"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def get_dashboard_transforms(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_dashboard_transforms(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_dashboard_transforms(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def delete_dashboard_transforms(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/dashboard_transforms"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     @missing_route("POST", "/data_sinks/config/validate")
     def validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/config/validate", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/config/validate", json=payload),
+        )
 
     def test_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/test_config", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/test_config", json=payload),
+        )
 
     def run_status(self, sink_id: int, run_id: Optional[int] = None) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/run_status"
         if run_id is not None:
             path = f"{path}/{run_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
-    def run_analysis(self, sink_id: int, **params) -> Dict[str, Any]:
+    def run_analysis(self, sink_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/run_analysis"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def list_flow_triggers(self, sink_id: int) -> List[Dict[str, Any]]:
         path = f"{self._path}/{sink_id}/flow_triggers"
@@ -325,59 +359,62 @@ class DestinationsResource(BaseResource):
             method = "DELETE"
         return self._make_request(method, path, json=payload) or []
 
-    def list_api_keys(self, sink_id: int, **params) -> Dict[str, Any]:
+    def list_api_keys(self, sink_id: int, **params: Any) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
     def search_api_keys(
-        self, sink_id: int, filters: Dict[str, Any], **params
+        self, sink_id: int, filters: Dict[str, Any], **params: Any
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/search"
-        return self._make_request("POST", path, json=filters, params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", path, json=filters, params=params),
+        )
 
     def get_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def create_api_key(self, sink_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def update_api_key(
         self, sink_id: int, api_key_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}"
-        return self._make_request("PUT", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload))
 
     def rotate_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}/rotate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def activate_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}/activate"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def pause_all_api_keys(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/pause"
-        return self._make_request("PUT", path)
+        return cast(Dict[str, Any], self._make_request("PUT", path))
 
     def delete_api_key(self, sink_id: int, api_key_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/api_keys/{api_key_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def trigger_quarantine_aggregation(
         self, sink_id: int, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/trigger_quarantine_aggregation"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def get_quarantine_aggregation(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_aggregation"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def data_sinks_update_data_sink(
         self,
@@ -398,11 +435,14 @@ class DestinationsResource(BaseResource):
         """
         params = {"expand": expand}
         path = f"{self._path}/{data_sink_id}"
-        return self._make_request(
-            "PATCH",
-            path,
-            params={k: v for k, v in params.items() if v is not None},
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PATCH",
+                path,
+                params={k: v for k, v in params.items() if v is not None},
+                json=data,
+            ),
         )
 
     def validate_data_sink_config(
@@ -419,7 +459,7 @@ class DestinationsResource(BaseResource):
             Validation result
         """
         path = f"{self._path}/{data_sink_id}/config/validate"
-        return self._make_request("POST", path, json=data)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=data))
 
     def list_flow_accessors_via_data_sink(
         self, resource_id: int
@@ -434,7 +474,7 @@ class DestinationsResource(BaseResource):
             List of accessors
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("GET", path)
+        return cast(List[Dict[str, Any]], self._make_request("GET", path))
 
     def reset_flow_accessors_via_data_sink(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -450,7 +490,7 @@ class DestinationsResource(BaseResource):
             Updated list of accessors
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("POST", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("POST", path, json=data))
 
     def add_flow_accessors_via_data_sink(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -466,7 +506,7 @@ class DestinationsResource(BaseResource):
             Updated list of accessors
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("PUT", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("PUT", path, json=data))
 
     def remove_flow_accessors_via_data_sink(
         self, resource_id: int, data: Optional[Dict[str, Any]] = None
@@ -482,7 +522,7 @@ class DestinationsResource(BaseResource):
             Remaining list of accessors
         """
         path = f"{self._path}/{resource_id}/flow/accessors"
-        return self._make_request("DELETE", path, json=data)
+        return cast(List[Dict[str, Any]], self._make_request("DELETE", path, json=data))
 
     def list_flow_docs_via_data_sink(self, resource_id: int) -> Any:
         """
@@ -566,8 +606,11 @@ class DestinationsResource(BaseResource):
         """
         params = {"all": all, "full_tree": full_tree, "run_now": run_now}
         path = f"{self._path}/{resource_id}/flow/activate"
-        return self._make_request(
-            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def pause_flow_via_data_sink(
@@ -589,8 +632,11 @@ class DestinationsResource(BaseResource):
         """
         params = {"all": all, "full_tree": full_tree}
         path = f"{self._path}/{resource_id}/flow/pause"
-        return self._make_request(
-            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", path, params={k: v for k, v in params.items() if v is not None}
+            ),
         )
 
     def data_sinks_flow_audit_log(

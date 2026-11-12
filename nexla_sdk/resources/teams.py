@@ -1,20 +1,23 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.teams.requests import TeamCreate, TeamMemberList, TeamUpdate
 from nexla_sdk.models.teams.responses import Team, TeamMember
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class TeamsResource(BaseResource):
+
+class TeamsResource(BaseResource[Team]):
     """Resource for managing teams."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/teams"
         self._model_class = Team
 
-    def list(self, **kwargs) -> List[Team]:
+    def list(self, **kwargs: Any) -> List[Team]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List teams with optional filters.
 
@@ -48,7 +51,7 @@ class TeamsResource(BaseResource):
         """
         return super().get(team_id, expand)
 
-    def create(self, data: TeamCreate) -> Team:
+    def create(self, data: Union[TeamCreate, Dict[str, Any]]) -> Team:
         """
         Create new team.
 
@@ -63,7 +66,7 @@ class TeamsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, team_id: int, data: TeamUpdate) -> Team:
+    def update(self, team_id: int, data: Union[TeamUpdate, Dict[str, Any]]) -> Team:
         """
         Update team.
 
@@ -152,7 +155,7 @@ class TeamsResource(BaseResource):
         response = self._make_request("DELETE", path, json=data)
         return [TeamMember(**member) for member in response]
 
-    def get_audit_log(self, team_id: int, **params) -> List[LogEntry]:
+    def get_audit_log(self, team_id: int, **params: Any) -> List[LogEntry]:  # type: ignore[override]  # keeps public signature; base get_audit_log() takes typed filters
         path = f"{self._path}/{team_id}/audit_log"
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in (response or [])]

@@ -1,17 +1,20 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
-class ToolSetsResource(BaseResource):
+
+class ToolSetsResource(BaseResource[Any]):
     """Resource for tool sets, their exports, revisions, and tools."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/tool_sets"
         self._model_class = None
 
-    def get(self, tool_set_id: str) -> Dict[str, Any]:
+    def get(self, tool_set_id: str) -> Dict[str, Any]:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """
         Get a tool set by ID or key.
 
@@ -21,14 +24,19 @@ class ToolSetsResource(BaseResource):
         Returns:
             Tool set as a dict
         """
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_set_id}",
-            resource_id=str(tool_set_id),
-            operation="get_resource",
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_set_id}",
+                resource_id=str(tool_set_id),
+                operation="get_resource",
+            ),
         )
 
-    def update(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def update(
+        self, tool_set_id: Union[int, str, Dict[str, Any]], data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
         Replace the fields of a tool set.
 
@@ -39,15 +47,18 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated tool set as a dict
         """
-        return self._make_request(
-            "PUT",
-            f"{self._path}/{tool_set_id}",
-            resource_id=str(tool_set_id),
-            operation="update_resource",
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT",
+                f"{self._path}/{tool_set_id}",
+                resource_id=str(tool_set_id),
+                operation="update_resource",
+                json=data,
+            ),
         )
 
-    def delete(self, tool_set_id: str) -> Optional[Dict[str, Any]]:
+    def delete(self, tool_set_id: Union[int, str]) -> Optional[Dict[str, Any]]:  # type: ignore[override]  # returns None for an empty body; base delete() returns a Dict
         """
         Delete a tool set.
 
@@ -57,11 +68,14 @@ class ToolSetsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request(
-            "DELETE",
-            f"{self._path}/{tool_set_id}",
-            resource_id=str(tool_set_id),
-            operation="delete_resource",
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request(
+                "DELETE",
+                f"{self._path}/{tool_set_id}",
+                resource_id=str(tool_set_id),
+                operation="delete_resource",
+            ),
         )
 
     def tool_sets_update_tool_set(
@@ -77,7 +91,10 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated tool set as a dict
         """
-        return self._make_request("PATCH", f"{self._path}/{tool_set_id}", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PATCH", f"{self._path}/{tool_set_id}", json=data),
+        )
 
     def tool_set_audit_log(self, tool_set_id: str) -> List[Dict[str, Any]]:
         """
@@ -91,7 +108,10 @@ class ToolSetsResource(BaseResource):
         Returns:
             List of audit log entries
         """
-        return self._make_request("GET", f"{self._path}/{tool_set_id}/audit_log")
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("GET", f"{self._path}/{tool_set_id}/audit_log"),
+        )
 
     def index_exports(
         self,
@@ -117,10 +137,13 @@ class ToolSetsResource(BaseResource):
             "page": page,
             "per_page": per_page,
         }
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_set_id}/exports",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_set_id}/exports",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def create_export(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -134,8 +157,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Created export as a dict
         """
-        return self._make_request(
-            "POST", f"{self._path}/{tool_set_id}/exports", json=data
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST", f"{self._path}/{tool_set_id}/exports", json=data
+            ),
         )
 
     def show_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]:
@@ -149,8 +175,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Export as a dict
         """
-        return self._make_request(
-            "GET", f"{self._path}/{tool_set_id}/exports/{export_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{tool_set_id}/exports/{export_id}"
+            ),
         )
 
     def update_export(
@@ -167,10 +196,13 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated export as a dict
         """
-        return self._make_request(
-            "PUT",
-            f"{self._path}/{tool_set_id}/exports/{export_id}",
-            json=data,
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT",
+                f"{self._path}/{tool_set_id}/exports/{export_id}",
+                json=data,
+            ),
         )
 
     def delete_export(
@@ -186,8 +218,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request(
-            "DELETE", f"{self._path}/{tool_set_id}/exports/{export_id}"
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request(
+                "DELETE", f"{self._path}/{tool_set_id}/exports/{export_id}"
+            ),
         )
 
     def activate_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]:
@@ -201,8 +236,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated export as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/activate"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/activate"
+            ),
         )
 
     def pause_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]:
@@ -216,8 +254,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated export as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/pause"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/pause"
+            ),
         )
 
     def retire_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]:
@@ -231,8 +272,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated export as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/retire"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/exports/{export_id}/retire"
+            ),
         )
 
     def index_revisions(
@@ -253,10 +297,13 @@ class ToolSetsResource(BaseResource):
             List of revisions
         """
         params = {"page": page, "per_page": per_page}
-        return self._make_request(
-            "GET",
-            f"{self._path}/{tool_set_id}/revisions",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                f"{self._path}/{tool_set_id}/revisions",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def create_revision(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -270,8 +317,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Created revision as a dict
         """
-        return self._make_request(
-            "POST", f"{self._path}/{tool_set_id}/revisions", json=data
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "POST", f"{self._path}/{tool_set_id}/revisions", json=data
+            ),
         )
 
     def show_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]:
@@ -285,8 +335,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Revision as a dict
         """
-        return self._make_request(
-            "GET", f"{self._path}/{tool_set_id}/revisions/{revision_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET", f"{self._path}/{tool_set_id}/revisions/{revision_id}"
+            ),
         )
 
     def delete_revision(
@@ -302,8 +355,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request(
-            "DELETE", f"{self._path}/{tool_set_id}/revisions/{revision_id}"
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request(
+                "DELETE", f"{self._path}/{tool_set_id}/revisions/{revision_id}"
+            ),
         )
 
     def publish_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]:
@@ -317,8 +373,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated revision as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/publish"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/publish"
+            ),
         )
 
     def draft_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]:
@@ -332,8 +391,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated revision as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/draft"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/draft"
+            ),
         )
 
     def deprecate_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]:
@@ -347,8 +409,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated revision as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/deprecate"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/deprecate"
+            ),
         )
 
     def retire_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]:
@@ -362,8 +427,11 @@ class ToolSetsResource(BaseResource):
         Returns:
             Updated revision as a dict
         """
-        return self._make_request(
-            "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/retire"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT", f"{self._path}/{tool_set_id}/revisions/{revision_id}/retire"
+            ),
         )
 
     def tool_sets_index_tools(self, tool_set_id: str) -> List[Dict[str, Any]]:
@@ -376,7 +444,10 @@ class ToolSetsResource(BaseResource):
         Returns:
             List of tools
         """
-        return self._make_request("GET", f"{self._path}/{tool_set_id}/tools")
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("GET", f"{self._path}/{tool_set_id}/tools"),
+        )
 
     def add_tools(self, tool_set_id: str, data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
@@ -389,7 +460,10 @@ class ToolSetsResource(BaseResource):
         Returns:
             List of tools after the change
         """
-        return self._make_request("PUT", f"{self._path}/{tool_set_id}/tools", json=data)
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("PUT", f"{self._path}/{tool_set_id}/tools", json=data),
+        )
 
     def reset_tools(
         self, tool_set_id: str, data: Dict[str, Any]
@@ -404,8 +478,9 @@ class ToolSetsResource(BaseResource):
         Returns:
             List of tools after the change
         """
-        return self._make_request(
-            "POST", f"{self._path}/{tool_set_id}/tools", json=data
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("POST", f"{self._path}/{tool_set_id}/tools", json=data),
         )
 
     def remove_tools(
@@ -421,6 +496,9 @@ class ToolSetsResource(BaseResource):
         Returns:
             List of tools after the change
         """
-        return self._make_request(
-            "DELETE", f"{self._path}/{tool_set_id}/tools", json=data
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "DELETE", f"{self._path}/{tool_set_id}/tools", json=data
+            ),
         )

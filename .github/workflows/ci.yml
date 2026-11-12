@@ -9,8 +9,9 @@ on:
       - "tests/**"
       - "pyproject.toml"
       - "requirements.txt"
-      - "pytest.ini"
       - "README.md"
+      - "skills/**"
+      - "nexla.skill"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main ]
@@ -20,11 +21,24 @@ on:
       - "tests/**"
       - "pyproject.toml"
       - "requirements.txt"
-      - "pytest.ini"
       - "README.md"
+      - "skills/**"
+      - "nexla.skill"
       - ".github/workflows/ci.yml"
 
 jobs:
+  skill-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check nexla.skill matches skills/nexla
+        run: python scripts/build_skill.py --check
+
   build-test:
     # ubuntu-latest (26.04) has no setup-python builds for 3.8 or 3.9.
     runs-on: ${{ matrix.runner || 'ubuntu-latest' }}
@@ -52,10 +66,18 @@ jobs:
 
       - name: Lint
         run: |
-          pip install "ruff==0.6.8"  # keep in sync with .pre-commit-config.yaml
-          ruff check nexla_sdk
+          pip install "ruff==0.14.14"  # keep in sync with .pre-commit-config.yaml
+          ruff check .
+          ruff format --check .
 
-      - name: Check Generated Operation Map Sync
+      - name: Type check
+        if: matrix.python-version == '3.12'  # mypy 1.16 needs Python 3.9+; target is fixed at 3.8
+        run: |
+          pip install "mypy==1.16.1"  # keep in sync with .pre-commit-config.yaml
+          mypy
+
+      - name: Check SDK operations against the manifest
+        # Fails when nexla_sdk's HTTP operations differ from scripts/parity/sdk_operations.json.
         run: |
           python scripts/parity/check_operation_map_sync.py
 
@@ -63,4 +85,4 @@ jobs:
         env:
           PYTHONWARNINGS: default
         run: |
-          pytest -m unit --maxfail=1 -q
+          pytest -m unit --maxfail=1 --cov=nexla_sdk --cov-report=term-missing --cov-fail-under=85

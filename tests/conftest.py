@@ -203,15 +203,20 @@ def sample_probe_sample_request():
     return {"connection_type": "s3", "path": "/data/sample.csv", "max_rows": 100}
 
 
-# Auto-use fixtures for marking tests
-@pytest.fixture(autouse=True)
-def mark_unit_tests_by_default(request):
-    """Automatically mark tests as unit tests if not otherwise marked."""
-    if not any(
-        mark.name in ["integration", "performance", "contract"]
-        for mark in request.node.iter_markers()
-    ):
-        request.node.add_marker(pytest.mark.unit)
+@pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(config, items):
+    """Mark unmarked tests under tests/unit/ as unit tests.
+
+    Runs at collection time, so `pytest -m unit` selects these tests. A marker
+    added inside a fixture runs too late for -m selection. Property tests keep
+    their own category (run with `--property`).
+    """
+    category_markers = ("integration", "performance", "contract")
+    for item in items:
+        if not item.nodeid.startswith("tests/unit/"):
+            continue
+        if not any(item.get_closest_marker(name) for name in category_markers):
+            item.add_marker(pytest.mark.unit)
 
 
 # Test environment fixtures

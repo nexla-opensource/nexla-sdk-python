@@ -1,6 +1,7 @@
 """Unit tests for destinations resource."""
 
 import pytest
+from pydantic import ValidationError as PydanticValidationError
 
 from nexla_sdk.exceptions import NotFoundError, ServerError
 from nexla_sdk.http_client import HttpClientError
@@ -284,7 +285,7 @@ class TestDestinationsResource:
         invalid_data = {"invalid": "data"}  # Missing required fields
 
         # Act & Assert - Will raise validation error during model creation
-        with pytest.raises(Exception):
+        with pytest.raises(PydanticValidationError):
             DestinationCreate(**invalid_data)
 
     def test_empty_list_response(self, mock_client):

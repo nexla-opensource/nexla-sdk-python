@@ -1,6 +1,6 @@
 import logging
 import warnings
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union, cast
 
 from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.metrics.responses import (
@@ -10,6 +10,9 @@ from nexla_sdk.models.metrics.responses import (
     ResourceFlowMetricsResponse,
 )
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +26,7 @@ def _warn_if_seconds_timestamp(value: int, param_name: str) -> None:
         )
 
 
-class MetricsResource(BaseResource):
+class MetricsResource(BaseResource[Any]):
     """
     Resource for retrieving metrics.
 
@@ -32,7 +35,7 @@ class MetricsResource(BaseResource):
     so no additional typed overrides are needed.
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = ""  # Metrics endpoints are distributed
 
@@ -60,7 +63,7 @@ class MetricsResource(BaseResource):
             ResourceType, resource_type, "resource_type"
         )
         path = f"/{resource_type_value}/{resource_id}/metrics"
-        params = {"from": from_date, "aggregate": 1}
+        params: Dict[str, Any] = {"from": from_date, "aggregate": 1}
         if to_date:
             params["to"] = to_date
 
@@ -95,7 +98,7 @@ class MetricsResource(BaseResource):
             ResourceType, resource_type, "resource_type"
         )
         path = f"/{resource_type_value}/{resource_id}/metrics/run_summary"
-        params = {}
+        params: Dict[str, Any] = {}
         if groupby:
             params["groupby"] = groupby
         if orderby:
@@ -116,17 +119,19 @@ class MetricsResource(BaseResource):
             Rate limit information
         """
         path = "/limits"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Publish raw metrics (super user only)."""
-        return self._make_request("POST", "/metrics/raw", json=payload)
+        return cast(
+            Dict[str, Any], self._make_request("POST", "/metrics/raw", json=payload)
+        )
 
     def get_resource_flow_metrics(
         self,
         resource_type: Union[ResourceType, str],
         resource_id: int,
-        metric_type: str = None,
+        metric_type: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Get flow metrics for a specific resource.
@@ -147,7 +152,7 @@ class MetricsResource(BaseResource):
             path = f"/{resource_type_value}/{resource_id}/flow/{metric_type}"
         else:
             path = f"/{resource_type_value}/{resource_id}/flow"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_flow_metrics_summary(self, period: str) -> Dict[str, Any]:
         """
@@ -160,7 +165,7 @@ class MetricsResource(BaseResource):
             Flow metrics summary
         """
         path = f"/data_flows/metrics/{period}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     # Convenience wrappers for flow-level logs/metrics
     def get_flow_metrics(
@@ -196,7 +201,7 @@ class MetricsResource(BaseResource):
             ResourceType, resource_type, "resource_type"
         )
         path = f"/{resource_type_value}/{resource_id}/flow/metrics"
-        params = {"from": from_date}
+        params: Dict[str, Any] = {"from": from_date}
         if to_date:
             params["to"] = to_date
         if groupby:
@@ -215,7 +220,7 @@ class MetricsResource(BaseResource):
                 "ResourceFlowMetricsResponse validation failed, returning raw dict: %s",
                 exc,
             )
-            return response
+            return cast(Union[ResourceFlowMetricsResponse, Dict[str, Any]], response)
 
     def get_flow_logs(
         self,
@@ -265,4 +270,4 @@ class MetricsResource(BaseResource):
                 "ResourceFlowLogsResponse validation failed, returning raw dict: %s",
                 exc,
             )
-            return response
+            return cast(Union[ResourceFlowLogsResponse, Dict[str, Any]], response)

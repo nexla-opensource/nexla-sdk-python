@@ -230,6 +230,27 @@ def test_transport_connection_error_raises_nexla_connection_error():
     assert isinstance(exc_info.value, ServerError)
 
 
+def test_transport_refused_connection_is_connection_error_not_timeout():
+    from urllib3.exceptions import MaxRetryError
+    from urllib3.exceptions import NewConnectionError as UrllibNewConnectionError
+
+    http = RequestsHttpClient()
+    client = NexlaClient(
+        access_token="tok-1", base_url="https://api.test/nexla-api", http_client=http
+    )
+    refused = requests.exceptions.ConnectionError(
+        MaxRetryError(
+            None,
+            "https://api.test/nexla-api/v1/data_sources/1",
+            UrllibNewConnectionError(None, "Connection refused"),
+        )
+    )
+    with patch.object(http.session, "request", side_effect=refused):
+        with pytest.raises(NexlaConnectionError) as exc_info:
+            client.sources.get(1)
+    assert not isinstance(exc_info.value, NexlaTimeoutError)
+
+
 def test_http_client_error_carries_parsed_body_and_headers():
     err = HttpClientError("x", status_code=400, body={"message": "m"})
     assert err.body == {"message": "m"}

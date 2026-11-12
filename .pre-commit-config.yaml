@@ -1,14 +1,19 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.8
+    rev: v0.14.14  # keep in sync with pyproject.toml and ci.yml
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
 
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.16.1  # keep in sync with pyproject.toml and ci.yml
     hooks:
-      - id: isort
-        args: ["--profile", "black"]
+      - id: mypy
+        pass_filenames: false  # mypy reads its file list from pyproject.toml
+        additional_dependencies:
+          - pydantic>=2.0.0
+          - requests>=2.25.0
+          - types-requests
+          - opentelemetry-api
 

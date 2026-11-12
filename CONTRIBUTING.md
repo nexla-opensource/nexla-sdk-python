@@ -7,16 +7,35 @@ Setup
 - Python 3.8+ is required.
 - Install dev deps: `pip install -e .[dev]`
 - Run unit tests: `pytest -m unit`
+- CI fails when unit coverage of `nexla_sdk` drops below 85%.
+- Run the CI gates before you push:
+  ```bash
+  ruff check . && ruff format --check .
+  mypy
+  pytest -m unit --cov=nexla_sdk --cov-fail-under=85
+  ```
 
 Coding standards
 - Pydantic v2 models.
 - Keep public API stable; deprecate before breaking.
 - Run pre-commit: `pre-commit install` then commit.
+- Add a line under `## [Unreleased]` in `CHANGELOG.md` for each user-facing change.
+- HTTP methods, retries, timeouts, error classes, and pagination must match `docs-site/docs/behavior-spec.md`.
 
 Testing
 - Prefer unit tests with mocks.
 - Avoid network in unit tests.
 - Add integration tests only when necessary.
+
+Skill bundle (`nexla.skill`)
+- `skills/nexla/` is the only source. Do not edit `nexla.skill` by hand.
+- After you change `skills/nexla/`, run `python scripts/build_skill.py` and commit `nexla.skill`.
+- The `skill-bundle` CI job runs `python scripts/build_skill.py --check`. It fails when the committed archive is stale.
+
+Operation drift check
+- `scripts/parity/sdk_operations.json` lists every HTTP operation the SDK sends. CI fails when the code and the list differ.
+- After you add, remove, or rename a route, run `python scripts/parity/extract_sdk_operations.py` and commit the manifest.
+- To compare with the backend, set `NEXLA_PUBLIC_SPEC` to a public spec JSON and run `python scripts/parity/check_operation_map_sync.py`. The check fails on SDK operations that the spec does not define. See `scripts/parity/README.md`.
 
 Release
 ------
@@ -29,7 +48,7 @@ Versions are derived from Git tags by `setuptools_scm` (no manual version bumps)
 
 **Pre-release checklist:**
 1. Ensure CI passes on `main` (ruff lint + unit tests across Python 3.8–3.12).
-2. Update `docs-site/docs/changelog.md` with user-facing changes under a new version heading.
+2. Move the entries under `## [Unreleased]` in `CHANGELOG.md` to a new `## [<version>] - <date>` heading. Add the compare link at the bottom of the file. The docs-site changelog page points to `CHANGELOG.md` and needs no edit.
 3. Verify the version `setuptools_scm` will produce matches the tag you intend to create:
    ```bash
    pip install setuptools_scm && python -c "import setuptools_scm; print(setuptools_scm.get_version())"
@@ -59,7 +78,7 @@ gh release create v1.1.0 --title v1.1.0 --notes "Summary of changes"
 
 **Post-release:**
 - Confirm the package appears on PyPI: `pip install nexla-sdk==<version>`.
-- Docs site rebuilds automatically on pushes to `main` (via `.github/workflows/docs.yml`), not on tag pushes.
+- The docs site builds on every pull request and on pushes to `main` (`.github/workflows/docs.yml`). The build is a check only; the workflow does not deploy the site.
 
 **Version scheme notes:**
 - `setuptools_scm` config: `version_scheme = "no-guess-dev"`, `local_scheme = "no-local-version"`.
