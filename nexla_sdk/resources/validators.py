@@ -176,3 +176,17 @@ class ValidatorsResource(BaseResource):
         path = f"{self._path}/search"
         response = self._make_request("POST", path, json=filters)
         return self._parse_response(response)
+
+    def get_schema(self, method: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Get the JSON schema for validators.
+
+        Args:
+            method: HTTP method the schema describes: get, post, or put.
+                Omit it to get the schema for all three methods.
+
+        Returns:
+            JSON schema
+        """
+        params = {"method": method} if method is not None else {}
+        return self._make_request("GET", f"{self._path}/schema", params=params)

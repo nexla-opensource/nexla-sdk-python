@@ -287,3 +287,22 @@ class TestValidatorModels:
 
         assert data["owner_id"] == 5
         assert data["copy_access_controls"] is True
+
+
+@pytest.mark.unit
+def test_get_schema_sends_method_query(mock_client, mock_http_client):
+    mock_client.validators.get_schema(method="put")
+
+    last = mock_http_client.get_last_request()
+    assert last["method"] == "GET"
+    assert last["url"].endswith("/validators/schema")
+    assert last["params"] == {"method": "put"}
+
+
+@pytest.mark.unit
+def test_get_schema_without_method_sends_no_query(mock_client, mock_http_client):
+    mock_client.validators.get_schema()
+
+    last = mock_http_client.get_last_request()
+    assert last["url"].endswith("/validators/schema")
+    assert last["params"] == {}
