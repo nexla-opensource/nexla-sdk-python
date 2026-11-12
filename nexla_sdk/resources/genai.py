@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 from nexla_sdk.models.genai.requests import (
     GenAiConfigCreatePayload,
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class GenAIResource(BaseResource):
+class GenAIResource(BaseResource[Any]):
     """Resource for GenAI configurations and org settings."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -63,18 +63,24 @@ class GenAIResource(BaseResource):
         Returns:
             Updated config as a dict
         """
-        return self._make_request(
-            "PATCH", f"/gen_ai_integration_configs/{gen_ai_config_id}", json=data
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PATCH", f"/gen_ai_integration_configs/{gen_ai_config_id}", json=data
+            ),
         )
 
     def delete_config(self, gen_ai_config_id: int) -> Dict[str, Any]:
-        return self._make_request(
-            "DELETE", f"/gen_ai_integration_configs/{gen_ai_config_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "DELETE", f"/gen_ai_integration_configs/{gen_ai_config_id}"
+            ),
         )
 
     # Org Settings
     def list_org_settings(
-        self, org_id: int = None, all: bool = False
+        self, org_id: Optional[int] = None, all: bool = False
     ) -> List[GenAiOrgSetting]:
         params = {}
         if org_id is not None:
@@ -105,8 +111,11 @@ class GenAIResource(BaseResource):
         return GenAiOrgSetting.model_validate(response)
 
     def delete_org_setting(self, gen_ai_org_setting_id: int) -> Dict[str, Any]:
-        return self._make_request(
-            "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
+            ),
         )
 
     @missing_route(
@@ -115,7 +124,10 @@ class GenAIResource(BaseResource):
         use="delete_org_setting(gen_ai_org_setting_id)",
     )
     def delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("DELETE", "/gen_ai_org_settings", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("DELETE", "/gen_ai_org_settings", json=payload),
+        )
 
     def show_active_config(self, gen_ai_usage: str) -> ActiveConfigView:
         response = self._make_request(

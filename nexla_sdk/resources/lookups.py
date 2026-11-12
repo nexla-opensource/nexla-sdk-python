@@ -1,6 +1,6 @@
 """Lookups resource implementation."""
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.lookups.requests import (
     LookupCreate,
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class LookupsResource(BaseResource):
+class LookupsResource(BaseResource[Lookup]):
     """Resource for managing lookups (data maps)."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -22,7 +22,7 @@ class LookupsResource(BaseResource):
         self._path = "/data_maps"
         self._model_class = Lookup
 
-    def list(self, **kwargs) -> List[Lookup]:
+    def list(self, **kwargs: Any) -> List[Lookup]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List lookups with optional filters.
 
@@ -40,11 +40,11 @@ class LookupsResource(BaseResource):
         """
         return super().list(**kwargs)
 
-    def list_public(self, **params) -> List[Lookup]:
+    def list_public(self, **params: Any) -> List[Lookup]:  # type: ignore[override]  # keeps public list_public() signature; base also takes positional page
         response = self._make_request("GET", f"{self._path}/public", params=params)
-        return self._parse_response(response)
+        return cast(List[Lookup], self._parse_response(response))
 
-    def list_accessible(self, **params) -> List[Lookup]:
+    def list_accessible(self, **params: Any) -> List[Lookup]:
         return super().list_accessible(**params)
 
     def get(self, data_map_id: int, expand: bool = False) -> Lookup:
@@ -63,7 +63,7 @@ class LookupsResource(BaseResource):
         """
         return super().get(data_map_id, expand)
 
-    def create(self, data: LookupCreate) -> Lookup:
+    def create(self, data: Union[LookupCreate, Dict[str, Any]]) -> Lookup:
         """
         Create new lookup.
 
@@ -78,7 +78,9 @@ class LookupsResource(BaseResource):
         """
         return super().create(data)
 
-    def update(self, data_map_id: int, data: LookupUpdate) -> Lookup:
+    def update(
+        self, data_map_id: int, data: Union[LookupUpdate, Dict[str, Any]]
+    ) -> Lookup:
         """
         Update lookup.
 
@@ -103,20 +105,20 @@ class LookupsResource(BaseResource):
         """
         return super().delete(data_map_id)
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Lookup]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Lookup]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Lookup]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Lookup]:
         return super().search_tags(tags, **params)
 
     def validate(self, data_map_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{data_map_id}/validate"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def download_map(self, data_map_id: int) -> str:
         path = f"{self._path}/{data_map_id}/download_map"
         response = self._make_request("GET", path)
-        return response  # plain text response
+        return cast(str, response)  # plain text response
 
     def upsert_entries(
         self, data_map_id: int, entries: List[Dict[str, Any]]
@@ -136,7 +138,10 @@ class LookupsResource(BaseResource):
         # Create request model
         request = LookupEntriesUpsert(entries=entries)
 
-        return self._make_request("PUT", path, json=request.to_dict())
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request("PUT", path, json=request.to_dict()),
+        )
 
     def get_entries(
         self, data_map_id: int, entry_keys: Union[str, List[str]]
@@ -157,13 +162,15 @@ class LookupsResource(BaseResource):
             keys_str = str(entry_keys)
 
         path = f"/data_maps/{data_map_id}/entries/{keys_str}"
-        return self._make_request("GET", path)
+        return cast(List[Dict[str, Any]], self._make_request("GET", path))
 
     def get_entries_by_body(
         self, data_map_id: int, payload: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
         path = f"{self._path}/{data_map_id}/get_entries"
-        return self._make_request("POST", path, json=payload)
+        return cast(
+            List[Dict[str, Any]], self._make_request("POST", path, json=payload)
+        )
 
     def delete_entries(
         self, data_map_id: int, entry_keys: Union[str, List[str]]
@@ -184,17 +191,17 @@ class LookupsResource(BaseResource):
             keys_str = str(entry_keys)
 
         path = f"/data_maps/{data_map_id}/entries/{keys_str}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def delete_entries_by_body(
         self, data_map_id: int, entry_keys: List[str]
     ) -> Dict[str, Any]:
         path = f"{self._path}/{data_map_id}/entries"
-        return self._make_request("DELETE", path, json=entry_keys)
+        return cast(Dict[str, Any], self._make_request("DELETE", path, json=entry_keys))
 
     def probe_sample(self, data_map_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{data_map_id}/probe/sample"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def data_maps_update_data_map(
         self, data_map_id: int, data: Dict[str, Any]
@@ -209,7 +216,10 @@ class LookupsResource(BaseResource):
         Returns:
             Updated lookup as a dict
         """
-        return self._make_request("PATCH", f"{self._path}/{data_map_id}", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PATCH", f"{self._path}/{data_map_id}", json=data),
+        )
 
     def data_maps_read_data_map_sample(
         self,
@@ -231,9 +241,12 @@ class LookupsResource(BaseResource):
             Sample payload
         """
         params = {"page": page, "per_page": per_page}
-        return self._make_request(
-            "PUT",
-            f"{self._path}/{data_map_id}/probe/sample",
-            params={k: v for k, v in params.items() if v is not None},
-            json=data or {},
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "PUT",
+                f"{self._path}/{data_map_id}/probe/sample",
+                params={k: v for k, v in params.items() if v is not None},
+                json=data or {},
+            ),
         )

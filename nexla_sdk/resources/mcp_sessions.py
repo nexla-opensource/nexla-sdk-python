@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class McpSessionsResource(BaseResource):
+class McpSessionsResource(BaseResource[Any]):
     """Resource for MCP sessions."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -48,10 +48,13 @@ class McpSessionsResource(BaseResource):
             "page": page,
             "per_page": per_page,
         }
-        return self._make_request(
-            "GET",
-            self._path,
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            List[Dict[str, Any]],
+            self._make_request(
+                "GET",
+                self._path,
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def create_mcp_session(self, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -64,7 +67,7 @@ class McpSessionsResource(BaseResource):
         Returns:
             Created MCP session as a dict
         """
-        return self._make_request("POST", self._path, json=data)
+        return cast(Dict[str, Any], self._make_request("POST", self._path, json=data))
 
     def show_mcp_session(self, session_id: str) -> Dict[str, Any]:
         """
@@ -76,7 +79,9 @@ class McpSessionsResource(BaseResource):
         Returns:
             MCP session as a dict
         """
-        return self._make_request("GET", f"{self._path}/{session_id}")
+        return cast(
+            Dict[str, Any], self._make_request("GET", f"{self._path}/{session_id}")
+        )
 
     def mcp_sessions_update_mcp_session(
         self, session_id: str, data: Dict[str, Any]
@@ -91,7 +96,10 @@ class McpSessionsResource(BaseResource):
         Returns:
             Updated MCP session as a dict
         """
-        return self._make_request("PATCH", f"{self._path}/{session_id}", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PATCH", f"{self._path}/{session_id}", json=data),
+        )
 
     def mcp_sessions_update_mcp_session_put(
         self, session_id: str, data: Dict[str, Any]
@@ -106,7 +114,10 @@ class McpSessionsResource(BaseResource):
         Returns:
             Updated MCP session as a dict
         """
-        return self._make_request("PUT", f"{self._path}/{session_id}", json=data)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PUT", f"{self._path}/{session_id}", json=data),
+        )
 
     def delete_mcp_session(self, session_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -118,4 +129,7 @@ class McpSessionsResource(BaseResource):
         Returns:
             Response body, or None when the response is empty
         """
-        return self._make_request("DELETE", f"{self._path}/{session_id}")
+        return cast(
+            Optional[Dict[str, Any]],
+            self._make_request("DELETE", f"{self._path}/{session_id}"),
+        )

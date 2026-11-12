@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union, cast
 
 from nexla_sdk.models.dashboard_transforms.requests import (
     DashboardTransformCreate,
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class DashboardTransformsResource(BaseResource):
+class DashboardTransformsResource(BaseResource[DashboardTransform]):
     """Resource for dashboard transforms (global endpoints)."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -19,14 +19,14 @@ class DashboardTransformsResource(BaseResource):
         self._path = "/dashboard_transforms"
         self._model_class = DashboardTransform
 
-    def list(self, **kwargs) -> List[DashboardTransform]:
+    def list(self, **kwargs: Any) -> List[DashboardTransform]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
-    def list_all(self, **params) -> List[DashboardTransform]:
+    def list_all(self, **params: Any) -> List[DashboardTransform]:
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[DashboardTransform], self._parse_response(response))
 
-    def get(self, dashboard_transform_id: int) -> DashboardTransform:
+    def get(self, dashboard_transform_id: int) -> DashboardTransform:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         return super().get(dashboard_transform_id)
 
     def create(

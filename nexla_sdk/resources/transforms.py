@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List, Union, cast
 
 from nexla_sdk.models.transforms.requests import TransformCreate, TransformUpdate
 from nexla_sdk.models.transforms.responses import Transform
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class TransformsResource(BaseResource):
+class TransformsResource(BaseResource[Transform]):
     """Resource for reusable record transforms (aliased to code containers)."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -16,7 +16,7 @@ class TransformsResource(BaseResource):
         self._path = "/transforms"
         self._model_class = Transform
 
-    def list(self, **kwargs) -> List[Transform]:
+    def list(self, **kwargs: Any) -> List[Transform]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         """
         List transforms with optional filters.
 
@@ -38,11 +38,13 @@ class TransformsResource(BaseResource):
         """Get a transform by ID."""
         return super().get(transform_id, expand)
 
-    def create(self, data: TransformCreate) -> Transform:
+    def create(self, data: Union[TransformCreate, Dict[str, Any]]) -> Transform:
         """Create a new transform."""
         return super().create(data)
 
-    def update(self, transform_id: int, data: TransformUpdate) -> Transform:
+    def update(
+        self, transform_id: int, data: Union[TransformUpdate, Dict[str, Any]]
+    ) -> Transform:
         """Update an existing transform."""
         return super().update(transform_id, data)
 
@@ -50,28 +52,28 @@ class TransformsResource(BaseResource):
         """Delete a transform by ID."""
         return super().delete(transform_id)
 
-    def copy(self, transform_id: int) -> Transform:
+    def copy(self, transform_id: int) -> Transform:  # type: ignore[override]  # keeps public copy() signature; base copy() also takes options
         """Copy a transform by ID."""
         return super().copy(transform_id)
 
-    def list_public(self) -> List[Transform]:
+    def list_public(self) -> List[Transform]:  # type: ignore[override]  # keeps public list_public() signature; base also takes positional page
         """List publicly shared transforms."""
         path = f"{self._path}/public"
         response = self._make_request("GET", path)
-        return self._parse_response(response)
+        return cast(List[Transform], self._parse_response(response))
 
-    def search(self, filters: Dict[str, Any], **params) -> List[Transform]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[Transform]:
         return super().search(filters, **params)
 
-    def search_tags(self, tags: List[str], **params) -> List[Transform]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[Transform]:
         return super().search_tags(tags, **params)
 
     def transform(self, transform_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
         path = f"{self._path}/{transform_id}/transform"
-        return self._make_request("POST", path, json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=payload))
 
     def transform_features(self) -> Dict[str, Any]:
-        return self._make_request("GET", "/transform/features")
+        return cast(Dict[str, Any], self._make_request("GET", "/transform/features"))
 
     def transform_accessible_resources(self) -> List[Dict[str, Any]]:
         """
@@ -80,7 +82,11 @@ class TransformsResource(BaseResource):
         Returns:
             Accessible transform entries
         """
-        return self._make_request("GET", "/transform/accessible")
+        return cast(
+            List[Dict[str, Any]], self._make_request("GET", "/transform/accessible")
+        )
 
     def transform_data(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", "/transform", json=payload)
+        return cast(
+            Dict[str, Any], self._make_request("POST", "/transform", json=payload)
+        )
