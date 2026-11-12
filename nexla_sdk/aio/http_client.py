@@ -72,13 +72,15 @@ _CONNECT_ERRORS = (httpx.ConnectTimeout, httpx.ConnectError, httpx.PoolTimeout)
 
 def _transport_failure(exc: httpx.TransportError, url: str) -> HttpClientError:
     """Map an httpx transport failure to the shared HTTP client error types."""
+    # httpx often gives an empty message for timeouts. Fall back to the class name.
+    message = f"{str(exc) or type(exc).__name__} ({url})"
     if isinstance(exc, httpx.TimeoutException):
-        return HttpTimeoutError(message=f"{exc} ({url})")
+        return HttpTimeoutError(message=message)
     if isinstance(
         exc, (httpx.NetworkError, httpx.ProxyError, httpx.RemoteProtocolError)
     ):
-        return HttpConnectionError(message=f"{exc} ({url})")
-    return HttpClientError(message=f"{exc} ({url})")
+        return HttpConnectionError(message=message)
+    return HttpClientError(message=message)
 
 
 class AsyncHttpxClient(AsyncHttpClientInterface):

@@ -150,6 +150,15 @@ def test_read_timeout_on_post_is_not_retried(monkeypatch):
     assert wire.calls == ["POST"]
 
 
+def test_timeout_without_message_names_the_exception(monkeypatch):
+    wire = Wire(monkeypatch, [httpx.ReadTimeout("")])
+
+    with pytest.raises(HttpTimeoutError) as exc_info:
+        _run(_send(_client(wire), "POST", {"name": "s"}))
+
+    assert "ReadTimeout" in str(exc_info.value)
+
+
 def test_read_timeout_on_get_is_retried(monkeypatch):
     wire = Wire(monkeypatch, [httpx.ReadTimeout("slow"), _json_ok()])
 
