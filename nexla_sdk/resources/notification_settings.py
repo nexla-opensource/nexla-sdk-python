@@ -1,6 +1,6 @@
 """Resource for managing notification settings."""
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.notification_settings.requests import (
     NotificationSettingCreate,
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class NotificationSettingsResource(BaseResource):
+class NotificationSettingsResource(BaseResource[NotificationSetting]):
     """Resource for managing notification settings.
 
     Notification settings control how and when users receive notifications
@@ -49,7 +49,7 @@ class NotificationSettingsResource(BaseResource):
         self._path = "/notification_settings"
         self._model_class = NotificationSetting
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
@@ -57,7 +57,7 @@ class NotificationSettingsResource(BaseResource):
         resource_id: Optional[int] = None,
         sort_by: Optional[str] = None,
         sort_order: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[NotificationSetting]:
         """List notification settings for the current user.
 
@@ -88,7 +88,7 @@ class NotificationSettingsResource(BaseResource):
             params["sort_order"] = sort_order
 
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def list_all(
         self,
@@ -110,7 +110,7 @@ class NotificationSettingsResource(BaseResource):
         Returns:
             List of all notification settings
         """
-        params = {}
+        params: Dict[str, Any] = {}
         if page is not None:
             params["page"] = page
         if per_page is not None:
@@ -123,7 +123,7 @@ class NotificationSettingsResource(BaseResource):
             params["status"] = status
 
         response = self._make_request("GET", f"{self._path}/all", params=params)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def get(self, setting_id: int, expand: bool = False) -> NotificationSetting:
         """Get notification setting by ID.
@@ -199,7 +199,7 @@ class NotificationSettingsResource(BaseResource):
         Returns:
             List of notification settings for the resource
         """
-        params = {}
+        params: Dict[str, Any] = {}
         if page is not None:
             params["page"] = page
         if per_page is not None:
@@ -211,7 +211,7 @@ class NotificationSettingsResource(BaseResource):
 
         path = f"/notification_settings/{resource_type}/{resource_id}"
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def show_type_settings(
         self,
@@ -233,7 +233,7 @@ class NotificationSettingsResource(BaseResource):
         Returns:
             List of notification settings for the type
         """
-        params = {}
+        params: Dict[str, Any] = {}
         if page is not None:
             params["page"] = page
         if per_page is not None:
@@ -245,14 +245,14 @@ class NotificationSettingsResource(BaseResource):
 
         path = f"/notification_settings/notification_types/{notification_type_id}"
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def list_by(
         self, payload: Dict[str, Any], method: str = "POST"
     ) -> List[NotificationSetting]:
         path = "/notification_setting/list"
         response = self._make_request(method.upper(), path, json=payload)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def org_index(
         self,
@@ -274,7 +274,7 @@ class NotificationSettingsResource(BaseResource):
         Returns:
             List of organization notification settings
         """
-        params = {}
+        params: Dict[str, Any] = {}
         if page is not None:
             params["page"] = page
         if per_page is not None:
@@ -286,7 +286,7 @@ class NotificationSettingsResource(BaseResource):
 
         path = f"/orgs/{org_id}/notification_settings"
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[NotificationSetting], self._parse_response(response))
 
     def org_create(
         self, org_id: int, data: Union[NotificationSettingCreate, Dict[str, Any]]
@@ -303,7 +303,7 @@ class NotificationSettingsResource(BaseResource):
         serialized_data = self._serialize_data(data)
         path = f"/orgs/{org_id}/notification_settings"
         response = self._make_request("POST", path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(NotificationSetting, self._parse_response(response))
 
     def org_update(
         self,
@@ -324,7 +324,7 @@ class NotificationSettingsResource(BaseResource):
         serialized_data = self._serialize_data(data)
         path = f"/orgs/{org_id}/notification_settings/{notification_settings_id}"
         response = self._make_request("PUT", path, json=serialized_data)
-        return self._parse_response(response)
+        return cast(NotificationSetting, self._parse_response(response))
 
     def org_delete(self, org_id: int, notification_settings_id: int) -> Dict[str, Any]:
         """Delete an organization notification setting.
@@ -337,4 +337,4 @@ class NotificationSettingsResource(BaseResource):
             Response with status
         """
         path = f"/orgs/{org_id}/notification_settings/{notification_settings_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))

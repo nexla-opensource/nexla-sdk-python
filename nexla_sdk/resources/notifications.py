@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.notifications.requests import (
     NotificationChannelSettingCreate,
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class NotificationsResource(BaseResource):
+class NotificationsResource(BaseResource[Notification]):
     """Resource for managing notifications."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -52,7 +52,7 @@ class NotificationsResource(BaseResource):
         """
         return super().delete(notification_id)
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         read: Optional[int] = None,
         level: Optional[str] = None,
@@ -60,7 +60,7 @@ class NotificationsResource(BaseResource):
         resource_type: Optional[str] = None,
         from_timestamp: Optional[int] = None,
         to_timestamp: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[Notification]:
         """
         List notifications with optional filters.
@@ -110,8 +110,9 @@ class NotificationsResource(BaseResource):
         """
         path = self._path
         params = {"async": 1} if async_mode else None
-        return self._make_request(
-            "DELETE", path, json=payload or {}, params=params or {}
+        return cast(
+            Dict[str, Any],
+            self._make_request("DELETE", path, json=payload or {}, params=params or {}),
         )
 
     def get_count(self, read: Optional[int] = None) -> NotificationCount:
@@ -143,9 +144,11 @@ class NotificationsResource(BaseResource):
 
         if notification_ids == "all":
             params = {"notification_id": "all"}
-            return self._make_request("PUT", path, params=params)
+            return cast(Dict[str, Any], self._make_request("PUT", path, params=params))
         else:
-            return self._make_request("PUT", path, json=notification_ids)
+            return cast(
+                Dict[str, Any], self._make_request("PUT", path, json=notification_ids)
+            )
 
     def mark_unread(self, notification_ids: Union[List[int], str]) -> Dict[str, Any]:
         """
@@ -161,24 +164,29 @@ class NotificationsResource(BaseResource):
 
         if notification_ids == "all":
             params = {"notification_id": "all"}
-            return self._make_request("PUT", path, params=params)
+            return cast(Dict[str, Any], self._make_request("PUT", path, params=params))
         else:
-            return self._make_request("PUT", path, json=notification_ids)
+            return cast(
+                Dict[str, Any], self._make_request("PUT", path, json=notification_ids)
+            )
 
     def mark_read_for(
         self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         path = f"{self._path}/{notification_id}/mark_read"
-        return self._make_request("PUT", path, json=payload or {})
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload or {}))
 
     def mark_unread_for(
         self, notification_id: Union[int, str], payload: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         path = f"{self._path}/{notification_id}/mark_unread"
-        return self._make_request("PUT", path, json=payload or {})
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=payload or {}))
 
     def publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", f"{self._path}/raw", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("POST", f"{self._path}/raw", json=payload),
+        )
 
     # Notification Types
     def get_types(self, status: Optional[str] = None) -> List[NotificationType]:
@@ -282,7 +290,7 @@ class NotificationsResource(BaseResource):
             Response status
         """
         path = f"/notification_channel_settings/{setting_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     # Notification Settings
     def list_settings(
@@ -370,7 +378,7 @@ class NotificationsResource(BaseResource):
             Response status
         """
         path = f"/notification_settings/{setting_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
 
     def get_settings_by_type(
         self, notification_type_id: int, expand: bool = False
@@ -412,7 +420,7 @@ class NotificationsResource(BaseResource):
             List of settings
         """
         path = f"/notification_settings/{resource_type}/{resource_id}"
-        params = {}
+        params: Dict[str, Any] = {}
         if expand:
             params["expand"] = expand
         if filter_overridden:
@@ -434,7 +442,10 @@ class NotificationsResource(BaseResource):
             JSON schema
         """
         params = {"method": method} if method is not None else {}
-        return self._make_request("GET", f"{self._path}/schema", params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/schema", params=params),
+        )
 
     def get_summary(
         self,
@@ -464,10 +475,13 @@ class NotificationsResource(BaseResource):
             "limit": limit,
             "org_id": org_id,
         }
-        return self._make_request(
-            "GET",
-            f"{self._path}/summary",
-            params={k: v for k, v in params.items() if v is not None},
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "GET",
+                f"{self._path}/summary",
+                params={k: v for k, v in params.items() if v is not None},
+            ),
         )
 
     def get_unread_count(self, org_id: Optional[int] = None) -> Dict[str, Any]:
@@ -481,7 +495,10 @@ class NotificationsResource(BaseResource):
             Unread count
         """
         params = {"org_id": org_id} if org_id is not None else {}
-        return self._make_request("GET", f"{self._path}/unread-count", params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", f"{self._path}/unread-count", params=params),
+        )
 
     def mark_all_as_read(self, org_id: Optional[int] = None) -> Dict[str, Any]:
         """
@@ -494,4 +511,7 @@ class NotificationsResource(BaseResource):
             Backend response
         """
         params = {"org_id": org_id} if org_id is not None else {}
-        return self._make_request("PUT", f"{self._path}/read-all", params=params)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PUT", f"{self._path}/read-all", params=params),
+        )
