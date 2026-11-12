@@ -126,13 +126,6 @@ NEXSETS_ROUTE_CALLS = [
         id="nexsets.data_sets_update_catalog_ref_collection",
     ),
     pytest.param(
-        lambda c: c.nexsets.list_catalog_refs_for_set(1, page=2, per_page=10),
-        "GET",
-        "/data_sets/1/catalog_refs",
-        {"params": {"page": 2, "per_page": 10}},
-        id="nexsets.list_catalog_refs_for_set",
-    ),
-    pytest.param(
         lambda c: c.nexsets.get_catalog_ref_for_set(1, 5),
         "GET",
         "/data_sets/1/catalog_refs/5",

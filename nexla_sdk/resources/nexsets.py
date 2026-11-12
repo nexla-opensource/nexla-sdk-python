@@ -634,30 +634,6 @@ class NexsetsResource(BaseResource):
         path = f"{self._path}/catalog_refs/{ref_id}"
         return self._make_request("PATCH", path, json=data)
 
-    def list_catalog_refs_for_set(
-        self,
-        data_set_id: int,
-        page: Optional[int] = None,
-        per_page: Optional[int] = None,
-    ) -> List[Dict[str, Any]]:
-        """List catalog refs of one data set.
-
-        Args:
-            data_set_id: Data set ID.
-            page: Page number.
-            per_page: Items per page.
-
-        Returns:
-            Catalog refs.
-        """
-        params = {"page": page, "per_page": per_page}
-        path = f"{self._path}/{data_set_id}/catalog_refs"
-        return self._make_request(
-            "GET",
-            path,
-            params={k: v for k, v in params.items() if v is not None},
-        )
-
     def get_catalog_ref_for_set(self, data_set_id: int, ref_id: int) -> Dict[str, Any]:
         """Get one catalog ref of a data set.
 
