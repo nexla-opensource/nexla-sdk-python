@@ -10,7 +10,7 @@
 ## Build, Test, and Development Commands
 - Setup dev env: `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev]`
 - Lint/format (pre-commit): `pre-commit install && pre-commit run -a`
-- Lint only: `ruff check nexla_sdk` • Format: `ruff format` (Black-compatible) • Imports: `isort . --profile black`
+- Lint only: `ruff check nexla_sdk` • Format: `ruff format` (Black-compatible) • Format check: `ruff format --check .`
 - Unit tests: `pytest -m unit -q` or `python tests/run_tests.py`
 - Coverage: `pytest --cov=nexla_sdk --cov-report=term-missing`
 - Integration tests (require creds): `export NEXLA_SERVICE_KEY=... && pytest -m integration -vv`
@@ -19,7 +19,7 @@
 - Python 3.8+; 4‑space indent; type hints required for public APIs.
 - Naming: modules/functions `snake_case`, classes `CapWords`, constants `UPPER_SNAKE_CASE`.
 - Keep modules focused; colocate resource-specific helpers under the relevant subpackage.
-- Enforce style with Ruff, Black, and isort (via pre-commit). No unused imports or dead code.
+- Enforce style with Ruff lint and Ruff format (via pre-commit). No unused imports or dead code.
 
 ## Testing Guidelines
 - Frameworks: pytest, pytest-cov, Hypothesis (property tests), responses/freezegun for I/O/time.
