@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.vendor_endpoints.requests import (
     VendorEndpointCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.vendor_endpoints.requests import (
 from nexla_sdk.models.vendor_endpoints.responses import VendorEndpoint
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class VendorEndpointsResource(BaseResource):
     """Resource for managing vendor endpoints."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/vendor_endpoints"
         self._model_class = VendorEndpoint

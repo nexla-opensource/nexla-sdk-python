@@ -1,6 +1,6 @@
 """Credentials resource implementation."""
 
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.credentials.requests import (
     CredentialCreate,
@@ -15,11 +15,14 @@ from nexla_sdk.models.credentials.responses import (
 )
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class CredentialsResource(BaseResource):
     """Resource for managing data credentials."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_credentials"
         self._model_class = Credential

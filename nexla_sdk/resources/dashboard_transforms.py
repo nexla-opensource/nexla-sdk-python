@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.dashboard_transforms.requests import (
     DashboardTransformCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.dashboard_transforms.requests import (
 from nexla_sdk.models.dashboard_transforms.responses import DashboardTransform
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class DashboardTransformsResource(BaseResource):
     """Resource for dashboard transforms (global endpoints)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/dashboard_transforms"
         self._model_class = DashboardTransform

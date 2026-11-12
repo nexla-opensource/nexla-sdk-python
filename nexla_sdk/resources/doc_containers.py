@@ -1,14 +1,17 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.doc_containers.responses import DocContainer
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class DocContainersResource(BaseResource):
     """Resource for document containers."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/doc_containers"
         self._model_class = DocContainer

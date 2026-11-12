@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.attribute_transforms.requests import (
     AttributeTransformCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.attribute_transforms.requests import (
 from nexla_sdk.models.attribute_transforms.responses import AttributeTransform
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class AttributeTransformsResource(BaseResource):
     """Resource for reusable attribute transforms (aliased to code containers)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/attribute_transforms"
         self._model_class = AttributeTransform

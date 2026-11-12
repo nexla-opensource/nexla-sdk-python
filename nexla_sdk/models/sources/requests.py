@@ -14,12 +14,12 @@ class SourceCreate(BaseModel):
     description: Optional[str] = None
 
     # For Core Connectors
-    source_config: Optional[Dict] = None
+    source_config: Optional[Dict[str, Any]] = None
 
     # For Templatized APIs
     vendor_endpoint_id: Optional[int] = None
     ingest_method: Optional[str] = None
-    template_config: Optional[Dict] = None
+    template_config: Optional[Dict[str, Any]] = None
 
 
 class SourceUpdate(BaseModel):

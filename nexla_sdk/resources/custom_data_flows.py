@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.custom_data_flows.requests import (
     CustomDataFlowCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.custom_data_flows.requests import (
 from nexla_sdk.models.custom_data_flows.responses import CustomDataFlow
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class CustomDataFlowsResource(BaseResource):
     """Resource for managing custom data flows."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/custom_data_flows"
         self._model_class = CustomDataFlow

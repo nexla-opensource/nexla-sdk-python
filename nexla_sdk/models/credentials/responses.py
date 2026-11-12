@@ -37,7 +37,7 @@ class Credential(BaseModel):
 
     @field_validator("access_roles", mode="before")
     @classmethod
-    def validate_access_roles(cls, v):
+    def validate_access_roles(cls, v: Any) -> Any:
         """Handle access_roles with None values."""
         if v is None:
             return None
@@ -47,7 +47,7 @@ class Credential(BaseModel):
 
     @field_validator("tags", mode="before")
     @classmethod
-    def validate_tags(cls, v):
+    def validate_tags(cls, v: Any) -> Any:
         """Handle None tags."""
         if v is None:
             return []

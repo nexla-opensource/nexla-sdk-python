@@ -1,14 +1,17 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.org_auth_configs.requests import AuthConfigPayload
 from nexla_sdk.models.org_auth_configs.responses import AuthConfig
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class OrgAuthConfigsResource(BaseResource):
     """Resource for organization authentication configurations (/api_auth_configs)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/api_auth_configs"
         self._model_class = AuthConfig

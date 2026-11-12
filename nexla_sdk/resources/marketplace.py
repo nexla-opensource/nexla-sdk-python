@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.marketplace.requests import (
     CustodiansPayload,
@@ -13,11 +13,14 @@ from nexla_sdk.models.organizations.responses import CustodianUser
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import warn_deprecated
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class MarketplaceResource(BaseResource):
     """Resource for marketplace domains and items."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/marketplace"
         self._model_class = MarketplaceDomain

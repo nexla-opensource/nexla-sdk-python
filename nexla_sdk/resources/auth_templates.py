@@ -1,6 +1,6 @@
 """Resource for managing auth templates."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.auth_templates.requests import (
     AuthTemplateCreate,
@@ -8,6 +8,9 @@ from nexla_sdk.models.auth_templates.requests import (
 )
 from nexla_sdk.models.auth_templates.responses import AuthTemplate
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class AuthTemplatesResource(BaseResource):
@@ -42,7 +45,7 @@ class AuthTemplatesResource(BaseResource):
         client.auth_templates.delete(123)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the auth templates resource.
 
         Args:

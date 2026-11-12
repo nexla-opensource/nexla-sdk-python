@@ -1,13 +1,16 @@
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from nexla_sdk.models.approval_requests.responses import ApprovalRequest
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ApprovalRequestsResource(BaseResource):
     """Resource for managing approval requests."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/approval_requests"
         self._model_class = ApprovalRequest

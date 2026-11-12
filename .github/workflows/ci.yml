@@ -56,6 +56,12 @@ jobs:
           ruff check .
           ruff format --check .
 
+      - name: Type check
+        if: matrix.python-version == '3.12'  # mypy 1.16 needs Python 3.9+; target is fixed at 3.8
+        run: |
+          pip install "mypy==1.16.1"  # keep in sync with .pre-commit-config.yaml
+          mypy
+
       - name: Check Generated Operation Map Sync
         run: |
           python scripts/parity/check_operation_map_sync.py

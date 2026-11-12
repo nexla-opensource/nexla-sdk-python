@@ -1,6 +1,6 @@
 """Resource for managing validators (data validation rules)."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.validators.requests import (
     ValidatorCopyOptions,
@@ -9,6 +9,9 @@ from nexla_sdk.models.validators.requests import (
 )
 from nexla_sdk.models.validators.responses import Validator
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ValidatorsResource(BaseResource):
@@ -35,7 +38,7 @@ class ValidatorsResource(BaseResource):
         public_validators = client.validators.list_public()
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the validators resource.
 
         Args:

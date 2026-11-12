@@ -1,6 +1,6 @@
 """Resource for managing cluster endpoints."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.clusters.requests import (
     ClusterEndpointCreate,
@@ -8,6 +8,9 @@ from nexla_sdk.models.clusters.requests import (
 )
 from nexla_sdk.models.clusters.responses import ClusterEndpoint
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ClusterEndpointsResource(BaseResource):
@@ -41,7 +44,7 @@ class ClusterEndpointsResource(BaseResource):
         audit_log = client.cluster_endpoints.get_audit_log(123)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the cluster endpoints resource.
 
         Args:

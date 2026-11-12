@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.resource_parameters.requests import (
     ResourceParameterCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.resource_parameters.requests import (
 from nexla_sdk.models.resource_parameters.responses import ResourceParameter
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class ResourceParametersResource(BaseResource):
     """Resource for managing resource parameters."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/resource_parameters"
         self._model_class = ResourceParameter

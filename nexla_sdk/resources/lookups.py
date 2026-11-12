@@ -1,6 +1,6 @@
 """Lookups resource implementation."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.lookups.requests import (
     LookupCreate,
@@ -10,11 +10,14 @@ from nexla_sdk.models.lookups.requests import (
 from nexla_sdk.models.lookups.responses import Lookup
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class LookupsResource(BaseResource):
     """Resource for managing lookups (data maps)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_maps"
         self._model_class = Lookup

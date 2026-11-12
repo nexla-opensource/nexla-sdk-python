@@ -140,8 +140,8 @@ class Paginator(Generic[T]):
         fetch_func: Callable[..., Any],
         page_size: int = DEFAULT_PAGE_SIZE,
         headers_func: Optional[Callable[[], Mapping[str, Any]]] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize paginator.
 

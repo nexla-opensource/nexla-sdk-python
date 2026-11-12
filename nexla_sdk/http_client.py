@@ -7,17 +7,12 @@ import random
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
-from typing import Any, Dict, Iterable, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Optional, Tuple, Union
 
 import requests
 from requests.adapters import HTTPAdapter
-
-try:  # urllib3 Retry API
-    from urllib3.exceptions import TimeoutError as Urllib3TimeoutError
-    from urllib3.util.retry import Retry
-except Exception:  # pragma: no cover
-    Retry = None
-    Urllib3TimeoutError = ()  # type: ignore[assignment,misc]
+from urllib3.exceptions import TimeoutError as Urllib3TimeoutError
+from urllib3.util.retry import Retry
 
 try:
     from importlib.metadata import version  # Python 3.8+
@@ -28,18 +23,22 @@ except Exception:  # pragma: no cover
 
 # Optional OpenTelemetry imports (guarded by availability)
 from . import telemetry
+from .telemetry import _NoOpTracer
 
 try:  # pragma: no cover - optional dependency
-    from opentelemetry.propagate import inject  # type: ignore
-    from opentelemetry.trace import SpanKind, Status, StatusCode  # type: ignore
+    from opentelemetry.propagate import inject
+    from opentelemetry.trace import SpanKind, Status, StatusCode
 except Exception:  # pragma: no cover
-    SpanKind = None  # type: ignore[assignment]
-    Status = None  # type: ignore[assignment]
-    StatusCode = None  # type: ignore[assignment]
+    SpanKind = None  # type: ignore[assignment,misc]  # OpenTelemetry absent
+    Status = None  # type: ignore[assignment,misc]  # OpenTelemetry absent
+    StatusCode = None  # type: ignore[assignment,misc]  # OpenTelemetry absent
 
-    def inject(carrier: Dict[str, str]) -> None:  # type: ignore[no-redef]
+    def inject(carrier: Dict[str, str]) -> None:  # type: ignore[misc]  # fallback signature
         return None
 
+
+if TYPE_CHECKING:
+    from opentelemetry.trace import Tracer
 
 DEFAULT_TIMEOUT: Tuple[float, float] = (10.0, 60.0)  # (connect, read) seconds
 IDEMPOTENT_METHODS: Tuple[str, ...] = ("GET", "HEAD", "OPTIONS", "PUT", "DELETE")
@@ -58,11 +57,11 @@ def _as_timeout_pair(value: Any) -> Tuple[float, float]:
 
 def _backoff(attempt: int, backoff_factor: float) -> float:
     """Seconds to wait before retry `attempt` (1-based): min(8, f * 2^(n-1)) plus 0-100 ms."""
-    base = min(BACKOFF_CAP_SECONDS, backoff_factor * (2 ** (attempt - 1)))
+    base: float = min(BACKOFF_CAP_SECONDS, backoff_factor * (2 ** (attempt - 1)))
     return base + random.uniform(0, 0.1)
 
 
-class _SdkRetry(Retry):  # type: ignore[misc,valid-type]
+class _SdkRetry(Retry):
     """urllib3 Retry that uses the SDK backoff.
 
     urllib3 waits 0 s before the first retry. The SDK waits 0.5 s.
@@ -110,7 +109,7 @@ class HttpClientInterface(ABC):
     """
 
     def request_with_headers(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Tuple[Union[Dict[str, Any], None], Any]:
         """
         Send an HTTP request and also return the response headers.
@@ -122,7 +121,7 @@ class HttpClientInterface(ABC):
 
     @abstractmethod
     def request(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Union[Dict[str, Any], None]:
         """
         Send an HTTP request
@@ -205,7 +204,7 @@ class RequestsHttpClient(HttpClientInterface):
         timeout: Union[float, Tuple[float, float]] = DEFAULT_TIMEOUT,
         max_retries: int = 3,
         backoff_factor: float = 0.5,
-        tracer: Optional[object] = None,
+        tracer: Optional[Union["Tracer", _NoOpTracer]] = None,
         retry_methods: Optional[Iterable[str]] = None,
         retry_on_status: Optional[Iterable[int]] = None,
     ):
@@ -256,14 +255,14 @@ class RequestsHttpClient(HttpClientInterface):
             time.sleep(wait)
 
     def request(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Union[Dict[str, Any], None]:
         """Send an HTTP request using a session with sane defaults."""
         body, _ = self.request_with_headers(method, url, headers, **kwargs)
         return body
 
     def request_with_headers(
-        self, method: str, url: str, headers: Dict[str, str], **kwargs
+        self, method: str, url: str, headers: Dict[str, str], **kwargs: Any
     ) -> Tuple[Union[Dict[str, Any], None], Any]:
         """Send an HTTP request. Return (body, response headers)."""
         span_name = f"Nexla API {method.upper()}"
@@ -271,8 +270,12 @@ class RequestsHttpClient(HttpClientInterface):
             SpanKind.CLIENT
             if telemetry._opentelemetry_available and SpanKind is not None
             else None
-        )  # type: ignore[assignment]
-        with self.tracer.start_as_current_span(span_name, kind=kind):  # type: ignore[arg-type]
+        )
+        # kind is None only without OpenTelemetry, where the no-op tracer is used.
+        with self.tracer.start_as_current_span(
+            span_name,
+            kind=kind,  # type: ignore[arg-type]
+        ):
             # We intentionally fetch the current span after creating it to set attributes
             span = None
             try:
@@ -282,7 +285,7 @@ class RequestsHttpClient(HttpClientInterface):
                     and hasattr(telemetry, "trace")
                     and telemetry.trace
                 ):
-                    span = telemetry.trace.get_current_span()  # type: ignore[attr-defined]
+                    span = telemetry.trace.get_current_span()
             except Exception:
                 span = None
 
@@ -297,7 +300,7 @@ class RequestsHttpClient(HttpClientInterface):
                 # Inject trace context for distributed tracing if OTEL is available
                 try:
                     if telemetry._opentelemetry_available and inject is not None:
-                        inject(merged_headers)  # type: ignore[misc]
+                        inject(merged_headers)
                 except Exception:
                     # Do not fail the request if injection fails
                     pass
@@ -360,7 +363,7 @@ class RequestsHttpClient(HttpClientInterface):
                         and StatusCode is not None
                     ):
                         span.record_exception(e)
-                        span.set_status(Status(status_code=StatusCode.ERROR))  # type: ignore[call-arg]
+                        span.set_status(Status(status_code=StatusCode.ERROR))
                 except Exception:
                     pass
 
@@ -385,7 +388,7 @@ class RequestsHttpClient(HttpClientInterface):
                         and StatusCode is not None
                     ):
                         span.record_exception(e)
-                        span.set_status(Status(status_code=StatusCode.ERROR))  # type: ignore[call-arg]
+                        span.set_status(Status(status_code=StatusCode.ERROR))
                 except Exception:
                     pass
 

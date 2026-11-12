@@ -1,14 +1,17 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.runtimes.requests import RuntimeCreate, RuntimeUpdate
 from nexla_sdk.models.runtimes.responses import Runtime
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class RuntimesResource(BaseResource):
     """Resource for managing custom runtimes."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/runtimes"
         self._model_class = Runtime

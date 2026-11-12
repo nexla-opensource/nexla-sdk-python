@@ -54,7 +54,7 @@ class NexsetSample(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def handle_formats(cls, data):
+    def handle_formats(cls, data: Any) -> Any:
         """Handle both formats - with and without metadata."""
         if isinstance(data, dict):
             # If rawMessage exists, use it; otherwise treat whole dict as raw_message

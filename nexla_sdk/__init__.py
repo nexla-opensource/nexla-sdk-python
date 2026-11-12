@@ -1,14 +1,10 @@
 """Nexla Python SDK for data integration and automation."""
 
 # Package version
-try:
-    from importlib.metadata import PackageNotFoundError, version  # Python 3.8+
-except Exception:  # pragma: no cover
-    version = None
-    PackageNotFoundError = Exception
+from importlib.metadata import PackageNotFoundError, version  # Python 3.8+
 
 try:  # Prefer distribution name for accurate version resolution
-    __version__ = version("nexla-sdk") if version else "unknown"
+    __version__ = version("nexla-sdk")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 

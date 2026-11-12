@@ -44,6 +44,12 @@ dev = [
     "freezegun>=1.2.0",
     "factory-boy>=3.2.0",
     "ruff==0.14.14",  # keep in sync with .pre-commit-config.yaml and ci.yml
+    # mypy 1.17+ rejects a python_version 3.8 target; 1.16.1 is the newest that accepts it.
+    # mypy itself runs only on Python 3.9+, hence the marker.
+    "mypy==1.16.1; python_version >= '3.9'",
+    "types-requests; python_version >= '3.9'",
+    # Types for the optional OpenTelemetry imports that mypy checks.
+    "opentelemetry-api; python_version >= '3.9'",
 ]
 tracing = [
     "opentelemetry-distro",
@@ -86,6 +92,28 @@ keep-runtime-typing = true
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.mypy]
+# python_version 3.8 is the SDK floor. Pinned mypy 1.16.1 still accepts it.
+python_version = "3.8"
+strict = true
+plugins = ["pydantic.mypy"]
+# Strict scope is widened module by module. Resource modules are not yet clean:
+# follow_imports="silent" keeps their errors out of the run until they are added.
+follow_imports = "silent"
+files = [
+    "nexla_sdk/__init__.py",
+    "nexla_sdk/client.py",
+    "nexla_sdk/http_client.py",
+    "nexla_sdk/auth.py",
+    "nexla_sdk/exceptions.py",
+    "nexla_sdk/telemetry.py",
+    "nexla_sdk/raw_operations.py",
+    "nexla_sdk/generated",
+    "nexla_sdk/utils",
+    "nexla_sdk/models",
+    "nexla_sdk/resources/base_resource.py",
+]
 
 [tool.pytest.ini_options]
 markers = [

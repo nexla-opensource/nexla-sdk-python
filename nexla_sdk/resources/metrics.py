@@ -1,6 +1,6 @@
 import logging
 import warnings
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.metrics.responses import (
@@ -10,6 +10,9 @@ from nexla_sdk.models.metrics.responses import (
     ResourceFlowMetricsResponse,
 )
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +35,7 @@ class MetricsResource(BaseResource):
     so no additional typed overrides are needed.
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = ""  # Metrics endpoints are distributed
 

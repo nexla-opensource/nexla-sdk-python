@@ -1,6 +1,6 @@
 """Resource for managing notification settings."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.notification_settings.requests import (
     NotificationSettingCreate,
@@ -8,6 +8,9 @@ from nexla_sdk.models.notification_settings.requests import (
 )
 from nexla_sdk.models.notification_settings.responses import NotificationSetting
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class NotificationSettingsResource(BaseResource):
@@ -36,7 +39,7 @@ class NotificationSettingsResource(BaseResource):
         ))
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the notification settings resource.
 
         Args:

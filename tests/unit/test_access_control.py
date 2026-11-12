@@ -1,9 +1,8 @@
 """Unit tests for access control operations across resources.
 
-Note: Some tests use raw dict responses instead of model validation because
-AccessorResponse is a Union type alias, and the SDK's model_validate call
-on Union types has limitations. These tests focus on verifying the correct
-HTTP requests are made and responses are handled appropriately.
+Accessor responses validate through a pydantic TypeAdapter, because
+AccessorResponse is a Union type alias. Tests cover both the HTTP request
+and the parsed response models.
 """
 
 import pytest
@@ -47,6 +46,41 @@ class TestAccessorCRUDOperations:
         mock_http_client.assert_request_made(
             "GET", f"/data_sources/{resource_id}/accessors"
         )
+
+    def test_get_accessors_parses_non_empty_response(
+        self, mock_client, mock_http_client
+    ):
+        """Regression: a non-empty accessor list must parse into typed models."""
+        # Arrange
+        resource_id = 123
+        mock_http_client.add_response(
+            f"/data_sources/{resource_id}/accessors",
+            [
+                {
+                    "type": "USER",
+                    "id": 1,
+                    "email": "a@example.com",
+                    "access_roles": ["owner"],
+                },
+                {
+                    "type": "TEAM",
+                    "id": 2,
+                    "name": "data-team",
+                    "access_roles": ["collaborator"],
+                },
+            ],
+        )
+
+        # Act
+        accessors = mock_client.sources.get_accessors(resource_id)
+
+        # Assert
+        assert [type(a).__name__ for a in accessors] == [
+            "UserAccessorResponse",
+            "TeamAccessorResponse",
+        ]
+        assert accessors[0].email == "a@example.com"
+        assert accessors[1].name == "data-team"
 
     def test_add_accessors_makes_correct_request(self, mock_client, mock_http_client):
         """Test that add_accessors makes PUT request with correct body."""

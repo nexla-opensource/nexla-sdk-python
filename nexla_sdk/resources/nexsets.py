@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.catalog_refs.responses import CatalogRef
 from nexla_sdk.models.doc_containers import DocContainer, DocContainerInput
@@ -11,11 +11,14 @@ from nexla_sdk.models.nexsets.responses import Nexset, NexsetSample
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class NexsetsResource(BaseResource):
     """Resource for managing nexsets (data sets)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_sets"
         self._model_class = Nexset

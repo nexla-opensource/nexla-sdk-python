@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.metrics.enums import ResourceType
@@ -19,11 +19,14 @@ from nexla_sdk.models.organizations.responses import (
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route, warn_deprecated
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class OrganizationsResource(BaseResource):
     """Resource for managing organizations."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/orgs"
         self._model_class = Organization

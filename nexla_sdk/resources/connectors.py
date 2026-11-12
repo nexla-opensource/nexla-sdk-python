@@ -1,10 +1,13 @@
 """Resource for managing connectors."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.connectors.requests import ConnectorUpdate
 from nexla_sdk.models.connectors.responses import Connector
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ConnectorsResource(BaseResource):
@@ -46,7 +49,7 @@ class ConnectorsResource(BaseResource):
         "This method is not supported by the backend."
     )
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the connectors resource.
 
         Args:

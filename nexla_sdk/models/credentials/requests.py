@@ -13,10 +13,10 @@ class CredentialCreate(BaseModel):
     # For templatized APIs; int
     auth_template_id: Optional[int] = None
     vendor_id: Optional[int] = None
-    template_config: Optional[Dict] = None
+    template_config: Optional[Dict[str, Any]] = None
 
     # For Core Connectors (Non-templatized)
-    credentials: Optional[Dict] = None
+    credentials: Optional[Dict[str, Any]] = None
 
 
 class CredentialUpdate(BaseModel):

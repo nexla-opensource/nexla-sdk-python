@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.auth_parameters.requests import (
     AuthParameterCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.auth_parameters.requests import (
 from nexla_sdk.models.auth_parameters.responses import AuthParameter
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class AuthParametersResource(BaseResource):
     """Resource for managing auth parameters."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/auth_parameters"
         self._model_class = AuthParameter

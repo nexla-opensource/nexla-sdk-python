@@ -1,13 +1,16 @@
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from nexla_sdk.models.quarantine_settings.responses import QuarantineSetting
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class QuarantineSettingsResource(BaseResource):
     """Resource for listing quarantine settings (global endpoints)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/quarantine_settings"
         self._model_class = QuarantineSetting

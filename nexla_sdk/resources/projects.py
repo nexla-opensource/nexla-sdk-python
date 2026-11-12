@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.flows.responses import FlowResponse
 from nexla_sdk.models.projects.requests import (
@@ -10,11 +10,14 @@ from nexla_sdk.models.projects.responses import Project, ProjectDataFlow
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class ProjectsResource(BaseResource):
     """Resource for managing projects."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/projects"
         self._model_class = Project

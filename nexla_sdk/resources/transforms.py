@@ -1,14 +1,17 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.transforms.requests import TransformCreate, TransformUpdate
 from nexla_sdk.models.transforms.responses import Transform
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class TransformsResource(BaseResource):
     """Resource for reusable record transforms (aliased to code containers)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/transforms"
         self._model_class = Transform

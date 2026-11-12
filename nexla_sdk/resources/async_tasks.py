@@ -1,14 +1,17 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.async_tasks.requests import AsyncTaskCreate
 from nexla_sdk.models.async_tasks.responses import AsyncTask, DownloadLink
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class AsyncTasksResource(BaseResource):
     """Resource for managing asynchronous tasks."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/async_tasks"
         self._model_class = AsyncTask

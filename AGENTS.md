@@ -11,6 +11,7 @@
 - Setup dev env: `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev]`
 - Lint/format (pre-commit): `pre-commit install && pre-commit run -a`
 - Lint only: `ruff check nexla_sdk` • Format: `ruff format` (Black-compatible) • Format check: `ruff format --check .`
+- Type check: `mypy` (strict, scope in `pyproject.toml` `[tool.mypy] files`)
 - Unit tests: `pytest -m unit -q` or `python tests/run_tests.py`
 - Coverage: `pytest --cov=nexla_sdk --cov-report=term-missing`
 - Integration tests (require creds): `export NEXLA_SERVICE_KEY=... && pytest -m integration -vv`

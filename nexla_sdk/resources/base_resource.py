@@ -1,5 +1,18 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Generic,
+    List,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    cast,
+)
+
+from pydantic import BaseModel, TypeAdapter
 
 from nexla_sdk.exceptions import NexlaError
 from nexla_sdk.models.access import (
@@ -10,7 +23,14 @@ from nexla_sdk.models.access import (
 from nexla_sdk.models.enums import AccessRole, ResourceStatus
 from nexla_sdk.utils.pagination import Paginator
 
-T = TypeVar("T")
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
+T = TypeVar("T", bound=BaseModel)
+
+# AccessorResponse is a Union of models. Union has no model_validate, so validate
+# each item through an adapter. Fixes AttributeError on non-empty accessor lists.
+_ACCESSOR_RESPONSE_ADAPTER: TypeAdapter[Any] = TypeAdapter(AccessorResponse)
 
 
 def _wire_value(value: Any) -> Any:
@@ -18,10 +38,10 @@ def _wire_value(value: Any) -> Any:
     return value.value if isinstance(value, Enum) else value
 
 
-class BaseResource:
+class BaseResource(Generic[T]):
     """Base class for all Nexla resources."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """
         Initialize resource.
 
@@ -29,14 +49,14 @@ class BaseResource:
             client: Nexla client instance
         """
         self.client = client
-        self._path = ""  # Override in subclasses
-        self._model_class = None  # Override in subclasses
+        self._path: str = ""  # Override in subclasses
+        self._model_class: Optional[Type[BaseModel]] = None  # Override in subclasses
 
     @staticmethod
     def _resolve_enum_value(enum_cls: Type[Enum], value: Any, param_name: str) -> str:
         """Resolve an enum member or exact enum value string to the API value."""
         try:
-            return enum_cls(value).value
+            return cast(str, enum_cls(value).value)
         except ValueError:
             valid = ", ".join(repr(member.value) for member in enum_cls)
             raise ValueError(
@@ -49,7 +69,7 @@ class BaseResource:
         path: str,
         resource_id: Optional[str] = None,
         operation: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> Any:
         """Make HTTP request using client with enhanced error context."""
         try:
@@ -103,7 +123,7 @@ class BaseResource:
 
         # Check if it's a Pydantic model (has model_dump method)
         if hasattr(data, "model_dump"):
-            return data.model_dump(exclude_none=True)
+            return cast(Dict[str, Any], data.model_dump(exclude_none=True))
 
         # If it's already a dict, return as-is
         if isinstance(data, dict):
@@ -111,26 +131,26 @@ class BaseResource:
 
         # For other types, try to convert to dict
         if hasattr(data, "__dict__"):
-            return data.__dict__
+            return cast(Dict[str, Any], data.__dict__)
 
-        return data
+        return cast(Dict[str, Any], data)
 
     def _parse_response(
         self, response: Any, model_class: Optional[Type[T]] = None
     ) -> Any:
         """Parse response into model objects."""
-        model_class = model_class or self._model_class
+        model_cls: Optional[Type[BaseModel]] = model_class or self._model_class
 
-        if not model_class:
+        if not model_cls:
             return response
 
         if isinstance(response, list):
             return [
-                model_class.model_validate(item) if isinstance(item, dict) else item
+                model_cls.model_validate(item) if isinstance(item, dict) else item
                 for item in response
             ]
         elif isinstance(response, dict):
-            return model_class.model_validate(response)
+            return model_cls.model_validate(response)
         return response
 
     def list(
@@ -147,7 +167,7 @@ class BaseResource:
         from_date: Optional[str] = None,
         to_date: Optional[str] = None,
         org_id: Optional[Union[int, str]] = None,
-        **params,
+        **params: Any,
     ) -> List[T]:
         """
         List resources with optional filters.
@@ -226,10 +246,10 @@ class BaseResource:
         response = self._make_request(
             "GET", self._path, operation="list_resources", params=query_params
         )
-        return self._parse_response(response)
+        return cast(List[T], self._parse_response(response))
 
     def paginate(
-        self, per_page: int = 100, access_role: Optional[str] = None, **params
+        self, per_page: int = 100, access_role: Optional[str] = None, **params: Any
     ) -> Paginator[T]:
         """
         Get paginator for iterating through resources.
@@ -281,7 +301,7 @@ class BaseResource:
             operation="get_resource",
             params=params,
         )
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def create(self, data: Union[Dict[str, Any], Any]) -> T:
         """
@@ -304,7 +324,7 @@ class BaseResource:
         response = self._make_request(
             "POST", self._path, operation="create_resource", json=serialized_data
         )
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def update(self, resource_id: int, data: Union[Dict[str, Any], Any]) -> T:
         """
@@ -326,7 +346,7 @@ class BaseResource:
             operation="update_resource",
             json=serialized_data,
         )
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def delete(self, resource_id: int) -> Dict[str, Any]:
         """
@@ -339,8 +359,14 @@ class BaseResource:
             Response with status
         """
         path = f"{self._path}/{resource_id}"
-        return self._make_request(
-            "DELETE", path, resource_id=str(resource_id), operation="delete_resource"
+        return cast(
+            Dict[str, Any],
+            self._make_request(
+                "DELETE",
+                path,
+                resource_id=str(resource_id),
+                operation="delete_resource",
+            ),
         )
 
     def activate(self, resource_id: int) -> T:
@@ -357,7 +383,7 @@ class BaseResource:
         response = self._make_request(
             "PUT", path, resource_id=str(resource_id), operation="activate_resource"
         )
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def pause(self, resource_id: int) -> T:
         """
@@ -373,7 +399,7 @@ class BaseResource:
         response = self._make_request(
             "PUT", path, resource_id=str(resource_id), operation="pause_resource"
         )
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def copy(
         self, resource_id: int, options: Optional[Union[Dict[str, Any], Any]] = None
@@ -391,13 +417,13 @@ class BaseResource:
         path = f"{self._path}/{resource_id}/copy"
         serialized_options = self._serialize_data(options) if options else {}
         response = self._make_request("POST", path, json=serialized_options)
-        return self._parse_response(response)
+        return cast(T, self._parse_response(response))
 
     def list_public(
         self,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **params,
+        **params: Any,
     ) -> List[T]:
         """
         List publicly available resources for this type.
@@ -418,9 +444,9 @@ class BaseResource:
             query_params["per_page"] = per_page
         query_params.update(params)
         response = self._make_request("GET", path, params=query_params)
-        return self._parse_response(response)
+        return cast(List[T], self._parse_response(response))
 
-    def list_accessible(self, **params) -> List[T]:
+    def list_accessible(self, **params: Any) -> List[T]:
         """
         List resources accessible to the current user (access_insights).
 
@@ -432,9 +458,9 @@ class BaseResource:
         """
         path = f"{self._path}/accessible"
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(List[T], self._parse_response(response))
 
-    def get_access_insights(self, resource_id: int, **params) -> Dict[str, Any]:
+    def get_access_insights(self, resource_id: int, **params: Any) -> Dict[str, Any]:
         """
         Explain why the current user can access a resource.
 
@@ -446,9 +472,11 @@ class BaseResource:
             Access insights payload
         """
         path = f"{self._path}/{resource_id}/access"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
-    def get_users_access_insights(self, resource_id: int, **params) -> Dict[str, Any]:
+    def get_users_access_insights(
+        self, resource_id: int, **params: Any
+    ) -> Dict[str, Any]:
         """
         Get access insights for all users with access to a resource.
 
@@ -460,9 +488,9 @@ class BaseResource:
             Users access insights payload
         """
         path = f"{self._path}/{resource_id}/users_access_insights"
-        return self._make_request("GET", path, params=params)
+        return cast(Dict[str, Any], self._make_request("GET", path, params=params))
 
-    def search(self, filters: Dict[str, Any], **params) -> List[T]:
+    def search(self, filters: Dict[str, Any], **params: Any) -> List[T]:
         """
         Search resources using filter criteria.
 
@@ -475,9 +503,9 @@ class BaseResource:
         """
         path = f"{self._path}/search"
         response = self._make_request("POST", path, json=filters, params=params)
-        return self._parse_response(response)
+        return cast(List[T], self._parse_response(response))
 
-    def search_tags(self, tags: List[str], **params) -> List[T]:
+    def search_tags(self, tags: List[str], **params: Any) -> List[T]:
         """
         Search resources by tags.
 
@@ -490,7 +518,7 @@ class BaseResource:
         """
         path = f"{self._path}/search_tags"
         response = self._make_request("POST", path, json=tags, params=params)
-        return self._parse_response(response)
+        return cast(List[T], self._parse_response(response))
 
     def get_docs(self, resource_id: int) -> Dict[str, Any]:
         """
@@ -503,7 +531,7 @@ class BaseResource:
             Docs payload
         """
         path = f"{self._path}/{resource_id}/docs"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def set_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
@@ -517,7 +545,7 @@ class BaseResource:
             Updated docs payload
         """
         path = f"{self._path}/{resource_id}/docs"
-        return self._make_request("POST", path, json=docs)
+        return cast(Dict[str, Any], self._make_request("POST", path, json=docs))
 
     def add_docs(self, resource_id: int, docs: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
@@ -531,7 +559,7 @@ class BaseResource:
             Updated docs payload
         """
         path = f"{self._path}/{resource_id}/docs"
-        return self._make_request("PUT", path, json=docs)
+        return cast(Dict[str, Any], self._make_request("PUT", path, json=docs))
 
     def remove_docs(
         self, resource_id: int, docs: Optional[List[Dict[str, Any]]] = None
@@ -547,7 +575,7 @@ class BaseResource:
             Updated docs payload
         """
         path = f"{self._path}/{resource_id}/docs"
-        return self._make_request("DELETE", path, json=docs or [])
+        return cast(Dict[str, Any], self._make_request("DELETE", path, json=docs or []))
 
     def get_referenced_by(self, resource_id: int) -> Dict[str, Any]:
         """
@@ -560,7 +588,7 @@ class BaseResource:
             Referenced-by payload
         """
         path = f"{self._path}/{resource_id}/referenced_by"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_control_event(self, resource_id: int, event: str) -> Dict[str, Any]:
         """
@@ -574,7 +602,7 @@ class BaseResource:
             Control event payload
         """
         path = f"{self._path}/{resource_id}/control/{event}"
-        return self._make_request("GET", path)
+        return cast(Dict[str, Any], self._make_request("GET", path))
 
     def get_tags(self, resource_id: int) -> List[str]:
         """
@@ -587,7 +615,7 @@ class BaseResource:
             List of tags
         """
         path = f"{self._path}/{resource_id}/tags"
-        return self._make_request("GET", path)
+        return cast(List[str], self._make_request("GET", path))
 
     def set_tags(self, resource_id: int, tags: List[str]) -> List[str]:
         """
@@ -601,7 +629,7 @@ class BaseResource:
             Updated list of tags
         """
         path = f"{self._path}/{resource_id}/tags"
-        return self._make_request("POST", path, json=tags)
+        return cast(List[str], self._make_request("POST", path, json=tags))
 
     def add_tags(self, resource_id: int, tags: List[str]) -> List[str]:
         """
@@ -615,7 +643,7 @@ class BaseResource:
             Updated list of tags
         """
         path = f"{self._path}/{resource_id}/tags"
-        return self._make_request("PUT", path, json=tags)
+        return cast(List[str], self._make_request("PUT", path, json=tags))
 
     def remove_tags(self, resource_id: int, tags: List[str]) -> List[str]:
         """
@@ -629,7 +657,7 @@ class BaseResource:
             Updated list of tags
         """
         path = f"{self._path}/{resource_id}/tags"
-        return self._make_request("DELETE", path, json=tags)
+        return cast(List[str], self._make_request("DELETE", path, json=tags))
 
     def get_audit_log(
         self,
@@ -657,7 +685,7 @@ class BaseResource:
             List of audit log entries
         """
         path = f"{self._path}/{resource_id}/audit_log"
-        params = {}
+        params: Dict[str, Any] = {}
         if from_date is not None:
             params["from"] = from_date
         if to_date is not None:
@@ -670,7 +698,9 @@ class BaseResource:
             params["page"] = page
         if per_page is not None:
             params["per_page"] = per_page
-        return self._make_request("GET", path, params=params)
+        return cast(
+            List[Dict[str, Any]], self._make_request("GET", path, params=params)
+        )
 
     def get_accessors(self, resource_id: int) -> AccessorResponseList:
         """
@@ -687,7 +717,9 @@ class BaseResource:
 
         # Parse response into AccessorResponse objects
         if isinstance(response, list):
-            return [AccessorResponse.model_validate(item) for item in response]
+            return [
+                _ACCESSOR_RESPONSE_ADAPTER.validate_python(item) for item in response
+            ]
         return []
 
     def add_accessors(
@@ -713,7 +745,9 @@ class BaseResource:
 
         # Parse response into AccessorResponse objects
         if isinstance(response, list):
-            return [AccessorResponse.model_validate(item) for item in response]
+            return [
+                _ACCESSOR_RESPONSE_ADAPTER.validate_python(item) for item in response
+            ]
         return []
 
     def replace_accessors(
@@ -739,7 +773,9 @@ class BaseResource:
 
         # Parse response into AccessorResponse objects
         if isinstance(response, list):
-            return [AccessorResponse.model_validate(item) for item in response]
+            return [
+                _ACCESSOR_RESPONSE_ADAPTER.validate_python(item) for item in response
+            ]
         return []
 
     def delete_accessors(
@@ -766,5 +802,7 @@ class BaseResource:
 
         # Parse response into AccessorResponse objects
         if isinstance(response, list):
-            return [AccessorResponse.model_validate(item) for item in response]
+            return [
+                _ACCESSOR_RESPONSE_ADAPTER.validate_python(item) for item in response
+            ]
         return []

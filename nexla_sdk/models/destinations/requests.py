@@ -13,11 +13,11 @@ class DestinationCreate(BaseModel):
     description: Optional[str] = None
 
     # In case of Core Sinks only
-    sink_config: Optional[Dict] = None
+    sink_config: Optional[Dict[str, Any]] = None
 
     # In case of Templatized API only
     vendor_endpoint_id: Optional[int] = None
-    template_config: Optional[Dict] = None
+    template_config: Optional[Dict[str, Any]] = None
 
 
 class DestinationUpdate(BaseModel):

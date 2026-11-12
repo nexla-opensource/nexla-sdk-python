@@ -1,9 +1,12 @@
 """Resource for managing API keys (read-only)."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.api_keys.responses import ApiKey, ApiKeysIndex
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ApiKeysResource(BaseResource):
@@ -34,7 +37,7 @@ class ApiKeysResource(BaseResource):
         "are not supported. Manage API keys through their parent resources."
     )
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the API keys resource.
 
         Args:

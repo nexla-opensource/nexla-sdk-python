@@ -1,10 +1,13 @@
 """Resource for managing vendors."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.vendors.requests import VendorCreate, VendorUpdate
 from nexla_sdk.models.vendors.responses import Vendor
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class VendorsResource(BaseResource):
@@ -40,7 +43,7 @@ class VendorsResource(BaseResource):
         client.vendors.delete(123)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the vendors resource.
 
         Args:

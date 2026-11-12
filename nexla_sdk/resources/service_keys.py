@@ -1,10 +1,13 @@
 """Resource for managing service keys."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.service_keys.requests import ServiceKeyCreate, ServiceKeyUpdate
 from nexla_sdk.models.service_keys.responses import ServiceKey
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ServiceKeysResource(BaseResource):
@@ -34,7 +37,7 @@ class ServiceKeysResource(BaseResource):
         client.service_keys.pause(key.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the service keys resource.
 
         Args:

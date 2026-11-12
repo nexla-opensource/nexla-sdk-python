@@ -1,13 +1,16 @@
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, Dict
 
 from nexla_sdk.models.common import FlowNode
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class FlowNodesResource(BaseResource):
     """Resource for flow nodes."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/flow_nodes"
         self._model_class = FlowNode

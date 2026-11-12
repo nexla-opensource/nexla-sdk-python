@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.destinations.requests import (
     DestinationCopyOptions,
@@ -9,11 +9,14 @@ from nexla_sdk.models.destinations.responses import Destination
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class DestinationsResource(BaseResource):
     """Resource for managing destinations (data sinks)."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_sinks"
         self._model_class = Destination

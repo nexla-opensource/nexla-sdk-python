@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.credentials.responses import Credential
 from nexla_sdk.models.data_credentials_groups.requests import (
@@ -9,11 +9,14 @@ from nexla_sdk.models.data_credentials_groups.requests import (
 from nexla_sdk.models.data_credentials_groups.responses import DataCredentialsGroup
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class DataCredentialsGroupsResource(BaseResource):
     """Resource for managing data credentials groups."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_credentials_groups"
         self._model_class = DataCredentialsGroup

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.catalog_configs.requests import (
     CatalogConfigCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.catalog_configs.requests import (
 from nexla_sdk.models.catalog_configs.responses import CatalogConfig
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class CatalogConfigsResource(BaseResource):
     """Resource for managing catalog configs."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/catalog_configs"
         self._model_class = CatalogConfig

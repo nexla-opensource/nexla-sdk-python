@@ -1,5 +1,5 @@
 import http
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Tuple, Type, cast
 
 
 class NexlaError(Exception):
@@ -45,7 +45,7 @@ class NexlaError(Exception):
         """HTTP status code. Same value as ``status_code``."""
         return self.status_code
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Provide detailed error information."""
         parts = []
 
@@ -88,7 +88,7 @@ class NexlaError(Exception):
 class AuthenticationError(NexlaError):
     """Raised when authentication fails."""
 
-    def __init__(self, message: str = "Authentication failed", **kwargs):
+    def __init__(self, message: str = "Authentication failed", **kwargs: Any) -> None:
         # If operation is not provided, default to "authentication"
         if "operation" not in kwargs:
             kwargs["operation"] = "authentication"
@@ -122,7 +122,9 @@ class ValidationError(NexlaError):
 class RateLimitError(NexlaError):
     """Raised when rate limit is exceeded."""
 
-    def __init__(self, message: str, retry_after: Optional[int] = None, **kwargs):
+    def __init__(
+        self, message: str, retry_after: Optional[int] = None, **kwargs: Any
+    ) -> None:
         super().__init__(message, **kwargs)
         self.retry_after = retry_after
 
@@ -154,7 +156,9 @@ class ResourceConflictError(NexlaError):
 class CredentialError(NexlaError):
     """Raised when credential validation fails."""
 
-    def __init__(self, message: str, credential_id: Optional[str] = None, **kwargs):
+    def __init__(
+        self, message: str, credential_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         # Set defaults if not provided
         kwargs.setdefault("operation", "credential_validation")
         kwargs.setdefault("resource_type", "credential")
@@ -171,8 +175,8 @@ class FlowError(NexlaError):
         message: str,
         flow_id: Optional[str] = None,
         flow_step: Optional[str] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         # Set defaults if not provided
         kwargs.setdefault("operation", "flow_operation")
         kwargs.setdefault("resource_type", "flow")
@@ -186,7 +190,9 @@ class FlowError(NexlaError):
 class TransformError(NexlaError):
     """Raised when transform operations fail."""
 
-    def __init__(self, message: str, transform_id: Optional[str] = None, **kwargs):
+    def __init__(
+        self, message: str, transform_id: Optional[str] = None, **kwargs: Any
+    ) -> None:
         # Set defaults if not provided
         kwargs.setdefault("operation", "transform_operation")
         kwargs.setdefault("resource_type", "transform")
@@ -247,7 +253,7 @@ def _header(headers: Optional[Dict[str, Any]], name: str) -> Optional[str]:
     """Case-insensitive header lookup."""
     for key, value in (headers or {}).items():
         if key.lower() == name.lower():
-            return value
+            return cast(str, value)
     return None
 
 
@@ -275,12 +281,12 @@ def error_from_response(
     message, error_code, retry_after = _message_from_body(body)
     if not message:
         try:
-            reason = http.HTTPStatus(status_code).phrase  # type: ignore[arg-type]
+            reason = http.HTTPStatus(cast(int, status_code)).phrase
         except (ValueError, TypeError):
             reason = "HTTP error"
         message = f"{status_code} {reason}"
 
-    cls: Type[NexlaError] = _STATUS_CLASSES.get(status_code, ServerError)  # type: ignore[arg-type]
+    cls: Type[NexlaError] = _STATUS_CLASSES.get(cast(int, status_code), ServerError)
 
     if cls is RateLimitError:
         if retry_after is None:

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from nexla_sdk.models.genai.requests import (
     GenAiConfigCreatePayload,
@@ -13,11 +13,14 @@ from nexla_sdk.models.genai.responses import (
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import missing_route
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class GenAIResource(BaseResource):
     """Resource for GenAI configurations and org settings."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = ""
         self._model_class = None

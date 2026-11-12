@@ -1,10 +1,13 @@
 """Resource for managing clusters."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.clusters.requests import ClusterCreate, ClusterUpdate
 from nexla_sdk.models.clusters.responses import Cluster
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class ClustersResource(BaseResource):
@@ -35,7 +38,7 @@ class ClustersResource(BaseResource):
         client.clusters.set_default(cluster.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the clusters resource.
 
         Args:

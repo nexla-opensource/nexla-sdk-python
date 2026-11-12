@@ -1,10 +1,13 @@
 """Resource for managing flow triggers."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.flow_triggers.requests import FlowTriggerCreate
 from nexla_sdk.models.flow_triggers.responses import FlowTrigger
 from nexla_sdk.resources.base_resource import BaseResource
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 
 class FlowTriggersResource(BaseResource):
@@ -39,7 +42,7 @@ class FlowTriggersResource(BaseResource):
         client.flow_triggers.delete(trigger.id)
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         """Initialize the flow triggers resource.
 
         Args:

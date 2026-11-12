@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.code_containers.requests import (
     CodeContainerCreate,
@@ -7,11 +7,14 @@ from nexla_sdk.models.code_containers.requests import (
 from nexla_sdk.models.code_containers.responses import CodeContainer
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class CodeContainersResource(BaseResource):
     """Resource for managing code containers."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/code_containers"
         self._model_class = CodeContainer

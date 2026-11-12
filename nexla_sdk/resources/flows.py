@@ -1,7 +1,7 @@
 import logging
 import warnings
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nexla_sdk.models.destinations.requests import DestinationUpdate
 from nexla_sdk.models.flows.requests import FlowCopyOptions
@@ -16,6 +16,9 @@ from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
 from nexla_sdk.utils.deprecation import warn_deprecated
+
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +48,7 @@ def _iso_date_to_unix_seconds(value: Any) -> Any:
 class FlowsResource(BaseResource):
     """Resource for managing data flows."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/flows"
         self._model_class = FlowResponse

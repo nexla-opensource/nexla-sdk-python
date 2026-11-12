@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from nexla_sdk.models.notification_channel_settings.requests import (
     NotificationChannelSettingCreate,
@@ -9,11 +9,14 @@ from nexla_sdk.models.notification_channel_settings.responses import (
 )
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class NotificationChannelSettingsResource(BaseResource):
     """Resource for managing notification channel settings."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/notification_channel_settings"
         self._model_class = NotificationChannelSetting

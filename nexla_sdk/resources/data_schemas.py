@@ -1,14 +1,17 @@
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nexla_sdk.models.common import LogEntry
 from nexla_sdk.models.data_schemas.responses import DataSchema
 from nexla_sdk.resources.base_resource import BaseResource
 
+if TYPE_CHECKING:
+    from nexla_sdk.client import NexlaClient
+
 
 class DataSchemasResource(BaseResource):
     """Resource for data schemas."""
 
-    def __init__(self, client):
+    def __init__(self, client: "NexlaClient") -> None:
         super().__init__(client)
         self._path = "/data_schemas"
         self._model_class = DataSchema
