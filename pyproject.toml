@@ -94,8 +94,10 @@ quote-style = "double"
 indent-style = "space"
 
 [tool.mypy]
-# python_version 3.8 is the SDK floor. Pinned mypy 1.16.1 still accepts it.
-python_version = "3.8"
+# The SDK floor is Python 3.8, but current pydantic (>= 2.14) uses match statements,
+# which mypy cannot parse below a 3.10 target. Python 3.8 compatibility is enforced by
+# ruff (target-version py38) and by the CI job that imports and tests every module on 3.8.
+python_version = "3.10"
 strict = true
 plugins = ["pydantic.mypy"]
 files = ["nexla_sdk"]
