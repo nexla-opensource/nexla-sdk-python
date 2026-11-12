@@ -419,3 +419,76 @@ class NotificationsResource(BaseResource):
 
         response = self._make_request("GET", path, params=params)
         return [NotificationSetting(**item) for item in response]
+
+    def get_schema(self, method: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Get the JSON schema for notifications.
+
+        Args:
+            method: Optional HTTP method filter (get, post, or put)
+
+        Returns:
+            JSON schema
+        """
+        params = {"method": method} if method is not None else {}
+        return self._make_request("GET", f"{self._path}/schema", params=params)
+
+    def get_summary(
+        self,
+        level: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        limit: Optional[int] = None,
+        org_id: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get an aggregate view of notifications: total, by level, read split, recent items.
+
+        Args:
+            level: Filter to one level (DEBUG, INFO, WARN, ERROR, RECOVERED, RESOLVED)
+            from_date: Window start (YYYY-MM-DD)
+            to_date: Window end (YYYY-MM-DD)
+            limit: Number of recent items to include (1-100, backend default 20)
+            org_id: Filter by organization ID
+
+        Returns:
+            Notification summary
+        """
+        params = {
+            "level": level,
+            "from_date": from_date,
+            "to_date": to_date,
+            "limit": limit,
+            "org_id": org_id,
+        }
+        return self._make_request(
+            "GET",
+            f"{self._path}/summary",
+            params={k: v for k, v in params.items() if v is not None},
+        )
+
+    def get_unread_count(self, org_id: Optional[int] = None) -> Dict[str, Any]:
+        """
+        Get the count of unread notifications (legacy endpoint).
+
+        Args:
+            org_id: Filter by organization ID
+
+        Returns:
+            Unread count
+        """
+        params = {"org_id": org_id} if org_id is not None else {}
+        return self._make_request("GET", f"{self._path}/unread-count", params=params)
+
+    def mark_all_as_read(self, org_id: Optional[int] = None) -> Dict[str, Any]:
+        """
+        Mark all notifications as read (legacy endpoint).
+
+        Args:
+            org_id: Limit the update to one organization ID
+
+        Returns:
+            Backend response
+        """
+        params = {"org_id": org_id} if org_id is not None else {}
+        return self._make_request("PUT", f"{self._path}/read-all", params=params)
