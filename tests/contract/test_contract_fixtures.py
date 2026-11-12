@@ -73,9 +73,9 @@ def _assert_subset(expected, actual, path):
             assert key in actual, f"{path}.{key} missing from {actual!r}"
             _assert_subset(value, actual[key], f"{path}.{key}")
     elif isinstance(expected, list):
-        assert isinstance(actual, list) and len(actual) == len(
-            expected
-        ), f"{path}: expected {len(expected)} items, got {actual!r}"
+        assert isinstance(actual, list) and len(actual) == len(expected), (
+            f"{path}: expected {len(expected)} items, got {actual!r}"
+        )
         for i, (e, a) in enumerate(zip(expected, actual)):
             _assert_subset(e, a, f"{path}[{i}]")
     else:
@@ -94,9 +94,9 @@ def _assert_request(expected, actual, index):
 
     sent_headers = {k.lower(): v for k, v in actual["headers"].items()}
     for key, value in expected.get("headers", {}).items():
-        assert (
-            sent_headers.get(key.lower()) == value
-        ), f"{where}: header {key}={sent_headers.get(key.lower())!r}"
+        assert sent_headers.get(key.lower()) == value, (
+            f"{where}: header {key}={sent_headers.get(key.lower())!r}"
+        )
 
     if "body" in expected:
         body = json.loads(actual["body"]) if actual["body"] else None
@@ -104,9 +104,9 @@ def _assert_request(expected, actual, index):
 
 
 def _assert_error(err, expected):
-    assert (
-        type(err).__name__ == expected["class"]
-    ), f"expected {expected['class']}, got {type(err).__name__}: {err}"
+    assert type(err).__name__ == expected["class"], (
+        f"expected {expected['class']}, got {type(err).__name__}: {err}"
+    )
     assert err.status_code == expected["status"]
     if "message" in expected:
         assert err.message == expected["message"]

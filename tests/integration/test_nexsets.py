@@ -230,6 +230,6 @@ class TestNexsetsIntegration:
         if len(page1) == 3 and len(page2) > 0:
             page1_ids = {nexset.id for nexset in page1}
             page2_ids = {nexset.id for nexset in page2}
-            assert page1_ids.isdisjoint(
-                page2_ids
-            ), "Pages should contain different nexsets"
+            assert page1_ids.isdisjoint(page2_ids), (
+                "Pages should contain different nexsets"
+            )

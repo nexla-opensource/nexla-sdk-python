@@ -55,15 +55,15 @@ class TestConnectorEnumCoverage:
 
         # All source types should be in ConnectorType
         missing_from_connector = source_values - connector_values
-        assert (
-            len(missing_from_connector) == 0
-        ), f"ConnectorType missing source types: {missing_from_connector}"
+        assert len(missing_from_connector) == 0, (
+            f"ConnectorType missing source types: {missing_from_connector}"
+        )
 
         # All destination types should be in ConnectorType
         missing_from_connector = dest_values - connector_values
-        assert (
-            len(missing_from_connector) == 0
-        ), f"ConnectorType missing destination types: {missing_from_connector}"
+        assert len(missing_from_connector) == 0, (
+            f"ConnectorType missing destination types: {missing_from_connector}"
+        )
 
     def test_source_type_has_cloud_database_connectors(self):
         """SourceType should include cloud database connectors."""

@@ -34,9 +34,7 @@ class TestDocContainersResource:
         assert isinstance(out[0], LogEntry)
         mock_http_client.assert_request_made("GET", "/doc_containers/10/audit_log")
 
-    def test_audit_log_parses_integer_impersonator_id(
-        self, client, mock_http_client
-    ):
+    def test_audit_log_parses_integer_impersonator_id(self, client, mock_http_client):
         """admin-api returns ``impersonator_id`` as the impersonating user's
         numeric id when impersonation is active. Earlier the SDK typed this
         as ``Optional[str]`` and validation failed on real responses."""
