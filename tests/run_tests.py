@@ -90,7 +90,7 @@ def check_environment():
     required_files = [
         "tests/conftest.py",
         "tests/utils/__init__.py",
-        "pytest.ini",
+        "pyproject.toml",
         "requirements.txt",
     ]
 

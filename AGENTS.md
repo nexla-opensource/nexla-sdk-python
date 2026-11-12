@@ -5,7 +5,7 @@
 - `tests/` — pytest suites: `unit/`, `integration/`, `property/`, `performance/` plus `run_tests.py` helper.
 - `examples/` — runnable usage snippets.
 - `docs-site/` — Docusaurus site and API doc generator.
-- Root config: `pyproject.toml` (build/deps), `pytest.ini` (markers/coverage), `.pre-commit-config.yaml` (lint/format).
+- Root config: `pyproject.toml` (build, deps, pytest, coverage, ruff, mypy), `.pre-commit-config.yaml` (lint/format/type check).
 
 ## Build, Test, and Development Commands
 - Setup dev env: `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev]`
@@ -25,7 +25,7 @@
 ## Testing Guidelines
 - Frameworks: pytest, pytest-cov, Hypothesis (property tests), responses/freezegun for I/O/time.
 - Test names: files `tests/**/test_*.py`; functions `test_*`; optional class groups `Test*`.
-- Markers: `unit` (default), `integration`, `property`, `performance`, `slow` (see `pytest.ini`).
+- Markers: `unit` (default), `integration`, `property`, `performance`, `slow` (see `[tool.pytest.ini_options]` in `pyproject.toml`).
 - Run focused suites: `python tests/run_tests.py --unit|--integration --coverage`.
 - Credentials for integration: use `.env` or `tests/.env` (see `.env.example`, `tests/env.template`). Never commit secrets.
 

@@ -123,9 +123,9 @@ tests/
 
 ### Test Configuration
 
-#### pytest.ini
+#### pyproject.toml (`[tool.pytest.ini_options]`, `[tool.coverage.*]`)
 - Test markers: unit, integration, property, performance, slow
-- Coverage configuration (85% minimum)
+- Coverage configuration; CI enforces an 85% minimum with `--cov-fail-under=85`
 - Test discovery patterns
 - Hypothesis settings
 
