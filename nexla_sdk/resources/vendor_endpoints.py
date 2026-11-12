@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.vendor_endpoints.requests import (
     VendorEndpointCreate,
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class VendorEndpointsResource(BaseResource):
+class VendorEndpointsResource(BaseResource[VendorEndpoint]):
     """Resource for managing vendor endpoints."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -19,10 +19,10 @@ class VendorEndpointsResource(BaseResource):
         self._path = "/vendor_endpoints"
         self._model_class = VendorEndpoint
 
-    def list(self, **kwargs) -> List[VendorEndpoint]:
+    def list(self, **kwargs: Any) -> List[VendorEndpoint]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
-    def get(self, vendor_endpoint_id: int) -> VendorEndpoint:
+    def get(self, vendor_endpoint_id: int) -> VendorEndpoint:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         return super().get(vendor_endpoint_id)
 
     def create(
@@ -41,7 +41,9 @@ class VendorEndpointsResource(BaseResource):
         return super().delete(vendor_endpoint_id)
 
     def update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("PUT", self._path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", self._path, json=payload))
 
     def delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        return self._make_request("DELETE", self._path, json=payload)
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", self._path, json=payload)
+        )

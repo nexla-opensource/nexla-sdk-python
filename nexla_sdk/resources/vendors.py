@@ -1,6 +1,6 @@
 """Resource for managing vendors."""
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 from nexla_sdk.models.vendors.requests import VendorCreate, VendorUpdate
 from nexla_sdk.models.vendors.responses import Vendor
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class VendorsResource(BaseResource):
+class VendorsResource(BaseResource[Vendor]):
     """Resource for managing vendors.
 
     Vendors represent third-party service providers that can be
@@ -53,12 +53,12 @@ class VendorsResource(BaseResource):
         self._path = "/vendors"
         self._model_class = Vendor
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         expand: bool = False,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[Vendor]:
         """List vendors.
 
@@ -78,7 +78,7 @@ class VendorsResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(List[Vendor], self._parse_response(response))
 
     def get(self, vendor_id: int, expand: bool = False) -> Vendor:
         """Get vendor by ID.
@@ -93,7 +93,7 @@ class VendorsResource(BaseResource):
         path = f"{self._path}/{vendor_id}"
         params = {"expand": "true"} if expand else {}
         response = self._make_request("GET", path, params=params)
-        return self._parse_response(response)
+        return cast(Vendor, self._parse_response(response))
 
     def get_by_name(self, vendor_name: str, expand: bool = False) -> Vendor:
         """Get vendor by name.
@@ -109,7 +109,7 @@ class VendorsResource(BaseResource):
         if expand:
             params["expand"] = "true"
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(Vendor, self._parse_response(response))
 
     def create(self, data: Union[VendorCreate, Dict[str, Any]]) -> Vendor:
         """Create a new vendor (super user only).
@@ -153,7 +153,7 @@ class VendorsResource(BaseResource):
         response = self._make_request(
             "PUT", self._path, json=serialized_data, params=params
         )
-        return self._parse_response(response)
+        return cast(Vendor, self._parse_response(response))
 
     def delete(self, vendor_id: int) -> Dict[str, Any]:
         """Delete a vendor (super user only).
@@ -176,15 +176,19 @@ class VendorsResource(BaseResource):
             Response with status
         """
         params = {"vendor_name": vendor_name}
-        return self._make_request("DELETE", self._path, params=params)
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", self._path, params=params)
+        )
 
     def update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Update vendors via collection endpoint."""
-        return self._make_request("PUT", self._path, json=payload)
+        return cast(Dict[str, Any], self._make_request("PUT", self._path, json=payload))
 
-    def delete_all(self, payload: Dict[str, Any] = None) -> Dict[str, Any]:
+    def delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Delete vendors via collection endpoint."""
-        return self._make_request("DELETE", self._path, json=payload or {})
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", self._path, json=payload or {})
+        )
 
     def delete_auth_template(
         self, vendor_id: int, auth_template_id: int
@@ -199,4 +203,4 @@ class VendorsResource(BaseResource):
             Response with status
         """
         path = f"{self._path}/{vendor_id}/auth_templates/{auth_template_id}"
-        return self._make_request("DELETE", path)
+        return cast(Dict[str, Any], self._make_request("DELETE", path))
