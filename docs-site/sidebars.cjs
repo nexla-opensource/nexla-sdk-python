@@ -24,7 +24,8 @@ const sidebars = {
         'sync-vs-streaming',
         'error-handling-retries',
         'rate-limits-idempotency',
-        'observability-logging-metrics-tracing'
+        'observability-logging-metrics-tracing',
+        'behavior-spec'
       ]
     },
     {

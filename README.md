@@ -739,9 +739,14 @@ Versions are derived from Git tags via `setuptools_scm` (no manual version bumps
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full release process, pre-release checklist, and troubleshooting.
 
+## Examples and behavior spec
+
+- Runnable examples: [`examples/`](examples/) cover auth modes, pagination, and error handling.
+- [Behavior spec](docs-site/docs/behavior-spec.md): the rules that the Python and TypeScript SDKs share for authentication, timeouts, retries, errors, pagination, and HTTP methods.
+
 ## License
 
-This project is licensed under the terms of the MIT license.
+This project is licensed under the terms of the MIT license. See [LICENSE](LICENSE).
 
 ## Support
 
