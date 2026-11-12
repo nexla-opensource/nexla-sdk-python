@@ -3,7 +3,6 @@ name: Docs Site
 on:
   push:
     branches: [ main ]
-    tags: [ 'v*' ]
     paths:
       - "docs-site/**"
       - "docs/**"
@@ -21,10 +20,9 @@ on:
       - "README.md"
       - ".github/workflows/docs.yml"
 
+# Build-only check: the docs site is not deployed from this repository.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -69,23 +67,3 @@ jobs:
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
         run: |
           npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs-site/build
-
-  # Deploy runs only on pushes to main, and only when the repository variable
-  # PAGES_ENABLED is "true". Otherwise the job is skipped and the workflow still
-  # passes. To enable Pages, see "GitHub Pages" in CONTRIBUTING.md.
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.PAGES_ENABLED == 'true'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
