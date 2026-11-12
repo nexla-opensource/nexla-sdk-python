@@ -32,6 +32,11 @@ Skill bundle (`nexla.skill`)
 - After you change `skills/nexla/`, run `python scripts/build_skill.py` and commit `nexla.skill`.
 - The `skill-bundle` CI job runs `python scripts/build_skill.py --check`. It fails when the committed archive is stale.
 
+Operation drift check
+- `scripts/parity/sdk_operations.json` lists every HTTP operation the SDK sends. CI fails when the code and the list differ.
+- After you add, remove, or rename a route, run `python scripts/parity/extract_sdk_operations.py` and commit the manifest.
+- To compare with the backend, set `NEXLA_PUBLIC_SPEC` to a public spec JSON and run `python scripts/parity/check_operation_map_sync.py`. The check fails on SDK operations that the spec does not define. See `scripts/parity/README.md`.
+
 Release
 ------
 
