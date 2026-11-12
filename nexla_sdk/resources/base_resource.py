@@ -136,7 +136,7 @@ class BaseResource(Generic[T]):
         return cast(Dict[str, Any], data)
 
     def _parse_response(
-        self, response: Any, model_class: Optional[Type[T]] = None
+        self, response: Any, model_class: Optional[Type[BaseModel]] = None
     ) -> Any:
         """Parse response into model objects."""
         model_cls: Optional[Type[BaseModel]] = model_class or self._model_class
