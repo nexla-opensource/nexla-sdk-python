@@ -76,7 +76,8 @@ jobs:
           pip install "mypy==1.16.1"  # keep in sync with .pre-commit-config.yaml
           mypy
 
-      - name: Check Generated Operation Map Sync
+      - name: Check SDK operations against the manifest
+        # Fails when nexla_sdk's HTTP operations differ from scripts/parity/sdk_operations.json.
         run: |
           python scripts/parity/check_operation_map_sync.py
 
