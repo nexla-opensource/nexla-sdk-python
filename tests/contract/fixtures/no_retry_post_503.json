@@ -1,0 +1,40 @@
+{
+  "call": {
+    "args": {
+      "body": {
+        "name": "s"
+      }
+    },
+    "op": "create_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "POST is not retried on 503 (could duplicate a create).",
+  "exchanges": [
+    {
+      "request": {
+        "body": {
+          "name": "s"
+        },
+        "method": "POST",
+        "path": "/data_sources"
+      },
+      "response": {
+        "body": {
+          "message": "unavailable"
+        },
+        "status": 503
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "ServerError",
+      "message": "unavailable",
+      "status": 503
+    }
+  },
+  "name": "no_retry_post_503"
+}

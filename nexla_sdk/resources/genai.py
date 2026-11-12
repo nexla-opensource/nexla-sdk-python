@@ -11,6 +11,7 @@ from nexla_sdk.models.genai.responses import (
     GenAiOrgSetting,
 )
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class GenAIResource(BaseResource):
@@ -88,6 +89,7 @@ class GenAIResource(BaseResource):
             "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
         )
 
+    @missing_route("DELETE", "/gen_ai_org_settings")
     def delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("DELETE", "/gen_ai_org_settings", json=payload)
 

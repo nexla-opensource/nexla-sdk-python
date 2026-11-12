@@ -97,12 +97,15 @@ class NotificationsResource(BaseResource):
         self, payload: Optional[Dict[str, Any]] = None, async_mode: bool = False
     ) -> Dict[str, Any]:
         """
-        Delete all notifications.
+        Bulk-delete notifications listed in the body (``notification_ids``).
+
+        The backend has no delete-all route; the collection DELETE reads ids
+        from the body (notifications/routes/_core.py:899).
 
         Returns:
             Response status
         """
-        path = f"{self._path}/all"
+        path = self._path
         params = {"async": 1} if async_mode else None
         return self._make_request(
             "DELETE", path, json=payload or {}, params=params or {}

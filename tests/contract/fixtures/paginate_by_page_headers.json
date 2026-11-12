@@ -1,0 +1,134 @@
+{
+  "call": {
+    "args": {
+      "per_page": 2
+    },
+    "op": "list_sources_all"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "Iterator follows X-Current-Page / X-Total-Page-Count.",
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "1",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 1,
+            "name": "src-1",
+            "status": "ACTIVE"
+          },
+          {
+            "id": 2,
+            "name": "src-2",
+            "status": "ACTIVE"
+          }
+        ],
+        "headers": {
+          "Link": "<https://x/data_sources?page=2&per_page=2>; rel=\"Next\"",
+          "X-Current-Page": "1",
+          "X-Page-Count": "2",
+          "X-Total-Count": "5",
+          "X-Total-Page-Count": "3"
+        },
+        "status": 200
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "2",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 3,
+            "name": "src-3",
+            "status": "ACTIVE"
+          },
+          {
+            "id": 4,
+            "name": "src-4",
+            "status": "ACTIVE"
+          }
+        ],
+        "headers": {
+          "X-Current-Page": "2",
+          "X-Page-Count": "2",
+          "X-Total-Count": "5",
+          "X-Total-Page-Count": "3"
+        },
+        "status": 200
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "3",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 5,
+            "name": "src-5",
+            "status": "ACTIVE"
+          }
+        ],
+        "headers": {
+          "X-Current-Page": "3",
+          "X-Page-Count": "1",
+          "X-Total-Count": "5",
+          "X-Total-Page-Count": "3"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": [
+      {
+        "id": 1,
+        "name": "src-1",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 2,
+        "name": "src-2",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 3,
+        "name": "src-3",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 4,
+        "name": "src-4",
+        "status": "ACTIVE"
+      },
+      {
+        "id": 5,
+        "name": "src-5",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "name": "paginate_by_page_headers"
+}

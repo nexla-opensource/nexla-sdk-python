@@ -47,8 +47,12 @@ class TestNotificationsResource:
         assert isinstance(out[0], Notification)
 
         mock_http_client.clear_responses()
-        mock_http_client.add_response("/notifications/all", {"status": "deleted"})
-        d = client.notifications.delete_all()
+        mock_http_client.add_response("/notifications", {"status": "deleted"})
+        d = client.notifications.delete_all({"notification_ids": [1]})
+        last = mock_http_client.get_last_request()
+        assert last["method"] == "DELETE"
+        assert last["url"].endswith("/notifications")
+        assert last["json"] == {"notification_ids": [1]}
         assert d.get("status") == "deleted"
 
         mock_http_client.clear_responses()

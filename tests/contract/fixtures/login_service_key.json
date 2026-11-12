@@ -1,0 +1,63 @@
+{
+  "call": {
+    "args": {},
+    "op": "login"
+  },
+  "client": {
+    "max_retries": 3,
+    "service_key": "svc-key-abc"
+  },
+  "description": "Service key is sent as Basic as-is; token then used as Bearer.",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Basic svc-key-abc"
+        },
+        "method": "POST",
+        "path": "/token"
+      },
+      "response": {
+        "body": {
+          "access_token": "tok-1",
+          "expires_in": 86400,
+          "org": {
+            "id": 3,
+            "name": "Acme"
+          },
+          "token_type": "Bearer",
+          "user": {
+            "email": "dev@example.com",
+            "id": 7
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "id": 1,
+          "name": "src-1",
+          "status": "ACTIVE"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": {
+      "id": 1,
+      "name": "src-1",
+      "status": "ACTIVE"
+    }
+  },
+  "name": "login_service_key"
+}

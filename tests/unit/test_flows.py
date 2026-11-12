@@ -753,7 +753,7 @@ class TestFlowsUnit:
             flow_id=flow_id,
             from_date="2026-05-09",
             to_date="2026-05-10",
-            severity="ERROR",
+            level="ERROR",
             run_id=42,
         )
 
@@ -761,18 +761,38 @@ class TestFlowsUnit:
         assert req["method"] == "GET"
         assert req["url"].endswith(f"/flows/{flow_id}/logs")
         assert "/flow/logs" not in req["url"]
-        assert req["params"]["severity"] == "ERROR"
+        assert req["params"]["level"] == "ERROR"
         assert req["params"]["run_id"] == 42
         # 2026-05-09 00:00:00 UTC → 1778284800; 2026-05-10 → 1778371200
         assert req["params"]["from"] == 1778284800
         assert req["params"]["to"] == 1778371200
+
+    def test_get_flow_logs_sends_level_param(self, mock_client, mock_http_client):
+        """Backend reads `level` (flows/routes/_execution.py:437); `severity` is only an alias."""
+        mock_http_client.add_response("/flows/1/logs", {"status": 200, "logs": []})
+        mock_client.flows.get_flow_logs(flow_id=1, level="ERROR")
+        req = mock_http_client.get_last_request()
+        assert req["params"]["level"] == "ERROR"
+        assert "severity" not in req["params"]
+
+    def test_get_flow_logs_severity_is_deprecated_alias_of_level(
+        self, mock_client, mock_http_client
+    ):
+        mock_http_client.add_response("/flows/1/logs", {"status": 200, "logs": []})
+        with pytest.warns(DeprecationWarning, match="level"):
+            mock_client.flows.get_flow_logs(flow_id=1, severity="WARN")
+        req = mock_http_client.get_last_request()
+        assert req["params"]["level"] == "WARN"
+        assert "severity" not in req["params"]
 
     def test_get_flow_logs_passes_through_unix_timestamps(
         self, mock_client, mock_http_client
     ):
         """get_flow_logs leaves unix-timestamp inputs unchanged."""
         mock_http_client.add_response("/flows/1/logs", {"status": 200, "logs": []})
-        mock_client.flows.get_flow_logs(flow_id=1, from_date=1704067200, to_date="1704153600")
+        mock_client.flows.get_flow_logs(
+            flow_id=1, from_date=1704067200, to_date="1704153600"
+        )
         req = mock_http_client.get_last_request()
         assert req["params"]["from"] == 1704067200
         assert req["params"]["to"] == 1704153600

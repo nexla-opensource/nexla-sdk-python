@@ -1,0 +1,45 @@
+{
+  "call": {
+    "args": {
+      "per_page": 2
+    },
+    "op": "list_sources_all"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "No pagination headers: stop on a short page.",
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources",
+        "query": {
+          "page": "1",
+          "per_page": "2"
+        }
+      },
+      "response": {
+        "body": [
+          {
+            "id": 1,
+            "name": "src-1",
+            "status": "ACTIVE"
+          }
+        ],
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": [
+      {
+        "id": 1,
+        "name": "src-1",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "name": "paginate_short_page_stops"
+}

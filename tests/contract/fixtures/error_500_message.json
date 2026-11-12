@@ -1,0 +1,39 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "message": "boom"
+        },
+        "headers": {},
+        "status": 500
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "ServerError",
+      "message": "boom",
+      "status": 500
+    }
+  },
+  "name": "error_500_message"
+}

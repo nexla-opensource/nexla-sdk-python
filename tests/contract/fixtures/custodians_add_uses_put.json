@@ -1,0 +1,51 @@
+{
+  "call": {
+    "args": {
+      "custodians": [
+        {
+          "id": 7
+        }
+      ],
+      "org_id": 3
+    },
+    "op": "add_custodians"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "PUT adds custodians; POST would reset them.",
+  "exchanges": [
+    {
+      "request": {
+        "body": {
+          "custodians": [
+            {
+              "id": 7
+            }
+          ]
+        },
+        "method": "PUT",
+        "path": "/orgs/3/custodians"
+      },
+      "response": {
+        "body": [
+          {
+            "email": "dev@example.com",
+            "id": 7
+          }
+        ],
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": [
+      {
+        "email": "dev@example.com",
+        "id": 7
+      }
+    ]
+  },
+  "name": "custodians_add_uses_put"
+}

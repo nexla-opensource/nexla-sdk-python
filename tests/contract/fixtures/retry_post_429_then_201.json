@@ -1,0 +1,61 @@
+{
+  "call": {
+    "args": {
+      "body": {
+        "name": "s"
+      }
+    },
+    "op": "create_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "POST is retried on 429 with body retry_after.",
+  "exchanges": [
+    {
+      "request": {
+        "body": {
+          "name": "s"
+        },
+        "method": "POST",
+        "path": "/data_sources"
+      },
+      "response": {
+        "body": {
+          "error": {
+            "detail": "slow down",
+            "retry_after": 1,
+            "type": "RateLimitExceeded"
+          }
+        },
+        "status": 429
+      }
+    },
+    {
+      "request": {
+        "body": {
+          "name": "s"
+        },
+        "method": "POST",
+        "path": "/data_sources"
+      },
+      "response": {
+        "body": {
+          "id": 9,
+          "name": "src-9",
+          "status": "ACTIVE"
+        },
+        "status": 201
+      }
+    }
+  ],
+  "expect": {
+    "result": {
+      "id": 9,
+      "name": "src-9",
+      "status": "ACTIVE"
+    }
+  },
+  "name": "retry_post_429_then_201"
+}

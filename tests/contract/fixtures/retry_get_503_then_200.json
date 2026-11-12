@@ -1,0 +1,49 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "GET is retried on 503.",
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "message": "unavailable"
+        },
+        "status": 503
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "id": 1,
+          "name": "src-1",
+          "status": "ACTIVE"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "expect": {
+    "result": {
+      "id": 1,
+      "name": "src-1",
+      "status": "ACTIVE"
+    }
+  },
+  "name": "retry_get_503_then_200"
+}

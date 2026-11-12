@@ -7,6 +7,7 @@ from nexla_sdk.models.destinations.requests import (
 )
 from nexla_sdk.models.destinations.responses import Destination
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class DestinationsResource(BaseResource):
@@ -286,6 +287,7 @@ class DestinationsResource(BaseResource):
         path = f"{self._path}/{sink_id}/dashboard_transforms"
         return self._make_request("DELETE", path)
 
+    @missing_route("POST", "/data_sinks/config/validate")
     def validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("POST", f"{self._path}/config/validate", json=payload)
 

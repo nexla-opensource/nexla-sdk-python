@@ -4,20 +4,38 @@ Nexla API client
 
 import logging
 import os
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union
+import threading
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from pydantic import ValidationError as PydanticValidationError
 
 from . import telemetry
 from .auth import TokenAuthHandler
 from .exceptions import (
-    AuthenticationError,
+    NexlaConnectionError,
     NexlaError,
-    NotFoundError,
-    ServerError,
+    NexlaTimeoutError,
     ValidationError,
+    error_from_response,
 )
-from .http_client import HttpClientError, HttpClientInterface, RequestsHttpClient
+from .http_client import (
+    HttpClientError,
+    HttpClientInterface,
+    HttpConnectionError,
+    HttpTimeoutError,
+    RequestsHttpClient,
+)
 from .raw_operations import RawOperationsClient
 from .resources.api_keys import ApiKeysResource
 from .resources.approval_requests import ApprovalRequestsResource
@@ -72,6 +90,7 @@ from .resources.users import UsersResource
 from .resources.validators import ValidatorsResource
 from .resources.vendor_endpoints import VendorEndpointsResource
 from .resources.vendors import VendorsResource
+from .models.tokens.responses import TokenResponse
 from .resources.webhooks import WebhooksResource
 
 logger = logging.getLogger(__name__)
@@ -92,6 +111,10 @@ class NexlaClient:
 
     2. **Direct Access Token Authentication**:
        Use a pre-obtained access token directly. These tokens are not refreshed by the SDK.
+
+    Other modes: ``api_key`` (Basic, sent as is) and ``email``/``password``
+    (Basic ``email:password[:org_id]``). Both obtain session tokens with POST /token.
+    Use ``switch_org(org_id)`` to change the org of the current session.
 
     Examples:
         # Method 1: Using service key (recommended for automation)
@@ -119,6 +142,15 @@ class NexlaClient:
         token_refresh_margin: int = 3600,
         http_client: Optional[HttpClientInterface] = None,
         trace_enabled: Optional[bool] = None,
+        timeout: Union[float, Tuple[float, float]] = (10.0, 60.0),
+        max_retries: int = 3,
+        retry_methods: Optional[Iterable[str]] = None,
+        retry_on_status: Optional[Iterable[int]] = None,
+        api_key: Optional[str] = None,
+        email: Optional[str] = None,
+        password: Optional[str] = None,
+        org_id: Optional[int] = None,
+        dataplane: Optional[str] = None,
     ):
         """
         Initialize the Nexla client
@@ -132,6 +164,12 @@ class NexlaClient:
             http_client: HTTP client implementation (defaults to RequestsHttpClient)
             trace_enabled: Explicitly enable/disable OpenTelemetry tracing. If None,
                            tracing auto-enables when a global OTEL config is detected.
+            timeout: Seconds as (connect, read), or one number for both. Default (10, 60).
+                     Ignored when http_client is given.
+            max_retries: Maximum retries per request. Default 3. Ignored when http_client is given.
+            retry_methods: Methods retried on read errors and 502/503/504.
+                           Default: GET, HEAD, OPTIONS, PUT, DELETE.
+            retry_on_status: Status codes retried for retry_methods. Default: 502, 503, 504.
 
         Raises:
             NexlaError: If neither or both authentication methods are provided
@@ -141,13 +179,32 @@ class NexlaClient:
             NEXLA_ACCESS_TOKEN: Access token (used if no authentication parameters are provided and NEXLA_SERVICE_KEY is not set)
             NEXLA_API_URL: Base URL for the Nexla API (used if base_url parameter is not provided)
         """
-        # Check environment variables only if neither parameter is provided
-        if not service_key and not access_token:
-            # First check for service_key in environment
-            service_key = os.getenv("NEXLA_SERVICE_KEY")
-            # Only check for access_token if service_key is not available
+        # Credential modes: service key, API key, email/password, or access token.
+        # Exactly one. Explicit options win; env vars are read only when none is passed.
+        has_password = bool(email or password)
+        if has_password and not (email and password):
+            raise NexlaError("email and password must be provided together")
+        explicit = [
+            name
+            for name, value in (
+                ("service_key", service_key),
+                ("api_key", api_key),
+                ("access_token", access_token),
+                ("email/password", has_password),
+            )
+            if value
+        ]
+        if len(explicit) > 1:
+            raise NexlaError(
+                "Cannot provide more than one of service_key, api_key, access_token, "
+                "or email/password. Choose one authentication method."
+            )
+        if not explicit:
+            service_key = os.getenv("NEXLA_SERVICE_KEY") or None
             if not service_key:
-                access_token = os.getenv("NEXLA_ACCESS_TOKEN")
+                api_key = os.getenv("NEXLA_API_KEY") or None
+            if not service_key and not api_key:
+                access_token = os.getenv("NEXLA_ACCESS_TOKEN") or None
 
         # Check for base_url in environment if not provided as parameter
         if not base_url:
@@ -155,15 +212,11 @@ class NexlaClient:
             if not base_url:
                 base_url = "https://dataops.nexla.io/nexla-api"
 
-        # Validate authentication parameters
-        if not service_key and not access_token:
+        if not (service_key or api_key or access_token or has_password):
             raise NexlaError(
-                "Either service_key or access_token must be provided either as parameters "
-                "or via NEXLA_SERVICE_KEY/NEXLA_ACCESS_TOKEN environment variables"
-            )
-        if service_key and access_token:
-            raise NexlaError(
-                "Cannot provide both service_key and access_token. Choose one authentication method."
+                "Either service_key, api_key, access_token, or email and password must be "
+                "provided as parameters or via NEXLA_SERVICE_KEY, NEXLA_API_KEY, or "
+                "NEXLA_ACCESS_TOKEN environment variables"
             )
 
         self.api_url = base_url.rstrip("/")
@@ -180,9 +233,16 @@ class NexlaClient:
             self._trace_enabled = True
 
         self.tracer = telemetry.get_tracer(self._trace_enabled)
+        self._response_state = threading.local()
 
         # Initialize HTTP client (instrumented if tracer provided)
-        self.http_client = http_client or RequestsHttpClient(tracer=self.tracer)
+        self.http_client = http_client or RequestsHttpClient(
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_methods=retry_methods,
+            retry_on_status=retry_on_status,
+            tracer=self.tracer,
+        )
 
         # Initialize authentication handler
         self.auth_handler = TokenAuthHandler(
@@ -192,6 +252,11 @@ class NexlaClient:
             api_version=api_version,
             token_refresh_margin=token_refresh_margin,
             http_client=self.http_client,
+            api_key=api_key,
+            email=email,
+            password=password,
+            org_id=org_id,
+            dataplane=dataplane,
         )
 
         # Full operation-level API access (OpenAPI operation_id based)
@@ -300,6 +365,25 @@ class NexlaClient:
         self.auth_handler.refresh_session_token()
         return self.auth_handler.get_access_token()
 
+    def switch_org(self, org_id: int) -> TokenResponse:
+        """
+        Switch the session to another org (POST /token/refresh?org_id=).
+
+        The switch lasts until the SDK obtains a new token. When the SDK
+        re-obtains a token (service key, API key, or password mode), the
+        session returns to the credential's default org.
+
+        Args:
+            org_id: Org ID to switch to
+
+        Returns:
+            The new token response
+
+        Examples:
+            token = client.switch_org(42)
+        """
+        return self.auth_handler.switch_org(org_id)
+
     def logout(self) -> None:
         """
         Logout current session and invalidate token.
@@ -381,6 +465,15 @@ class NexlaClient:
                 f"Failed to convert API response to {model_class.__name__}: {e}"
             )
 
+    @property
+    def last_response_headers(self) -> Mapping[str, Any]:
+        """
+        Headers of the last response received on the calling thread.
+
+        paginate() reads this after each list() call. Empty before any request.
+        """
+        return getattr(self._response_state, "headers", None) or {}
+
     def request(self, method: str, path: str, **kwargs) -> Union[Dict[str, Any], None]:
         """
         Send a request to the Nexla API
@@ -397,9 +490,25 @@ class NexlaClient:
             AuthenticationError: If authentication fails
             ServerError: If the API returns an error
         """
+        body, _ = self.request_with_headers(method, path, **kwargs)
+        return body
+
+    def request_with_headers(
+        self, method: str, path: str, **kwargs
+    ) -> Tuple[Union[Dict[str, Any], None], Any]:
+        """
+        Send a request to the Nexla API and return (body, response headers).
+
+        The headers are also stored for last_response_headers.
+
+        Raises:
+            AuthenticationError: If authentication fails
+            ServerError: If the API returns an error
+        """
+        self._response_state.headers = {}
         url = f"{self.api_url}{path}"
         headers = {
-            "Accept": f"application/vnd.nexla.api.{self.api_version}+json",
+            "Accept": "application/json",
             "Content-Type": "application/json",
         }
 
@@ -409,9 +518,13 @@ class NexlaClient:
 
         try:
             # Let auth handler manage getting a valid token and handling auth retries
-            return self.auth_handler.execute_authenticated_request(
-                method=method, url=url, headers=headers, **kwargs
+            body, response_headers = (
+                self.auth_handler.execute_authenticated_request_with_headers(
+                    method=method, url=url, headers=headers, **kwargs
+                )
             )
+            self._response_state.headers = response_headers
+            return body, response_headers
         except HttpClientError as e:
             # Map HTTP client errors to appropriate Nexla exceptions
             self._handle_http_error(e, method, path, url, kwargs)
@@ -437,30 +550,17 @@ class NexlaClient:
         self, error: HttpClientError, method: str, path: str, url: str, kwargs: dict
     ):
         """
-        Handle HTTP client errors by mapping them to appropriate Nexla exceptions
+        Map an HTTP client error to a typed NexlaError.
 
-        Args:
-            error: The HTTP client error
-            method: HTTP method that failed
-            path: API path that failed
-            url: Full URL that failed
-            kwargs: Request parameters
+        Status code and body shape choose the class (see exceptions.error_from_response).
+        Timeouts map to NexlaTimeoutError and connection failures to NexlaConnectionError.
 
         Raises:
-            AuthenticationError: If authentication fails (401)
-            NotFoundError: If resource not found (404)
-            ServerError: For other API errors
+            NexlaTimeoutError: The request timed out
+            NexlaConnectionError: The connection failed
+            NexlaError: A typed subclass for the HTTP status
         """
-        status_code = getattr(error, "status_code", None)
-        error_data = getattr(error, "response", {})
-
-        error_msg = f"API request failed: {error}"
-
-        if error_data:
-            if "message" in error_data:
-                error_msg = f"API error: {error_data['message']}"
-            elif "error" in error_data:
-                error_msg = f"API error: {error_data['error']}"
+        error_data = getattr(error, "response", {}) or {}
 
         # Extract resource information (prefer server-provided fields, fallback to path)
         resource_type = None
@@ -476,114 +576,42 @@ class NexlaClient:
                     resource_type = path_parts[0]
                 if not resource_id and len(path_parts) >= 2 and path_parts[1].isdigit():
                     resource_id = path_parts[1]
-        # Final defaults
         if not resource_type:
             resource_type = "unknown"
 
-        # Build context
         context = {
             "method": method,
             "path": path,
             "url": url,
-            "status_code": status_code,
+            "status_code": getattr(error, "status_code", None),
             "api_response": error_data,
             "request_params": {
                 k: v for k, v in kwargs.items() if k not in ["json", "data"]
             },
         }
+        common: Dict[str, Any] = {
+            "operation": f"{method.lower()}_request",
+            "resource_type": resource_type,
+            "resource_id": resource_id,
+            "context": context,
+            "original_error": error,
+        }
 
-        # Map status codes to specific exceptions
-        if status_code in (400, 422):
-            raise ValidationError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
+        if isinstance(error, HttpTimeoutError):
+            raise NexlaTimeoutError(
+                f"Request timed out: {error}", method=method, url=url, **common
             ) from error
-        elif status_code == 401:
-            raise AuthenticationError(
-                "Authentication failed. Check your service key.",
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
+        if isinstance(error, HttpConnectionError):
+            raise NexlaConnectionError(
+                f"Connection failed: {error}", method=method, url=url, **common
             ) from error
-        elif status_code == 403:
-            from .exceptions import AuthorizationError
 
-            raise AuthorizationError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 404:
-            raise NotFoundError(
-                f"Resource not found: {resource_type}/{resource_id or 'unknown'}",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                operation=f"{method.lower()}_request",
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 409:
-            from .exceptions import ResourceConflictError
-
-            raise ResourceConflictError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        elif status_code == 429:
-            from .exceptions import RateLimitError
-
-            retry_after = None
-            # Try to parse retry-after from headers or body
-            headers = getattr(error, "headers", {}) or {}
-            if headers:
-                retry_after_hdr = headers.get("Retry-After") or headers.get(
-                    "retry-after"
-                )
-                if retry_after_hdr:
-                    try:
-                        retry_after = int(retry_after_hdr)
-                    except Exception:
-                        retry_after = None
-            if not retry_after and isinstance(error_data, dict):
-                retry_after = error_data.get("retry_after")
-            raise RateLimitError(
-                error_msg,
-                retry_after=retry_after,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
-        else:
-            raise ServerError(
-                error_msg,
-                status_code=status_code,
-                response=error_data,
-                operation=f"{method.lower()}_request",
-                resource_type=resource_type,
-                resource_id=resource_id,
-                context=context,
-                original_error=error,
-            ) from error
+        body = error.body if error.body is not None else (error_data or None)
+        raise error_from_response(
+            getattr(error, "status_code", None),
+            body,
+            headers=getattr(error, "headers", {}),
+            method=method,
+            url=url,
+            **common,
+        ) from error

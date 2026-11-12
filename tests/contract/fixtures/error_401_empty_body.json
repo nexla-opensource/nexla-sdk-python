@@ -1,0 +1,36 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "headers": {},
+        "status": 401,
+        "text": ""
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "AuthenticationError",
+      "status": 401
+    }
+  },
+  "name": "error_401_empty_body"
+}

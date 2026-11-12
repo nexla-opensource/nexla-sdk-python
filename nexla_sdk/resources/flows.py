@@ -15,6 +15,7 @@ from nexla_sdk.models.metrics.enums import ResourceType
 from nexla_sdk.models.projects.requests import ProjectFlowList
 from nexla_sdk.models.sources.requests import SourceUpdate
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import warn_deprecated
 
 logger = logging.getLogger(__name__)
 
@@ -583,6 +584,7 @@ class FlowsResource(BaseResource):
         run_id: int = None,
         page: int = None,
         per_page: int = None,
+        level: str = None,
     ) -> Dict[str, Any]:
         """
         Get execution logs for a specific flow.
@@ -591,10 +593,11 @@ class FlowsResource(BaseResource):
             flow_id: Flow ID
             from_date: Start date filter (YYYY-MM-DD)
             to_date: End date filter (YYYY-MM-DD)
-            severity: Filter by log severity
+            severity: Deprecated alias of ``level``
             run_id: Filter by specific run ID
             page: Page number for pagination
             per_page: Items per page
+            level: Filter by log level (sent as ``level``, flows/routes/_execution.py:437)
 
         Returns:
             Flow execution logs
@@ -608,7 +611,11 @@ class FlowsResource(BaseResource):
         if to_ts is not None:
             params["to"] = to_ts
         if severity is not None:
-            params["severity"] = severity
+            warn_deprecated("severity", "level")
+            if level is None:
+                level = severity
+        if level is not None:
+            params["level"] = level
         if run_id is not None:
             params["run_id"] = run_id
         if page is not None:
@@ -664,9 +671,13 @@ class FlowsResource(BaseResource):
             if parsed:
                 body["run_ids"] = parsed
         if severity is not None:
-            body["severity"] = [severity] if isinstance(severity, str) else list(severity)
+            body["severity"] = (
+                [severity] if isinstance(severity, str) else list(severity)
+            )
         if log_type is not None:
-            body["log_type"] = [log_type] if isinstance(log_type, str) else list(log_type)
+            body["log_type"] = (
+                [log_type] if isinstance(log_type, str) else list(log_type)
+            )
         if search_string is not None:
             body["search_string"] = search_string
 

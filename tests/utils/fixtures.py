@@ -13,6 +13,9 @@ class MockHTTPClient(HttpClientInterface):
         self.responses = {}  # Map of URL patterns to responses
         self.response_queue = []  # Queue of responses to return in order
         self.default_response = {"status": "ok"}
+        self.header_map = {}  # URL pattern -> response headers
+        self.paged_responses = {}  # URL pattern -> [(body, headers), ...] in order
+        self._last_headers = {}
 
     def request(
         self, method: str, url: str, headers: Dict[str, str], **kwargs
@@ -27,6 +30,14 @@ class MockHTTPClient(HttpClientInterface):
             "json": kwargs.get("json", {}),
         }
         self.requests.append(request_data)
+
+        self._last_headers = self._headers_for(url)
+
+        # Paged responses carry their own headers, in order
+        for pattern, pages in self.paged_responses.items():
+            if pattern in url and pages:
+                body, self._last_headers = pages.pop(0)
+                return body
 
         # Look for configured response
         for pattern, response in self.responses.items():
@@ -48,6 +59,27 @@ class MockHTTPClient(HttpClientInterface):
 
         # Return default response
         return self.default_response
+
+    def request_with_headers(
+        self, method: str, url: str, headers: Dict[str, str], **kwargs
+    ):
+        """Return (body, response headers). Headers come from add_headers or add_paged_response."""
+        body = self.request(method, url, headers, **kwargs)
+        return body, dict(self._last_headers)
+
+    def _headers_for(self, url: str) -> Dict[str, str]:
+        for pattern, hdrs in self.header_map.items():
+            if pattern in url:
+                return dict(hdrs)
+        return {}
+
+    def add_headers(self, url_pattern: str, headers: Dict[str, str]):
+        """Attach response headers to every response whose URL contains the pattern."""
+        self.header_map[url_pattern] = headers
+
+    def add_paged_response(self, url_pattern: str, pages: List[tuple]):
+        """Serve (body, headers) pairs in order for URLs containing the pattern."""
+        self.paged_responses[url_pattern] = list(pages)
 
     def add_response(
         self,

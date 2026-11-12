@@ -7,6 +7,7 @@ from nexla_sdk.models.sources.requests import (
 )
 from nexla_sdk.models.sources.responses import Source
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class SourcesResource(BaseResource):
@@ -300,6 +301,7 @@ class SourcesResource(BaseResource):
         path = f"{self._path}/{source_id}/dashboard_transforms"
         return self._make_request("DELETE", path)
 
+    @missing_route("POST", "/data_sources/config/validate")
     def validate_config(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("POST", f"{self._path}/config/validate", json=payload)
 

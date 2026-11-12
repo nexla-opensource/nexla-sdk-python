@@ -94,3 +94,23 @@ class TestMarketplaceResource:
         )
         rem_c = client.marketplace.remove_domain_custodians(1, cust_payload)
         assert rem_c.get("status") == "ok"
+
+    def test_domain_custodian_methods_match_backend_verbs(
+        self, client, mock_http_client
+    ):
+        """Backend (marketplace/routes/_core.py:1565-1576): PUT adds, POST resets."""
+        payload = CustodiansPayload(custodians=[])
+        url = "/marketplace/domains/1/custodians"
+
+        mock_http_client.add_response(url, [])
+        client.marketplace.add_domain_custodians(1, payload)
+        mock_http_client.assert_request_made("PUT", url)
+
+        mock_http_client.clear_requests()
+        client.marketplace.reset_domain_custodians(1, payload)
+        mock_http_client.assert_request_made("POST", url)
+
+        mock_http_client.clear_requests()
+        with pytest.warns(DeprecationWarning, match="add_domain_custodians"):
+            client.marketplace.update_domain_custodians(1, payload)
+        mock_http_client.assert_request_made("PUT", url)

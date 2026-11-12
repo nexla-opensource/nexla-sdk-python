@@ -11,6 +11,7 @@ from nexla_sdk.models.marketplace.responses import (
 )
 from nexla_sdk.models.organizations.responses import CustodianUser
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import warn_deprecated
 
 
 class MarketplaceResource(BaseResource):
@@ -127,15 +128,24 @@ class MarketplaceResource(BaseResource):
     def update_domain_custodians(
         self, domain_id: int, payload: CustodiansPayload
     ) -> List[CustodianUser]:
+        """Deprecated alias of add_domain_custodians (the old PUT was an add)."""
+        warn_deprecated("update_domain_custodians", "add_domain_custodians")
+        return self.add_domain_custodians(domain_id, payload)
+
+    def add_domain_custodians(
+        self, domain_id: int, payload: CustodiansPayload
+    ) -> List[CustodianUser]:
+        """Add custodians. Backend PUT adds (marketplace/routes/_core.py:1565)."""
         data = self._serialize_data(payload)
         response = self._make_request(
             "PUT", f"{self._path}/domains/{domain_id}/custodians", json=data
         )
         return self._parse_response(response, CustodianUser)  # type: ignore[arg-type]
 
-    def add_domain_custodians(
+    def reset_domain_custodians(
         self, domain_id: int, payload: CustodiansPayload
     ) -> List[CustodianUser]:
+        """Replace all custodians. Backend POST resets (marketplace/routes/_core.py:1576)."""
         data = self._serialize_data(payload)
         response = self._make_request(
             "POST", f"{self._path}/domains/{domain_id}/custodians", json=data

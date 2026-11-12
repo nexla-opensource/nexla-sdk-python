@@ -2,12 +2,22 @@ from enum import Enum
 
 
 class AccessRole(str, Enum):
-    """Access roles for resources."""
+    """Access roles for resources (lower-case backend values).
+
+    The backend also accepts upper-case forms (app/api/v1/shared/schemas.py:45-72).
+    """
 
     OWNER = "owner"
+    OWNER_ONLY = "owner_only"
     ADMIN = "admin"
+    ADMIN_ONLY = "admin_only"
     OPERATOR = "operator"
     COLLABORATOR = "collaborator"
+    COLLABORATOR_ONLY = "collaborator_only"
+    SHARER = "sharer"
+    SHARER_ONLY = "sharer_only"
+    MEMBER = "member"
+    ALL = "all"
 
 
 class ResourceStatus(str, Enum):

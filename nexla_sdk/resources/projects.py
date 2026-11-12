@@ -8,6 +8,7 @@ from nexla_sdk.models.projects.requests import (
 )
 from nexla_sdk.models.projects.responses import Project, ProjectDataFlow
 from nexla_sdk.resources.base_resource import BaseResource
+from nexla_sdk.utils.deprecation import missing_route
 
 
 class ProjectsResource(BaseResource):
@@ -191,6 +192,7 @@ class ProjectsResource(BaseResource):
         """
         return self.add_flows(project_id, flows)
 
+    @missing_route("GET", "/projects/{project_id}/data_flows")
     def get_data_flows_legacy(self, project_id: int) -> List[ProjectDataFlow]:
         """
         Legacy project flow listing endpoint.
@@ -212,6 +214,7 @@ class ProjectsResource(BaseResource):
         """
         return self.replace_flows(project_id, flows)
 
+    @missing_route("PUT", "/projects/{project_id}/data_flows")
     def add_data_flows_legacy(
         self, project_id: int, flows: ProjectFlowList
     ) -> List[ProjectDataFlow]:
@@ -221,6 +224,7 @@ class ProjectsResource(BaseResource):
         response = self._make_request("PUT", path, json=payload)
         return [ProjectDataFlow.model_validate(item) for item in response]
 
+    @missing_route("POST", "/projects/{project_id}/data_flows")
     def replace_data_flows_legacy(
         self, project_id: int, flows: ProjectFlowList
     ) -> List[ProjectDataFlow]:
@@ -240,6 +244,7 @@ class ProjectsResource(BaseResource):
         """
         return self.remove_flows(project_id, flows)
 
+    @missing_route("DELETE", "/projects/{project_id}/data_flows")
     def remove_data_flows_legacy(
         self, project_id: int, flows: Optional[ProjectFlowList] = None
     ) -> List[ProjectDataFlow]:

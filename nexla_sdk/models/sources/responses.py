@@ -35,7 +35,8 @@ class Source(BaseModel):
     id: int
     name: str
     status: str
-    source_type: FlexibleSourceType
+    # Backend always sends the key, possibly null (data_sources/schema.py:582).
+    source_type: Optional[FlexibleSourceType] = None
     connector_type: Optional[FlexibleSourceType] = None
     owner: Optional[Owner] = None
     org: Optional[Organization] = None

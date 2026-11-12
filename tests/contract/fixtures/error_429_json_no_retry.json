@@ -1,0 +1,45 @@
+{
+  "call": {
+    "args": {
+      "id": 1
+    },
+    "op": "get_source"
+  },
+  "client": {
+    "access_token": "tok-1",
+    "max_retries": 3
+  },
+  "description": "retry_after 120 > 60 s cap: no retry, raise at once.",
+  "exchanges": [
+    {
+      "request": {
+        "headers": {
+          "Authorization": "Bearer tok-1"
+        },
+        "method": "GET",
+        "path": "/data_sources/1"
+      },
+      "response": {
+        "body": {
+          "error": {
+            "detail": "Rate limit exceeded. Maximum 300 requests per minute.",
+            "retry_after": 120,
+            "type": "RateLimitExceeded"
+          }
+        },
+        "headers": {},
+        "status": 429
+      }
+    }
+  ],
+  "expect": {
+    "error": {
+      "class": "RateLimitError",
+      "error_code": "RateLimitExceeded",
+      "message": "Rate limit exceeded. Maximum 300 requests per minute.",
+      "retry_after": 120,
+      "status": 429
+    }
+  },
+  "name": "error_429_json_no_retry"
+}

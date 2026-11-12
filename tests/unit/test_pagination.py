@@ -117,235 +117,234 @@ class TestPaginatorBasics:
         mock_http_client.assert_request_made("GET", "/data_sources")
 
 
+class _FakeFeed:
+    """Serves (items, headers) per page. headers_func returns the last fetch's headers."""
+
+    def __init__(self, pages):
+        self.pages = pages
+        self.requests = []
+        self.headers = {}
+
+    def fetch(self, page, per_page):
+        self.requests.append((page, per_page))
+        items, self.headers = self.pages.get(page, ([], {}))
+        return list(items)
+
+    def headers_func(self):
+        return self.headers
+
+    def paginator(self, per_page=2):
+        return Paginator(
+            fetch_func=self.fetch, page_size=per_page, headers_func=self.headers_func
+        )
+
+
 @pytest.mark.unit
-class TestPaginatorWithRawFetch:
-    """Tests for Paginator using raw fetch functions.
+class TestPaginatorFollowsHeaders:
+    """Next-page rules from spec section 6 (first match wins)."""
 
-    These tests use a simple fetch function to test Paginator's logic
-    independent of the SDK's model parsing.
-    """
-
-    def test_paginator_extracts_data_from_paginated_response(self):
-        """Test that Paginator extracts items from paginated response format."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=20):
-            return {
-                "data": [{"id": i} for i in range(per_page)],
-                "meta": {
-                    "currentPage": page,
-                    "totalCount": 100,
-                    "pageCount": 5,
-                    "perPage": per_page,
-                },
+    def test_link_next_continues_and_link_without_next_stops(self):
+        feed = _FakeFeed(
+            {
+                1: ([1, 2], {"Link": '<https://x/data_sources?page=2>; rel="Next"'}),
+                2: (
+                    [3, 4],
+                    {"Link": '<https://x/data_sources?page=1>; rel="Previous"'},
+                ),
             }
+        )
+        items = list(feed.paginator().iter_items())
+        assert items == [1, 2, 3, 4]
+        assert feed.requests == [(1, 2), (2, 2)]
 
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=20)
-        page = paginator.get_page(1)
+    def test_current_page_at_total_stops_even_on_full_page(self):
+        common = {"X-Total-Page-Count": "3", "X-Total-Count": "6"}
+        feed = _FakeFeed(
+            {
+                1: ([1, 2], {**common, "X-Current-Page": "1"}),
+                2: ([3, 4], {**common, "X-Current-Page": "2"}),
+                3: ([5, 6], {**common, "X-Current-Page": "3"}),
+            }
+        )
+        items = list(feed.paginator().iter_items())
+        assert items == [1, 2, 3, 4, 5, 6]
+        assert feed.requests == [(1, 2), (2, 2), (3, 2)]
 
-        # Assert
-        assert len(page.items) == 20
-        assert page.page_info.total_pages == 5
-        assert page.page_info.total_count == 100
-        assert page.page_info.current_page == 1
+    def test_no_headers_full_page_continues_and_short_page_stops(self):
+        feed = _FakeFeed({1: ([1, 2], {}), 2: ([3], {})})
+        assert list(feed.paginator().iter_items()) == [1, 2, 3]
+        assert feed.requests == [(1, 2), (2, 2)]
 
-    def test_paginator_handles_list_response(self):
-        """Test that Paginator handles plain list responses."""
+    def test_empty_page_stops_even_when_link_says_next(self):
+        feed = _FakeFeed({1: ([], {"Link": '<x>; rel="Next"'}), 2: ([9], {})})
+        assert list(feed.paginator().iter_items()) == []
+        assert feed.requests == [(1, 2)]
 
-        # Arrange
+    def test_link_rel_is_case_insensitive(self):
+        feed = _FakeFeed({1: ([1, 2], {"Link": '<x>; rel="next"'}), 2: ([3], {})})
+        assert list(feed.paginator().iter_items()) == [1, 2, 3]
+
+    def test_link_with_several_relations_matches_next(self):
+        feed = _FakeFeed(
+            {
+                1: ([1, 2], {"Link": '<a>; rel="Previous", <b>; rel="Next"'}),
+                2: ([3], {}),
+            }
+        )
+        assert list(feed.paginator().iter_items()) == [1, 2, 3]
+
+    def test_pages_expose_page_metadata_from_headers(self):
+        feed = _FakeFeed(
+            {
+                1: (
+                    [1, 2],
+                    {
+                        "X-Current-Page": "1",
+                        "X-Total-Page-Count": "2",
+                        "X-Total-Count": "3",
+                    },
+                ),
+                2: (
+                    [3],
+                    {
+                        "X-Current-Page": "2",
+                        "X-Total-Page-Count": "2",
+                        "X-Total-Count": "3",
+                    },
+                ),
+            }
+        )
+        pages = list(feed.paginator().iter_pages())
+        assert [p.page for p in pages] == [1, 2]
+        assert all(p.per_page == 2 for p in pages)
+        assert pages[0].total_count == 3
+        assert pages[0].total_pages == 2
+        assert len(pages[1]) == 1
+
+
+@pytest.mark.unit
+class TestPaginateThroughClient:
+    """paginate() uses the real list() path and the headers of each response."""
+
+    def test_paginate_follows_x_headers_and_sends_explicit_per_page(
+        self, mock_client, mock_http_client
+    ):
+        common = {"X-Total-Page-Count": "2", "X-Total-Count": "3"}
+        mock_http_client.add_paged_response(
+            "/data_sources",
+            [
+                (
+                    [
+                        MockResponseBuilder.source(source_id=1),
+                        MockResponseBuilder.source(source_id=2),
+                    ],
+                    {**common, "X-Current-Page": "1"},
+                ),
+                (
+                    [MockResponseBuilder.source(source_id=3)],
+                    {**common, "X-Current-Page": "2"},
+                ),
+            ],
+        )
+
+        ids = [s.id for s in mock_client.sources.paginate(per_page=2).iter_items()]
+
+        assert ids == [1, 2, 3]
+        sent = mock_http_client.get_requests_by_url_pattern("/data_sources")
+        assert [(r["params"]["page"], r["params"]["per_page"]) for r in sent] == [
+            (1, 2),
+            (2, 2),
+        ]
+
+    def test_paginate_default_per_page_is_100(self, mock_client, mock_http_client):
+        mock_http_client.add_response("/data_sources", [])
+
+        assert list(mock_client.sources.paginate()) == []
+
+        req = mock_http_client.get_last_request()
+        assert req["params"]["per_page"] == 100
+
+    def test_paginate_does_not_follow_link_url(self, mock_client, mock_http_client):
+        mock_http_client.add_paged_response(
+            "/data_sources",
+            [
+                (
+                    [
+                        MockResponseBuilder.source(source_id=1),
+                        MockResponseBuilder.source(source_id=2),
+                    ],
+                    {
+                        "Link": '<https://evil.example/data_sources?page=7&per_page=2>; rel="Next"'
+                    },
+                ),
+                ([], {}),
+            ],
+        )
+
+        list(mock_client.sources.paginate(per_page=2).iter_items())
+
+        sent = mock_http_client.get_requests_by_url_pattern("/data_sources")
+        assert [r["params"]["page"] for r in sent] == [1, 2]
+        assert all("evil.example" not in r["url"] for r in sent)
+
+    def test_client_exposes_last_response_headers(self, mock_client, mock_http_client):
+        mock_http_client.add_headers("/data_sources", {"X-Total-Count": "7"})
+        mock_http_client.add_response("/data_sources", [])
+
+        mock_client.sources.list()
+
+        assert mock_client.last_response_headers["X-Total-Count"] == "7"
+
+    def test_request_still_returns_body_only(self, mock_client, mock_http_client):
+        mock_http_client.add_headers("/data_sources/1", {"X-Total-Count": "7"})
+        mock_http_client.add_response("/data_sources/1", {"id": 1})
+
+        assert mock_client.request("GET", "/data_sources/1") == {"id": 1}
+
+
+@pytest.mark.unit
+class TestPaginatorPlainFetch:
+    """Paginator with a plain fetch function and no headers (short-page rule)."""
+
+    def test_plain_list_response_has_unknown_total(self):
         def mock_fetch(page=1, per_page=20):
             return [{"id": i} for i in range(10)]
 
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=20)
-        page = paginator.get_page(1)
+        page = Paginator(fetch_func=mock_fetch, page_size=20).get_page(1)
 
-        # Assert
         assert len(page.items) == 10
-        # Without meta, total_pages is unknown
-        assert page.page_info.total_pages is None
+        assert page.total_pages is None
+        assert page.total_count is None
 
     def test_iterate_all_items_multiple_pages(self):
-        """Test iterating all items across multiple pages."""
-        # Arrange
         call_count = 0
 
         def mock_fetch(page=1, per_page=5):
             nonlocal call_count
             call_count += 1
             if page == 1:
-                return [{"id": i} for i in range(5)]  # Full page
-            elif page == 2:
-                return [{"id": i + 5} for i in range(3)]  # Partial page
+                return [{"id": i} for i in range(5)]
+            if page == 2:
+                return [{"id": i + 5} for i in range(3)]
             return []
 
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        all_items = list(paginator)
+        all_items = list(Paginator(fetch_func=mock_fetch, page_size=5))
 
-        # Assert
         assert len(all_items) == 8
         assert call_count == 2
 
     def test_iterate_stops_on_empty_page(self):
-        """Test that iteration stops when page is empty."""
-
-        # Arrange
         def mock_fetch(page=1, per_page=5):
-            if page == 1:
-                return [{"id": 1}]
-            return []
+            return [{"id": 1}] if page == 1 else []
 
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        all_items = list(paginator)
-
-        # Assert
-        assert len(all_items) == 1
+        assert len(list(Paginator(fetch_func=mock_fetch, page_size=5))) == 1
 
     def test_iter_pages_yields_page_objects(self):
-        """Test iter_pages yields Page objects."""
-
-        # Arrange
         def mock_fetch(page=1, per_page=5):
-            if page == 1:
-                return [{"id": 1}, {"id": 2}]
-            return []
+            return [{"id": 1}, {"id": 2}] if page == 1 else []
 
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        pages = list(paginator.iter_pages())
+        pages = list(Paginator(fetch_func=mock_fetch, page_size=5).iter_pages())
 
-        # Assert
         assert len(pages) == 1
         assert isinstance(pages[0], Page)
         assert len(pages[0]) == 2
-
-
-@pytest.mark.unit
-class TestPaginationMetadata:
-    """Tests for pagination metadata handling."""
-
-    def test_page_extracts_total_pages_from_camel_case_meta(self):
-        """Test extracting total pages from camelCase meta keys."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=5):
-            return {
-                "data": [{"id": i} for i in range(5)],
-                "meta": {
-                    "currentPage": page,
-                    "totalCount": 25,
-                    "pageCount": 5,
-                    "perPage": per_page,
-                },
-            }
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        page = paginator.get_page(2)
-
-        # Assert
-        assert page.page_info.total_pages == 5
-        assert page.page_info.total_count == 25
-        assert page.page_info.current_page == 2
-
-    def test_page_handles_snake_case_meta_keys(self):
-        """Test handling of snake_case meta keys."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=5):
-            return {
-                "data": [{"id": i} for i in range(5)],
-                "meta": {
-                    "current_page": page,
-                    "total_count": 50,
-                    "total_pages": 10,
-                },
-            }
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        page = paginator.get_page(1)
-
-        # Assert
-        assert page.page_info.total_pages == 10
-        assert page.page_info.total_count == 50
-
-
-@pytest.mark.unit
-class TestPaginationEdgeCases:
-    """Tests for pagination edge cases."""
-
-    def test_empty_results(self):
-        """Test handling of empty results."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=20):
-            return {
-                "data": [],
-                "meta": {"currentPage": 1, "totalCount": 0, "pageCount": 0},
-            }
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=20)
-        page = paginator.get_page(1)
-
-        # Assert
-        assert len(page) == 0
-        # total_count can be None or 0 depending on API response
-        assert page.page_info.total_count in (0, None)
-
-    def test_single_item(self):
-        """Test handling of single item results."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=20):
-            return {
-                "data": [{"id": 1}],
-                "meta": {"currentPage": 1, "totalCount": 1, "pageCount": 1},
-            }
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=20)
-        page = paginator.get_page(1)
-
-        # Assert
-        assert len(page) == 1
-        assert page.page_info.has_next is False
-
-    def test_has_next_based_on_total_pages(self):
-        """Test has_next calculation when total_pages is known."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=5):
-            return {
-                "data": [{"id": i} for i in range(5)],
-                "meta": {"currentPage": page, "pageCount": 3},
-            }
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=5)
-        page1 = paginator.get_page(1)
-        page3 = paginator.get_page(3)
-
-        # Assert
-        assert page1.page_info.has_next is True
-        assert page3.page_info.has_next is False
-
-    def test_list_response_without_meta(self):
-        """Test handling when response is just a list (no meta)."""
-
-        # Arrange
-        def mock_fetch(page=1, per_page=20):
-            return [{"id": i} for i in range(3)]
-
-        # Act
-        paginator = Paginator(fetch_func=mock_fetch, page_size=20)
-        page = paginator.get_page(1)
-
-        # Assert
-        assert len(page) == 3
-        # Without meta, we don't know total pages
-        assert page.page_info.total_pages is None
