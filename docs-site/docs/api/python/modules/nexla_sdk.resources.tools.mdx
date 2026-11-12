@@ -1,0 +1,82 @@
+---
+id: nexla_sdk.resources.tools
+title: nexla_sdk.resources.tools
+slug: /api/python/modules/nexla_sdk/resources/tools
+description: API for nexla_sdk.resources.tools
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### ToolsResource
+
+Defined in `nexla_sdk/resources/tools.py:9`
+
+Resource for tools, tool versions, and tool receipts.
+
+Methods:
+
+- `create_version(self, tool_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:231`
+  - Create a version of a tool.
+- `delete(self, tool_id: Union[int, str]) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:61`
+  - Delete a tool.
+- `delete_version(self, tool_id: str, version_id: str) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:247`
+  - Delete a version of a tool.
+- `deprecate_version(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:299`
+  - Set a version of a tool to deprecated.
+- `draft_version(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:317`
+  - Set a version of a tool to draft.
+- `get(self, tool_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:17`
+  - Get a tool by ID or key.
+- `index_versions(self, tool_id: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:204`
+  - List versions of a tool.
+- `publish_version(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:335`
+  - Publish a version of a tool.
+- `retire_version(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:353`
+  - Set a version of a tool to retired.
+- `show_version(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:265`
+  - Get a version of a tool.
+- `tool_definition(self, tool_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:146`
+  - Get the definition of a tool.
+- `tool_receipts_index(self, tool_id: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:161`
+  - List receipts for a tool.
+- `tool_receipts_show(self, tool_id: str, receipt_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:188`
+  - Get a receipt for a tool.
+- `tools_update_tool(self, tool_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:81`
+  - Partially update a tool.
+- `top_level_receipts_index(self, tool_id: Optional[int] = None, tool_revision_id: Optional[int] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:97`
+  - List tool receipts across tools.
+- `top_level_receipts_show(self, receipt_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:131`
+  - Get a tool receipt by ID.
+- `update(self, tool_id: Union[int, str, Dict[str, Any]], data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:37`
+  - Update a tool.
+- `version_definition(self, tool_id: str, version_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:281`
+  - Get the definition of a version of a tool.
+- `version_receipts_create(self, tool_id: str, version_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:400`
+  - Create a receipt for a version of a tool.
+- `version_receipts_index(self, tool_id: str, version_id: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tools.py:371`
+  - List receipts for a version of a tool.
+- `version_receipts_show(self, tool_id: str, version_id: str, receipt_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tools.py:423`
+  - Get a receipt for a version of a tool.
+

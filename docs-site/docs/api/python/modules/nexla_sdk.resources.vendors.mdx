@@ -12,7 +12,7 @@ Resource for managing vendors.
 
 ### VendorsResource
 
-Defined in `nexla_sdk/resources/vendors.py:10`
+Defined in `nexla_sdk/resources/vendors.py:13`
 
 Resource for managing vendors.
 
@@ -48,36 +48,36 @@ Examples:
 Methods:
 
 - `create(self, data: Union[nexla_sdk.models.vendors.requests.VendorCreate, Dict[str, Any]]) -> nexla_sdk.models.vendors.responses.Vendor`
-  - Source: `nexla_sdk/resources/vendors.py:111`
+  - Source: `nexla_sdk/resources/vendors.py:114`
   - Create a new vendor (super user only).
 - `delete(self, vendor_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendors.py:155`
+  - Source: `nexla_sdk/resources/vendors.py:158`
   - Delete a vendor (super user only).
-- `delete_all(self, payload: Dict[str, Any] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendors.py:182`
+- `delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/vendors.py:187`
   - Delete vendors via collection endpoint.
 - `delete_auth_template(self, vendor_id: int, auth_template_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendors.py:186`
+  - Source: `nexla_sdk/resources/vendors.py:193`
   - Delete an auth template from a vendor (super user only).
 - `delete_by_name(self, vendor_name: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendors.py:166`
+  - Source: `nexla_sdk/resources/vendors.py:169`
   - Delete a vendor by name (super user only).
 - `get(self, vendor_id: int, expand: bool = False) -> nexla_sdk.models.vendors.responses.Vendor`
-  - Source: `nexla_sdk/resources/vendors.py:80`
+  - Source: `nexla_sdk/resources/vendors.py:83`
   - Get vendor by ID.
 - `get_by_name(self, vendor_name: str, expand: bool = False) -> nexla_sdk.models.vendors.responses.Vendor`
-  - Source: `nexla_sdk/resources/vendors.py:95`
+  - Source: `nexla_sdk/resources/vendors.py:98`
   - Get vendor by name.
-- `list(self, expand: bool = False, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.vendors.responses.Vendor]`
-  - Source: `nexla_sdk/resources/vendors.py:53`
+- `list(self, expand: bool = False, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs: Any) -> List[nexla_sdk.models.vendors.responses.Vendor]`
+  - Source: `nexla_sdk/resources/vendors.py:56`
   - List vendors.
 - `update(self, vendor_id: int, data: Union[nexla_sdk.models.vendors.requests.VendorUpdate, Dict[str, Any]]) -> nexla_sdk.models.vendors.responses.Vendor`
-  - Source: `nexla_sdk/resources/vendors.py:122`
+  - Source: `nexla_sdk/resources/vendors.py:125`
   - Update a vendor (super user only).
 - `update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendors.py:178`
+  - Source: `nexla_sdk/resources/vendors.py:183`
   - Update vendors via collection endpoint.
 - `update_by_name(self, vendor_name: str, data: Union[nexla_sdk.models.vendors.requests.VendorUpdate, Dict[str, Any]]) -> nexla_sdk.models.vendors.responses.Vendor`
-  - Source: `nexla_sdk/resources/vendors.py:136`
+  - Source: `nexla_sdk/resources/vendors.py:139`
   - Update a vendor by name (super user only).
 

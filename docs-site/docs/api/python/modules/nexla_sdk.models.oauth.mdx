@@ -1,0 +1,45 @@
+---
+id: nexla_sdk.models.oauth
+title: nexla_sdk.models.oauth
+slug: /api/python/modules/nexla_sdk/models/oauth
+description: API for nexla_sdk.models.oauth
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### OauthStartRequest
+
+Defined in `nexla_sdk/models/oauth/requests.py:8`
+
+Request model for POST /oauth/start.
+
+Set either vendor_id or vendor_name, and either auth_template_id or
+auth_template_name. client_origin is optional; the browser normally sends the
+Origin header, which the backend uses when the field is not set.
+
+Fields:
+
+- `vendor_id`: `Optional`
+- `vendor_name`: `Optional`
+- `auth_template_id`: `Optional`
+- `auth_template_name`: `Optional`
+- `credentials_type`: `Optional`
+- `auto_create_credential`: `bool`
+- `credential_name`: `Optional`
+- `client_origin`: `Optional`
+- `form_values`: `Dict`
+
+### OauthStartResponse
+
+Defined in `nexla_sdk/models/oauth/responses.py:4`
+
+Response model for POST /oauth/start.
+
+popup_url is the URL to open in a popup window. sid identifies the session.
+
+Fields:
+
+- `popup_url`: `str`
+- `sid`: `str`
+

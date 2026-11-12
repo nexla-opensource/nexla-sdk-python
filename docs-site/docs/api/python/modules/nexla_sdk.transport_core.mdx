@@ -1,0 +1,94 @@
+---
+id: nexla_sdk.transport_core
+title: nexla_sdk.transport_core
+slug: /api/python/modules/nexla_sdk/transport_core
+description: API for nexla_sdk.transport_core
+keywords: [Nexla, SDK, Python, API]
+---
+
+Transport-free helpers shared by the sync and async HTTP clients.
+
+Nothing in this module performs I/O or imports an HTTP library. Both transports
+pass their response object through these helpers. The helpers read only
+``status_code``, ``headers``, ``content``, ``text`` and ``json()``, which both
+requests and httpx responses provide.
+
+## Classes
+
+### HttpClientError
+
+Defined in `nexla_sdk/transport_core.py:29`
+
+Base exception for HTTP client errors
+
+### HttpConnectionError
+
+Defined in `nexla_sdk/transport_core.py:52`
+
+The connection failed before a response was received.
+
+### HttpTimeoutError
+
+Defined in `nexla_sdk/transport_core.py:48`
+
+The request timed out (connect or read).
+
+## Functions
+
+### `build_headers(extra: Optional[Mapping[str, str]] = None) -> Dict[str, str]`
+
+Source: `nexla_sdk/transport_core.py:56`
+
+Default User-Agent first. Caller headers win.
+
+### `http_error_from(status_code: Optional[int], body: Any, headers: Optional[Mapping[str, Any]], message: str) -> nexla_sdk.transport_core.HttpClientError`
+
+Source: `nexla_sdk/transport_core.py:88`
+
+Build the transport-level error for a non-2xx response.
+
+### `map_http_error(error: nexla_sdk.transport_core.HttpClientError, method: str, path: str, url: str, kwargs: Dict[str, Any]) -> nexla_sdk.exceptions.NexlaError`
+
+Source: `nexla_sdk/transport_core.py:121`
+
+Map an HTTP client error to a typed NexlaError. The caller raises it.
+
+Status code and body shape choose the class (see exceptions.error_from_response).
+Timeouts map to NexlaTimeoutError and connection failures to NexlaConnectionError.
+
+### `parse_error_body(resp: Any) -> Any`
+
+Source: `nexla_sdk/transport_core.py:61`
+
+Return the JSON body, else the trimmed text, else None when empty.
+
+### `parse_success_body(resp: Any) -> Any`
+
+Source: `nexla_sdk/transport_core.py:71`
+
+Parse a 2xx response body.
+
+Returns None for 204 or an empty body, the parsed JSON when it parses, and
+``\{"raw_text", "status_code"\}`` for a non-JSON body.
+
+### `resolve_base_url(base_url: Optional[str]) -> str`
+
+Source: `nexla_sdk/transport_core.py:190`
+
+Explicit base_url, else NEXLA_API_URL, else the default URL.
+
+### `resolve_credentials(service_key: Optional[str], api_key: Optional[str], access_token: Optional[str], email: Optional[str], password: Optional[str]) -> Tuple[Optional[str], Optional[str], Optional[str]]`
+
+Source: `nexla_sdk/transport_core.py:195`
+
+Choose exactly one credential mode. Returns (service_key, api_key, access_token).
+
+Explicit options win. Environment variables are read only when no option
+is passed: NEXLA_SERVICE_KEY, then NEXLA_API_KEY, then NEXLA_ACCESS_TOKEN.
+
+### `unexpected_request_error(error: Exception, method: str, path: str, url: str, kwargs: Dict[str, Any]) -> nexla_sdk.exceptions.NexlaError`
+
+Source: `nexla_sdk/transport_core.py:104`
+
+Wrap an error that is not an HTTP client error.
+

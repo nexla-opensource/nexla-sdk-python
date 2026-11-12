@@ -10,125 +10,158 @@ keywords: [Nexla, SDK, Python, API]
 
 ### FlowsResource
 
-Defined in `nexla_sdk/resources/flows.py:21`
+Defined in `nexla_sdk/resources/flows.py:48`
 
 Resource for managing data flows.
 
 Methods:
 
 - `accessors_by_resource(self, resource_type: str, resource_id: int, mode: str = 'list', payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:395`
+  - Source: `nexla_sdk/resources/flows.py:424`
 - `activate(self, flow_id: int, all: bool = False, full_tree: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:117`
+  - Source: `nexla_sdk/resources/flows.py:144`
   - Activate a flow.
 - `activate_by_resource(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, all: bool = False, full_tree: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:314`
+  - Source: `nexla_sdk/resources/flows.py:343`
   - Activate flow by resource ID.
-- `active_flows_metrics(self, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:527`
+- `active_flows_metrics(self, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:583`
 - `bulk_assign_project(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:512`
-- `copy(self, flow_id: int, options: Optional[nexla_sdk.models.flows.requests.FlowCopyOptions] = None) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:171`
+  - Source: `nexla_sdk/resources/flows.py:553`
+- `cancel_run(self, flow_id: int, run_id: Union[int, str], force: bool = False) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1121`
+  - Cancel a running flow execution.
+- `copy(self, flow_id: int, options: Union[nexla_sdk.models.flows.requests.FlowCopyOptions, Dict[str, Any], NoneType] = None) -> nexla_sdk.models.flows.responses.FlowResponse`
+  - Source: `nexla_sdk/resources/flows.py:198`
   - Copy a flow.
 - `copy_and_replace_credentials(self, flow_id: int, resource_credential_mapping: Dict[int, int], copy_options: Optional[nexla_sdk.models.flows.requests.FlowCopyOptions] = None, target_project_id: Optional[int] = None) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:186`
+  - Source: `nexla_sdk/resources/flows.py:215`
   - Copy a flow and replace credentials on specified resources.
 - `copy_by_resource(self, resource_type: str, resource_id: int, payload: Optional[Dict[str, Any]] = None) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:385`
+  - Source: `nexla_sdk/resources/flows.py:414`
 - `create_linked_flows(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:453`
-- `daily_metrics(self, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:521`
+  - Source: `nexla_sdk/resources/flows.py:489`
+- `daily_metrics(self, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:571`
 - `delete(self, flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:282`
+  - Source: `nexla_sdk/resources/flows.py:311`
   - Delete flow.
 - `delete_all_linked_flows(self, flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:471`
+  - Source: `nexla_sdk/resources/flows.py:507`
 - `delete_by_resource(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:294`
+  - Source: `nexla_sdk/resources/flows.py:323`
   - Delete flow by resource ID.
 - `delete_linked_flows(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:465`
+  - Source: `nexla_sdk/resources/flows.py:501`
 - `docs_by_resource(self, resource_type: str, resource_id: int, mode: str = 'list', payload: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:407`
+  - Source: `nexla_sdk/resources/flows.py:438`
 - `docs_recommendation(self, flow_id: int) -> Union[nexla_sdk.models.flows.responses.DocsRecommendation, Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/flows.py:535`
+  - Source: `nexla_sdk/resources/flows.py:597`
   - Generate AI suggestion for flow documentation.
-- `flow_logs(self, flow_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:435`
-- `flow_logs_v2(self, flow_id: int, payload: Dict[str, Any], **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:439`
-- `flow_metrics(self, flow_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:445`
+- `flow_logs(self, flow_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:468`
+- `flow_logs_v2(self, flow_id: int, payload: Dict[str, Any], **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:472`
+- `flow_metrics(self, flow_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:481`
 - `get(self, flow_id: int, flows_only: bool = False, include_run_metrics: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:67`
+  - Source: `nexla_sdk/resources/flows.py:94`
   - Get flow by ID.
-- `get_active_flows_metrics(self, from_date: str = None, to_date: str = None, org_id: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:632`
+- `get_active_flows_metrics(self, from_date: Optional[str] = None, to_date: Optional[str] = None, org_id: Optional[int] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:849`
   - Get metrics for currently active flows.
 - `get_by_resource(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, flows_only: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:90`
+  - Source: `nexla_sdk/resources/flows.py:117`
   - Get flow by resource ID.
-- `get_flow_logs(self, flow_id: int, from_date: str = None, to_date: str = None, severity: str = None, run_id: int = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:554`
+- `get_daily_metrics(self, origin_node_id: int, start_time: Optional[str] = None, end_time: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1055`
+  - Get daily metrics for a flow node.
+- `get_document(self, flow_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1025`
+  - Get a flow as a portable nexla/v1 document.
+- `get_document_schema(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1014`
+  - Get the JSON Schema for flow documents.
+- `get_flow_health(self, flow_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:836`
+  - Get detailed health information for a single flow.
+- `get_flow_logs(self, flow_id: int, from_date: Optional[str] = None, to_date: Optional[str] = None, severity: Optional[str] = None, run_id: Optional[int] = None, page: Optional[int] = None, per_page: Optional[int] = None, level: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:616`
   - Get execution logs for a specific flow.
 - `get_logs(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, run_id: int, from_ts: int, to_ts: Optional[int] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> Union[nexla_sdk.models.flows.responses.FlowLogsResponse, Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/flows.py:686`
+  - Source: `nexla_sdk/resources/flows.py:909`
   - Get flow execution logs for a specific run id of a flow.
 - `get_metrics(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, from_date: str, to_date: Optional[str] = None, groupby: Optional[str] = None, orderby: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> Union[nexla_sdk.models.flows.responses.FlowMetricsApiResponse, Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/flows.py:738`
+  - Source: `nexla_sdk/resources/flows.py:961`
   - Get flow metrics for a flow node keyed by resource id.
+- `get_org_health_flows(self, org_id: Optional[int] = None, owner_id: Optional[int] = None, from_date: Optional[str] = None, to_date: Optional[str] = None, health_status: Optional[str] = None, page: Optional[int] = None, size: Optional[int] = None, sort_by: Optional[str] = None, sort_order: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:776`
+  - List per-flow health status across an org. Use this to answer
+- `get_org_health_summary(self, org_id: Optional[int] = None, owner_id: Optional[int] = None, from_date: Optional[str] = None, to_date: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:740`
+  - Get the overall health snapshot for an org's flows.
 - `get_resources_access(self, flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:532`
+  - Source: `nexla_sdk/resources/flows.py:591`
+- `get_run(self, flow_id: int, run_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1105`
+  - Get the details of one flow run.
 - `get_run_status(self, flow_id: int, run_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:656`
+  - Source: `nexla_sdk/resources/flows.py:879`
   - Get status of a specific flow run.
 - `import_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:515`
+  - Source: `nexla_sdk/resources/flows.py:559`
 - `insert_flow_node(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:475`
-- `list(self, flows_only: bool = False, include_run_metrics: bool = False, access_role: Optional[str] = None, **kwargs) -> List[nexla_sdk.models.flows.responses.FlowResponse]`
-  - Source: `nexla_sdk/resources/flows.py:29`
+  - Source: `nexla_sdk/resources/flows.py:511`
+- `list(self, flows_only: bool = False, include_run_metrics: bool = False, access_role: Optional[str] = None, **kwargs: Any) -> List[nexla_sdk.models.flows.responses.FlowResponse]`
+  - Source: `nexla_sdk/resources/flows.py:56`
   - List flows with optional filters.
 - `list_linked_flows(self, flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:449`
+  - Source: `nexla_sdk/resources/flows.py:485`
+- `list_runs(self, flow_id: int, limit: int = 50, offset: int = 0) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/flows.py:1082`
+  - List recent runs of a flow that processed records.
 - `pause(self, flow_id: int, all: bool = False, full_tree: bool = False, async_mode: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:140`
+  - Source: `nexla_sdk/resources/flows.py:167`
   - Pause a flow.
 - `pause_by_resource(self, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], resource_id: int, all: bool = False, full_tree: bool = False) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:346`
+  - Source: `nexla_sdk/resources/flows.py:375`
   - Pause flow by resource ID.
+- `plan_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1040`
+  - Report what applying a flow document would change, without changing anything.
 - `publish_rag(self, flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:489`
+  - Source: `nexla_sdk/resources/flows.py:527`
 - `publish_raw(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:518`
+  - Source: `nexla_sdk/resources/flows.py:565`
 - `remove_flow_node(self, flow_id: int, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:479`
+  - Source: `nexla_sdk/resources/flows.py:515`
 - `restore_archival(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:499`
+  - Source: `nexla_sdk/resources/flows.py:537`
+- `retry_run(self, flow_id: int, run_id: Union[int, str], retry_config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:1143`
+  - Retry a failed flow execution.
 - `run_now(self, flow_id: int, method: str = 'POST') -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:431`
+  - Source: `nexla_sdk/resources/flows.py:464`
 - `run_profiles_activate(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:425`
+  - Source: `nexla_sdk/resources/flows.py:458`
 - `run_status(self, flow_id: int, run_id: Optional[int] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:503`
+  - Source: `nexla_sdk/resources/flows.py:541`
 - `run_status_by_resource(self, resource_type: str, resource_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:419`
+  - Source: `nexla_sdk/resources/flows.py:452`
 - `search(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:509`
+  - Source: `nexla_sdk/resources/flows.py:547`
   - Search resources using filter criteria.
-- `search_flow_logs(self, flow_id: int, run_ids: str = None, severity: str = None, search_string: str = None, from_date: str = None, to_date: str = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:595`
+- `search_flow_logs(self, flow_id: int, run_ids: Union[str, List[int], NoneType] = None, severity: Union[str, List[str], NoneType] = None, log_type: Union[str, List[str], NoneType] = None, search_string: Optional[str] = None, from_date: Optional[str] = None, to_date: Optional[str] = None, size: Optional[int] = None, sort: Optional[str] = None, facets: Optional[bool] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:665`
   - Advanced search for flow execution logs.
-- `total_metrics(self, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:524`
+- `total_metrics(self, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/flows.py:577`
 - `update_archival_status(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:493`
+  - Source: `nexla_sdk/resources/flows.py:531`
 - `update_by_resource(self, resource_type: str, resource_id: int, payload: Dict[str, Any]) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/flows.py:378`
+  - Source: `nexla_sdk/resources/flows.py:407`
 - `update_linked_flows(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:459`
+  - Source: `nexla_sdk/resources/flows.py:495`
 - `update_samples(self, flow_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/flows.py:485`
+  - Source: `nexla_sdk/resources/flows.py:523`
 

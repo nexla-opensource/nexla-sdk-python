@@ -10,29 +10,29 @@ keywords: [Nexla, SDK, Python, API]
 
 ### VendorEndpointsResource
 
-Defined in `nexla_sdk/resources/vendor_endpoints.py:11`
+Defined in `nexla_sdk/resources/vendor_endpoints.py:14`
 
 Resource for managing vendor endpoints.
 
 Methods:
 
 - `create(self, data: Union[nexla_sdk.models.vendor_endpoints.requests.VendorEndpointCreate, Dict[str, Any]]) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:25`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:28`
   - Create new resource.
 - `delete(self, vendor_endpoint_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:37`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:40`
   - Delete resource.
 - `delete_all(self, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:43`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:46`
 - `get(self, vendor_endpoint_id: int) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:22`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:25`
   - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint]`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:19`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint]`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:22`
   - List resources with optional filters.
 - `update(self, vendor_endpoint_id: int, data: Union[nexla_sdk.models.vendor_endpoints.requests.VendorEndpointUpdate, Dict[str, Any]]) -> nexla_sdk.models.vendor_endpoints.responses.VendorEndpoint`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:30`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:33`
   - Update resource.
 - `update_all(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/vendor_endpoints.py:40`
+  - Source: `nexla_sdk/resources/vendor_endpoints.py:43`
 

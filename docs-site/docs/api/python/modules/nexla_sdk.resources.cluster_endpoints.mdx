@@ -12,7 +12,7 @@ Resource for managing cluster endpoints.
 
 ### ClusterEndpointsResource
 
-Defined in `nexla_sdk/resources/cluster_endpoints.py:13`
+Defined in `nexla_sdk/resources/cluster_endpoints.py:16`
 
 Resource for managing cluster endpoints.
 
@@ -46,18 +46,21 @@ Examples:
 Methods:
 
 - `create(self, data: Union[nexla_sdk.models.clusters.requests.ClusterEndpointCreate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
-  - Source: `nexla_sdk/resources/cluster_endpoints.py:84`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:87`
   - Create a new cluster endpoint.
 - `get(self, endpoint_id: int) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
-  - Source: `nexla_sdk/resources/cluster_endpoints.py:71`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:74`
   - Get cluster endpoint by ID.
 - `get_audit_log(self, endpoint_id: int, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/cluster_endpoints.py:116`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:119`
   - Get audit log for a cluster endpoint.
-- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.clusters.responses.ClusterEndpoint]`
-  - Source: `nexla_sdk/resources/cluster_endpoints.py:54`
+- `get_schema(self, method: str = 'get') -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:145`
+  - Get the JSON schema for cluster endpoints.
+- `list(self, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs: Any) -> List[nexla_sdk.models.clusters.responses.ClusterEndpoint]`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:57`
   - List cluster endpoints.
 - `update(self, endpoint_id: int, data: Union[nexla_sdk.models.clusters.requests.ClusterEndpointUpdate, Dict[str, Any]]) -> nexla_sdk.models.clusters.responses.ClusterEndpoint`
-  - Source: `nexla_sdk/resources/cluster_endpoints.py:99`
+  - Source: `nexla_sdk/resources/cluster_endpoints.py:102`
   - Update a cluster endpoint.
 

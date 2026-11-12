@@ -10,26 +10,26 @@ keywords: [Nexla, SDK, Python, API]
 
 ### SelfSignupResource
 
-Defined in `nexla_sdk/resources/self_signup.py:7`
+Defined in `nexla_sdk/resources/self_signup.py:10`
 
 Resource for self sign-up and admin endpoints.
 
 Methods:
 
 - `add_blocked_domain(self, domain: str) -> nexla_sdk.models.self_signup.responses.BlockedDomain`
-  - Source: `nexla_sdk/resources/self_signup.py:40`
+  - Source: `nexla_sdk/resources/self_signup.py:44`
 - `approve_request(self, request_id: str) -> nexla_sdk.models.self_signup.responses.SelfSignupRequest`
-  - Source: `nexla_sdk/resources/self_signup.py:29`
+  - Source: `nexla_sdk/resources/self_signup.py:33`
 - `delete_blocked_domain(self, domain_id: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/self_signup.py:52`
+  - Source: `nexla_sdk/resources/self_signup.py:56`
 - `list_blocked_domains(self) -> List[nexla_sdk.models.self_signup.responses.BlockedDomain]`
-  - Source: `nexla_sdk/resources/self_signup.py:36`
+  - Source: `nexla_sdk/resources/self_signup.py:40`
 - `list_requests(self) -> List[nexla_sdk.models.self_signup.responses.SelfSignupRequest]`
-  - Source: `nexla_sdk/resources/self_signup.py:25`
+  - Source: `nexla_sdk/resources/self_signup.py:29`
 - `signup(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/self_signup.py:16`
-- `update_blocked_domain(self, domain_id: str, domain: str) -> nexla_sdk.models.self_signup.responses.BlockedDomain`
-  - Source: `nexla_sdk/resources/self_signup.py:46`
-- `verify_email(self, token: str) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/self_signup.py:19`
+- `update_blocked_domain(self, domain_id: str, domain: str) -> nexla_sdk.models.self_signup.responses.BlockedDomain`
+  - Source: `nexla_sdk/resources/self_signup.py:50`
+- `verify_email(self, token: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/self_signup.py:22`
 

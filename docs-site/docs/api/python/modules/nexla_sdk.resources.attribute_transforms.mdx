@@ -10,37 +10,37 @@ keywords: [Nexla, SDK, Python, API]
 
 ### AttributeTransformsResource
 
-Defined in `nexla_sdk/resources/attribute_transforms.py:11`
+Defined in `nexla_sdk/resources/attribute_transforms.py:14`
 
 Resource for reusable attribute transforms (aliased to code containers).
 
 Methods:
 
 - `copy(self, attribute_transform_id: int) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:63`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:70`
   - Copy an attribute transform.
-- `create(self, data: nexla_sdk.models.attribute_transforms.requests.AttributeTransformCreate) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:43`
+- `create(self, data: Union[nexla_sdk.models.attribute_transforms.requests.AttributeTransformCreate, Dict[str, Any]]) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:46`
   - Create a new attribute transform.
 - `delete(self, attribute_transform_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:53`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:60`
   - Delete an attribute transform by ID.
 - `get(self, attribute_transform_id: int, expand: bool = False) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:37`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:40`
   - Get an attribute transform by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:19`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:22`
   - List attribute transforms with optional filters.
 - `list_public(self) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:57`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:64`
   - List publicly shared attribute transforms.
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:67`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:74`
   - Search resources using filter criteria.
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:70`
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.attribute_transforms.responses.AttributeTransform]`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:79`
   - Search resources by tags.
-- `update(self, attribute_transform_id: int, data: nexla_sdk.models.attribute_transforms.requests.AttributeTransformUpdate) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
-  - Source: `nexla_sdk/resources/attribute_transforms.py:47`
+- `update(self, attribute_transform_id: int, data: Union[nexla_sdk.models.attribute_transforms.requests.AttributeTransformUpdate, Dict[str, Any]]) -> nexla_sdk.models.attribute_transforms.responses.AttributeTransform`
+  - Source: `nexla_sdk/resources/attribute_transforms.py:52`
   - Update an attribute transform by ID.
 

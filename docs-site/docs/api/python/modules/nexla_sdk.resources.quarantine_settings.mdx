@@ -10,18 +10,18 @@ keywords: [Nexla, SDK, Python, API]
 
 ### QuarantineSettingsResource
 
-Defined in `nexla_sdk/resources/quarantine_settings.py:7`
+Defined in `nexla_sdk/resources/quarantine_settings.py:10`
 
 Resource for listing quarantine settings (global endpoints).
 
 Methods:
 
 - `get(self, quarantine_setting_id: int) -> nexla_sdk.models.quarantine_settings.responses.QuarantineSetting`
-  - Source: `nexla_sdk/resources/quarantine_settings.py:18`
-  - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.quarantine_settings.responses.QuarantineSetting]`
-  - Source: `nexla_sdk/resources/quarantine_settings.py:15`
-  - List resources with optional filters.
-- `list_all(self, **params) -> List[nexla_sdk.models.quarantine_settings.responses.QuarantineSetting]`
   - Source: `nexla_sdk/resources/quarantine_settings.py:21`
+  - Get single resource by ID.
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.quarantine_settings.responses.QuarantineSetting]`
+  - Source: `nexla_sdk/resources/quarantine_settings.py:18`
+  - List resources with optional filters.
+- `list_all(self, **params: Any) -> List[nexla_sdk.models.quarantine_settings.responses.QuarantineSetting]`
+  - Source: `nexla_sdk/resources/quarantine_settings.py:24`
 

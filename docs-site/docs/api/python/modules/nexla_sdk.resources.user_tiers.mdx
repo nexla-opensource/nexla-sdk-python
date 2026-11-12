@@ -10,25 +10,25 @@ keywords: [Nexla, SDK, Python, API]
 
 ### UserTiersResource
 
-Defined in `nexla_sdk/resources/user_tiers.py:7`
+Defined in `nexla_sdk/resources/user_tiers.py:10`
 
 Resource for user tiers.
 
 Methods:
 
 - `create(self, data: Dict[str, Any]) -> nexla_sdk.models.user_tiers.responses.UserTier`
-  - Source: `nexla_sdk/resources/user_tiers.py:21`
+  - Source: `nexla_sdk/resources/user_tiers.py:24`
   - Create new resource.
 - `delete(self, user_tier_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/user_tiers.py:27`
+  - Source: `nexla_sdk/resources/user_tiers.py:30`
   - Delete resource.
 - `get(self, user_tier_id: int) -> nexla_sdk.models.user_tiers.responses.UserTier`
-  - Source: `nexla_sdk/resources/user_tiers.py:18`
+  - Source: `nexla_sdk/resources/user_tiers.py:21`
   - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.user_tiers.responses.UserTier]`
-  - Source: `nexla_sdk/resources/user_tiers.py:15`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.user_tiers.responses.UserTier]`
+  - Source: `nexla_sdk/resources/user_tiers.py:18`
   - List resources with optional filters.
 - `update(self, user_tier_id: int, data: Dict[str, Any]) -> nexla_sdk.models.user_tiers.responses.UserTier`
-  - Source: `nexla_sdk/resources/user_tiers.py:24`
+  - Source: `nexla_sdk/resources/user_tiers.py:27`
   - Update resource.
 

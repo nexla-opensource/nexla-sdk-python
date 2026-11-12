@@ -13,9 +13,9 @@ without raising validation errors. Unknown values are preserved as strings.
 
 ## Functions
 
-### `FlexibleEnum(enum_cls: Type[~E]) -> Type[Union[~E, str]]`
+### `FlexibleEnum(enum_cls: Type[~E]) -> Any`
 
-Source: `nexla_sdk/models/flexible_enums.py:49`
+Source: `nexla_sdk/models/flexible_enums.py:50`
 
 Create a flexible enum type annotation for Pydantic models.
 
@@ -32,9 +32,9 @@ Args:
 Returns:
     An Annotated type suitable for Pydantic model fields
 
-### `flexible_enum_validator(enum_cls: Type[~E])`
+### `flexible_enum_validator(enum_cls: Type[~E]) -> Callable[[Any], Any]`
 
-Source: `nexla_sdk/models/flexible_enums.py:22`
+Source: `nexla_sdk/models/flexible_enums.py:23`
 
 Create a validator that accepts enum values or unknown strings.
 

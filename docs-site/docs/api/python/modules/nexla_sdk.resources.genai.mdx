@@ -10,34 +10,37 @@ keywords: [Nexla, SDK, Python, API]
 
 ### GenAIResource
 
-Defined in `nexla_sdk/resources/genai.py:16`
+Defined in `nexla_sdk/resources/genai.py:20`
 
 Resource for GenAI configurations and org settings.
 
 Methods:
 
 - `create_config(self, payload: nexla_sdk.models.genai.requests.GenAiConfigCreatePayload) -> nexla_sdk.models.genai.responses.GenAiConfig`
-  - Source: `nexla_sdk/resources/genai.py:29`
+  - Source: `nexla_sdk/resources/genai.py:33`
 - `create_org_setting(self, payload: nexla_sdk.models.genai.requests.GenAiOrgSettingPayload) -> nexla_sdk.models.genai.responses.GenAiOrgSetting`
-  - Source: `nexla_sdk/resources/genai.py:66`
+  - Source: `nexla_sdk/resources/genai.py:93`
 - `delete_config(self, gen_ai_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/genai.py:49`
+  - Source: `nexla_sdk/resources/genai.py:73`
 - `delete_org_setting(self, gen_ai_org_setting_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/genai.py:86`
+  - Source: `nexla_sdk/resources/genai.py:113`
 - `delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/genai.py:91`
+  - Source: `nexla_sdk/utils/deprecation.py:121`
+- `gen_ai_integration_configs_update_gen_ai_config(self, gen_ai_config_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/genai.py:53`
+  - Partially update a GenAI integration config.
 - `get_config(self, gen_ai_config_id: int) -> nexla_sdk.models.genai.responses.GenAiConfig`
-  - Source: `nexla_sdk/resources/genai.py:34`
+  - Source: `nexla_sdk/resources/genai.py:38`
 - `get_org_setting(self, gen_ai_org_setting_id: int) -> nexla_sdk.models.genai.responses.GenAiOrgSetting`
-  - Source: `nexla_sdk/resources/genai.py:71`
+  - Source: `nexla_sdk/resources/genai.py:98`
 - `list_configs(self) -> List[nexla_sdk.models.genai.responses.GenAiConfig]`
-  - Source: `nexla_sdk/resources/genai.py:25`
-- `list_org_settings(self, org_id: int = None, all: bool = False) -> List[nexla_sdk.models.genai.responses.GenAiOrgSetting]`
-  - Source: `nexla_sdk/resources/genai.py:55`
+  - Source: `nexla_sdk/resources/genai.py:29`
+- `list_org_settings(self, org_id: Optional[int] = None, all: bool = False) -> List[nexla_sdk.models.genai.responses.GenAiOrgSetting]`
+  - Source: `nexla_sdk/resources/genai.py:82`
 - `show_active_config(self, gen_ai_usage: str) -> nexla_sdk.models.genai.responses.ActiveConfigView`
-  - Source: `nexla_sdk/resources/genai.py:94`
+  - Source: `nexla_sdk/resources/genai.py:132`
 - `update_config(self, gen_ai_config_id: int, payload: nexla_sdk.models.genai.requests.GenAiConfigPayload) -> nexla_sdk.models.genai.responses.GenAiConfig`
-  - Source: `nexla_sdk/resources/genai.py:40`
+  - Source: `nexla_sdk/resources/genai.py:44`
 - `update_org_setting(self, gen_ai_org_setting_id: int, payload: nexla_sdk.models.genai.requests.GenAiOrgSettingPayload) -> nexla_sdk.models.genai.responses.GenAiOrgSetting`
-  - Source: `nexla_sdk/resources/genai.py:77`
+  - Source: `nexla_sdk/resources/genai.py:104`
 

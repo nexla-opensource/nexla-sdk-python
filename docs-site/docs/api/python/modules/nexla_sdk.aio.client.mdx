@@ -1,0 +1,68 @@
+---
+id: nexla_sdk.aio.client
+title: nexla_sdk.aio.client
+slug: /api/python/modules/nexla_sdk/aio/client
+description: API for nexla_sdk.aio.client
+keywords: [Nexla, SDK, Python, API]
+---
+
+Async client for the Nexla API.
+
+Install the extra: ``pip install "nexla-sdk[async]"``.
+
+AsyncNexlaClient has the resource attributes, method names and parameters of
+NexlaClient. Resource methods are coroutines. Authentication, retries, timeouts
+and errors follow the same spec as the sync client.
+
+The resource wiring in ``__init__`` is copied from ``NexlaClient.__init__``.
+``tests/unit/test_aio_surface.py`` fails when the two differ.
+
+## Classes
+
+### AsyncNexlaClient
+
+Defined in `nexla_sdk/aio/client.py:101`
+
+Async client for the Nexla API.
+
+Use it as an async context manager, or call ``aclose()`` when finished.
+Authentication modes are the same as NexlaClient: service key, API key,
+email and password, or access token.
+
+Examples:
+    async with AsyncNexlaClient(service_key="your-service-key") as client:
+        sources = await client.sources.list()
+        async for source in client.sources.paginate(per_page=50).iter_items():
+            print(source.name)
+
+Note:
+    Resource methods are coroutines. ``paginate()`` returns an AsyncPaginator
+    that you iterate with ``async for``.
+
+Methods:
+
+- `aclose(self) -> 'None'`
+  - Source: `nexla_sdk/aio/client.py:368`
+  - Close the HTTP transport. Call this when the client is no longer needed.
+- `create_webhook_client(self, api_key: 'str') -> 'WebhooksResource'`
+  - Source: `nexla_sdk/aio/client.py:300`
+  - Create an async webhook client that uses this client's HTTP transport.
+- `get_access_token(self) -> 'str'`
+  - Source: `nexla_sdk/aio/client.py:265`
+  - Return a valid access token. Service keys obtain one when needed.
+- `logout(self) -> 'None'`
+  - Source: `nexla_sdk/aio/client.py:296`
+  - End the session. Calls POST /token/logout and clears the local token.
+- `refresh_access_token(self) -> 'str'`
+  - Source: `nexla_sdk/aio/client.py:276`
+  - Obtain a fresh token and return it. Access tokens cannot be refreshed.
+- `request(self, method: 'str', path: 'str', **kwargs: 'Any') -> 'Union[Dict[str, Any], None]'`
+  - Source: `nexla_sdk/aio/client.py:319`
+  - Send a request to the Nexla API. Return the body, or None for 204.
+- `request_with_headers(self, method: 'str', path: 'str', **kwargs: 'Any') -> 'Tuple[Union[Dict[str, Any], None], Any]'`
+  - Source: `nexla_sdk/aio/client.py:331`
+  - Send a request to the Nexla API. Return (body, response headers).
+- `switch_org(self, org_id: 'int') -> 'TokenResponse'`
+  - Source: `nexla_sdk/aio/client.py:285`
+  - Switch the session to another org (POST /token/refresh?org_id=).
+

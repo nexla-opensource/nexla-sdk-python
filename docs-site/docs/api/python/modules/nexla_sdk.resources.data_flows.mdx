@@ -10,40 +10,40 @@ keywords: [Nexla, SDK, Python, API]
 
 ### DataFlowsResource
 
-Defined in `nexla_sdk/resources/data_flows.py:6`
+Defined in `nexla_sdk/resources/data_flows.py:10`
 
 Resource for legacy data_flows endpoints.
 
 Methods:
 
 - `create(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:22`
+  - Source: `nexla_sdk/resources/data_flows.py:26`
   - Create new resource.
 - `create_data_sink_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:48`
+  - Source: `nexla_sdk/utils/deprecation.py:62`
 - `create_data_source_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:38`
-- `get(self, data_flow_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:18`
+  - Source: `nexla_sdk/utils/deprecation.py:47`
+- `get(self, data_flow_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_flows.py:22`
   - Get single resource by ID.
-- `get_audit_log(self, data_flow_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:25`
+- `get_audit_log(self, data_flow_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_flows.py:31`
   - Get audit log for resource.
 - `get_data_sink_audit_log(self, data_sink_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:59`
-- `get_data_sink_flow(self, data_sink_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:44`
+  - Source: `nexla_sdk/utils/deprecation.py:84`
+- `get_data_sink_flow(self, data_sink_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_flows.py:58`
 - `get_data_source_audit_log(self, data_source_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:54`
-- `get_data_source_flow(self, data_source_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:34`
-- `get_flow_audit_log(self, flow_node_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/data_flows.py:51`
-- `list(self, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/data_flows.py:14`
-  - List resources with optional filters.
-- `list_data_sink_flows(self, **params) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/utils/deprecation.py:75`
+- `get_data_source_flow(self, data_source_id: int, **params: Any) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/data_flows.py:41`
-- `list_data_source_flows(self, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/data_flows.py:29`
+- `get_flow_audit_log(self, flow_node_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/data_flows.py:69`
+- `list(self, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/data_flows.py:18`
+  - List resources with optional filters.
+- `list_data_sink_flows(self, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/utils/deprecation.py:54`
+- `list_data_source_flows(self, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/utils/deprecation.py:35`
 

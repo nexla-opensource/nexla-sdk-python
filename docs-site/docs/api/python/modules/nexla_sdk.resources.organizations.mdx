@@ -10,131 +10,158 @@ keywords: [Nexla, SDK, Python, API]
 
 ### OrganizationsResource
 
-Defined in `nexla_sdk/resources/organizations.py:22`
+Defined in `nexla_sdk/resources/organizations.py:26`
 
 Resource for managing organizations.
 
 Methods:
 
 - `activate_cluster(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:273`
+  - Source: `nexla_sdk/resources/organizations.py:286`
 - `activate_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberActivateDeactivateRequest) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
-  - Source: `nexla_sdk/resources/organizations.py:190`
+  - Source: `nexla_sdk/resources/organizations.py:198`
   - Activate members in an organization.
 - `activate_org(self, org_id: int, activate: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:245`
+  - Source: `nexla_sdk/resources/organizations.py:258`
 - `activate_rate_limited_sources(self, org_id: int, status: Optional[str] = None, activate: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:236`
+  - Source: `nexla_sdk/resources/organizations.py:244`
+  - Activate or pause rate-limited sources (PUT /orgs/\{id\}, body action).
+- `activate_sources(self, org_id: int, status: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:564`
+  - Activate rate-limited sources of an organization.
 - `add_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/organizations.py:501`
-- `create(self, data: nexla_sdk.models.organizations.requests.OrganizationCreate) -> nexla_sdk.models.organizations.responses.Organization`
-  - Source: `nexla_sdk/resources/organizations.py:65`
+  - Source: `nexla_sdk/resources/organizations.py:528`
+  - Add custodians. Backend PUT adds; POST replaces the whole list.
+- `create(self, data: Union[nexla_sdk.models.organizations.requests.OrganizationCreate, Dict[str, Any]]) -> nexla_sdk.models.organizations.responses.Organization`
+  - Source: `nexla_sdk/resources/organizations.py:69`
   - Create a new organization. Note: This is an admin-only operation.
 - `create_dashboard_transforms(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:335`
+  - Source: `nexla_sdk/resources/organizations.py:356`
 - `create_notification_settings(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:285`
+  - Source: `nexla_sdk/resources/organizations.py:300`
+- `create_quarantine_settings(self, org_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:634`
+  - Create or update the quarantine setting of an organization.
 - `deactivate_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberActivateDeactivateRequest) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
-  - Source: `nexla_sdk/resources/organizations.py:173`
+  - Source: `nexla_sdk/resources/organizations.py:181`
   - Deactivate members in an organization.
 - `delete(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:90`
+  - Source: `nexla_sdk/resources/organizations.py:96`
   - Delete organization.
 - `delete_dashboard_transforms(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:347`
+  - Source: `nexla_sdk/resources/organizations.py:368`
 - `delete_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberDelete) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:159`
+  - Source: `nexla_sdk/resources/organizations.py:165`
   - Remove members from organization.
 - `delete_notification_settings(self, org_id: int, notification_settings_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:297`
+  - Source: `nexla_sdk/resources/organizations.py:312`
+- `delete_quarantine_settings(self, org_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:666`
+  - Delete the quarantine setting of an organization.
 - `disable_feature(self, org_id: int, feature_name: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:315`
+  - Source: `nexla_sdk/resources/organizations.py:332`
 - `enable_feature(self, org_id: int, feature_name: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:311`
+  - Source: `nexla_sdk/resources/organizations.py:328`
 - `get(self, org_id: int, expand: bool = False) -> nexla_sdk.models.organizations.responses.Organization`
-  - Source: `nexla_sdk/resources/organizations.py:52`
+  - Source: `nexla_sdk/resources/organizations.py:56`
   - Get single organization by ID.
 - `get_account_rate_limited(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:232`
+  - Source: `nexla_sdk/resources/organizations.py:240`
 - `get_account_summary(self, org_id: int) -> nexla_sdk.models.organizations.responses.AccountSummary`
-  - Source: `nexla_sdk/resources/organizations.py:207`
+  - Source: `nexla_sdk/resources/organizations.py:215`
   - Get account summary statistics for an organization.
-- `get_audit_log(self, org_id: int, from_date: str = None, to_date: str = None, event_filter: str = None, change_filter: str = None, page: int = None, per_page: int = None) -> List[nexla_sdk.models.common.LogEntry]`
-  - Source: `nexla_sdk/resources/organizations.py:363`
+- `get_allowed_clusters(self, org_id: int) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/organizations.py:604`
+  - Get the clusters an organization may use.
+- `get_audit_log(self, org_id: int, from_date: Optional[str] = None, to_date: Optional[str] = None, event_filter: Optional[str] = None, change_filter: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> List[nexla_sdk.models.common.LogEntry]`
+  - Source: `nexla_sdk/resources/organizations.py:384`
   - Get audit log for an organization.
 - `get_auth_settings(self, org_id: int) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/organizations.py:452`
+  - Source: `nexla_sdk/utils/deprecation.py:487`
   - Get authentication settings for organization.
-- `get_clusters(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:265`
+- `get_clusters(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:278`
 - `get_current_account_summary(self) -> nexla_sdk.models.organizations.responses.AccountSummary`
-  - Source: `nexla_sdk/resources/organizations.py:221`
+  - Source: `nexla_sdk/resources/organizations.py:229`
   - Get account summary for the current organization based on auth token.
 - `get_custodians(self, org_id: int) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/organizations.py:484`
+  - Source: `nexla_sdk/resources/organizations.py:521`
 - `get_dashboard_transforms(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:331`
+  - Source: `nexla_sdk/resources/organizations.py:352`
 - `get_data_sets_catalog_config(self, config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:307`
-- `get_flow_status_metrics(self, org_id: int, from_date: str = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:405`
+  - Source: `nexla_sdk/resources/organizations.py:324`
+- `get_flow_status_metrics(self, org_id: int, from_date: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:426`
   - Get flow status metrics for an organization.
-- `get_flows_account_metrics(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:359`
-- `get_flows_dashboard(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:351`
-- `get_flows_report(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:261`
-- `get_flows_status_metrics(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:355`
-- `get_login_history(self, org_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/organizations.py:102`
+- `get_flows_account_metrics(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:380`
+- `get_flows_dashboard(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:372`
+- `get_flows_report(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:274`
+- `get_flows_status_metrics(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:376`
+- `get_login_history(self, org_id: int, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/organizations.py:108`
 - `get_members(self, org_id: int) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
-  - Source: `nexla_sdk/resources/organizations.py:115`
+  - Source: `nexla_sdk/resources/organizations.py:121`
   - Get all members in organization.
-- `get_metrics(self, org_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:107`
-- `get_org_flow_account_metrics(self, org_id: int, from_date: str, to_date: str = None, aggregate: str = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:319`
+- `get_metrics(self, org_id: int, metrics_name: Optional[str] = None, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:113`
+- `get_org_flow_account_metrics(self, org_id: int, from_date: str, to_date: Optional[str] = None, aggregate: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:336`
   - Get total account metrics for an organization (flows).
-- `get_resource_audit_log(self, org_id: int, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], **params) -> List[nexla_sdk.models.common.LogEntry]`
-  - Source: `nexla_sdk/resources/organizations.py:430`
+- `get_quarantine_settings(self, org_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:619`
+  - Get the quarantine setting of an organization.
+- `get_resource_audit_log(self, org_id: int, resource_type: Union[nexla_sdk.models.metrics.enums.ResourceType, str], **params: Any) -> List[nexla_sdk.models.common.LogEntry]`
+  - Source: `nexla_sdk/resources/organizations.py:465`
   - Get audit log for a specific resource type within an organization.
-- `list(self, **kwargs) -> List[nexla_sdk.models.organizations.responses.Organization]`
-  - Source: `nexla_sdk/resources/organizations.py:30`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.organizations.responses.Organization]`
+  - Source: `nexla_sdk/resources/organizations.py:34`
   - List organizations with optional filters.
-- `list_all(self, **params) -> List[nexla_sdk.models.organizations.responses.Organization]`
-  - Source: `nexla_sdk/resources/organizations.py:48`
-- `list_data_sets_catalog_configs(self, org_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:303`
-- `list_notification_settings(self, org_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/organizations.py:281`
+- `list_all(self, **params: Any) -> List[nexla_sdk.models.organizations.responses.Organization]`
+  - Source: `nexla_sdk/resources/organizations.py:52`
+- `list_data_sets_catalog_configs(self, org_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:318`
+- `list_notification_settings(self, org_id: int, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/organizations.py:294`
+- `pause_sources(self, org_id: int, status: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:584`
+  - Pause rate-limited sources of an organization.
 - `remove_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:511`
+  - Source: `nexla_sdk/resources/organizations.py:557`
 - `replace_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberList) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
-  - Source: `nexla_sdk/resources/organizations.py:144`
+  - Source: `nexla_sdk/resources/organizations.py:150`
   - Replace all members in organization.
+- `reset_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
+  - Source: `nexla_sdk/resources/organizations.py:539`
+  - Replace all custodians. Backend POST resets the list.
 - `revert_cluster(self, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:277`
+  - Source: `nexla_sdk/resources/organizations.py:290`
 - `set_rate_limits(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:253`
+  - Source: `nexla_sdk/resources/organizations.py:266`
 - `throttle(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:257`
-- `update(self, org_id: int, data: nexla_sdk.models.organizations.requests.OrganizationUpdate) -> nexla_sdk.models.organizations.responses.Organization`
-  - Source: `nexla_sdk/resources/organizations.py:77`
+  - Source: `nexla_sdk/resources/organizations.py:270`
+- `update(self, org_id: int, data: Union[nexla_sdk.models.organizations.requests.OrganizationUpdate, Dict[str, Any]]) -> nexla_sdk.models.organizations.responses.Organization`
+  - Source: `nexla_sdk/resources/organizations.py:81`
   - Update organization.
 - `update_auth_setting(self, org_id: int, auth_setting_id: int, enabled: bool) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:465`
+  - Source: `nexla_sdk/utils/deprecation.py:501`
   - Enable/disable authentication configuration.
 - `update_cluster(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:269`
+  - Source: `nexla_sdk/resources/organizations.py:282`
 - `update_custodians(self, org_id: int, payload: nexla_sdk.models.organizations.custodians.OrgCustodiansPayload) -> List[nexla_sdk.models.organizations.responses.CustodianUser]`
-  - Source: `nexla_sdk/resources/organizations.py:491`
+  - Source: `nexla_sdk/resources/organizations.py:550`
+  - Deprecated alias of add_custodians (the old PUT was an add).
 - `update_dashboard_transforms(self, org_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:341`
+  - Source: `nexla_sdk/resources/organizations.py:362`
 - `update_members(self, org_id: int, members: nexla_sdk.models.organizations.requests.OrgMemberList) -> List[nexla_sdk.models.organizations.responses.OrgMember]`
-  - Source: `nexla_sdk/resources/organizations.py:129`
+  - Source: `nexla_sdk/resources/organizations.py:135`
   - Add or update members in organization.
 - `update_notification_settings(self, org_id: int, notification_settings_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/organizations.py:291`
+  - Source: `nexla_sdk/resources/organizations.py:306`
+- `update_quarantine_settings(self, org_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/organizations.py:650`
+  - Update the quarantine setting of an organization.
 

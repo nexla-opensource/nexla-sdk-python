@@ -10,40 +10,40 @@ keywords: [Nexla, SDK, Python, API]
 
 ### TeamsResource
 
-Defined in `nexla_sdk/resources/teams.py:9`
+Defined in `nexla_sdk/resources/teams.py:12`
 
 Resource for managing teams.
 
 Methods:
 
 - `add_members(self, team_id: int, members: nexla_sdk.models.teams.requests.TeamMemberList) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:105`
+  - Source: `nexla_sdk/resources/teams.py:108`
   - Add members to team.
-- `create(self, data: nexla_sdk.models.teams.requests.TeamCreate) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:51`
+- `create(self, data: Union[nexla_sdk.models.teams.requests.TeamCreate, Dict[str, Any]]) -> nexla_sdk.models.teams.responses.Team`
+  - Source: `nexla_sdk/resources/teams.py:54`
   - Create new team.
 - `delete(self, team_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/teams.py:79`
+  - Source: `nexla_sdk/resources/teams.py:82`
   - Delete team.
 - `get(self, team_id: int, expand: bool = False) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:35`
+  - Source: `nexla_sdk/resources/teams.py:38`
   - Get single team by ID.
-- `get_audit_log(self, team_id: int, **params) -> List[nexla_sdk.models.common.LogEntry]`
-  - Source: `nexla_sdk/resources/teams.py:155`
+- `get_audit_log(self, team_id: int, **params: Any) -> List[nexla_sdk.models.common.LogEntry]`
+  - Source: `nexla_sdk/resources/teams.py:158`
   - Get audit log for resource.
 - `get_members(self, team_id: int) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:91`
+  - Source: `nexla_sdk/resources/teams.py:94`
   - Get team members.
-- `list(self, **kwargs) -> List[nexla_sdk.models.teams.responses.Team]`
-  - Source: `nexla_sdk/resources/teams.py:17`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.teams.responses.Team]`
+  - Source: `nexla_sdk/resources/teams.py:20`
   - List teams with optional filters.
 - `remove_members(self, team_id: int, members: Optional[nexla_sdk.models.teams.requests.TeamMemberList] = None) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:137`
+  - Source: `nexla_sdk/resources/teams.py:140`
   - Remove members from team.
 - `replace_members(self, team_id: int, members: nexla_sdk.models.teams.requests.TeamMemberList) -> List[nexla_sdk.models.teams.responses.TeamMember]`
-  - Source: `nexla_sdk/resources/teams.py:120`
+  - Source: `nexla_sdk/resources/teams.py:123`
   - Replace all team members.
-- `update(self, team_id: int, data: nexla_sdk.models.teams.requests.TeamUpdate) -> nexla_sdk.models.teams.responses.Team`
-  - Source: `nexla_sdk/resources/teams.py:66`
+- `update(self, team_id: int, data: Union[nexla_sdk.models.teams.requests.TeamUpdate, Dict[str, Any]]) -> nexla_sdk.models.teams.responses.Team`
+  - Source: `nexla_sdk/resources/teams.py:69`
   - Update team.
 

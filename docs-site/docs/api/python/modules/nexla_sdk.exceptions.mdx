@@ -8,135 +8,190 @@ keywords: [Nexla, SDK, Python, API]
 
 ## Classes
 
+### AccountLockedError
+
+Defined in `nexla_sdk/exceptions.py:98`
+
+Raised on HTTP 423: the account is locked.
+
+Methods:
+
+- `get_error_summary(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/exceptions.py:72`
+  - Get structured error information.
+
 ### AuthenticationError
 
-Defined in `nexla_sdk/exceptions.py:72`
+Defined in `nexla_sdk/exceptions.py:88`
 
 Raised when authentication fails.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### AuthorizationError
 
-Defined in `nexla_sdk/exceptions.py:82`
+Defined in `nexla_sdk/exceptions.py:104`
 
 Raised when user lacks permission.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### CredentialError
 
-Defined in `nexla_sdk/exceptions.py:120`
+Defined in `nexla_sdk/exceptions.py:156`
 
 Raised when credential validation fails.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### FlowError
 
-Defined in `nexla_sdk/exceptions.py:132`
+Defined in `nexla_sdk/exceptions.py:170`
 
 Raised when flow operations fail.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
+  - Get structured error information.
+
+### NexlaConnectionError
+
+Defined in `nexla_sdk/exceptions.py:144`
+
+Raised when the connection fails. Subclasses ServerError for compatibility.
+
+Methods:
+
+- `get_error_summary(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### NexlaError
 
-Defined in `nexla_sdk/exceptions.py:4`
+Defined in `nexla_sdk/exceptions.py:5`
 
 Base exception for all Nexla errors.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
+  - Get structured error information.
+
+### NexlaTimeoutError
+
+Defined in `nexla_sdk/exceptions.py:138`
+
+Raised when a request times out. Subclasses ServerError for compatibility.
+
+Methods:
+
+- `get_error_summary(self) -> Dict[str, Any]`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### NotFoundError
 
-Defined in `nexla_sdk/exceptions.py:88`
+Defined in `nexla_sdk/exceptions.py:110`
 
 Raised when a resource is not found.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### RateLimitError
 
-Defined in `nexla_sdk/exceptions.py:100`
+Defined in `nexla_sdk/exceptions.py:122`
 
 Raised when rate limit is exceeded.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### ResourceConflictError
 
-Defined in `nexla_sdk/exceptions.py:114`
+Defined in `nexla_sdk/exceptions.py:150`
 
 Raised when resource conflicts occur.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### ServerError
 
-Defined in `nexla_sdk/exceptions.py:108`
+Defined in `nexla_sdk/exceptions.py:132`
 
-Raised when server returns 5xx error.
+Raised when server returns 5xx error or any other non-2xx status not mapped above.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### TransformError
 
-Defined in `nexla_sdk/exceptions.py:152`
+Defined in `nexla_sdk/exceptions.py:190`
 
 Raised when transform operations fail.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
 
 ### ValidationError
 
-Defined in `nexla_sdk/exceptions.py:94`
+Defined in `nexla_sdk/exceptions.py:116`
 
 Raised when request validation fails.
 
 Methods:
 
 - `get_error_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/exceptions.py:56`
+  - Source: `nexla_sdk/exceptions.py:72`
   - Get structured error information.
+
+## Functions
+
+### `error_from_response(status_code: Optional[int], body: Any, headers: Optional[Dict[str, Any]] = None, method: Optional[str] = None, url: Optional[str] = None, **kwargs: Any) -> nexla_sdk.exceptions.NexlaError`
+
+Source: `nexla_sdk/exceptions.py:260`
+
+Build the typed NexlaError for an HTTP error response.
+
+Args:
+    status_code: HTTP status code.
+    body: Parsed JSON, trimmed text, or None for an empty body.
+    headers: Response headers. ``X-Request-Id`` is read case-insensitively.
+    method: HTTP method of the failed request.
+    url: Full URL of the failed request.
+    **kwargs: Passed to the exception constructor (for example ``operation``).
+
+Returns:
+    A NexlaError subclass chosen by status code. Its message is never empty.
 

@@ -10,161 +10,161 @@ keywords: [Nexla, SDK, Python, API]
 
 ### UsersResource
 
-Defined in `nexla_sdk/resources/users.py:10`
+Defined in `nexla_sdk/resources/users.py:13`
 
 Resource for managing users.
 
 Methods:
 
 - `activate(self, user_id: int, activate: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:332`
+  - Source: `nexla_sdk/resources/users.py:348`
   - Activate resource.
 - `activate_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:462`
+  - Source: `nexla_sdk/resources/users.py:481`
 - `activate_rate_limited_sources(self, user_id: int, status: Optional[str] = None, activate: bool = True) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:345`
+  - Source: `nexla_sdk/resources/users.py:361`
 - `change_password(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:132`
-- `create(self, data: nexla_sdk.models.users.requests.UserCreate) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:69`
+  - Source: `nexla_sdk/resources/users.py:145`
+- `create(self, data: Union[nexla_sdk.models.users.requests.UserCreate, Dict[str, Any]]) -> nexla_sdk.models.users.responses.User`
+  - Source: `nexla_sdk/resources/users.py:72`
   - Create new user.
 - `create_api_key(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:448`
+  - Source: `nexla_sdk/resources/users.py:467`
 - `create_credit(self, user_id: int, payload: nexla_sdk.models.users.credits.UserCreditCreate) -> nexla_sdk.models.users.credits.UserCredit`
-  - Source: `nexla_sdk/resources/users.py:398`
+  - Source: `nexla_sdk/resources/users.py:414`
 - `create_dashboard_transforms(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:302`
+  - Source: `nexla_sdk/resources/users.py:318`
 - `create_quarantine_settings(self, user_id: int, data_credentials_id: int, config: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:206`
+  - Source: `nexla_sdk/resources/users.py:222`
   - Create quarantine data export settings.
 - `delete(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:97`
+  - Source: `nexla_sdk/resources/users.py:100`
   - Delete user.
 - `delete_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:474`
+  - Source: `nexla_sdk/resources/users.py:493`
 - `delete_credit(self, user_id: int, credit_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:429`
+  - Source: `nexla_sdk/resources/users.py:445`
 - `delete_dashboard_transforms(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:314`
+  - Source: `nexla_sdk/resources/users.py:330`
 - `delete_quarantine_settings(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:240`
+  - Source: `nexla_sdk/resources/users.py:256`
   - Delete quarantine data export settings.
 - `expire_credit(self, user_id: int, credit_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:425`
+  - Source: `nexla_sdk/resources/users.py:441`
 - `get(self, user_id: int, expand: bool = False) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:47`
+  - Source: `nexla_sdk/resources/users.py:50`
   - Get user by ID.
 - `get_account_metrics(self, user_id: int, from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None, aggregate: Optional[str] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:479`
+  - Source: `nexla_sdk/resources/users.py:498`
   - Get total account metrics for user.
 - `get_account_rate_limited(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:354`
+  - Source: `nexla_sdk/resources/users.py:370`
 - `get_account_summary(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:110`
+  - Source: `nexla_sdk/resources/users.py:113`
   - Get current user's account summary.
 - `get_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:444`
-- `get_api_key_events(self, user_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:168`
-- `get_audit_history(self, user_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:160`
-- `get_audit_log(self, user_id: int, from_date: str = None, to_date: str = None, event_filter: str = None, change_filter: str = None, page: int = None, per_page: int = None) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:258`
+  - Source: `nexla_sdk/resources/users.py:463`
+- `get_api_key_events(self, user_id: int, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:184`
+- `get_audit_history(self, user_id: int, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:176`
+- `get_audit_log(self, user_id: int, from_date: Optional[str] = None, to_date: Optional[str] = None, event_filter: Optional[str] = None, change_filter: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:274`
   - Get audit log for a user.
 - `get_credit(self, user_id: int, credit_id: int) -> nexla_sdk.models.users.credits.UserCredit`
-  - Source: `nexla_sdk/resources/users.py:404`
+  - Source: `nexla_sdk/resources/users.py:420`
 - `get_current(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:154`
+  - Source: `nexla_sdk/resources/users.py:170`
   - Get info on current user (includes org memberships and current org info).
 - `get_daily_metrics(self, user_id: int, resource_type: Union[nexla_sdk.models.metrics.enums.UserMetricResourceType, str], from_date: str, to_date: Optional[str] = None, org_id: Optional[int] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:560`
+  - Source: `nexla_sdk/resources/users.py:588`
   - Get daily data processing metrics for a user.
 - `get_dashboard_metrics(self, user_id: int, access_role: Optional[str] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:540`
+  - Source: `nexla_sdk/resources/users.py:568`
   - Get 24 hour flow stats for user.
 - `get_dashboard_transforms(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:254`
-- `get_flow_status_metrics(self, user_id: int, from_date: str = None, page: int = None, per_page: int = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:511`
+  - Source: `nexla_sdk/resources/users.py:270`
+- `get_flow_status_metrics(self, user_id: int, from_date: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None, access_role: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:530`
   - Get flow status metrics for a user.
-- `get_flows_account_metrics(self, user_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:327`
-- `get_flows_dashboard(self, user_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:319`
-- `get_flows_status_metrics(self, user_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:323`
-- `get_login_history(self, user_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:164`
-- `get_metrics(self, user_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
+- `get_flows_account_metrics(self, user_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:343`
+- `get_flows_dashboard(self, user_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:335`
+- `get_flows_status_metrics(self, user_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:339`
+- `get_login_history(self, user_id: int, **params: Any) -> List[Dict[str, Any]]`
   - Source: `nexla_sdk/resources/users.py:180`
-- `get_orgs(self, user_id: int, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:188`
+- `get_metrics(self, user_id: int, metrics_name: Optional[str] = None, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:196`
+- `get_orgs(self, user_id: int, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:204`
 - `get_quarantine_settings(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:193`
+  - Source: `nexla_sdk/resources/users.py:209`
   - Get quarantine data export settings for user.
-- `get_resource_audit_log(self, user_id: int, resource_type: str, **params) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/users.py:172`
+- `get_resource_audit_log(self, user_id: int, resource_type: str, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/users.py:188`
 - `get_settings(self) -> List[nexla_sdk.models.users.responses.UserSettings]`
-  - Source: `nexla_sdk/resources/users.py:143`
+  - Source: `nexla_sdk/resources/users.py:159`
   - Get current user's settings.
 - `get_sso_options(self, email: Optional[str] = None) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:136`
+  - Source: `nexla_sdk/resources/users.py:149`
 - `get_transferable_resources(self, user_id: int, org_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:359`
+  - Source: `nexla_sdk/resources/users.py:375`
   - Get a list of resources owned by a user that can be transferred.
 - `get_user_account_summary(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:114`
+  - Source: `nexla_sdk/resources/users.py:117`
   - Get account summary for a specific user.
-- `list(self, expand: bool = False, **kwargs) -> List[nexla_sdk.models.users.responses.User]`
-  - Source: `nexla_sdk/resources/users.py:18`
+- `list(self, expand: bool = False, **kwargs: Any) -> List[nexla_sdk.models.users.responses.User]`
+  - Source: `nexla_sdk/resources/users.py:21`
   - List users with optional filters.
-- `list_api_keys(self, user_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:434`
-- `list_credits(self, user_id: int, **params) -> List[nexla_sdk.models.users.credits.UserCredit]`
-  - Source: `nexla_sdk/resources/users.py:393`
+- `list_api_keys(self, user_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:450`
+- `list_credits(self, user_id: int, **params: Any) -> List[nexla_sdk.models.users.credits.UserCredit]`
+  - Source: `nexla_sdk/resources/users.py:409`
 - `list_sso_options(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:44`
+  - Source: `nexla_sdk/resources/users.py:47`
 - `lock_account(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:337`
+  - Source: `nexla_sdk/resources/users.py:353`
 - `password_entropy(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:126`
+  - Source: `nexla_sdk/resources/users.py:133`
 - `pause_all_api_keys(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:470`
+  - Source: `nexla_sdk/resources/users.py:489`
 - `pause_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:466`
+  - Source: `nexla_sdk/resources/users.py:485`
 - `refresh_credit(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:421`
+  - Source: `nexla_sdk/resources/users.py:437`
   - Alias for refresh_credits.
 - `refresh_credits(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:417`
+  - Source: `nexla_sdk/resources/users.py:433`
 - `reset_password(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:120`
-- `rotate_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:458`
-- `search_api_keys(self, user_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:438`
-- `send_invite(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:129`
-- `set_password(self, payload: Dict[str, Any]) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/users.py:123`
+- `rotate_api_key(self, user_id: int, api_key_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:477`
+- `search_api_keys(self, user_id: int, filters: Dict[str, Any], **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:454`
+- `send_invite(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:139`
+- `set_password(self, payload: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/users.py:128`
 - `transfer_resources(self, user_id: int, org_id: int, delegate_owner_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:374`
+  - Source: `nexla_sdk/resources/users.py:390`
   - Transfer a user's resources to another user within an organization.
 - `unlock_account(self, user_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:341`
-- `update(self, user_id: int, data: nexla_sdk.models.users.requests.UserUpdate) -> nexla_sdk.models.users.responses.User`
-  - Source: `nexla_sdk/resources/users.py:84`
+  - Source: `nexla_sdk/resources/users.py:357`
+- `update(self, user_id: int, data: Union[nexla_sdk.models.users.requests.UserUpdate, Dict[str, Any]]) -> nexla_sdk.models.users.responses.User`
+  - Source: `nexla_sdk/resources/users.py:87`
   - Update user.
 - `update_api_key(self, user_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:452`
+  - Source: `nexla_sdk/resources/users.py:471`
 - `update_dashboard_transforms(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:308`
+  - Source: `nexla_sdk/resources/users.py:324`
 - `update_quarantine_settings(self, user_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:224`
+  - Source: `nexla_sdk/resources/users.py:240`
   - Update quarantine data export settings.
 - `use_credit(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:413`
+  - Source: `nexla_sdk/resources/users.py:429`
   - Alias for use_credits.
 - `use_credits(self, user_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/users.py:409`
+  - Source: `nexla_sdk/resources/users.py:425`
 
