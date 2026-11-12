@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Union, cast
 
 from nexla_sdk.models.credentials.responses import Credential
 from nexla_sdk.models.data_credentials_groups.requests import (
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class DataCredentialsGroupsResource(BaseResource):
+class DataCredentialsGroupsResource(BaseResource[DataCredentialsGroup]):
     """Resource for managing data credentials groups."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -21,7 +21,7 @@ class DataCredentialsGroupsResource(BaseResource):
         self._path = "/data_credentials_groups"
         self._model_class = DataCredentialsGroup
 
-    def list(self, **kwargs) -> List[DataCredentialsGroup]:
+    def list(self, **kwargs: Any) -> List[DataCredentialsGroup]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
     def get(self, group_id: int, expand: bool = False) -> DataCredentialsGroup:
@@ -42,7 +42,7 @@ class DataCredentialsGroupsResource(BaseResource):
     def delete(self, group_id: int) -> Dict[str, Any]:
         return super().delete(group_id)
 
-    def list_credentials(self, group_id: int, **params) -> List[Credential]:
+    def list_credentials(self, group_id: int, **params: Any) -> List[Credential]:
         path = f"{self._path}/{group_id}/data_credentials"
         response = self._make_request("GET", path, params=params)
         return [Credential.model_validate(item) for item in (response or [])]
@@ -54,7 +54,7 @@ class DataCredentialsGroupsResource(BaseResource):
     ) -> Dict[str, Any]:
         path = f"{self._path}/{group_id}/data_credentials"
         data = self._serialize_data(payload)
-        return self._make_request("DELETE", path, json=data)
+        return cast(Dict[str, Any], self._make_request("DELETE", path, json=data))
 
     def data_credentials_groups_update_data_credentials_group(
         self, group_id: int, data: Dict[str, Any]
@@ -70,4 +70,4 @@ class DataCredentialsGroupsResource(BaseResource):
             Updated group as a dict
         """
         path = f"{self._path}/{group_id}"
-        return self._make_request("PATCH", path, json=data)
+        return cast(Dict[str, Any], self._make_request("PATCH", path, json=data))

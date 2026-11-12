@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class ResourceParametersResource(BaseResource):
+class ResourceParametersResource(BaseResource[ResourceParameter]):
     """Resource for managing resource parameters."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -19,10 +19,10 @@ class ResourceParametersResource(BaseResource):
         self._path = "/resource_parameters"
         self._model_class = ResourceParameter
 
-    def list(self, **kwargs) -> List[ResourceParameter]:
+    def list(self, **kwargs: Any) -> List[ResourceParameter]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return super().list(**kwargs)
 
-    def get(self, resource_parameter_id: int) -> ResourceParameter:
+    def get(self, resource_parameter_id: int) -> ResourceParameter:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         return super().get(resource_parameter_id)
 
     def create(
