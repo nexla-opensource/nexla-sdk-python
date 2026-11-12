@@ -107,12 +107,6 @@ strict = true
 plugins = ["pydantic.mypy"]
 files = ["nexla_sdk"]
 
-# httpx imports anyio, which uses match statements that the 3.8 target cannot parse.
-# Skipping anyio analysis does not affect checks of nexla_sdk code.
-[[tool.mypy.overrides]]
-module = ["anyio", "anyio.*"]
-follow_imports = "skip"
-
 [tool.pytest.ini_options]
 # Replaces the former pytest.ini. Single config file for pytest and coverage.
 testpaths = ["tests"]
