@@ -225,20 +225,19 @@ class DestinationsResource(BaseResource[Destination]):
     def copy(
         self,
         sink_id: int,
-        options: Optional[DestinationCopyOptions] = None,  # type: ignore[override]  # dict options are not supported: body calls options.to_dict()
+        options: Optional[Union[DestinationCopyOptions, Dict[str, Any]]] = None,
     ) -> Destination:
         """
         Copy a destination.
 
         Args:
             sink_id: Destination ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied destination
         """
-        data = options.to_dict() if options else {}
-        return super().copy(sink_id, data)
+        return super().copy(sink_id, options)
 
     def probe_list_buckets(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/probe"

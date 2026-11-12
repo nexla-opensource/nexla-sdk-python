@@ -231,20 +231,19 @@ class NexsetsResource(BaseResource[Nexset]):
     def copy(
         self,
         set_id: int,
-        options: Optional[NexsetCopyOptions] = None,  # type: ignore[override]  # dict options are not supported: body calls options.to_dict()
+        options: Optional[Union[NexsetCopyOptions, Dict[str, Any]]] = None,
     ) -> Nexset:
         """
         Copy a nexset.
 
         Args:
             set_id: Nexset ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied nexset
         """
-        data = options.to_dict() if options else {}
-        return super().copy(set_id, data)
+        return super().copy(set_id, options)
 
     def sync_with_catalog(self, set_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{set_id}/sync_with_catalog"

@@ -223,20 +223,19 @@ class SourcesResource(BaseResource[Source]):
     def copy(
         self,
         source_id: int,
-        options: Optional[SourceCopyOptions] = None,  # type: ignore[override]  # dict options are not supported: body calls options.to_dict()
+        options: Optional[Union[SourceCopyOptions, Dict[str, Any]]] = None,
     ) -> Source:
         """
         Copy a source.
 
         Args:
             source_id: Source ID
-            options: Copy options
+            options: Copy options, as the options model or a dict
 
         Returns:
             Copied source
         """
-        data = options.to_dict() if options else {}
-        return super().copy(source_id, data)
+        return super().copy(source_id, options)
 
     def probe_list_buckets(self, source_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{source_id}/probe"
