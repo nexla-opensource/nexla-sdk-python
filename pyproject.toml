@@ -49,7 +49,7 @@ dev = [
     "freezegun>=1.2.0",
     "factory-boy>=3.2.0",
     "ruff==0.14.14",  # keep in sync with .pre-commit-config.yaml and ci.yml
-    # mypy 1.17+ rejects a python_version 3.8 target; 1.16.1 is the newest that accepts it.
+    # mypy is pinned so local and CI results match (the mypy target is 3.10, see [tool.mypy]).
     # mypy itself runs only on Python 3.9+, hence the marker.
     "mypy==1.16.1; python_version >= '3.9'",
     "types-requests; python_version >= '3.9'",
