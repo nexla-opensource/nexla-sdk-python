@@ -61,3 +61,22 @@ class TestCodeContainersResource:
         mock_http_client.add_response("/code_containers/4", {"status": "deleted"})
         res = client.code_containers.delete(4)
         assert res.get("status") == "deleted"
+
+
+@pytest.mark.unit
+def test_get_schema_sends_method_query(mock_client, mock_http_client):
+    mock_client.code_containers.get_schema(method="get")
+
+    last = mock_http_client.get_last_request()
+    assert last["method"] == "GET"
+    assert last["url"].endswith("/code_containers/schema")
+    assert last["params"] == {"method": "get"}
+
+
+@pytest.mark.unit
+def test_get_schema_without_method_sends_no_query(mock_client, mock_http_client):
+    mock_client.code_containers.get_schema()
+
+    last = mock_http_client.get_last_request()
+    assert last["url"].endswith("/code_containers/schema")
+    assert last["params"] == {}
