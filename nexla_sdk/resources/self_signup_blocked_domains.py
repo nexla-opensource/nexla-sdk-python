@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List, cast
 
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class SelfSignupBlockedDomainsResource(BaseResource):
+class SelfSignupBlockedDomainsResource(BaseResource[Any]):
     """Resource for self-signup blocked domains."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -14,14 +14,21 @@ class SelfSignupBlockedDomainsResource(BaseResource):
         self._path = "/self_signup_blocked_domains"
         self._model_class = None
 
-    def list(self, **kwargs) -> List[Dict[str, Any]]:
+    def list(self, **kwargs: Any) -> List[Dict[str, Any]]:  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         return self._make_request("GET", self._path, params=kwargs) or []
 
     def create(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", self._path, json=payload)
+        return cast(
+            Dict[str, Any], self._make_request("POST", self._path, json=payload)
+        )
 
     def update(self, domain_id: int, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("PUT", f"{self._path}/{domain_id}", json=payload)
+        return cast(
+            Dict[str, Any],
+            self._make_request("PUT", f"{self._path}/{domain_id}", json=payload),
+        )
 
     def delete(self, domain_id: int) -> Dict[str, Any]:
-        return self._make_request("DELETE", f"{self._path}/{domain_id}")
+        return cast(
+            Dict[str, Any], self._make_request("DELETE", f"{self._path}/{domain_id}")
+        )

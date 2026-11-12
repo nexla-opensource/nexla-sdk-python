@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from nexla_sdk.resources.base_resource import BaseResource
 
@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class SdkApplicationsResource(BaseResource):
+class SdkApplicationsResource(BaseResource[Any]):
     """Resource for SDK applications.
 
     The inherited methods serve the list, get, create, update, delete,

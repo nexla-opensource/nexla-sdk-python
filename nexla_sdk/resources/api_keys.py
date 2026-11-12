@@ -1,6 +1,6 @@
 """Resource for managing API keys (read-only)."""
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, NoReturn, Optional, Union, cast
 
 from nexla_sdk.models.api_keys.responses import ApiKey, ApiKeysIndex
 from nexla_sdk.resources.base_resource import BaseResource
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class ApiKeysResource(BaseResource):
+class ApiKeysResource(BaseResource[ApiKey]):
     """Resource for API keys (read-only access).
 
     API keys provide programmatic access to specific resources like
@@ -47,12 +47,12 @@ class ApiKeysResource(BaseResource):
         self._path = "/api_keys"
         self._model_class = ApiKey
 
-    def list(
+    def list(  # type: ignore[override]  # keeps public list() signature; base list() also takes positional filters
         self,
         access_role: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> List[ApiKey]:
         """List API keys.
 
@@ -72,7 +72,7 @@ class ApiKeysResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         response = self._make_request("GET", self._path, params=params)
-        return self._parse_response(response)
+        return cast(List[ApiKey], self._parse_response(response))
 
     def list_grouped(
         self,
@@ -99,7 +99,7 @@ class ApiKeysResource(BaseResource):
         response = self._make_request("GET", self._path, params=params)
         return ApiKeysIndex.model_validate(response)
 
-    def get(self, api_key_id: Union[int, str]) -> ApiKey:
+    def get(self, api_key_id: Union[int, str]) -> ApiKey:  # type: ignore[override]  # keeps public get() signature; base get() also takes expand
         """Get API key by ID or key value.
 
         Args:
@@ -110,9 +110,9 @@ class ApiKeysResource(BaseResource):
         """
         path = f"{self._path}/{api_key_id}"
         response = self._make_request("GET", path)
-        return self._parse_response(response)
+        return cast(ApiKey, self._parse_response(response))
 
-    def search(
+    def search(  # type: ignore[override]  # returns the raw search payload, not a model list
         self,
         filters: Dict[str, Any],
         page: Optional[int] = None,
@@ -137,20 +137,20 @@ class ApiKeysResource(BaseResource):
         response = self._make_request("POST", path, json=filters, params=params)
         return [ApiKey.model_validate(k) for k in response]
 
-    def create(self, data=None):
+    def create(self, data: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def update(self, resource_id=None, data=None):
+    def update(self, resource_id: Any = None, data: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def delete(self, resource_id=None):
+    def delete(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def copy(self, resource_id=None, options=None):
+    def copy(self, resource_id: Any = None, options: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def activate(self, resource_id=None):
+    def activate(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)
 
-    def pause(self, resource_id=None):
+    def pause(self, resource_id: Any = None) -> NoReturn:
         raise NotImplementedError(self._NOT_SUPPORTED_MSG)

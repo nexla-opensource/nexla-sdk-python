@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List, cast
 
 from nexla_sdk.models.self_signup.responses import BlockedDomain, SelfSignupRequest
 from nexla_sdk.resources.base_resource import BaseResource
@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from nexla_sdk.client import NexlaClient
 
 
-class SelfSignupResource(BaseResource):
+class SelfSignupResource(BaseResource[Any]):
     """Resource for self sign-up and admin endpoints."""
 
     def __init__(self, client: "NexlaClient") -> None:
@@ -17,11 +17,12 @@ class SelfSignupResource(BaseResource):
 
     # Public signup
     def signup(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        return self._make_request("POST", "/signup", json=payload)
+        return cast(Dict[str, Any], self._make_request("POST", "/signup", json=payload))
 
     def verify_email(self, token: str) -> Dict[str, Any]:
-        return self._make_request(
-            "GET", "/signup/verify_email", params={"token": token}
+        return cast(
+            Dict[str, Any],
+            self._make_request("GET", "/signup/verify_email", params={"token": token}),
         )
 
     # Admin APIs
@@ -53,4 +54,7 @@ class SelfSignupResource(BaseResource):
         return BlockedDomain.model_validate(response)
 
     def delete_blocked_domain(self, domain_id: str) -> Dict[str, Any]:
-        return self._make_request("DELETE", f"/self_signup_blocked_domains/{domain_id}")
+        return cast(
+            Dict[str, Any],
+            self._make_request("DELETE", f"/self_signup_blocked_domains/{domain_id}"),
+        )
