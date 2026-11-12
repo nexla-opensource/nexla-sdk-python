@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, Optional, Tuple, Union
 
 import requests
 from requests.adapters import HTTPAdapter
+from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import TimeoutError as Urllib3TimeoutError
 from urllib3.util.retry import Retry
 
@@ -176,7 +177,11 @@ def _is_timeout(exc: BaseException) -> bool:
     if isinstance(exc, requests.exceptions.Timeout):
         return True
     reason = getattr(exc.args[0], "reason", None) if exc.args else None
-    return isinstance(reason, Urllib3TimeoutError)
+    # A refused connection or DNS failure is a NewConnectionError, which urllib3
+    # also derives from its TimeoutError. It is a connection failure, not a timeout.
+    return isinstance(reason, Urllib3TimeoutError) and not isinstance(
+        reason, NewConnectionError
+    )
 
 
 def _parse_error_body(resp: Any) -> Any:
