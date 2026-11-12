@@ -10,6 +10,8 @@ on:
       - "pyproject.toml"
       - "requirements.txt"
       - "README.md"
+      - "skills/**"
+      - "nexla.skill"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main ]
@@ -20,9 +22,23 @@ on:
       - "pyproject.toml"
       - "requirements.txt"
       - "README.md"
+      - "skills/**"
+      - "nexla.skill"
       - ".github/workflows/ci.yml"
 
 jobs:
+  skill-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check nexla.skill matches skills/nexla
+        run: python scripts/build_skill.py --check
+
   build-test:
     # ubuntu-latest (26.04) has no setup-python builds for 3.8 or 3.9.
     runs-on: ${{ matrix.runner || 'ubuntu-latest' }}
