@@ -29,7 +29,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Async client (nexla_sdk.aio). httpx supports Python 3.8.
+async = [
+    "httpx>=0.27",
+]
 dev = [
+    "httpx>=0.27",
     "pytest>=7.0.0",
     "pytest-mock>=3.0.0",
     "python-dotenv>=1.0.0",
@@ -99,6 +104,12 @@ python_version = "3.8"
 strict = true
 plugins = ["pydantic.mypy"]
 files = ["nexla_sdk"]
+
+# httpx imports anyio, which uses match statements that the 3.8 target cannot parse.
+# Skipping anyio analysis does not affect checks of nexla_sdk code.
+[[tool.mypy.overrides]]
+module = ["anyio", "anyio.*"]
+follow_imports = "skip"
 
 [tool.pytest.ini_options]
 # Replaces the former pytest.ini. Single config file for pytest and coverage.
