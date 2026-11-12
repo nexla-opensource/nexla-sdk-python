@@ -8,6 +8,7 @@ on:
       - "docs-site/**"
       - "docs/**"
       - "nexla_sdk/**"
+      - "pyproject.toml"
       - "README.md"
       - ".github/workflows/docs.yml"
   pull_request:
@@ -16,6 +17,7 @@ on:
       - "docs-site/**"
       - "docs/**"
       - "nexla_sdk/**"
+      - "pyproject.toml"
       - "README.md"
       - ".github/workflows/docs.yml"
 
@@ -36,7 +38,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: docs-site/package.json
+          cache-dependency-path: docs-site/package-lock.json
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -73,8 +75,11 @@ jobs:
         with:
           path: docs-site/build
 
+  # Deploy runs only on pushes to main, and only when the repository variable
+  # PAGES_ENABLED is "true". Otherwise the job is skipped and the workflow still
+  # passes. To enable Pages, see "GitHub Pages" in CONTRIBUTING.md.
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.PAGES_ENABLED == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:

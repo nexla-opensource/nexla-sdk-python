@@ -73,7 +73,16 @@ gh release create v1.1.0 --title v1.1.0 --notes "Summary of changes"
 
 **Post-release:**
 - Confirm the package appears on PyPI: `pip install nexla-sdk==<version>`.
-- Docs site rebuilds automatically on pushes to `main` (via `.github/workflows/docs.yml`), not on tag pushes.
+- Docs site builds on every pull request and on pushes to `main` (via `.github/workflows/docs.yml`). It deploys only on pushes to `main`, and only when Pages is enabled (see "GitHub Pages" below).
+
+GitHub Pages
+- The build job runs on every pull request. It does not need Pages.
+- The deploy job is skipped unless the repository variable `PAGES_ENABLED` is `true`. A skipped job does not fail the workflow.
+- To enable deployment:
+  1. Go to **Settings → Pages**. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+  2. Go to **Settings → Secrets and variables → Actions → Variables**. Add a repository variable `PAGES_ENABLED` with the value `true`.
+  3. Optional: add the variable `SITE_URL` with the public URL of the site. The build uses `https://example.com` when it is unset.
+  4. Push to `main`, or re-run the **Docs Site** workflow on `main`.
 
 **Version scheme notes:**
 - `setuptools_scm` config: `version_scheme = "no-guess-dev"`, `local_scheme = "no-local-version"`.
