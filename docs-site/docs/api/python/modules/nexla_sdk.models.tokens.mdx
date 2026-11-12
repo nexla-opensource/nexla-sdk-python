@@ -1,0 +1,28 @@
+---
+id: nexla_sdk.models.tokens
+title: nexla_sdk.models.tokens
+slug: /api/python/modules/nexla_sdk/models/tokens
+description: API for nexla_sdk.models.tokens
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### TokenResponse
+
+Defined in `nexla_sdk/models/tokens/responses.py:6`
+
+Response of POST /token and POST /token/refresh (token/schema.py:233-275).
+
+Unknown fields are kept (``model_extra``).
+
+Fields:
+
+- `access_token`: `str`
+- `token_type`: `str`
+- `expires_in`: `int`
+- `sdk_application_id`: `Optional`
+- `user`: `Optional`
+- `org`: `Optional`
+- `org_membership`: `Optional`
+

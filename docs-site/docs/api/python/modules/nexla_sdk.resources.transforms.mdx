@@ -10,43 +10,46 @@ keywords: [Nexla, SDK, Python, API]
 
 ### TransformsResource
 
-Defined in `nexla_sdk/resources/transforms.py:8`
+Defined in `nexla_sdk/resources/transforms.py:11`
 
 Resource for reusable record transforms (aliased to code containers).
 
 Methods:
 
 - `copy(self, transform_id: int) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:50`
+  - Source: `nexla_sdk/resources/transforms.py:55`
   - Copy a transform by ID.
-- `create(self, data: nexla_sdk.models.transforms.requests.TransformCreate) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:38`
+- `create(self, data: Union[nexla_sdk.models.transforms.requests.TransformCreate, Dict[str, Any]]) -> nexla_sdk.models.transforms.responses.Transform`
+  - Source: `nexla_sdk/resources/transforms.py:41`
   - Create a new transform.
 - `delete(self, transform_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/transforms.py:46`
+  - Source: `nexla_sdk/resources/transforms.py:51`
   - Delete a transform by ID.
 - `get(self, transform_id: int, expand: bool = False) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:34`
+  - Source: `nexla_sdk/resources/transforms.py:37`
   - Get a transform by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:16`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.transforms.responses.Transform]`
+  - Source: `nexla_sdk/resources/transforms.py:19`
   - List transforms with optional filters.
 - `list_public(self) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:54`
+  - Source: `nexla_sdk/resources/transforms.py:59`
   - List publicly shared transforms.
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:60`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.transforms.responses.Transform]`
+  - Source: `nexla_sdk/resources/transforms.py:65`
   - Search resources using filter criteria.
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.transforms.responses.Transform]`
-  - Source: `nexla_sdk/resources/transforms.py:63`
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.transforms.responses.Transform]`
+  - Source: `nexla_sdk/resources/transforms.py:68`
   - Search resources by tags.
 - `transform(self, transform_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/transforms.py:66`
+  - Source: `nexla_sdk/resources/transforms.py:71`
+- `transform_accessible_resources(self) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/transforms.py:78`
+  - List transforms accessible to the current user with their role.
 - `transform_data(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/transforms.py:73`
+  - Source: `nexla_sdk/resources/transforms.py:89`
 - `transform_features(self) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/transforms.py:70`
-- `update(self, transform_id: int, data: nexla_sdk.models.transforms.requests.TransformUpdate) -> nexla_sdk.models.transforms.responses.Transform`
-  - Source: `nexla_sdk/resources/transforms.py:42`
+  - Source: `nexla_sdk/resources/transforms.py:75`
+- `update(self, transform_id: int, data: Union[nexla_sdk.models.transforms.requests.TransformUpdate, Dict[str, Any]]) -> nexla_sdk.models.transforms.responses.Transform`
+  - Source: `nexla_sdk/resources/transforms.py:45`
   - Update an existing transform.
 

@@ -2,11 +2,8 @@
 HTTP client interface and implementations for Nexla SDK
 """
 
-import email.utils
-import random
 import time
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Optional, Tuple, Union
 
 import requests
@@ -15,16 +12,26 @@ from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import TimeoutError as Urllib3TimeoutError
 from urllib3.util.retry import Retry
 
-try:
-    from importlib.metadata import version  # Python 3.8+
-
-    _SDK_VERSION = version("nexla-sdk")
-except Exception:  # pragma: no cover
-    _SDK_VERSION = "unknown"
-
 # Optional OpenTelemetry imports (guarded by availability)
 from . import telemetry
+from .retry_policy import (
+    DEFAULT_RETRY_STATUS,
+    DEFAULT_TIMEOUT,
+    IDEMPOTENT_METHODS,
+    as_timeout_pair,
+    backoff_seconds,
+    rate_limit_delay,
+)
 from .telemetry import _NoOpTracer
+from .transport_core import (
+    HttpClientError,
+    HttpConnectionError,
+    HttpTimeoutError,
+    build_headers,
+    http_error_from,
+    parse_error_body,
+    parse_success_body,
+)
 
 try:  # pragma: no cover - optional dependency
     from opentelemetry.propagate import inject
@@ -41,26 +48,6 @@ except Exception:  # pragma: no cover
 if TYPE_CHECKING:
     from opentelemetry.trace import Tracer
 
-DEFAULT_TIMEOUT: Tuple[float, float] = (10.0, 60.0)  # (connect, read) seconds
-IDEMPOTENT_METHODS: Tuple[str, ...] = ("GET", "HEAD", "OPTIONS", "PUT", "DELETE")
-DEFAULT_RETRY_STATUS: Tuple[int, ...] = (502, 503, 504)
-BACKOFF_CAP_SECONDS = 8.0
-RATE_LIMIT_MAX_WAIT_SECONDS = 60.0
-
-
-def _as_timeout_pair(value: Any) -> Tuple[float, float]:
-    """A single number sets both connect and read. A pair is (connect, read)."""
-    if isinstance(value, (int, float)):
-        return (float(value), float(value))
-    connect, read = value
-    return (float(connect), float(read))
-
-
-def _backoff(attempt: int, backoff_factor: float) -> float:
-    """Seconds to wait before retry `attempt` (1-based): min(8, f * 2^(n-1)) plus 0-100 ms."""
-    base: float = min(BACKOFF_CAP_SECONDS, backoff_factor * (2 ** (attempt - 1)))
-    return base + random.uniform(0, 0.1)
-
 
 class _SdkRetry(Retry):
     """urllib3 Retry that uses the SDK backoff.
@@ -71,36 +58,7 @@ class _SdkRetry(Retry):
 
     def get_backoff_time(self) -> float:
         n = len(self.history)
-        return _backoff(n, self.backoff_factor) if n else 0.0
-
-
-def _rate_limit_wait(response: Any, attempt: int, backoff_factor: float) -> float:
-    """Seconds to wait after a 429. First match wins.
-
-    1. body error.retry_after (the backend sends no header)
-    2. Retry-After header as seconds
-    3. Retry-After header as an HTTP date
-    4. exponential backoff
-    """
-    body = _parse_error_body(response)
-    if isinstance(body, dict) and isinstance(body.get("error"), dict):
-        retry_after = body["error"].get("retry_after")
-        if isinstance(retry_after, (int, float)) and not isinstance(retry_after, bool):
-            return float(retry_after)
-
-    header = (response.headers.get("Retry-After") or "").strip()
-    if header.isdigit():
-        return float(header)
-    if header:
-        try:
-            when = email.utils.parsedate_to_datetime(header)
-        except (TypeError, ValueError):
-            when = None
-        if when is not None:
-            if when.tzinfo is None:
-                when = when.replace(tzinfo=timezone.utc)
-            return max(0.0, (when - datetime.now(timezone.utc)).total_seconds())
-    return _backoff(attempt, backoff_factor)
+        return backoff_seconds(n, self.backoff_factor) if n else 0.0
 
 
 class HttpClientInterface(ABC):
@@ -142,33 +100,6 @@ class HttpClientInterface(ABC):
         pass
 
 
-class HttpClientError(Exception):
-    """Base exception for HTTP client errors"""
-
-    def __init__(
-        self,
-        message: str,
-        status_code: Optional[int] = None,
-        response: Optional[Dict[str, Any]] = None,
-        headers: Optional[Dict[str, Any]] = None,
-        body: Any = None,
-    ):
-        super().__init__(message)
-        self.status_code = status_code
-        self.response = response or {}
-        self.headers = headers or {}
-        # Parsed JSON, trimmed text, or None for an empty body.
-        self.body = body
-
-
-class HttpTimeoutError(HttpClientError):
-    """The request timed out (connect or read)."""
-
-
-class HttpConnectionError(HttpClientError):
-    """The connection failed before a response was received."""
-
-
 def _is_timeout(exc: BaseException) -> bool:
     """True for a requests timeout, or a retry-exhausted urllib3 timeout.
 
@@ -182,16 +113,6 @@ def _is_timeout(exc: BaseException) -> bool:
     return isinstance(reason, Urllib3TimeoutError) and not isinstance(
         reason, NewConnectionError
     )
-
-
-def _parse_error_body(resp: Any) -> Any:
-    """Return the JSON body, else the trimmed text, else None when empty."""
-    if resp is None or not getattr(resp, "content", None):
-        return None
-    try:
-        return resp.json()
-    except ValueError:
-        return (resp.text or "").strip() or None
 
 
 class RequestsHttpClient(HttpClientInterface):
@@ -213,7 +134,7 @@ class RequestsHttpClient(HttpClientInterface):
         retry_methods: Optional[Iterable[str]] = None,
         retry_on_status: Optional[Iterable[int]] = None,
     ):
-        self.timeout = _as_timeout_pair(timeout)
+        self.timeout = as_timeout_pair(timeout)
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
         self.retry_methods = tuple(
@@ -253,8 +174,8 @@ class RequestsHttpClient(HttpClientInterface):
             )
             if response.status_code != 429 or attempt >= self.max_retries:
                 return response
-            wait = _rate_limit_wait(response, attempt + 1, self.backoff_factor)
-            if wait > RATE_LIMIT_MAX_WAIT_SECONDS:
+            wait = rate_limit_delay(response, attempt + 1, self.backoff_factor)
+            if wait is None:
                 return response  # raise_for_status turns this into RateLimitError
             attempt += 1
             time.sleep(wait)
@@ -295,12 +216,9 @@ class RequestsHttpClient(HttpClientInterface):
                 span = None
 
             try:
-                timeout = _as_timeout_pair(kwargs.pop("timeout", self.timeout))
+                timeout = as_timeout_pair(kwargs.pop("timeout", self.timeout))
                 # Default headers
-                merged_headers = {
-                    "User-Agent": f"nexla-sdk/{_SDK_VERSION}",
-                    **(headers or {}),
-                }
+                merged_headers = build_headers(headers)
 
                 # Inject trace context for distributed tracing if OTEL is available
                 try:
@@ -335,27 +253,7 @@ class RequestsHttpClient(HttpClientInterface):
                 except Exception:
                     pass
 
-                # Return None for 204 No Content or empty responses
-                if response.status_code == 204 or not response.content:
-                    return None, response.headers
-
-                # Check if response content type indicates JSON
-                content_type = response.headers.get("content-type", "").lower()
-                if "application/json" in content_type or "text/json" in content_type:
-                    return response.json(), response.headers
-
-                # Try to parse as JSON anyway, but handle cases where it's not JSON
-                try:
-                    return response.json(), response.headers
-                except (ValueError, requests.exceptions.JSONDecodeError):
-                    # If it's not JSON, return the response as text in a dict
-                    return (
-                        {
-                            "raw_text": response.text,
-                            "status_code": response.status_code,
-                        },
-                        response.headers,
-                    )
+                return parse_success_body(response), response.headers
 
             except requests.exceptions.HTTPError as e:
                 # Record exception on span
@@ -373,13 +271,12 @@ class RequestsHttpClient(HttpClientInterface):
                     pass
 
                 resp = getattr(e, "response", None)
-                body = _parse_error_body(resp)
-                raise HttpClientError(
-                    message=str(e),
-                    status_code=getattr(resp, "status_code", None),
-                    response=body if isinstance(body, dict) else {},
-                    headers=dict(getattr(resp, "headers", {}) or {}),
-                    body=body,
+                body = parse_error_body(resp)
+                raise http_error_from(
+                    getattr(resp, "status_code", None),
+                    body,
+                    getattr(resp, "headers", {}),
+                    str(e),
                 ) from e
 
             except requests.exceptions.RequestException as e:

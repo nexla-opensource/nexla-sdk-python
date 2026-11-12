@@ -1,0 +1,94 @@
+---
+id: nexla_sdk.resources.tool_sets
+title: nexla_sdk.resources.tool_sets
+slug: /api/python/modules/nexla_sdk/resources/tool_sets
+description: API for nexla_sdk.resources.tool_sets
+keywords: [Nexla, SDK, Python, API]
+---
+
+## Classes
+
+### ToolSetsResource
+
+Defined in `nexla_sdk/resources/tool_sets.py:9`
+
+Resource for tool sets, their exports, revisions, and tools.
+
+Methods:
+
+- `activate_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:228`
+  - Set an export of a tool set to active.
+- `add_tools(self, tool_set_id: str, data: Dict[str, Any]) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:452`
+  - Add tools to a tool set.
+- `create_export(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:149`
+  - Create an export of a tool set revision.
+- `create_revision(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:309`
+  - Create a revision of a tool set.
+- `delete(self, tool_set_id: Union[int, str]) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:61`
+  - Delete a tool set.
+- `delete_export(self, tool_set_id: str, export_id: str) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:208`
+  - Delete an export of a tool set.
+- `delete_revision(self, tool_set_id: str, revision_id: str) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:345`
+  - Delete a revision of a tool set.
+- `deprecate_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:401`
+  - Set a revision of a tool set to deprecated.
+- `draft_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:383`
+  - Set a revision of a tool set to draft.
+- `get(self, tool_set_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:17`
+  - Get a tool set by ID or key.
+- `index_exports(self, tool_set_id: str, tool_set_revision_id: Optional[int] = None, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:116`
+  - List exports of a tool set.
+- `index_revisions(self, tool_set_id: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:282`
+  - List revisions of a tool set.
+- `pause_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:246`
+  - Set an export of a tool set to paused.
+- `publish_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:365`
+  - Set a revision of a tool set to published.
+- `remove_tools(self, tool_set_id: str, data: Dict[str, Any]) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:486`
+  - Remove tools from a tool set.
+- `reset_tools(self, tool_set_id: str, data: Dict[str, Any]) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:468`
+  - Replace the tools of a tool set.
+- `retire_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:264`
+  - Set an export of a tool set to retired.
+- `retire_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:419`
+  - Set a revision of a tool set to retired.
+- `show_export(self, tool_set_id: str, export_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:167`
+  - Get an export of a tool set.
+- `show_revision(self, tool_set_id: str, revision_id: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:327`
+  - Get a revision of a tool set.
+- `tool_set_audit_log(self, tool_set_id: str) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:99`
+  - Get the audit log of a tool set.
+- `tool_sets_index_tools(self, tool_set_id: str) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/tool_sets.py:437`
+  - List the tools of the latest revision of a tool set.
+- `tool_sets_update_tool_set(self, tool_set_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:81`
+  - Partially update a tool set.
+- `update(self, tool_set_id: Union[int, str, Dict[str, Any]], data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:37`
+  - Replace the fields of a tool set.
+- `update_export(self, tool_set_id: str, export_id: str, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/tool_sets.py:185`
+  - Update an export of a tool set.
+

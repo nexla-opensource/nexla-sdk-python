@@ -10,25 +10,25 @@ keywords: [Nexla, SDK, Python, API]
 
 ### AuthParametersResource
 
-Defined in `nexla_sdk/resources/auth_parameters.py:11`
+Defined in `nexla_sdk/resources/auth_parameters.py:14`
 
 Resource for managing auth parameters.
 
 Methods:
 
 - `create(self, data: Union[nexla_sdk.models.auth_parameters.requests.AuthParameterCreate, Dict[str, Any]]) -> nexla_sdk.models.auth_parameters.responses.AuthParameter`
-  - Source: `nexla_sdk/resources/auth_parameters.py:25`
+  - Source: `nexla_sdk/resources/auth_parameters.py:28`
   - Create new resource.
 - `delete(self, auth_parameter_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/auth_parameters.py:35`
+  - Source: `nexla_sdk/resources/auth_parameters.py:38`
   - Delete resource.
 - `get(self, auth_parameter_id: int) -> nexla_sdk.models.auth_parameters.responses.AuthParameter`
-  - Source: `nexla_sdk/resources/auth_parameters.py:22`
+  - Source: `nexla_sdk/resources/auth_parameters.py:25`
   - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.auth_parameters.responses.AuthParameter]`
-  - Source: `nexla_sdk/resources/auth_parameters.py:19`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.auth_parameters.responses.AuthParameter]`
+  - Source: `nexla_sdk/resources/auth_parameters.py:22`
   - List resources with optional filters.
 - `update(self, auth_parameter_id: int, data: Union[nexla_sdk.models.auth_parameters.requests.AuthParameterUpdate, Dict[str, Any]]) -> nexla_sdk.models.auth_parameters.responses.AuthParameter`
-  - Source: `nexla_sdk/resources/auth_parameters.py:28`
+  - Source: `nexla_sdk/resources/auth_parameters.py:31`
   - Update resource.
 

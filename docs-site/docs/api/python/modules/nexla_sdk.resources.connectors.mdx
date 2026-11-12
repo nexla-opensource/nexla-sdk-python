@@ -12,7 +12,7 @@ Resource for managing connectors.
 
 ### ConnectorsResource
 
-Defined in `nexla_sdk/resources/connectors.py:10`
+Defined in `nexla_sdk/resources/connectors.py:13`
 
 Resource for managing connectors.
 
@@ -48,28 +48,28 @@ Examples:
 
 Methods:
 
-- `activate(self, resource_id=None)`
-  - Source: `nexla_sdk/resources/connectors.py:135`
+- `activate(self, resource_id: Any = None) -> NoReturn`
+  - Source: `nexla_sdk/resources/connectors.py:138`
   - Activate resource.
-- `copy(self, resource_id=None, options=None)`
-  - Source: `nexla_sdk/resources/connectors.py:132`
+- `copy(self, resource_id: Any = None, options: Any = None) -> NoReturn`
+  - Source: `nexla_sdk/resources/connectors.py:135`
   - Copy resource.
-- `create(self, data=None)`
-  - Source: `nexla_sdk/resources/connectors.py:126`
-  - Create new resource.
-- `delete(self, resource_id=None)`
+- `create(self, data: Any = None) -> NoReturn`
   - Source: `nexla_sdk/resources/connectors.py:129`
+  - Create new resource.
+- `delete(self, resource_id: Any = None) -> NoReturn`
+  - Source: `nexla_sdk/resources/connectors.py:132`
   - Delete resource.
 - `get(self, connector_id: Union[int, str]) -> nexla_sdk.models.connectors.responses.Connector`
-  - Source: `nexla_sdk/resources/connectors.py:94`
+  - Source: `nexla_sdk/resources/connectors.py:97`
   - Get connector by ID or type.
-- `list(self, access_role: Optional[str] = None, nexset_api_compatible: Optional[bool] = None, sync_api_compatible: Optional[bool] = None, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs) -> List[nexla_sdk.models.connectors.responses.Connector]`
-  - Source: `nexla_sdk/resources/connectors.py:59`
+- `list(self, access_role: Optional[str] = None, nexset_api_compatible: Optional[bool] = None, sync_api_compatible: Optional[bool] = None, page: Optional[int] = None, per_page: Optional[int] = None, **kwargs: Any) -> List[nexla_sdk.models.connectors.responses.Connector]`
+  - Source: `nexla_sdk/resources/connectors.py:62`
   - List connectors.
-- `pause(self, resource_id=None)`
-  - Source: `nexla_sdk/resources/connectors.py:138`
+- `pause(self, resource_id: Any = None) -> NoReturn`
+  - Source: `nexla_sdk/resources/connectors.py:141`
   - Pause resource.
 - `update(self, connector_id: Union[int, str], data: Union[nexla_sdk.models.connectors.requests.ConnectorUpdate, Dict[str, Any]]) -> nexla_sdk.models.connectors.responses.Connector`
-  - Source: `nexla_sdk/resources/connectors.py:107`
+  - Source: `nexla_sdk/resources/connectors.py:110`
   - Update a connector (super user only).
 

@@ -10,46 +10,52 @@ keywords: [Nexla, SDK, Python, API]
 
 ### CustomDataFlowsResource
 
-Defined in `nexla_sdk/resources/custom_data_flows.py:11`
+Defined in `nexla_sdk/resources/custom_data_flows.py:14`
 
 Resource for managing custom data flows.
 
 Methods:
 
 - `activate(self, custom_data_flow_id: int, activate: bool = True) -> nexla_sdk.models.custom_data_flows.responses.CustomDataFlow`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:48`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:51`
   - Activate resource.
 - `copy(self, custom_data_flow_id: int, payload: Optional[Dict[str, Any]] = None) -> nexla_sdk.models.custom_data_flows.responses.CustomDataFlow`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:43`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:46`
   - Copy resource.
 - `create(self, data: Union[nexla_sdk.models.custom_data_flows.requests.CustomDataFlowCreate, Dict[str, Any]]) -> nexla_sdk.models.custom_data_flows.responses.CustomDataFlow`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:28`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:31`
   - Create new resource.
+- `custom_data_flows_update_custom_data_flow(self, custom_data_flow_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:85`
+  - Partially update a custom data flow (PATCH).
 - `delete(self, custom_data_flow_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:40`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:43`
   - Delete resource.
 - `edit_code_containers(self, custom_data_flow_id: int, payload: Dict[str, Any], mode: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:60`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:63`
 - `edit_data_credentials(self, custom_data_flow_id: int, payload: Dict[str, Any], mode: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:68`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:71`
 - `get(self, custom_data_flow_id: int, expand: bool = False) -> nexla_sdk.models.custom_data_flows.responses.CustomDataFlow`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:25`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:28`
   - Get single resource by ID.
-- `get_metrics(self, custom_data_flow_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:56`
-- `list(self, **kwargs) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:19`
-  - List resources with optional filters.
-- `list_accessible(self, **params) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
+- `get_custom_data_flow_metrics_by_name(self, custom_data_flow_id: int, metrics_name: str) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:101`
+  - Get one named metrics group for a custom data flow.
+- `get_metrics(self, custom_data_flow_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:59`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
   - Source: `nexla_sdk/resources/custom_data_flows.py:22`
+  - List resources with optional filters.
+- `list_accessible(self, **params: Any) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:25`
   - List resources accessible to the current user (access_insights).
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:76`
-  - Search resources using filter criteria.
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
   - Source: `nexla_sdk/resources/custom_data_flows.py:79`
+  - Search resources using filter criteria.
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.custom_data_flows.responses.CustomDataFlow]`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:82`
   - Search resources by tags.
 - `update(self, custom_data_flow_id: int, data: Union[nexla_sdk.models.custom_data_flows.requests.CustomDataFlowUpdate, Dict[str, Any]]) -> nexla_sdk.models.custom_data_flows.responses.CustomDataFlow`
-  - Source: `nexla_sdk/resources/custom_data_flows.py:33`
+  - Source: `nexla_sdk/resources/custom_data_flows.py:36`
   - Update resource.
 

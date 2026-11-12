@@ -10,72 +10,72 @@ keywords: [Nexla, SDK, Python, API]
 
 ### ProjectsResource
 
-Defined in `nexla_sdk/resources/projects.py:13`
+Defined in `nexla_sdk/resources/projects.py:17`
 
 Resource for managing projects.
 
 Methods:
 
 - `add_data_flows(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:184`
+  - Source: `nexla_sdk/resources/projects.py:193`
   - Backward-compatible alias for adding flows to a project.
 - `add_data_flows_legacy(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:215`
+  - Source: `nexla_sdk/utils/deprecation.py:225`
   - Legacy add endpoint: '/projects/\{id\}/data_flows'.
 - `add_flows(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:127`
+  - Source: `nexla_sdk/resources/projects.py:136`
   - Add flows to project.
 - `copy(self, project_id: int, payload: Optional[Dict[str, Any]] = None) -> nexla_sdk.models.projects.responses.Project`
-  - Source: `nexla_sdk/resources/projects.py:99`
+  - Source: `nexla_sdk/resources/projects.py:105`
   - Copy resource.
-- `create(self, data: nexla_sdk.models.projects.requests.ProjectCreate) -> nexla_sdk.models.projects.responses.Project`
-  - Source: `nexla_sdk/resources/projects.py:59`
+- `create(self, data: Union[nexla_sdk.models.projects.requests.ProjectCreate, Dict[str, Any]]) -> nexla_sdk.models.projects.responses.Project`
+  - Source: `nexla_sdk/resources/projects.py:63`
   - Create new project.
 - `delete(self, project_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/projects.py:87`
+  - Source: `nexla_sdk/resources/projects.py:93`
   - Delete project.
 - `get(self, project_id: int, expand: bool = False) -> nexla_sdk.models.projects.responses.Project`
-  - Source: `nexla_sdk/resources/projects.py:43`
+  - Source: `nexla_sdk/resources/projects.py:47`
   - Get single project by ID.
 - `get_data_flows_legacy(self, project_id: int) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:194`
+  - Source: `nexla_sdk/utils/deprecation.py:203`
   - Legacy project flow listing endpoint.
 - `get_flows(self, project_id: int) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/projects.py:113`
+  - Source: `nexla_sdk/resources/projects.py:122`
   - Get flows in project.
 - `get_resources_access(self, project_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/projects.py:110`
-- `list(self, expand: bool = False, **kwargs) -> List[nexla_sdk.models.projects.responses.Project]`
-  - Source: `nexla_sdk/resources/projects.py:21`
+  - Source: `nexla_sdk/resources/projects.py:116`
+- `list(self, expand: bool = False, **kwargs: Any) -> List[nexla_sdk.models.projects.responses.Project]`
+  - Source: `nexla_sdk/resources/projects.py:25`
   - List projects with optional filters.
 - `remove_data_flows(self, project_id: int, flows: Optional[nexla_sdk.models.projects.requests.ProjectFlowList] = None) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:233`
+  - Source: `nexla_sdk/resources/projects.py:245`
   - Backward-compatible alias for removing flows from a project.
 - `remove_data_flows_legacy(self, project_id: int, flows: Optional[nexla_sdk.models.projects.requests.ProjectFlowList] = None) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:243`
+  - Source: `nexla_sdk/utils/deprecation.py:255`
   - Legacy remove endpoint: '/projects/\{id\}/data_flows'.
 - `remove_flows(self, project_id: int, flows: Optional[nexla_sdk.models.projects.requests.ProjectFlowList] = None) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:165`
+  - Source: `nexla_sdk/resources/projects.py:174`
   - Remove flows from project.
 - `replace_data_flows(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:205`
+  - Source: `nexla_sdk/resources/projects.py:215`
   - Backward-compatible alias for replacing all flows in a project.
 - `replace_data_flows_legacy(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:224`
+  - Source: `nexla_sdk/utils/deprecation.py:235`
   - Legacy replace endpoint: '/projects/\{id\}/data_flows'.
 - `replace_flows(self, project_id: int, flows: nexla_sdk.models.projects.requests.ProjectFlowList) -> List[nexla_sdk.models.projects.responses.ProjectDataFlow]`
-  - Source: `nexla_sdk/resources/projects.py:146`
+  - Source: `nexla_sdk/resources/projects.py:155`
   - Replace all flows in project.
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.projects.responses.Project]`
-  - Source: `nexla_sdk/resources/projects.py:104`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.projects.responses.Project]`
+  - Source: `nexla_sdk/resources/projects.py:110`
   - Search resources using filter criteria.
 - `search_flows(self, project_id: int, filters: List[Dict[str, Any]]) -> nexla_sdk.models.flows.responses.FlowResponse`
-  - Source: `nexla_sdk/resources/projects.py:252`
+  - Source: `nexla_sdk/resources/projects.py:265`
   - Search flows in a project using filter criteria.
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.projects.responses.Project]`
-  - Source: `nexla_sdk/resources/projects.py:107`
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.projects.responses.Project]`
+  - Source: `nexla_sdk/resources/projects.py:113`
   - Search resources by tags.
-- `update(self, project_id: int, data: nexla_sdk.models.projects.requests.ProjectUpdate) -> nexla_sdk.models.projects.responses.Project`
-  - Source: `nexla_sdk/resources/projects.py:74`
+- `update(self, project_id: int, data: Union[nexla_sdk.models.projects.requests.ProjectUpdate, Dict[str, Any]]) -> nexla_sdk.models.projects.responses.Project`
+  - Source: `nexla_sdk/resources/projects.py:78`
   - Update project.
 

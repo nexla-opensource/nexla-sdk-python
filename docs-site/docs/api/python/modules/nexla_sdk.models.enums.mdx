@@ -12,18 +12,27 @@ keywords: [Nexla, SDK, Python, API]
 
 Defined in `nexla_sdk/models/enums.py:4`
 
-Access roles for resources.
+Access roles for resources (lower-case backend values).
+
+The backend also accepts upper-case forms (app/api/v1/shared/schemas.py:45-72).
 
 Members:
 
 - `OWNER` = `owner`
+- `OWNER_ONLY` = `owner_only`
 - `ADMIN` = `admin`
+- `ADMIN_ONLY` = `admin_only`
 - `OPERATOR` = `operator`
 - `COLLABORATOR` = `collaborator`
+- `COLLABORATOR_ONLY` = `collaborator_only`
+- `SHARER` = `sharer`
+- `SHARER_ONLY` = `sharer_only`
+- `MEMBER` = `member`
+- `ALL` = `all`
 
 ### ConnectorCategory
 
-Defined in `nexla_sdk/models/enums.py:93`
+Defined in `nexla_sdk/models/enums.py:103`
 
 Connector categories.
 
@@ -39,7 +48,7 @@ Members:
 
 ### NotificationChannel
 
-Defined in `nexla_sdk/models/enums.py:57`
+Defined in `nexla_sdk/models/enums.py:67`
 
 Notification delivery channels.
 
@@ -53,7 +62,7 @@ Members:
 
 ### NotificationLevel
 
-Defined in `nexla_sdk/models/enums.py:46`
+Defined in `nexla_sdk/models/enums.py:56`
 
 Notification levels.
 
@@ -68,7 +77,7 @@ Members:
 
 ### OrgMembershipStatus
 
-Defined in `nexla_sdk/models/enums.py:86`
+Defined in `nexla_sdk/models/enums.py:96`
 
 Organization membership status.
 
@@ -79,7 +88,7 @@ Members:
 
 ### ResourceStatus
 
-Defined in `nexla_sdk/models/enums.py:13`
+Defined in `nexla_sdk/models/enums.py:23`
 
 Common resource status values.
 
@@ -95,7 +104,7 @@ Members:
 
 ### ResourceType
 
-Defined in `nexla_sdk/models/enums.py:25`
+Defined in `nexla_sdk/models/enums.py:35`
 
 Resource types in Nexla.
 
@@ -120,7 +129,7 @@ Members:
 
 ### UserStatus
 
-Defined in `nexla_sdk/models/enums.py:76`
+Defined in `nexla_sdk/models/enums.py:86`
 
 User account status.
 
@@ -134,7 +143,7 @@ Members:
 
 ### UserTier
 
-Defined in `nexla_sdk/models/enums.py:67`
+Defined in `nexla_sdk/models/enums.py:77`
 
 User account tiers.
 

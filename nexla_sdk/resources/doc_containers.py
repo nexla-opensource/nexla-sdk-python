@@ -42,7 +42,9 @@ class DocContainersResource(BaseResource[DocContainer]):
     def search_tags(self, tags: List[str], **params: Any) -> List[DocContainer]:
         return super().search_tags(tags, **params)
 
-    def get_audit_log(self, doc_container_id: int, **params: Any) -> List[LogEntry]:  # type: ignore[override]  # keeps public signature; base get_audit_log() takes typed filters
+    def get_audit_log(  # type: ignore[override]  # keeps public signature; base get_audit_log() takes typed filters
+        self, doc_container_id: int, **params: Any
+    ) -> List[LogEntry]:
         path = f"{self._path}/{doc_container_id}/audit_log"
         response = self._make_request("GET", path, params=params)
         return [LogEntry.model_validate(item) for item in (response or [])]

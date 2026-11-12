@@ -10,25 +10,25 @@ keywords: [Nexla, SDK, Python, API]
 
 ### OrgTiersResource
 
-Defined in `nexla_sdk/resources/org_tiers.py:7`
+Defined in `nexla_sdk/resources/org_tiers.py:10`
 
 Resource for organization tiers.
 
 Methods:
 
 - `create(self, data: Dict[str, Any]) -> nexla_sdk.models.org_tiers.responses.OrgTier`
-  - Source: `nexla_sdk/resources/org_tiers.py:21`
+  - Source: `nexla_sdk/resources/org_tiers.py:24`
   - Create new resource.
 - `delete(self, org_tier_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/org_tiers.py:27`
+  - Source: `nexla_sdk/resources/org_tiers.py:30`
   - Delete resource.
 - `get(self, org_tier_id: int) -> nexla_sdk.models.org_tiers.responses.OrgTier`
-  - Source: `nexla_sdk/resources/org_tiers.py:18`
+  - Source: `nexla_sdk/resources/org_tiers.py:21`
   - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.org_tiers.responses.OrgTier]`
-  - Source: `nexla_sdk/resources/org_tiers.py:15`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.org_tiers.responses.OrgTier]`
+  - Source: `nexla_sdk/resources/org_tiers.py:18`
   - List resources with optional filters.
 - `update(self, org_tier_id: int, data: Dict[str, Any]) -> nexla_sdk.models.org_tiers.responses.OrgTier`
-  - Source: `nexla_sdk/resources/org_tiers.py:24`
+  - Source: `nexla_sdk/resources/org_tiers.py:27`
   - Update resource.
 

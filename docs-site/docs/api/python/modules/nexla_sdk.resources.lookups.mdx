@@ -12,56 +12,62 @@ Lookups resource implementation.
 
 ### LookupsResource
 
-Defined in `nexla_sdk/resources/lookups.py:14`
+Defined in `nexla_sdk/resources/lookups.py:17`
 
 Resource for managing lookups (data maps).
 
 Methods:
 
-- `create(self, data: nexla_sdk.models.lookups.requests.LookupCreate) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:63`
+- `create(self, data: Union[nexla_sdk.models.lookups.requests.LookupCreate, Dict[str, Any]]) -> nexla_sdk.models.lookups.responses.Lookup`
+  - Source: `nexla_sdk/resources/lookups.py:66`
   - Create new lookup.
+- `data_maps_read_data_map_sample(self, data_map_id: int, data: Optional[Dict[str, Any]] = None, page: Union[int, str, NoneType] = None, per_page: Union[int, str, NoneType] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/lookups.py:224`
+  - Read a sample of entries from a lookup (PUT variant of probe_sample).
+- `data_maps_update_data_map(self, data_map_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/lookups.py:206`
+  - Partially update a lookup.
 - `delete(self, data_map_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:91`
+  - Source: `nexla_sdk/resources/lookups.py:96`
   - Delete lookup.
 - `delete_entries(self, data_map_id: int, entry_keys: Union[str, List[str]]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:165`
+  - Source: `nexla_sdk/resources/lookups.py:175`
   - Delete specific entries from a lookup.
 - `delete_entries_by_body(self, data_map_id: int, entry_keys: List[str]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:186`
+  - Source: `nexla_sdk/resources/lookups.py:196`
 - `download_map(self, data_map_id: int) -> str`
-  - Source: `nexla_sdk/resources/lookups.py:113`
+  - Source: `nexla_sdk/resources/lookups.py:118`
 - `get(self, data_map_id: int, expand: bool = False) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:47`
+  - Source: `nexla_sdk/resources/lookups.py:50`
   - Get single lookup by ID.
 - `get_entries(self, data_map_id: int, entry_keys: Union[str, List[str]]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/lookups.py:138`
+  - Source: `nexla_sdk/resources/lookups.py:146`
   - Get specific entries from a lookup.
 - `get_entries_by_body(self, data_map_id: int, payload: Dict[str, Any]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/lookups.py:159`
-- `list(self, **kwargs) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:22`
+  - Source: `nexla_sdk/resources/lookups.py:167`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.lookups.responses.Lookup]`
+  - Source: `nexla_sdk/resources/lookups.py:25`
   - List lookups with optional filters.
-- `list_accessible(self, **params) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:44`
+- `list_accessible(self, **params: Any) -> List[nexla_sdk.models.lookups.responses.Lookup]`
+  - Source: `nexla_sdk/resources/lookups.py:47`
   - List resources accessible to the current user (access_insights).
-- `list_public(self, **params) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:40`
+- `list_public(self, **params: Any) -> List[nexla_sdk.models.lookups.responses.Lookup]`
+  - Source: `nexla_sdk/resources/lookups.py:43`
   - List publicly available resources for this type.
 - `probe_sample(self, data_map_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:192`
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:103`
+  - Source: `nexla_sdk/resources/lookups.py:202`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.lookups.responses.Lookup]`
+  - Source: `nexla_sdk/resources/lookups.py:108`
   - Search resources using filter criteria.
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.lookups.responses.Lookup]`
-  - Source: `nexla_sdk/resources/lookups.py:106`
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.lookups.responses.Lookup]`
+  - Source: `nexla_sdk/resources/lookups.py:111`
   - Search resources by tags.
-- `update(self, data_map_id: int, data: nexla_sdk.models.lookups.requests.LookupUpdate) -> nexla_sdk.models.lookups.responses.Lookup`
-  - Source: `nexla_sdk/resources/lookups.py:78`
+- `update(self, data_map_id: int, data: Union[nexla_sdk.models.lookups.requests.LookupUpdate, Dict[str, Any]]) -> nexla_sdk.models.lookups.responses.Lookup`
+  - Source: `nexla_sdk/resources/lookups.py:81`
   - Update lookup.
 - `upsert_entries(self, data_map_id: int, entries: List[Dict[str, Any]]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/lookups.py:118`
+  - Source: `nexla_sdk/resources/lookups.py:123`
   - Upsert entries in a lookup.
 - `validate(self, data_map_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/lookups.py:109`
+  - Source: `nexla_sdk/resources/lookups.py:114`
 

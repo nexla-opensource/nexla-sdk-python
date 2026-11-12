@@ -10,34 +10,40 @@ HTTP client interface and implementations for Nexla SDK
 
 ## Classes
 
-### HttpClientError
-
-Defined in `nexla_sdk/http_client.py:66`
-
-Base exception for HTTP client errors
-
 ### HttpClientInterface
 
-Defined in `nexla_sdk/http_client.py:38`
+Defined in `nexla_sdk/http_client.py:64`
 
 Abstract interface for HTTP clients used by the Nexla SDK.
 This allows for different HTTP client implementations or mocks for testing.
 
 Methods:
 
-- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/http_client.py:44`
+- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/http_client.py:81`
   - Send an HTTP request
+- `request_with_headers(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/http_client.py:70`
+  - Send an HTTP request and also return the response headers.
 
 ### RequestsHttpClient
 
-Defined in `nexla_sdk/http_client.py:82`
+Defined in `nexla_sdk/http_client.py:118`
 
 HTTP client implementation using the requests library with retries and timeouts.
 
+Retries (spec section 4):
+- Connect errors: every method.
+- Read errors and 502/503/504: idempotent methods only (``retry_methods``).
+- 429: every method. The wait comes from the body ``error.retry_after``,
+  then ``Retry-After``. A wait over 60 s is not retried.
+
 Methods:
 
-- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/http_client.py:119`
+- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/http_client.py:183`
   - Send an HTTP request using a session with sane defaults.
+- `request_with_headers(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/http_client.py:190`
+  - Send an HTTP request. Return (body, response headers).
 

@@ -1,0 +1,60 @@
+---
+id: nexla_sdk.aio.http_client
+title: nexla_sdk.aio.http_client
+slug: /api/python/modules/nexla_sdk/aio/http_client
+description: API for nexla_sdk.aio.http_client
+keywords: [Nexla, SDK, Python, API]
+---
+
+Async HTTP transport for the Nexla SDK, built on httpx.
+
+Install the extra to use it: ``pip install "nexla-sdk[async]"``.
+
+The retry decisions come from ``nexla_sdk.retry_policy``. Errors and response
+parsing come from ``nexla_sdk.transport_core``, the same code the sync client uses.
+
+## Classes
+
+### AsyncHttpClientInterface
+
+Defined in `nexla_sdk/aio/http_client.py:48`
+
+Abstract async HTTP client used by the async client and token handler.
+
+Methods:
+
+- `aclose(self) -> None`
+  - Source: `nexla_sdk/aio/http_client.py:64`
+  - Release transport resources. A no-op unless overridden.
+- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/aio/http_client.py:57`
+  - Send a request. Return the body, or None for 204 No Content.
+- `request_with_headers(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/aio/http_client.py:51`
+  - Send a request and return (body, response headers).
+
+### AsyncHttpxClient
+
+Defined in `nexla_sdk/aio/http_client.py:84`
+
+Async HTTP client with the SDK retry rules (spec sections 3 and 4).
+
+- Connect failures: every method.
+- Read timeouts and resets after send, and 502/503/504: idempotent methods only.
+- 429: every method. The wait comes from the body ``error.retry_after``,
+  then ``Retry-After``. A wait over 60 s is not retried.
+
+Retries use ``asyncio.sleep``. The request body is resent unchanged.
+
+Methods:
+
+- `aclose(self) -> None`
+  - Source: `nexla_sdk/aio/http_client.py:115`
+  - Release transport resources. A no-op unless overridden.
+- `request(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/aio/http_client.py:118`
+  - Send a request. Return the body, or None for 204 No Content.
+- `request_with_headers(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/aio/http_client.py:124`
+  - Send a request and return (body, response headers).
+

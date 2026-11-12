@@ -1,0 +1,50 @@
+---
+id: nexla_sdk.retry_policy
+title: nexla_sdk.retry_policy
+slug: /api/python/modules/nexla_sdk/retry_policy
+description: API for nexla_sdk.retry_policy
+keywords: [Nexla, SDK, Python, API]
+---
+
+Retry, backoff and timeout decisions shared by the sync and async clients.
+
+Transport-free: no I/O and no HTTP library import. A transport asks these
+functions whether to retry and how long to wait (spec sections 3 and 4).
+
+## Functions
+
+### `as_timeout_pair(value: Any) -> Tuple[float, float]`
+
+Source: `nexla_sdk/retry_policy.py:21`
+
+A single number sets both connect and read. A pair is (connect, read).
+
+### `backoff_seconds(attempt: int, backoff_factor: float) -> float`
+
+Source: `nexla_sdk/retry_policy.py:29`
+
+Seconds to wait before retry `attempt` (1-based): min(8, f * 2^(n-1)) plus 0-100 ms.
+
+### `rate_limit_delay(response: Any, attempt: int, backoff_factor: float) -> Optional[float]`
+
+Source: `nexla_sdk/retry_policy.py:64`
+
+Seconds to wait before retrying a 429, or None when the wait exceeds 60 s.
+
+None means the caller must not retry. The caller then raises RateLimitError.
+
+### `status_is_retryable(method: str, status: int, retry_methods: Tuple[str, ...], retry_on_status: Tuple[int, ...]) -> bool`
+
+Source: `nexla_sdk/retry_policy.py:77`
+
+502, 503 and 504 (configurable) are retried for idempotent methods only.
+
+### `transport_error_is_retryable(method: str, phase: str, retry_methods: Tuple[str, ...]) -> bool`
+
+Source: `nexla_sdk/retry_policy.py:87`
+
+phase "connect": the request was not sent, so every method is retried.
+
+phase "after_send": a read timeout or reset after the request was sent. Only
+idempotent methods are retried.
+

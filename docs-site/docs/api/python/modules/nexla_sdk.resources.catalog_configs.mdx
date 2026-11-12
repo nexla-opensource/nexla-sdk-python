@@ -10,33 +10,33 @@ keywords: [Nexla, SDK, Python, API]
 
 ### CatalogConfigsResource
 
-Defined in `nexla_sdk/resources/catalog_configs.py:11`
+Defined in `nexla_sdk/resources/catalog_configs.py:14`
 
 Resource for managing catalog configs.
 
 Methods:
 
 - `check_job_status(self, catalog_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/catalog_configs.py:43`
+  - Source: `nexla_sdk/resources/catalog_configs.py:49`
 - `create(self, data: Union[nexla_sdk.models.catalog_configs.requests.CatalogConfigCreate, Dict[str, Any]]) -> nexla_sdk.models.catalog_configs.responses.CatalogConfig`
-  - Source: `nexla_sdk/resources/catalog_configs.py:29`
+  - Source: `nexla_sdk/resources/catalog_configs.py:32`
   - Create new resource.
 - `delete(self, catalog_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/catalog_configs.py:37`
+  - Source: `nexla_sdk/resources/catalog_configs.py:40`
   - Delete resource.
 - `get(self, catalog_config_id: int) -> nexla_sdk.models.catalog_configs.responses.CatalogConfig`
-  - Source: `nexla_sdk/resources/catalog_configs.py:26`
+  - Source: `nexla_sdk/resources/catalog_configs.py:29`
   - Get single resource by ID.
-- `list(self, **kwargs) -> List[nexla_sdk.models.catalog_configs.responses.CatalogConfig]`
-  - Source: `nexla_sdk/resources/catalog_configs.py:19`
-  - List resources with optional filters.
-- `list_all(self, **params) -> List[nexla_sdk.models.catalog_configs.responses.CatalogConfig]`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.catalog_configs.responses.CatalogConfig]`
   - Source: `nexla_sdk/resources/catalog_configs.py:22`
+  - List resources with optional filters.
+- `list_all(self, **params: Any) -> List[nexla_sdk.models.catalog_configs.responses.CatalogConfig]`
+  - Source: `nexla_sdk/resources/catalog_configs.py:25`
 - `mock_catalog_add(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/catalog_configs.py:40`
+  - Source: `nexla_sdk/resources/catalog_configs.py:43`
 - `start_bulk_create_update(self, catalog_config_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/catalog_configs.py:47`
+  - Source: `nexla_sdk/resources/catalog_configs.py:53`
 - `update(self, catalog_config_id: int, data: Union[nexla_sdk.models.catalog_configs.requests.CatalogConfigUpdate, Dict[str, Any]]) -> nexla_sdk.models.catalog_configs.responses.CatalogConfig`
-  - Source: `nexla_sdk/resources/catalog_configs.py:32`
+  - Source: `nexla_sdk/resources/catalog_configs.py:35`
   - Update resource.
 

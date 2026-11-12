@@ -1,0 +1,30 @@
+---
+id: nexla_sdk.aio.pagination
+title: nexla_sdk.aio.pagination
+slug: /api/python/modules/nexla_sdk/aio/pagination
+description: API for nexla_sdk.aio.pagination
+keywords: [Nexla, SDK, Python, API]
+---
+
+Async paginator. Page rules and page types come from nexla_sdk.utils.pagination.
+
+## Classes
+
+### AsyncPaginator
+
+Defined in `nexla_sdk/aio/pagination.py:25`
+
+Iterate pages of an async list call. Stops by the same rules as Paginator.
+
+Methods:
+
+- `get_page(self, page_number: int) -> nexla_sdk.utils.pagination.Page[~T]`
+  - Source: `nexla_sdk/aio/pagination.py:50`
+  - Fetch one page of results.
+- `iter_items(self) -> AsyncIterator[~T]`
+  - Source: `nexla_sdk/aio/pagination.py:86`
+  - Iterate through all items across all pages.
+- `iter_pages(self) -> AsyncIterator[nexla_sdk.utils.pagination.Page[~T]]`
+  - Source: `nexla_sdk/aio/pagination.py:73`
+  - Iterate through pages. Empty pages are not yielded.
+

@@ -81,6 +81,14 @@ jobs:
         run: |
           python scripts/parity/check_operation_map_sync.py
 
+      - name: Check generated async modules are up to date
+        # Regenerates nexla_sdk/aio from the sync sources. Fails when the committed
+        # output differs, or when the run adds a file that is not committed.
+        run: |
+          python scripts/gen_async.py
+          git diff --exit-code -- nexla_sdk/aio
+          test -z "$(git status --porcelain -- nexla_sdk/aio)"
+
       - name: Run unit tests
         env:
           PYTHONWARNINGS: default

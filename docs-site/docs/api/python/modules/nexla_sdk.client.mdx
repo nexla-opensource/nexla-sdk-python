@@ -12,7 +12,7 @@ Nexla API client
 
 ### NexlaClient
 
-Defined in `nexla_sdk/client.py:82`
+Defined in `nexla_sdk/client.py:105`
 
 Client for the Nexla API
 
@@ -25,6 +25,10 @@ The Nexla API supports two authentication methods:
 
 2. **Direct Access Token Authentication**:
    Use a pre-obtained access token directly. These tokens are not refreshed by the SDK.
+
+Other modes: ``api_key`` (Basic, sent as is) and ``email``/``password``
+(Basic ``email:password[:org_id]``). Both obtain session tokens with POST /token.
+Use ``switch_org(org_id)`` to change the org of the current session.
 
 Examples:
     # Method 1: Using service key (recommended for automation)
@@ -45,18 +49,24 @@ Note:
 Methods:
 
 - `create_webhook_client(self, api_key: str) -> nexla_sdk.resources.webhooks.WebhooksResource`
-  - Source: `nexla_sdk/client.py:311`
+  - Source: `nexla_sdk/client.py:371`
   - Create a webhook client for sending data to Nexla webhooks.
 - `get_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:261`
+  - Source: `nexla_sdk/client.py:302`
   - Get a valid access token.
 - `logout(self) -> None`
-  - Source: `nexla_sdk/client.py:303`
+  - Source: `nexla_sdk/client.py:363`
   - Logout current session and invalidate token.
 - `refresh_access_token(self) -> str`
-  - Source: `nexla_sdk/client.py:283`
+  - Source: `nexla_sdk/client.py:324`
   - Obtain a fresh token and return it.
-- `request(self, method: str, path: str, **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/client.py:384`
+- `request(self, method: str, path: str, **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/client.py:453`
   - Send a request to the Nexla API
+- `request_with_headers(self, method: str, path: str, **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/client.py:474`
+  - Send a request to the Nexla API and return (body, response headers).
+- `switch_org(self, org_id: int) -> nexla_sdk.models.tokens.responses.TokenResponse`
+  - Source: `nexla_sdk/client.py:344`
+  - Switch the session to another org (POST /token/refresh?org_id=).
 

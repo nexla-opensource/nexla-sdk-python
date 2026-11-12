@@ -12,44 +12,50 @@ Authentication utilities for the Nexla SDK
 
 ### TokenAuthHandler
 
-Defined in `nexla_sdk/auth.py:15`
+Defined in `nexla_sdk/auth.py:27`
 
 Handles authentication and token management for Nexla API
 
-Supports two authentication flows as per Nexla API documentation:
+Credential modes (spec section 2). Exactly one is used:
 
-1. **Service Key Flow**: Uses service keys to obtain session tokens via POST to
-   /token endpoint with `Authorization: Basic <Service-Key>`. Automatically
-   refreshes tokens before expiry using /token/refresh endpoint.
+1. **Service key**: ``Authorization: Basic <service_key>``, sent as is.
+2. **API key**: ``Authorization: Basic <api_key>``, sent as is.
+3. **Password**: ``Authorization: Basic base64("email:password[:org_id]")``.
+4. **Access token**: ``Authorization: Bearer <token>``. Never refreshed.
 
-2. **Direct Token Flow**: Uses pre-obtained access tokens directly. These tokens
-   expire after a configured interval (usually 1 hour).
+The modes 1-3 obtain a session token with ``POST /token``. The optional
+``dataplane`` value is sent as ``X-Nexla-Dataplane`` on ``/token`` calls only.
 
 Responsible for:
-- Obtaining session tokens using service keys (Basic auth)
-- Using directly provided access tokens (Bearer auth)
-- Refreshing session tokens before expiry (service key flow only)
-- Ensuring valid tokens are available for API requests
-- Handling authentication retries on 401 responses
+- Obtaining session tokens (one shared request for concurrent callers)
+- Refreshing session tokens before expiry (modes 1-3)
+- Switching org with ``POST /token/refresh?org_id=``
+- Retrying once on 401 with a refreshable mode
 
 Methods:
 
 - `ensure_valid_token(self) -> str`
-  - Source: `nexla_sdk/auth.py:154`
-  - Ensures a valid session token is available, refreshing if necessary
-- `execute_authenticated_request(self, method: str, url: str, headers: Dict[str, str], **kwargs) -> Optional[Dict[str, Any]]`
-  - Source: `nexla_sdk/auth.py:202`
-  - Execute a request with authentication handling
+  - Source: `nexla_sdk/auth.py:215`
+  - Ensures a valid session token is available, refreshing if necessary.
+- `execute_authenticated_request(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Optional[Dict[str, Any]]`
+  - Source: `nexla_sdk/auth.py:286`
+  - Execute a request with authentication handling. Return the body only.
+- `execute_authenticated_request_with_headers(self, method: str, url: str, headers: Dict[str, str], **kwargs: Any) -> Tuple[Optional[Dict[str, Any]], Any]`
+  - Source: `nexla_sdk/auth.py:301`
+  - Execute a request with authentication handling. Return (body, response headers).
 - `get_access_token(self) -> str`
-  - Source: `nexla_sdk/auth.py:72`
+  - Source: `nexla_sdk/auth.py:152`
   - Get the current access token
 - `logout(self) -> None`
-  - Source: `nexla_sdk/auth.py:179`
+  - Source: `nexla_sdk/auth.py:262`
   - Ends the current session and invalidates the NexlaSessionToken.
 - `obtain_session_token(self) -> None`
-  - Source: `nexla_sdk/auth.py:88`
-  - Obtains a session token using the service key
+  - Source: `nexla_sdk/auth.py:168`
+  - Obtain a session token with POST /token using the configured credential.
 - `refresh_session_token(self) -> None`
-  - Source: `nexla_sdk/auth.py:143`
+  - Source: `nexla_sdk/auth.py:199`
   - Refresh token (compat shim).
+- `switch_org(self, org_id: int) -> nexla_sdk.models.tokens.responses.TokenResponse`
+  - Source: `nexla_sdk/auth.py:239`
+  - Switch the session to another org with POST /token/refresh?org_id=.
 

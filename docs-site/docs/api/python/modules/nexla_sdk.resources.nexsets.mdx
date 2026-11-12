@@ -10,182 +10,245 @@ keywords: [Nexla, SDK, Python, API]
 
 ### NexsetsResource
 
-Defined in `nexla_sdk/resources/nexsets.py:14`
+Defined in `nexla_sdk/resources/nexsets.py:18`
 
 Resource for managing nexsets (data sets).
 
 Methods:
 
 - `activate(self, set_id: int) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:146`
+  - Source: `nexla_sdk/resources/nexsets.py:161`
   - Activate nexset.
 - `activate_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:430`
+  - Source: `nexla_sdk/resources/nexsets.py:457`
+- `activate_flow_via_data_set(self, resource_id: int, all: bool = False, full_tree: bool = False, run_now: Optional[str] = None) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:785`
+  - Activate the flow of a data set.
+- `add_flow_accessors_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/nexsets.py:755`
+  - Add accessors to the flow of a data set.
+- `add_flow_docs_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:909`
+  - Add docs to the flow of a data set.
 - `add_samples(self, set_id: int, samples: Any) -> List[nexla_sdk.models.nexsets.responses.NexsetSample]`
-  - Source: `nexla_sdk/resources/nexsets.py:209`
+  - Source: `nexla_sdk/resources/nexsets.py:224`
 - `add_sharers(self, set_id: int, payload: Dict[str, Any]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/nexsets.py:321`
+  - Source: `nexla_sdk/resources/nexsets.py:342`
 - `bulk_update_catalog_refs(self, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:399`
+  - Source: `nexla_sdk/resources/nexsets.py:420`
 - `catalog_add(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:261`
-- `copy(self, set_id: int, options: Optional[nexla_sdk.models.nexsets.requests.NexsetCopyOptions] = None) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:216`
+  - Source: `nexla_sdk/utils/deprecation.py:281`
+- `copy(self, set_id: int, options: Union[nexla_sdk.models.nexsets.requests.NexsetCopyOptions, Dict[str, Any], NoneType] = None) -> nexla_sdk.models.nexsets.responses.Nexset`
+  - Source: `nexla_sdk/resources/nexsets.py:231`
   - Copy a nexset.
 - `copy_docs(self, src_id: int, dst_id: int) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
-  - Source: `nexla_sdk/resources/nexsets.py:536`
+  - Source: `nexla_sdk/resources/nexsets.py:563`
   - Copy all documentation entries from one nexset to another.
-- `create(self, data: nexla_sdk.models.nexsets.requests.NexsetCreate) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:106`
+- `create(self, data: Union[nexla_sdk.models.nexsets.requests.NexsetCreate, Dict[str, Any]]) -> nexla_sdk.models.nexsets.responses.Nexset`
+  - Source: `nexla_sdk/resources/nexsets.py:121`
   - Create new nexset.
 - `create_api_key(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:416`
+  - Source: `nexla_sdk/resources/nexsets.py:443`
 - `create_catalog_ref(self, payload: Dict[str, Any]) -> nexla_sdk.models.catalog_refs.responses.CatalogRef`
-  - Source: `nexla_sdk/resources/nexsets.py:385`
+  - Source: `nexla_sdk/resources/nexsets.py:406`
+- `create_catalog_ref_for_set(self, data_set_id: int, ref_data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:988`
+  - Create a catalog ref for one data set.
 - `create_dashboard_transforms(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:297`
+  - Source: `nexla_sdk/resources/nexsets.py:318`
 - `create_quarantine_settings(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:277`
+  - Source: `nexla_sdk/resources/nexsets.py:298`
+- `data_sets_apply_transformation(self, data_set_id: int, transform_id: Optional[int] = None, extract_schemas: bool = False, accumulate_schema: bool = False, suppress_errors: Optional[str] = None, data: Optional[Dict[str, Any]] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:954`
+  - Apply a transformation to a data set (PUT).
+- `data_sets_flow_audit_log(self, resource_id: int, interval: Optional[str] = None, from_date: Optional[str] = None, to_date: Optional[str] = None, event_filter: Optional[str] = None, change_filter: Optional[str] = None, page: Optional[str] = None, per_page: Optional[str] = None, expand: Optional[str] = None, access_role: Optional[str] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:834`
+  - Get the audit log of the flow of a data set.
+- `data_sets_probe_read_quarantine_data_set(self, data_set_id: int, data: Dict[str, Any]) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:939`
+  - Read a quarantine sample of a data set (PUT).
+- `data_sets_update_catalog_ref(self, data_set_id: int, ref_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:677`
+  - Partially update a catalog ref of a data set (PATCH).
+- `data_sets_update_catalog_ref_collection(self, ref_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:649`
+  - Partially update a catalog ref by ID (collection route).
+- `data_sets_update_catalog_ref_put(self, data_set_id: int, ref_id: int, data: Dict[str, Any]) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:693`
+  - Replace a catalog ref of a data set (PUT).
+- `data_sets_update_data_set(self, data_set_id: int, data: Dict[str, Any], expand: bool = False) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:600`
+  - Partially update a data set (PATCH).
 - `delete(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:134`
+  - Source: `nexla_sdk/resources/nexsets.py:149`
   - Delete nexset.
 - `delete_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:442`
+  - Source: `nexla_sdk/resources/nexsets.py:469`
 - `delete_catalog_ref(self, ref_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:395`
+  - Source: `nexla_sdk/resources/nexsets.py:416`
+- `delete_catalog_ref_for_set(self, data_set_id: int, ref_id: int, hard_delete: bool = False) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:709`
+  - Delete a catalog ref of a data set.
 - `delete_dashboard_transforms(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:309`
+  - Source: `nexla_sdk/resources/nexsets.py:330`
 - `delete_quarantine_settings(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:289`
+  - Source: `nexla_sdk/resources/nexsets.py:310`
 - `docs_recommendation(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:456`
+  - Source: `nexla_sdk/resources/nexsets.py:483`
   - Generate AI suggestion for Nexset documentation.
 - `get(self, set_id: int, expand: bool = False) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:90`
+  - Source: `nexla_sdk/resources/nexsets.py:105`
   - Get single nexset by ID.
 - `get_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:412`
+  - Source: `nexla_sdk/resources/nexsets.py:439`
 - `get_catalog_ref(self, ref_id: int) -> nexla_sdk.models.catalog_refs.responses.CatalogRef`
-  - Source: `nexla_sdk/resources/nexsets.py:380`
+  - Source: `nexla_sdk/resources/nexsets.py:401`
+- `get_catalog_ref_for_set(self, data_set_id: int, ref_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:664`
+  - Get one catalog ref of a data set.
 - `get_characteristics(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:353`
+  - Source: `nexla_sdk/resources/nexsets.py:374`
 - `get_dashboard_transforms(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:293`
+  - Source: `nexla_sdk/resources/nexsets.py:314`
 - `get_data_update_time(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:349`
+  - Source: `nexla_sdk/resources/nexsets.py:370`
 - `get_flow(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:234`
-- `get_flow_dashboard(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:237`
-- `get_flow_logs(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:249`
-- `get_flow_metrics(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:245`
-- `get_flow_status_metrics(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:241`
-- `get_metrics(self, set_id: int, metrics_name: Optional[str] = None, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:253`
-- `get_offset(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:345`
-- `get_quarantine_aggregation(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:452`
-- `get_quarantine_offset(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:341`
-- `get_quarantine_settings(self, set_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:252`
+- `get_flow_dashboard(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:257`
+- `get_flow_logs(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:269`
+- `get_flow_metrics(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:265`
+- `get_flow_status_metrics(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:261`
+- `get_metrics(self, set_id: int, metrics_name: Optional[str] = None, **params: Any) -> Dict[str, Any]`
   - Source: `nexla_sdk/resources/nexsets.py:273`
+- `get_offset(self, set_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:366`
+- `get_quarantine_aggregation(self, set_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:479`
+- `get_quarantine_offset(self, set_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:362`
+- `get_quarantine_settings(self, set_id: int) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:294`
 - `get_samples(self, set_id: int, count: int = 10, include_metadata: bool = False, live: bool = False) -> List[nexla_sdk.models.nexsets.responses.NexsetSample]`
-  - Source: `nexla_sdk/resources/nexsets.py:170`
+  - Source: `nexla_sdk/resources/nexsets.py:185`
   - Get sample records from a nexset.
-- `list(self, **kwargs) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:22`
+- `list(self, **kwargs: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:26`
   - List nexsets with optional filters.
-- `list_all(self, **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:40`
-- `list_all_condensed(self, **params) -> List[Dict[str, Any]]`
+- `list_all(self, **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
   - Source: `nexla_sdk/resources/nexsets.py:44`
-- `list_all_ids(self, **params) -> List[int]`
-  - Source: `nexla_sdk/resources/nexsets.py:47`
-- `list_api_keys(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:402`
-- `list_available(self, **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:50`
-- `list_catalog_refs(self, **params) -> List[nexla_sdk.models.catalog_refs.responses.CatalogRef]`
-  - Source: `nexla_sdk/resources/nexsets.py:375`
-- `list_characteristics_search(self, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:72`
-- `list_docs(self, set_id: int, expand: bool = True) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
-  - Source: `nexla_sdk/resources/nexsets.py:461`
-  - List documentation entries attached to a nexset.
-- `list_nexset_api_compatible(self, **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:80`
-- `list_public(self, **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:63`
-  - List publicly available resources for this type.
-- `list_shared(self, **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+- `list_all_condensed(self, **params: Any) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/nexsets.py:48`
+- `list_all_ids(self, **params: Any) -> List[int]`
+  - Source: `nexla_sdk/resources/nexsets.py:54`
+- `list_api_keys(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:426`
+- `list_available(self, **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
   - Source: `nexla_sdk/resources/nexsets.py:59`
+- `list_catalog_refs(self, **params: Any) -> List[nexla_sdk.models.catalog_refs.responses.CatalogRef]`
+  - Source: `nexla_sdk/resources/nexsets.py:396`
+- `list_characteristics_search(self, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:81`
+- `list_docs(self, set_id: int, expand: bool = True) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
+  - Source: `nexla_sdk/resources/nexsets.py:488`
+  - List documentation entries attached to a nexset.
+- `list_flow_accessors_via_data_set(self, resource_id: int) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/nexsets.py:726`
+  - List accessors of the flow of a data set.
+- `list_flow_docs_via_data_set(self, resource_id: int) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:882`
+  - List docs of the flow of a data set.
+- `list_nexset_api_compatible(self, **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:95`
+- `list_public(self, **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:72`
+  - List publicly available resources for this type.
+- `list_shared(self, **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:68`
 - `list_sharers(self, set_id: int) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/nexsets.py:313`
-- `list_summary(self, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:77`
+  - Source: `nexla_sdk/resources/nexsets.py:334`
+- `list_summary(self, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:89`
+- `list_sync_api_compatible(self, status: Optional[str] = None, access_role: Optional[str] = None, page: Union[int, str, NoneType] = None, per_page: Union[int, str, NoneType] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:619`
+  - List sync API compatible data sets.
 - `mark_shared(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:331`
+  - Source: `nexla_sdk/resources/nexsets.py:352`
 - `pause(self, set_id: int) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:158`
+  - Source: `nexla_sdk/resources/nexsets.py:173`
   - Pause nexset.
 - `pause_all_api_keys(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:438`
+  - Source: `nexla_sdk/resources/nexsets.py:465`
 - `pause_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:434`
+  - Source: `nexla_sdk/resources/nexsets.py:461`
+- `pause_flow_via_data_set(self, resource_id: int, all: bool = False, full_tree: bool = False) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:813`
+  - Pause the flow of a data set.
 - `probe_quarantine_sample(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:335`
+  - Source: `nexla_sdk/resources/nexsets.py:356`
+- `remove_flow_accessors_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/nexsets.py:770`
+  - Remove accessors from the flow of a data set.
+- `remove_flow_docs_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:924`
+  - Remove docs from the flow of a data set.
 - `remove_sharers(self, set_id: int, payload: Dict[str, Any]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/nexsets.py:325`
+  - Source: `nexla_sdk/resources/nexsets.py:346`
+- `reset_flow_accessors_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]`
+  - Source: `nexla_sdk/resources/nexsets.py:740`
+  - Replace all accessors of the flow of a data set.
+- `reset_flow_docs_via_data_set(self, resource_id: int, data: Optional[Dict[str, Any]] = None) -> Any`
+  - Source: `nexla_sdk/resources/nexsets.py:894`
+  - Replace all docs of the flow of a data set.
 - `rotate_api_key(self, set_id: int, api_key_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:426`
-- `search(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:361`
+  - Source: `nexla_sdk/resources/nexsets.py:453`
+- `search(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:382`
   - Search resources using filter criteria.
-- `search_api_keys(self, set_id: int, filters: Dict[str, Any], **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:406`
-- `search_available(self, filters: Dict[str, Any], **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:54`
-- `search_public_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:67`
-- `search_tags(self, tags: List[str], **params) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
-  - Source: `nexla_sdk/resources/nexsets.py:364`
+- `search_api_keys(self, set_id: int, filters: Dict[str, Any], **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:430`
+- `search_available(self, filters: Dict[str, Any], **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:63`
+- `search_public_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:76`
+- `search_tags(self, tags: List[str], **params: Any) -> List[nexla_sdk.models.nexsets.responses.Nexset]`
+  - Source: `nexla_sdk/resources/nexsets.py:385`
   - Search resources by tags.
-- `semantic_schemas(self, set_id: int, **params) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:265`
+- `semantic_schemas(self, set_id: int, **params: Any) -> Dict[str, Any]`
+  - Source: `nexla_sdk/resources/nexsets.py:286`
 - `set_sharers(self, set_id: int, payload: Dict[str, Any]) -> List[Dict[str, Any]]`
-  - Source: `nexla_sdk/resources/nexsets.py:317`
+  - Source: `nexla_sdk/resources/nexsets.py:338`
 - `summary(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:357`
+  - Source: `nexla_sdk/resources/nexsets.py:378`
 - `sync_with_catalog(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:230`
+  - Source: `nexla_sdk/resources/nexsets.py:248`
 - `transform(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:269`
+  - Source: `nexla_sdk/resources/nexsets.py:290`
 - `trigger_quarantine_aggregation(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:446`
+  - Source: `nexla_sdk/resources/nexsets.py:473`
 - `unvote(self, set_id: int) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:371`
-- `update(self, set_id: int, data: nexla_sdk.models.nexsets.requests.NexsetUpdate) -> nexla_sdk.models.nexsets.responses.Nexset`
-  - Source: `nexla_sdk/resources/nexsets.py:121`
+  - Source: `nexla_sdk/resources/nexsets.py:392`
+- `update(self, set_id: int, data: Union[nexla_sdk.models.nexsets.requests.NexsetUpdate, Dict[str, Any]]) -> nexla_sdk.models.nexsets.responses.Nexset`
+  - Source: `nexla_sdk/resources/nexsets.py:136`
   - Update nexset.
 - `update_api_key(self, set_id: int, api_key_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:420`
+  - Source: `nexla_sdk/resources/nexsets.py:447`
 - `update_catalog_ref(self, ref_id: int, payload: Dict[str, Any]) -> nexla_sdk.models.catalog_refs.responses.CatalogRef`
-  - Source: `nexla_sdk/resources/nexsets.py:390`
+  - Source: `nexla_sdk/resources/nexsets.py:411`
 - `update_dashboard_transforms(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:303`
+  - Source: `nexla_sdk/resources/nexsets.py:324`
 - `update_docs(self, set_id: int, docs: List[Union[nexla_sdk.models.doc_containers.requests.DocContainerInput, Dict[str, Any]]]) -> List[nexla_sdk.models.doc_containers.responses.DocContainer]`
-  - Source: `nexla_sdk/resources/nexsets.py:491`
+  - Source: `nexla_sdk/resources/nexsets.py:518`
   - Replace all documentation entries on a nexset.
 - `update_quarantine_settings(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:283`
+  - Source: `nexla_sdk/resources/nexsets.py:304`
 - `update_runtime_status(self, set_id: int, status: str) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:86`
+  - Source: `nexla_sdk/resources/nexsets.py:101`
 - `update_samples(self, set_id: int, samples: Any, replace: bool = False) -> List[nexla_sdk.models.nexsets.responses.NexsetSample]`
-  - Source: `nexla_sdk/resources/nexsets.py:199`
+  - Source: `nexla_sdk/resources/nexsets.py:214`
 - `vote(self, set_id: int, payload: Dict[str, Any]) -> Dict[str, Any]`
-  - Source: `nexla_sdk/resources/nexsets.py:367`
+  - Source: `nexla_sdk/resources/nexsets.py:388`
 
