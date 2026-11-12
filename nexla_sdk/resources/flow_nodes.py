@@ -33,7 +33,9 @@ class FlowNodesResource(BaseResource[FlowNode]):
             self._make_request("GET", "/flows/all/minimal", params=params),
         )
 
-    def get_access_insights(self, flow_node_id: int, **params: Any) -> Dict[str, Any]:  # type: ignore[override]  # keeps public parameter name; base uses resource_id
+    def get_access_insights(  # type: ignore[override]  # keeps public parameter name; base uses resource_id
+        self, flow_node_id: int, **params: Any
+    ) -> Dict[str, Any]:
         return cast(
             Dict[str, Any],
             self._make_request("GET", f"/flows/{flow_node_id}/access", params=params),
