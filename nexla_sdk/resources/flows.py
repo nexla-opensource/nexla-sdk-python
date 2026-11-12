@@ -960,3 +960,135 @@ class FlowsResource(BaseResource):
                 "FlowMetricsApiResponse validation failed, returning raw dict: %s", exc
             )
             return response
+
+    def get_document_schema(self) -> Dict[str, Any]:
+        """
+        Get the JSON Schema for flow documents.
+
+        Returns:
+            JSON Schema for the documents returned by get_document()
+        """
+        return self._make_request("GET", f"{self._path}/document/schema")
+
+    def get_document(self, flow_id: int) -> Dict[str, Any]:
+        """
+        Get a flow as a portable nexla/v1 document.
+
+        Args:
+            flow_id: Flow ID
+
+        Returns:
+            Flow document
+        """
+        return self._make_request("GET", f"{self._path}/{flow_id}/document")
+
+    def plan_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Report what applying a flow document would change, without changing anything.
+
+        Args:
+            payload: Flow document to plan
+
+        Returns:
+            Planned changes
+        """
+        return self._make_request("POST", f"{self._path}/plan", json=payload)
+
+    def get_daily_metrics(
+        self,
+        origin_node_id: int,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get daily metrics for a flow node.
+
+        Args:
+            origin_node_id: Origin flow node ID
+            start_time: Window start, sent as the "from" query parameter
+            end_time: Window end, sent as the "to" query parameter
+
+        Returns:
+            Daily metrics
+        """
+        params = {"from": start_time, "to": end_time}
+        return self._make_request(
+            "GET",
+            f"{self._path}/{origin_node_id}/metrics/daily",
+            params={k: v for k, v in params.items() if v is not None},
+        )
+
+    def list_runs(
+        self, flow_id: int, limit: int = 50, offset: int = 0
+    ) -> List[Dict[str, Any]]:
+        """
+        List recent runs of a flow that processed records.
+
+        Args:
+            flow_id: Flow ID
+            limit: Maximum number of runs (1-500)
+            offset: Number of runs to skip
+
+        Returns:
+            Run summaries
+        """
+        return self._make_request(
+            "GET",
+            f"{self._path}/{flow_id}/runs",
+            params={"limit": limit, "offset": offset},
+        )
+
+    def get_run(self, flow_id: int, run_id: int) -> Dict[str, Any]:
+        """
+        Get the details of one flow run.
+
+        Args:
+            flow_id: Flow ID
+            run_id: Run ID
+
+        Returns:
+            Run details with flow-level execution timing
+        """
+        return self._make_request("GET", f"{self._path}/{flow_id}/runs/{run_id}")
+
+    def cancel_run(
+        self, flow_id: int, run_id: Union[int, str], force: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Cancel a running flow execution.
+
+        Args:
+            flow_id: Flow ID
+            run_id: Run ID
+            force: Force the cancellation (sent as the "force" query parameter)
+
+        Returns:
+            Cancellation result
+        """
+        params = {"force": True} if force else {}
+        return self._make_request(
+            "POST", f"{self._path}/{flow_id}/runs/{run_id}/cancel", params=params
+        )
+
+    def retry_run(
+        self,
+        flow_id: int,
+        run_id: Union[int, str],
+        retry_config: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Retry a failed flow execution.
+
+        Args:
+            flow_id: Flow ID
+            run_id: Run ID
+            retry_config: Optional retry options, sent as the JSON body
+
+        Returns:
+            Retry result
+        """
+        return self._make_request(
+            "POST",
+            f"{self._path}/{flow_id}/runs/{run_id}/retry",
+            json=retry_config,
+        )
