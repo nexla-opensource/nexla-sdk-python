@@ -105,7 +105,7 @@ def check_environment():
 
     # Check for test directories
     missing_dirs = []
-    for category, path in TEST_CATEGORIES.items():
+    for _category, path in TEST_CATEGORIES.items():
         if not Path(path).exists():
             missing_dirs.append(path)
 

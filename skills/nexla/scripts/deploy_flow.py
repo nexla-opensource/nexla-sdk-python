@@ -96,7 +96,7 @@ def deploy_flow(
             steps.append("credential_validated")
             print("✓ Credential validated")
         except Exception as e:
-            raise CredentialError(f"Credential validation failed: {e}")
+            raise CredentialError(f"Credential validation failed: {e}") from e
 
         if dry_run:
             print("\nDRY RUN: Would create source/destination/flow")

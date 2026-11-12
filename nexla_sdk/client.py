@@ -36,6 +36,7 @@ from .http_client import (
     HttpTimeoutError,
     RequestsHttpClient,
 )
+from .models.tokens.responses import TokenResponse
 from .raw_operations import RawOperationsClient
 from .resources.api_keys import ApiKeysResource
 from .resources.approval_requests import ApprovalRequestsResource
@@ -70,8 +71,8 @@ from .resources.notification_channel_settings import NotificationChannelSettings
 from .resources.notification_settings import NotificationSettingsResource
 from .resources.notification_types import NotificationTypesResource
 from .resources.notifications import NotificationsResource
-from .resources.org_auth_configs import OrgAuthConfigsResource
 from .resources.oauth import OAuthResource
+from .resources.org_auth_configs import OrgAuthConfigsResource
 from .resources.org_tiers import OrgTiersResource
 from .resources.organizations import OrganizationsResource
 from .resources.projects import ProjectsResource
@@ -95,7 +96,6 @@ from .resources.users import UsersResource
 from .resources.validators import ValidatorsResource
 from .resources.vendor_endpoints import VendorEndpointsResource
 from .resources.vendors import VendorsResource
-from .models.tokens.responses import TokenResponse
 from .resources.webhooks import WebhooksResource
 
 logger = logging.getLogger(__name__)
@@ -473,7 +473,7 @@ class NexlaClient:
             logger.error(f"Validation error converting to {model_class.__name__}: {e}")
             raise ValidationError(
                 f"Failed to convert API response to {model_class.__name__}: {e}"
-            )
+            ) from e
 
     @property
     def last_response_headers(self) -> Mapping[str, Any]:

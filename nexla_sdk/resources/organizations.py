@@ -17,8 +17,7 @@ from nexla_sdk.models.organizations.responses import (
     OrgMember,
 )
 from nexla_sdk.resources.base_resource import BaseResource
-from nexla_sdk.utils.deprecation import warn_deprecated
-from nexla_sdk.utils.deprecation import missing_route
+from nexla_sdk.utils.deprecation import missing_route, warn_deprecated
 
 
 class OrganizationsResource(BaseResource):

@@ -73,8 +73,15 @@ target-version = "py38"
 line-length = 88
 
 [tool.ruff.lint]
-# Ruff defaults, listed explicitly. Rule set expands in a later commit.
-select = ["E4", "E7", "E9", "F"]
+select = ["E", "F", "W", "I", "B", "UP"]
+# E501: ruff format owns code width. Remaining hits are long string literals and
+# comments that the formatter cannot wrap; splitting them hurts readability.
+ignore = ["E501"]
+
+[tool.ruff.lint.pyupgrade]
+# Python 3.8 cannot evaluate list[...] or X | None at runtime, and pydantic
+# evaluates model annotations. Keep typing.List / Optional in runtime contexts.
+keep-runtime-typing = true
 
 [tool.ruff.format]
 quote-style = "double"

@@ -34,8 +34,6 @@ from nexla_sdk.models.auth_parameters import (
 )
 from nexla_sdk.models.auth_templates import (
     AuthParameter,  # Deprecated alias for AuthTemplateParameter
-)
-from nexla_sdk.models.auth_templates import (
     AuthParameterCreate,
     AuthTemplate,
     AuthTemplateCreate,

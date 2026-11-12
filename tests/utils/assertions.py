@@ -45,7 +45,7 @@ def assert_model_valid(
     try:
         model_instance.model_dump()
     except Exception as e:
-        raise AssertionError(f"Model serialization failed: {e}")
+        raise AssertionError(f"Model serialization failed: {e}") from e
 
 
 def assert_model_list_valid(model_list: List[BaseModel], model_class: Type[BaseModel]):
@@ -70,7 +70,9 @@ def assert_validation_error(func, error_message_contains: Optional[str] = None):
                 f"Error message should contain '{error_message_contains}': {e}"
             )
     except Exception as e:
-        raise AssertionError(f"Expected ValidationError, got {type(e).__name__}: {e}")
+        raise AssertionError(
+            f"Expected ValidationError, got {type(e).__name__}: {e}"
+        ) from e
 
 
 def assert_credential_structure(credential_data: Dict[str, Any]):
