@@ -981,3 +981,19 @@ class NexsetsResource(BaseResource):
             params["suppress_errors"] = suppress_errors
         path = f"{self._path}/{data_set_id}/transform"
         return self._make_request("PUT", path, params=params, json=data)
+
+    def create_catalog_ref_for_set(
+        self, data_set_id: int, ref_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Create a catalog ref for one data set.
+
+        Args:
+            data_set_id: Data set ID
+            ref_data: Catalog ref to create
+
+        Returns:
+            Created catalog ref
+        """
+        path = f"{self._path}/{data_set_id}/catalog_refs"
+        return self._make_request("POST", path, json=ref_data)

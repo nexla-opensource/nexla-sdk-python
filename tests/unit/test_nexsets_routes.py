@@ -255,6 +255,13 @@ NEXSETS_ROUTE_CALLS = [
         {"params": {"transform_id": 5, "extract_schemas": 1}},
         id="nexsets.data_sets_apply_transformation",
     ),
+    pytest.param(
+        lambda c: c.nexsets.create_catalog_ref_for_set(4, {"name": "ref"}),
+        "POST",
+        "/data_sets/4/catalog_refs",
+        {"json": {"name": "ref"}},
+        id="nexsets.create_catalog_ref_for_set",
+    ),
 ]
 
 
