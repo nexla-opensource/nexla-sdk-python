@@ -241,6 +241,34 @@ for page in paginator.iter_pages():
         print(f"  - {source.name}")
 ```
 
+## Async Client
+
+`AsyncNexlaClient` has the same resources, methods, and parameters as `NexlaClient`. Resource methods are coroutines. Authentication, retries, timeouts, and errors follow the same rules. The async client needs httpx:
+
+```bash
+pip install "nexla-sdk[async]"
+```
+
+```python
+import asyncio
+
+from nexla_sdk.aio import AsyncNexlaClient
+
+
+async def main():
+    async with AsyncNexlaClient(service_key="your-service-key") as client:
+        source = await client.sources.get(123)
+
+        # Iterate every page with async for.
+        async for item in client.sources.paginate(per_page=50).iter_items():
+            print(item.name)
+
+
+asyncio.run(main())
+```
+
+`client.aclose()` closes the HTTP transport when you do not use `async with`. Importing `nexla_sdk` does not need httpx. Importing `nexla_sdk.aio` without httpx raises an `ImportError` that names the extra. See `examples/async_usage.py`.
+
 ## Observability: OpenTelemetry Tracing (Optional)
 
 You can instrument the Nexla SDK with OpenTelemetry to emit spans for each outgoing API request. Tracing is optional and a no‑op unless enabled.
