@@ -211,3 +211,13 @@ class TestClusterEndpointModels:
         assert data["port"] == 8443
         assert "cluster_id" not in data
         assert "service" not in data
+
+
+@pytest.mark.unit
+def test_get_schema_sends_method_query(mock_client, mock_http_client):
+    mock_client.cluster_endpoints.get_schema(method="post")
+
+    last = mock_http_client.get_last_request()
+    assert last["method"] == "GET"
+    assert last["url"].endswith("/cluster_endpoints/schema")
+    assert last["params"] == {"method": "post"}

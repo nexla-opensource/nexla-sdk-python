@@ -136,3 +136,17 @@ class ClusterEndpointsResource(BaseResource):
         if per_page is not None:
             params["per_page"] = per_page
         return self._make_request("GET", path, params=params)
+
+    def get_schema(self, method: str = "get") -> Dict[str, Any]:
+        """
+        Get the JSON schema for cluster endpoints.
+
+        Args:
+            method: HTTP method the schema describes: get, post, or put
+
+        Returns:
+            JSON schema
+        """
+        return self._make_request(
+            "GET", f"{self._path}/schema", params={"method": method}
+        )

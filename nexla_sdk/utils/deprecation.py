@@ -2,7 +2,7 @@
 
 import functools
 import warnings
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Optional, TypeVar
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -14,19 +14,23 @@ def warn_deprecated(old: str, new: str) -> None:
     )
 
 
-def missing_route(method: str, route: str) -> Callable[[F], F]:
+def missing_route(
+    method: str, route: str, use: Optional[str] = None
+) -> Callable[[F], F]:
     """Mark a method whose backend route does not exist.
 
     The method keeps sending its request, so existing callers behave as before.
-    Each call emits a DeprecationWarning.
+    Each call emits a DeprecationWarning. `use` names a working replacement.
     """
 
     def decorator(fn: F) -> F:
+        hint = f" Use {use} instead." if use else ""
+
         @functools.wraps(fn)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             warnings.warn(
                 f"{fn.__qualname__} calls {method} {route}, which does not exist "
-                "on the Nexla API.",
+                f"on the Nexla API.{hint}",
                 DeprecationWarning,
                 stacklevel=2,
             )

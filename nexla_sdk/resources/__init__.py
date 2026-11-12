@@ -25,6 +25,7 @@ from nexla_sdk.resources.flows import FlowsResource
 from nexla_sdk.resources.genai import GenAIResource
 from nexla_sdk.resources.lookups import LookupsResource
 from nexla_sdk.resources.marketplace import MarketplaceResource
+from nexla_sdk.resources.mcp_sessions import McpSessionsResource
 from nexla_sdk.resources.metrics import MetricsResource
 from nexla_sdk.resources.nexsets import NexsetsResource
 from nexla_sdk.resources.notification_channel_settings import (
@@ -34,12 +35,14 @@ from nexla_sdk.resources.notification_settings import NotificationSettingsResour
 from nexla_sdk.resources.notification_types import NotificationTypesResource
 from nexla_sdk.resources.notifications import NotificationsResource
 from nexla_sdk.resources.org_auth_configs import OrgAuthConfigsResource
+from nexla_sdk.resources.oauth import OAuthResource
 from nexla_sdk.resources.org_tiers import OrgTiersResource
 from nexla_sdk.resources.organizations import OrganizationsResource
 from nexla_sdk.resources.projects import ProjectsResource
 from nexla_sdk.resources.quarantine_settings import QuarantineSettingsResource
 from nexla_sdk.resources.resource_parameters import ResourceParametersResource
 from nexla_sdk.resources.runtimes import RuntimesResource
+from nexla_sdk.resources.sdk_applications import SdkApplicationsResource
 from nexla_sdk.resources.search_health import SearchHealthResource
 from nexla_sdk.resources.self_signup import SelfSignupResource
 from nexla_sdk.resources.self_signup_blocked_domains import (
@@ -49,6 +52,8 @@ from nexla_sdk.resources.service_keys import ServiceKeysResource
 from nexla_sdk.resources.sources import SourcesResource
 from nexla_sdk.resources.teams import TeamsResource
 from nexla_sdk.resources.tokens import TokensResource
+from nexla_sdk.resources.tool_sets import ToolSetsResource
+from nexla_sdk.resources.tools import ToolsResource
 from nexla_sdk.resources.transforms import TransformsResource
 from nexla_sdk.resources.user_settings import UserSettingsResource
 from nexla_sdk.resources.user_tiers import UserTiersResource
@@ -81,6 +86,7 @@ __all__ = [
     "RuntimesResource",
     "MarketplaceResource",
     "OrgAuthConfigsResource",
+    "OAuthResource",
     "OrgTiersResource",
     "AuthParametersResource",
     "ResourceParametersResource",
@@ -101,6 +107,10 @@ __all__ = [
     "UserSettingsResource",
     "UserTiersResource",
     "TokensResource",
+    "ToolSetsResource",
+    "ToolsResource",
+    "SdkApplicationsResource",
+    "McpSessionsResource",
     "SearchHealthResource",
     "CubeJsResource",
     # Phase 1 resources

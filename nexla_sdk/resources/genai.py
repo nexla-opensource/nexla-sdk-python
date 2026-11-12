@@ -47,6 +47,23 @@ class GenAIResource(BaseResource):
         )
         return GenAiConfig.model_validate(response)
 
+    def gen_ai_integration_configs_update_gen_ai_config(
+        self, gen_ai_config_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Partially update a GenAI integration config.
+
+        Args:
+            gen_ai_config_id: GenAI config ID
+            data: Fields to update
+
+        Returns:
+            Updated config as a dict
+        """
+        return self._make_request(
+            "PATCH", f"/gen_ai_integration_configs/{gen_ai_config_id}", json=data
+        )
+
     def delete_config(self, gen_ai_config_id: int) -> Dict[str, Any]:
         return self._make_request(
             "DELETE", f"/gen_ai_integration_configs/{gen_ai_config_id}"
@@ -89,7 +106,11 @@ class GenAIResource(BaseResource):
             "DELETE", f"/gen_ai_org_settings/{gen_ai_org_setting_id}"
         )
 
-    @missing_route("DELETE", "/gen_ai_org_settings")
+    @missing_route(
+        "DELETE",
+        "/gen_ai_org_settings",
+        use="delete_org_setting(gen_ai_org_setting_id)",
+    )
     def delete_org_settings(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._make_request("DELETE", "/gen_ai_org_settings", json=payload)
 

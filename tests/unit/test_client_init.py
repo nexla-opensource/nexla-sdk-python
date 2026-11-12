@@ -3,6 +3,12 @@ from pydantic import BaseModel
 
 from nexla_sdk import NexlaClient
 from nexla_sdk.exceptions import ValidationError
+from nexla_sdk.resources import (
+    McpSessionsResource,
+    SdkApplicationsResource,
+    ToolSetsResource,
+    ToolsResource,
+)
 from nexla_sdk.resources.webhooks import WebhooksResource
 
 # Mark all tests in this module as unit tests
@@ -100,8 +106,9 @@ def test_create_webhook_client_shares_http_client():
     assert webhook_client._http_client is client.http_client
 
 
-def test_client_does_not_expose_removed_mcp_resources():
+def test_client_exposes_agent_tooling_resources():
     client = NexlaClient(service_key="test_service_key")
-    assert not hasattr(client, "tools")
-    assert not hasattr(client, "tool_sets")
-    assert not hasattr(client, "mcp_sessions")
+    assert isinstance(client.tools, ToolsResource)
+    assert isinstance(client.tool_sets, ToolSetsResource)
+    assert isinstance(client.mcp_sessions, McpSessionsResource)
+    assert isinstance(client.sdk_applications, SdkApplicationsResource)

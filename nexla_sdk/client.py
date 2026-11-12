@@ -63,6 +63,7 @@ from .resources.flows import FlowsResource
 from .resources.genai import GenAIResource
 from .resources.lookups import LookupsResource
 from .resources.marketplace import MarketplaceResource
+from .resources.mcp_sessions import McpSessionsResource
 from .resources.metrics import MetricsResource
 from .resources.nexsets import NexsetsResource
 from .resources.notification_channel_settings import NotificationChannelSettingsResource
@@ -70,12 +71,14 @@ from .resources.notification_settings import NotificationSettingsResource
 from .resources.notification_types import NotificationTypesResource
 from .resources.notifications import NotificationsResource
 from .resources.org_auth_configs import OrgAuthConfigsResource
+from .resources.oauth import OAuthResource
 from .resources.org_tiers import OrgTiersResource
 from .resources.organizations import OrganizationsResource
 from .resources.projects import ProjectsResource
 from .resources.quarantine_settings import QuarantineSettingsResource
 from .resources.resource_parameters import ResourceParametersResource
 from .resources.runtimes import RuntimesResource
+from .resources.sdk_applications import SdkApplicationsResource
 from .resources.search_health import SearchHealthResource
 from .resources.self_signup import SelfSignupResource
 from .resources.self_signup_blocked_domains import SelfSignupBlockedDomainsResource
@@ -83,6 +86,8 @@ from .resources.service_keys import ServiceKeysResource
 from .resources.sources import SourcesResource
 from .resources.teams import TeamsResource
 from .resources.tokens import TokensResource
+from .resources.tool_sets import ToolSetsResource
+from .resources.tools import ToolsResource
 from .resources.transforms import TransformsResource
 from .resources.user_settings import UserSettingsResource
 from .resources.user_tiers import UserTiersResource
@@ -294,6 +299,7 @@ class NexlaClient:
         self.runtimes = RuntimesResource(self)
         self.marketplace = MarketplaceResource(self)
         self.org_auth_configs = OrgAuthConfigsResource(self)
+        self.oauth = OAuthResource(self)
         self.org_tiers = OrgTiersResource(self)
         self.auth_parameters = AuthParametersResource(self)
         self.resource_parameters = ResourceParametersResource(self)
@@ -305,6 +311,10 @@ class NexlaClient:
         self.doc_containers = DocContainersResource(self)
         self.data_schemas = DataSchemasResource(self)
         self.tokens = TokensResource(self)
+        self.tools = ToolsResource(self)
+        self.tool_sets = ToolSetsResource(self)
+        self.sdk_applications = SdkApplicationsResource(self)
+        self.mcp_sessions = McpSessionsResource(self)
         self.search_health = SearchHealthResource(self)
         self.cubejs = CubeJsResource(self)
 

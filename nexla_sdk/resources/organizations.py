@@ -543,3 +543,113 @@ class OrganizationsResource(BaseResource):
         path = f"{self._path}/{org_id}/custodians"
         data = self._serialize_data(payload)
         return self._make_request("DELETE", path, json=data)
+
+    def activate_sources(
+        self, org_id: int, status: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Activate rate-limited sources of an organization.
+
+        Sends PUT /orgs/{org_id}/source_activate, with /{status} when given.
+
+        Args:
+            org_id: Organization ID
+            status: Optional source status filter
+
+        Returns:
+            Updated organization
+        """
+        path = f"{self._path}/{org_id}/source_activate"
+        if status:
+            path = f"{path}/{status}"
+        return self._make_request("PUT", path)
+
+    def pause_sources(
+        self, org_id: int, status: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Pause rate-limited sources of an organization.
+
+        Sends PUT /orgs/{org_id}/source_pause, with /{status} when given.
+
+        Args:
+            org_id: Organization ID
+            status: Optional source status filter
+
+        Returns:
+            Updated organization
+        """
+        path = f"{self._path}/{org_id}/source_pause"
+        if status:
+            path = f"{path}/{status}"
+        return self._make_request("PUT", path)
+
+    def get_allowed_clusters(self, org_id: int) -> List[Dict[str, Any]]:
+        """
+        Get the clusters an organization may use.
+
+        Args:
+            org_id: Organization ID
+
+        Returns:
+            Default cluster and additional allowed clusters
+        """
+        return self._make_request("GET", f"{self._path}/{org_id}/allowed_clusters")
+
+    def get_quarantine_settings(self, org_id: int) -> Dict[str, Any]:
+        """
+        Get the quarantine setting of an organization.
+
+        Args:
+            org_id: Organization ID
+
+        Returns:
+            Quarantine setting
+        """
+        return self._make_request("GET", f"{self._path}/{org_id}/quarantine_settings")
+
+    def create_quarantine_settings(
+        self, org_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Create or update the quarantine setting of an organization.
+
+        Args:
+            org_id: Organization ID
+            data: Quarantine setting. Requires data_credentials_id.
+
+        Returns:
+            Quarantine setting
+        """
+        path = f"{self._path}/{org_id}/quarantine_settings"
+        return self._make_request("POST", path, json=data)
+
+    def update_quarantine_settings(
+        self, org_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Update the quarantine setting of an organization.
+
+        Args:
+            org_id: Organization ID
+            data: Fields to update
+
+        Returns:
+            Quarantine setting
+        """
+        path = f"{self._path}/{org_id}/quarantine_settings"
+        return self._make_request("PUT", path, json=data)
+
+    def delete_quarantine_settings(self, org_id: int) -> Dict[str, Any]:
+        """
+        Delete the quarantine setting of an organization.
+
+        Args:
+            org_id: Organization ID
+
+        Returns:
+            Backend response
+        """
+        return self._make_request(
+            "DELETE", f"{self._path}/{org_id}/quarantine_settings"
+        )

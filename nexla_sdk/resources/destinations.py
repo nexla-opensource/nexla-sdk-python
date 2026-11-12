@@ -378,3 +378,401 @@ class DestinationsResource(BaseResource):
     def get_quarantine_aggregation(self, sink_id: int) -> Dict[str, Any]:
         path = f"{self._path}/{sink_id}/quarantine_aggregation"
         return self._make_request("GET", path)
+
+    def data_sinks_update_data_sink(
+        self,
+        data_sink_id: int,
+        data: Dict[str, Any],
+        expand: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Partially update a data sink (PATCH).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Fields to update
+            expand: Include expanded references
+
+        Returns:
+            Updated data sink
+        """
+        params = {"expand": expand}
+        path = f"{self._path}/{data_sink_id}"
+        return self._make_request(
+            "PATCH",
+            path,
+            params={k: v for k, v in params.items() if v is not None},
+            json=data,
+        )
+
+    def validate_data_sink_config(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Validate the configuration of a data sink.
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Configuration to validate. Default is the stored sink config.
+
+        Returns:
+            Validation result
+        """
+        path = f"{self._path}/{data_sink_id}/config/validate"
+        return self._make_request("POST", path, json=data)
+
+    def list_flow_accessors_via_data_sink(
+        self, resource_id: int
+    ) -> List[Dict[str, Any]]:
+        """
+        List the accessors of the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+
+        Returns:
+            List of accessors
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("GET", path)
+
+    def reset_flow_accessors_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Replace the accessors of the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Accessors payload
+
+        Returns:
+            Updated list of accessors
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("POST", path, json=data)
+
+    def add_flow_accessors_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Add accessors to the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Accessors payload
+
+        Returns:
+            Updated list of accessors
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("PUT", path, json=data)
+
+    def remove_flow_accessors_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Remove accessors from the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Accessors payload to remove
+
+        Returns:
+            Remaining list of accessors
+        """
+        path = f"{self._path}/{resource_id}/flow/accessors"
+        return self._make_request("DELETE", path, json=data)
+
+    def list_flow_docs_via_data_sink(self, resource_id: int) -> Any:
+        """
+        List the docs of the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+
+        Returns:
+            Docs payload
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("GET", path)
+
+    def reset_flow_docs_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Replace the docs of the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Docs payload
+
+        Returns:
+            Updated docs payload
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("POST", path, json=data)
+
+    def add_flow_docs_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Add docs to the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Docs payload to add
+
+        Returns:
+            Updated docs payload
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("PUT", path, json=data)
+
+    def remove_flow_docs_via_data_sink(
+        self, resource_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Remove docs from the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            data: Docs payload to remove
+
+        Returns:
+            Remaining docs payload
+        """
+        path = f"{self._path}/{resource_id}/flow/docs"
+        return self._make_request("DELETE", path, json=data)
+
+    def activate_flow_via_data_sink(
+        self,
+        resource_id: int,
+        all: Optional[bool] = None,
+        full_tree: Optional[bool] = None,
+        run_now: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Activate the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            all: Activate the entire flow tree
+            full_tree: Include the full tree in the response
+            run_now: Run value passed to the backend
+
+        Returns:
+            Flow response
+        """
+        params = {"all": all, "full_tree": full_tree, "run_now": run_now}
+        path = f"{self._path}/{resource_id}/flow/activate"
+        return self._make_request(
+            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def pause_flow_via_data_sink(
+        self,
+        resource_id: int,
+        all: Optional[bool] = None,
+        full_tree: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Pause the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            all: Pause the entire flow tree
+            full_tree: Include the full tree in the response
+
+        Returns:
+            Flow response
+        """
+        params = {"all": all, "full_tree": full_tree}
+        path = f"{self._path}/{resource_id}/flow/pause"
+        return self._make_request(
+            "PUT", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sinks_flow_audit_log(
+        self,
+        resource_id: int,
+        interval: Optional[str] = None,
+        from_date: Optional[str] = None,
+        to_date: Optional[str] = None,
+        event_filter: Optional[str] = None,
+        change_filter: Optional[str] = None,
+        page: Optional[str] = None,
+        per_page: Optional[str] = None,
+        expand: Optional[str] = None,
+        access_role: Optional[str] = None,
+    ) -> Any:
+        """
+        Get the audit log for the flow of a data sink.
+
+        Args:
+            resource_id: Data sink ID
+            interval: Time interval filter
+            from_date: Start date (wire name from)
+            to_date: End date (wire name to)
+            event_filter: Event type filter
+            change_filter: Change type filter
+            page: Page number
+            per_page: Items per page
+            expand: Expand references
+            access_role: Access role filter
+
+        Returns:
+            Flow audit log entries
+        """
+        params = {
+            "interval": interval,
+            "from": from_date,
+            "to": to_date,
+            "event_filter": event_filter,
+            "change_filter": change_filter,
+            "page": page,
+            "per_page": per_page,
+            "expand": expand,
+            "access_role": access_role,
+        }
+        path = f"{self._path}/{resource_id}/flow/audit_log"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sinks_get_data_sink_offset(
+        self, data_sink_id: int, data_set_id: Optional[int] = None
+    ) -> Any:
+        """
+        Get the offset of a data sink, optionally for one nexset.
+
+        Args:
+            data_sink_id: Data sink ID
+            data_set_id: Nexset ID filter
+
+        Returns:
+            Offset payload
+        """
+        params = {"data_set_id": data_set_id}
+        path = f"{self._path}/{data_sink_id}/offset"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sinks_get_data_sink_quarantine_offset(
+        self, data_sink_id: int, data_set_id: Optional[int] = None
+    ) -> Any:
+        """
+        Get the quarantine offset of a data sink, optionally for one nexset.
+
+        Args:
+            data_sink_id: Data sink ID
+            data_set_id: Nexset ID filter
+
+        Returns:
+            Quarantine offset payload
+        """
+        params = {"data_set_id": data_set_id}
+        path = f"{self._path}/{data_sink_id}/quarantine/offset"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sinks_get_data_sink_run_status(
+        self, data_sink_id: int, run_id: Optional[str] = None
+    ) -> Any:
+        """
+        Get the run status of a data sink, optionally for one run.
+
+        Args:
+            data_sink_id: Data sink ID
+            run_id: Run ID filter
+
+        Returns:
+            Run status payload
+        """
+        params = {"run_id": run_id}
+        path = f"{self._path}/{data_sink_id}/run_status"
+        return self._make_request(
+            "GET", path, params={k: v for k, v in params.items() if v is not None}
+        )
+
+    def data_sinks_probe_list_files_in_bucket_data_sink(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Probe a data sink to list files in a bucket (PUT).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_sink_id}/probe/buckets"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sinks_probe_read_file_data_sink(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Probe a data sink to read a file (PUT).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_sink_id}/probe/files"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sinks_probe_read_quarantine_data_sink(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Probe a data sink to read a quarantine sample (PUT).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_sink_id}/probe/quarantine/sample"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sinks_probe_detect_schemas_data_sink(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Probe a data sink to detect schemas (PUT).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_sink_id}/probe/schemas"
+        return self._make_request("PUT", path, json=data)
+
+    def data_sinks_probe_list_tree_data_sink(
+        self, data_sink_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """
+        Probe a data sink to list the tree (PUT).
+
+        Args:
+            data_sink_id: Data sink ID
+            data: Probe input
+
+        Returns:
+            Probe result
+        """
+        path = f"{self._path}/{data_sink_id}/probe/tree"
+        return self._make_request("PUT", path, json=data)

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from nexla_sdk.models.code_containers.requests import (
     CodeContainerCreate,
@@ -89,3 +89,17 @@ class CodeContainersResource(BaseResource):
 
     def search_tags(self, tags: List[str], **params) -> List[CodeContainer]:
         return super().search_tags(tags, **params)
+
+    def get_schema(self, method: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Get the JSON schema for code containers.
+
+        Args:
+            method: HTTP method the schema describes: get, post, or put.
+                Omit it to get the schema for all three methods.
+
+        Returns:
+            JSON schema
+        """
+        params = {"method": method} if method is not None else {}
+        return self._make_request("GET", f"{self._path}/schema", params=params)

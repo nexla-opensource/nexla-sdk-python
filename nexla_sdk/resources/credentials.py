@@ -305,3 +305,177 @@ class CredentialsResource(BaseResource):
     ) -> Dict[str, Any]:
         path = f"{self._path}/{credential_id}/migrate/iceberg"
         return self._make_request("POST", path, json=payload)
+
+    def data_credentials_update_credentials(
+        self, credentials_id: int, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Partially update credentials (PATCH).
+
+        Args:
+            credentials_id: Credential ID
+            data: Fields to update
+
+        Returns:
+            Updated credential as a dict
+        """
+        path = f"{self._path}/{credentials_id}"
+        return self._make_request("PATCH", path, json=data)
+
+    def iceberg_migration_status(
+        self, credential_id: int, run_id: str
+    ) -> Dict[str, Any]:
+        """
+        Get the status of an Iceberg migration run.
+
+        Args:
+            credential_id: Credential ID
+            run_id: Migration run ID
+
+        Returns:
+            Migration status
+        """
+        path = f"{self._path}/{credential_id}/migrate/iceberg/{run_id}/status"
+        return self._make_request("GET", path)
+
+    def data_credentials_probe_credentials_get(
+        self, credential_id: int, async_mode: Optional[bool] = None
+    ) -> Dict[str, Any]:
+        """
+        Test credential validity through the probe/authenticate route.
+
+        Args:
+            credential_id: Credential ID
+            async_mode: Sent as the async query parameter
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/authenticate"
+        params = {}
+        if async_mode is not None:
+            params["async"] = async_mode
+        return self._make_request("GET", path, params=params)
+
+    def data_credentials_probe_list_files_in_bucket_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        List files in a bucket (PUT probe/buckets).
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/buckets"
+        return self._make_request("PUT", path, json=data)
+
+    def probe_database_metadata_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Read database metadata through the credential.
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/database/metadata"
+        return self._make_request("POST", path, json=data)
+
+    def probe_database_query_usage_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Read database query usage through the credential.
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/database/query-usage"
+        return self._make_request("POST", path, json=data)
+
+    def data_credentials_probe_file_download_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Download a file through the credential (PUT probe/file/download).
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/file/download"
+        return self._make_request("PUT", path, json=data)
+
+    def data_credentials_probe_read_file_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Read a file through the credential (PUT probe/files).
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/files"
+        return self._make_request("PUT", path, json=data)
+
+    def data_credentials_probe_detect_schemas_credentials(
+        self, credential_id: int, data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Detect schemas through the credential (PUT probe/schemas).
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/schemas"
+        return self._make_request("PUT", path, json=data)
+
+    def data_credentials_probe_search_path_credentials(
+        self,
+        credential_id: int,
+        data: Optional[Dict[str, Any]] = None,
+        query: Optional[str] = None,
+        keep_path: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """
+        Search a path through the credential (PUT probe/search_path).
+
+        Args:
+            credential_id: Credential ID
+            data: Optional probe body
+            query: Sent as the query query parameter
+            keep_path: Sent as the keep_path query parameter
+
+        Returns:
+            Probe response
+        """
+        path = f"{self._path}/{credential_id}/probe/search_path"
+        params = {}
+        if query is not None:
+            params["query"] = query
+        if keep_path is not None:
+            params["keep_path"] = keep_path
+        return self._make_request("PUT", path, json=data, params=params)
