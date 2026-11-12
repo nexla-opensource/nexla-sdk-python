@@ -7,6 +7,7 @@ Setup
 - Python 3.8+ is required.
 - Install dev deps: `pip install -e .[dev]`
 - Run unit tests: `pytest -m unit`
+- CI fails when unit coverage of `nexla_sdk` drops below 85%.
 
 Coding standards
 - Pydantic v2 models.

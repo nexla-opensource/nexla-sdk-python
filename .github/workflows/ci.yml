@@ -68,4 +68,4 @@ jobs:
         env:
           PYTHONWARNINGS: default
         run: |
-          pytest -m unit --maxfail=1 -q
+          pytest -m unit --maxfail=1 --cov=nexla_sdk --cov-report=term-missing --cov-fail-under=85
